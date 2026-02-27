@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Architectural System</title>
+<title>Architectural System — Dual Mode</title>
 
 <style>
 * {
@@ -13,92 +13,139 @@
 }
 
 body {
-    background: black;
-    color: white;
+    background: #000;
+    color: #fff;
     font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
     height: 100vh;
 }
 
-.corner {
+/* Основной контейнер */
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Левая и правая зоны */
+.zone {
     position: absolute;
-    top: 40px;
-    font-size: 18px;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    padding: 40px;
+    font-size: 20px;
     letter-spacing: 3px;
-    cursor: pointer;
-    z-index: 10;
-    transition: 0.3s;
+    text-transform: uppercase;
+    z-index: 3;
 }
 
-#build {
-    left: 40px;
+.left {
+    left: 0;
+    justify-content: flex-start;
 }
 
-#create {
-    right: 40px;
+.right {
+    right: 0;
+    justify-content: flex-end;
 }
 
-.circle {
-    position: absolute;
-    width: 200vmax;
-    height: 200vmax;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.6s ease;
-    z-index: 1;
+/* Радиальный слой */
+.reveal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: difference;
 }
 
-.white-mode {
-    background: white;
-}
-
-.texture-mode {
-    background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
+/* Текстура для андеграунда */
+.texture {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
     background-size: cover;
     background-position: center;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
 }
 
-.invert {
-    color: black;
+/* Центральный текст */
+.center-text {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #666;
+    z-index: 3;
 }
 
-.active {
-    transform: translate(-50%, -50%) scale(1);
+@media (max-width: 768px) {
+    .zone {
+        font-size: 16px;
+        padding: 20px;
+    }
 }
 </style>
-
 </head>
+
 <body>
 
-<div id="build" class="corner">TO BUILD</div>
-<div id="create" class="corner">TO CREATE</div>
-
-<div id="circle" class="circle"></div>
+<div class="container">
+    <div class="zone left">TO BUILD</div>
+    <div class="zone right">TO CREATE</div>
+    <div class="reveal"></div>
+    <div class="texture"></div>
+    <div class="center-text">
+        Anastasiya Vasileuskaya — Architectural System
+    </div>
+</div>
 
 <script>
-const build = document.getElementById("build");
-const create = document.getElementById("create");
-const circle = document.getElementById("circle");
+const reveal = document.querySelector('.reveal');
+const texture = document.querySelector('.texture');
 
-build.addEventListener("mouseenter", () => {
-    circle.classList.remove("texture-mode");
-    circle.classList.add("white-mode");
-    circle.classList.add("active");
-    document.body.classList.add("invert");
-});
+document.addEventListener('mousemove', (e) => {
 
-create.addEventListener("mouseenter", () => {
-    circle.classList.remove("white-mode");
-    circle.classList.add("texture-mode");
-    circle.classList.add("active");
-    document.body.classList.remove("invert");
-});
+    const x = e.clientX;
+    const y = e.clientY;
+    const width = window.innerWidth;
 
-document.body.addEventListener("mouseleave", () => {
-    circle.classList.remove("active");
-    document.body.classList.remove("invert");
+    const radius = 300;
+
+    if (x < width / 2) {
+        // Левая зона — белая инверсия
+        texture.style.opacity = 0;
+
+        reveal.style.background = `
+            radial-gradient(circle ${radius}px at ${x}px ${y}px,
+            white 0%,
+            white 40%,
+            transparent 100%)
+        `;
+
+    } else {
+        // Правая зона — текстура
+        texture.style.opacity = 1;
+
+        reveal.style.background = `
+            radial-gradient(circle ${radius}px at ${x}px ${y}px,
+            black 0%,
+            black 40%,
+            transparent 100%)
+        `;
+    }
 });
 </script>
 
