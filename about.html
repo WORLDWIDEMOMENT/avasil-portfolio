@@ -12,62 +12,16 @@ body{
     background:black;
     color:white;
     font-family:Helvetica, Arial, sans-serif;
-    overflow-x:hidden;
-}
-
-/* центр */
-.hero{
     height:100vh;
+    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
-    flex-direction:column;
-    position:relative;
-}
-
-.name{
-    font-size:64px;
-    letter-spacing:8px;
-    text-transform:uppercase;
-    z-index:2;
-    transition:opacity 1s ease;
-}
-
-/* круг */
-.reveal{
-    position:absolute;
-    width:400px;
-    height:400px;
-    border-radius:50%;
-    background:url("images/about.JPG") center/cover;
-    clip-path:circle(0% at 50% 50%);
-    transition:clip-path 1.5s cubic-bezier(.77,0,.18,1);
-}
-
-/* текст */
-.content{
-    max-width:800px;
-    margin:200px auto;
-    padding:0 40px;
-}
-
-.section{
-    opacity:0;
-    transform:translateY(40px);
-    transition:all 1s ease;
-    margin-bottom:120px;
-    font-size:20px;
-    line-height:1.8;
-}
-
-.section.visible{
-    opacity:1;
-    transform:translateY(0);
 }
 
 /* назад */
 .back{
-    position:fixed;
+    position:absolute;
     top:40px;
     left:40px;
     font-size:14px;
@@ -83,6 +37,64 @@ body{
 
 .back a:hover{opacity:1;}
 
+/* основная структура */
+
+.container{
+    width:90%;
+    max-width:1400px;
+    display:grid;
+    grid-template-columns: 1fr 400px 1fr;
+    align-items:center;
+}
+
+/* текст слева */
+
+.manifesto{
+    font-size:20px;
+    line-height:1.8;
+    max-width:500px;
+}
+
+/* фото по центру */
+
+.photo-wrapper{
+    display:flex;
+    justify-content:center;
+    position:relative;
+}
+
+.photo{
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    background:url("images/about.JPG") center/cover;
+    filter:grayscale(100%);
+    position:relative;
+    z-index:2;
+}
+
+/* мягкий свет */
+
+.photo-wrapper::before{
+    content:"";
+    position:absolute;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+}
+
+/* правая колонка */
+
+.identity{
+    font-size:14px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    line-height:2.2;
+    text-align:right;
+    opacity:.7;
+}
+
 </style>
 </head>
 
@@ -92,55 +104,34 @@ body{
     <a href="index.html">← Back</a>
 </div>
 
-<div class="hero">
-    <div class="name">Anastasiya Vasileuskaya</div>
-    <div class="reveal"></div>
-</div>
+<div class="container">
 
-<div class="content">
-
-    <div class="section">
+    <div class="manifesto">
         I work at the intersection of architecture,
         research and generative systems.
-    </div>
-
-    <div class="section">
+        <br><br>
         For me, architecture is not an object —
-        it is a spatial condition evolving through
-        technology, narrative and context.
-    </div>
-
-    <div class="section">
+        it is a spatial condition evolving
+        through technology and narrative.
+        <br><br>
         Between structure and underground sensitivity,
         I explore how systems become expressive.
     </div>
 
+    <div class="photo-wrapper">
+        <div class="photo"></div>
+    </div>
+
+    <div class="identity">
+        Anastasiya Vasileuskaya<br>
+        Architect<br>
+        Researcher<br>
+        Visual Thinker<br>
+        Working between space, systems and perception<br><br>
+        Worldwide
+    </div>
+
 </div>
-
-<script>
-
-/* раскрытие круга */
-window.addEventListener("load",()=>{
-    setTimeout(()=>{
-        document.querySelector(".reveal")
-        .style.clipPath="circle(50% at 50% 50%)";
-    },600);
-});
-
-/* появление текста при скролле */
-const sections=document.querySelectorAll(".section");
-
-const observer=new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-        if(entry.isIntersecting){
-            entry.target.classList.add("visible");
-        }
-    });
-},{threshold:0.3});
-
-sections.forEach(sec=>observer.observe(sec));
-
-</script>
 
 </body>
 </html>
