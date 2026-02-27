@@ -3,96 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manifesto</title>
+<title>About</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-    background:black;
-    color:white;
-    font-family:Helvetica, Arial, sans-serif;
     height:100vh;
     overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-/* назад */
-.back{
-    position:absolute;
-    top:40px;
-    left:40px;
-    font-size:14px;
-    letter-spacing:3px;
-    text-transform:uppercase;
-}
-
-.back a{
+    font-family:Helvetica, Arial, sans-serif;
     color:white;
-    text-decoration:none;
-    opacity:.6;
 }
 
-.back a:hover{opacity:1;}
+/* ---------- ФОН ---------- */
 
-/* основная структура */
-
-.container{
-    width:90%;
-    max-width:1400px;
-    display:grid;
-    grid-template-columns: 1fr 400px 1fr;
-    align-items:center;
+.background{
+    position:fixed;
+    inset:0;
+    background:url("images/about1.jpg") center/cover no-repeat;
+    filter:blur(20px);
+    transform:scale(1.05);
+    transition:filter 2.5s ease, transform 2.5s ease;
 }
 
-/* текст слева */
+/* затемнение для читаемости */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+}
+
+/* ---------- КОНТЕНТ ---------- */
+
+.content{
+    position:relative;
+    z-index:5;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:80px;
+}
+
+/* имя */
+
+.name{
+    font-size:72px;
+    letter-spacing:8px;
+    text-transform:uppercase;
+    font-weight:600;
+    max-width:900px;
+}
+
+/* текст */
 
 .manifesto{
+    max-width:700px;
     font-size:20px;
     line-height:1.8;
-    max-width:500px;
+    letter-spacing:1px;
 }
 
-/* фото по центру */
-
-.photo-wrapper{
-    display:flex;
-    justify-content:center;
-    position:relative;
+.manifesto p{
+    margin-bottom:24px;
 }
 
-.photo{
-    width:320px;
-    height:320px;
-    border-radius:50%;
-    background:url("images/about.JPG") center/cover;
-    filter:grayscale(100%);
-    position:relative;
-    z-index:2;
-}
+/* нижняя строка */
 
-/* мягкий свет */
-
-.photo-wrapper::before{
-    content:"";
-    position:absolute;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
-}
-
-/* правая колонка */
-
-.identity{
+.footer{
     font-size:14px;
-    letter-spacing:3px;
+    letter-spacing:4px;
     text-transform:uppercase;
-    line-height:2.2;
-    text-align:right;
     opacity:.7;
+}
+
+/* эффект после загрузки */
+
+.loaded .background{
+    filter:blur(0px);
+    transform:scale(1);
+}
+
+@media(max-width:900px){
+
+    .name{
+        font-size:42px;
+    }
+
+    .manifesto{
+        font-size:16px;
+    }
+
+    .content{
+        padding:40px;
+    }
 }
 
 </style>
@@ -100,38 +104,47 @@ body{
 
 <body>
 
-<div class="back">
-    <a href="index.html">← Back</a>
-</div>
+<div class="background"></div>
+<div class="overlay"></div>
 
-<div class="container">
+<div class="content">
+
+    <div class="name">
+        Anastasiya Vasileuskaya
+    </div>
 
     <div class="manifesto">
+        <p>
         I work at the intersection of architecture,
         research and generative systems.
-        <br><br>
-        For me, architecture is not an object —
+        </p>
+
+        <p>
+        Architecture for me is not an object —
         it is a spatial condition evolving
         through technology and narrative.
-        <br><br>
-        Between structure and underground sensitivity,
-        I explore how systems become expressive.
+        </p>
+
+        <p>
+        Between structural precision
+        and underground sensitivity,
+        I investigate how systems become expressive.
+        </p>
     </div>
 
-    <div class="photo-wrapper">
-        <div class="photo"></div>
-    </div>
-
-    <div class="identity">
-        Anastasiya Vasileuskaya<br>
-        Architect<br>
-        Researcher<br>
-        Visual Thinker<br>
-        Working between space, systems and perception<br><br>
-        Worldwide
+    <div class="footer">
+        Architect / Research / Visual Systems
     </div>
 
 </div>
+
+<script>
+window.addEventListener("load",()=>{
+    setTimeout(()=>{
+        document.body.classList.add("loaded");
+    },4000);
+});
+</script>
 
 </body>
 </html>
