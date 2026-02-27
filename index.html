@@ -120,7 +120,6 @@ body{
 }
 
 .bottom-link:hover{ opacity:1; }
-.bottom-link:hover{ opacity:1; }
 
 /* ---------- НОВЫЙ БЛОК ---------- */
 
@@ -158,7 +157,15 @@ body{
 .divider{
     opacity:.3;
 }
+/* Инверсия нижней панели при BUILD */
 
+.build-active .bottom-bar a{
+    color:black;
+}
+
+.build-active .divider{
+    color:black;
+}
 </style>
 </head>
 
@@ -234,11 +241,12 @@ buildTitle.addEventListener('mouseenter',(e)=>{
     by=e.clientY;
 
     buildTimeout=setTimeout(()=>{
-        expand(buildLayer,bx,by);
-        buildZone.classList.add('invert');
-        createZone.classList.add('fade-out');
-        grid.classList.add('active');
-    },250);
+    expand(buildLayer,bx,by);
+    buildZone.classList.add('invert');
+    createZone.classList.add('fade-out');
+    grid.classList.add('active');
+    document.body.classList.add('build-active');
+},250);
 });
 
 buildTitle.addEventListener('mouseleave',()=>{
@@ -247,6 +255,7 @@ buildTitle.addEventListener('mouseleave',()=>{
     buildZone.classList.remove('invert');
     createZone.classList.remove('fade-out');
     grid.classList.remove('active');
+    document.body.classList.remove('build-active');
 });
 
 /* ---------- TO CREATE ---------- */
