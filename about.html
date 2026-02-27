@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manifesto</title>
 
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    background:black;
+    color:white;
+    font-family:Helvetica, Arial, sans-serif;
+    overflow-x:hidden;
+}
+
+/* центр */
+.hero{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    position:relative;
+}
+
+.name{
+    font-size:64px;
+    letter-spacing:8px;
+    text-transform:uppercase;
+    z-index:2;
+    transition:opacity 1s ease;
+}
+
+/* круг */
+.reveal{
+    position:absolute;
+    width:400px;
+    height:400px;
+    border-radius:50%;
+    background:url("images/about.JPG") center/cover;
+    clip-path:circle(0% at 50% 50%);
+    transition:clip-path 1.5s cubic-bezier(.77,0,.18,1);
+}
+
+/* текст */
+.content{
+    max-width:800px;
+    margin:200px auto;
+    padding:0 40px;
+}
+
+.section{
+    opacity:0;
+    transform:translateY(40px);
+    transition:all 1s ease;
+    margin-bottom:120px;
+    font-size:20px;
+    line-height:1.8;
+}
+
+.section.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* назад */
+.back{
+    position:fixed;
+    top:40px;
+    left:40px;
+    font-size:14px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.back a{
+    color:white;
+    text-decoration:none;
+    opacity:.6;
+}
+
+.back a:hover{opacity:1;}
+
+</style>
+</head>
+
+<body>
+
+<div class="back">
+    <a href="index.html">← Back</a>
+</div>
+
+<div class="hero">
+    <div class="name">Anastasiya Vasileuskaya</div>
+    <div class="reveal"></div>
+</div>
+
+<div class="content">
+
+    <div class="section">
+        I work at the intersection of architecture,
+        research and generative systems.
+    </div>
+
+    <div class="section">
+        For me, architecture is not an object —
+        it is a spatial condition evolving through
+        technology, narrative and context.
+    </div>
+
+    <div class="section">
+        Between structure and underground sensitivity,
+        I explore how systems become expressive.
+    </div>
+
+</div>
+
+<script>
+
+/* раскрытие круга */
+window.addEventListener("load",()=>{
+    setTimeout(()=>{
+        document.querySelector(".reveal")
+        .style.clipPath="circle(50% at 50% 50%)";
+    },600);
+});
+
+/* появление текста при скролле */
+const sections=document.querySelectorAll(".section");
+
+const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add("visible");
+        }
+    });
+},{threshold:0.3});
+
+sections.forEach(sec=>observer.observe(sec));
+
+</script>
+
+</body>
+</html>
