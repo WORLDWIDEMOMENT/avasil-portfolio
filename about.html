@@ -6,7 +6,11 @@
 <title>About</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
     height:100vh;
@@ -15,7 +19,7 @@ body{
     color:white;
 }
 
-/* ---------- ФОН ---------- */
+/* ---------- BACKGROUND ---------- */
 
 .background{
     position:fixed;
@@ -37,7 +41,7 @@ body{
 .back{
     position:fixed;
     top:40px;
-    left:60px;
+    left:80px;
     font-size:14px;
     letter-spacing:4px;
     text-transform:uppercase;
@@ -52,7 +56,7 @@ body{
     opacity:1;
 }
 
-/* ---------- КОНТЕНТ ---------- */
+/* ---------- CONTENT ---------- */
 
 .content{
     position:relative;
@@ -70,32 +74,8 @@ body{
     letter-spacing:8px;
     text-transform:uppercase;
     font-weight:600;
-    margin-bottom:40px;
-}
-
-/* ссылки под именем */
-
-.socials{
-    display:flex;
-    gap:24px;
-    font-size:14px;
-    letter-spacing:3px;
-    text-transform:uppercase;
     margin-bottom:60px;
 }
-
-.socials a{
-    text-decoration:none;
-    color:white;
-    opacity:.6;
-    transition:opacity .3s ease;
-}
-
-.socials a:hover{
-    opacity:1;
-}
-
-/* текст */
 
 .manifesto{
     font-size:20px;
@@ -107,16 +87,15 @@ body{
     margin-bottom:24px;
 }
 
-/* ---------- НИЖНИЙ FOOTER ---------- */
+/* ---------- GLOBAL FOOTER (как на главной) ---------- */
 
 .global-footer{
     position:fixed;
     bottom:40px;
-    left:0;
-    width:100%;
-    padding:0 80px;
+    right:80px;
     display:flex;
-    justify-content:flex-end;
+    gap:16px;
+    align-items:center;
     font-size:14px;
     letter-spacing:3px;
     text-transform:uppercase;
@@ -134,6 +113,10 @@ body{
     opacity:1;
 }
 
+.global-footer span{
+    opacity:.3;
+}
+
 /* ---------- BLUR LOAD ---------- */
 
 .loaded .background{
@@ -141,7 +124,7 @@ body{
     transform:scale(1);
 }
 
-/* ---------- АДАПТИВ ---------- */
+/* ---------- RESPONSIVE ---------- */
 
 @media(max-width:900px){
 
@@ -157,12 +140,14 @@ body{
         padding:40px;
     }
 
-    .global-footer{
-        padding:0 40px;
-    }
-
     .back{
         left:40px;
+    }
+
+    .global-footer{
+        right:40px;
+        flex-wrap:wrap;
+        gap:12px;
     }
 }
 
@@ -180,12 +165,6 @@ body{
 
     <div class="name">
         Anastasiya Vasileuskaya
-    </div>
-
-    <div class="socials">
-        <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-        <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
-        <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
     </div>
 
     <div class="manifesto">
@@ -209,8 +188,16 @@ body{
 
 </div>
 
+<!-- FOOTER ВНИЗУ СПРАВА -->
+
 <div class="global-footer">
     <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+    <span>—</span>
+    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+    <span>—</span>
+    <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+    <span>—</span>
+    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
 </div>
 
 <script>
