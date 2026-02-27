@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dual Architectural System</title>
+<title>Dual System</title>
 
 <style>
 * {
@@ -20,32 +20,24 @@ body {
     overflow: hidden;
 }
 
-/* Основные зоны */
+/* Текстовые зоны */
 .zone {
     position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: flex-start;
-    padding: 120px 80px;
-    font-size: 64px;
+    bottom: 120px;
+    font-size: 72px;
     font-weight: 600;
-    letter-spacing: 10px;
+    letter-spacing: 12px;
     text-transform: uppercase;
-    z-index: 5;
-    text-decoration: none;
-    color: inherit;
+    z-index: 10;
     cursor: pointer;
 }
 
-.left {
-    left: 0;
-    justify-content: flex-start;
+#build {
+    left: 80px;
 }
 
-.right {
-    right: 0;
-    justify-content: flex-end;
+#create {
+    right: 80px;
 }
 
 /* Белый слой */
@@ -53,8 +45,8 @@ body {
     position: fixed;
     inset: 0;
     background: white;
-    clip-path: circle(0px at 50% 50%);
-    transition: clip-path 0.8s cubic-bezier(.77,0,.18,1);
+    clip-path: circle(0px at 0 0);
+    transition: clip-path 0.9s cubic-bezier(.77,0,.18,1);
     z-index: 2;
 }
 
@@ -65,14 +57,14 @@ body {
     background-image: url("https://images.unsplash.com/photo-1519608487953-e999c86e7455");
     background-size: cover;
     background-position: center;
-    clip-path: circle(0px at 50% 50%);
-    transition: clip-path 0.9s cubic-bezier(.77,0,.18,1);
+    clip-path: circle(0px at 0 0);
+    transition: clip-path 1s cubic-bezier(.77,0,.18,1);
     z-index: 1;
 }
 
-/* Инверсия текста при белом фоне */
+/* Инверсия текста */
 .invert {
-    color: black !important;
+    color: black;
 }
 
 .center-text {
@@ -83,14 +75,6 @@ body {
     font-size: 12px;
     letter-spacing: 3px;
     color: #555;
-    z-index: 5;
-}
-
-@media (max-width: 768px) {
-    .zone {
-        font-size: 32px;
-        padding: 80px 40px;
-    }
 }
 </style>
 </head>
@@ -100,8 +84,8 @@ body {
 <div class="white-layer"></div>
 <div class="texture-layer"></div>
 
-<div class="zone left" id="build">TO BUILD</div>
-<div class="zone right" id="create">TO CREATE</div>
+<div class="zone" id="build">TO BUILD</div>
+<div class="zone" id="create">TO CREATE</div>
 
 <div class="center-text">
 Anastasiya Vasileuskaya — Architectural System
@@ -119,15 +103,14 @@ function expand(layer, x, y) {
 }
 
 function collapse(layer) {
-    layer.style.clipPath = `circle(0px at 50% 50%)`;
+    layer.style.clipPath = `circle(0px at 0 0)`;
 }
 
 /* TO BUILD */
 
 build.addEventListener('mouseenter', (e) => {
-    const rect = e.target.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
+    const x = e.clientX;
+    const y = e.clientY;
 
     expand(whiteLayer, x, y);
     build.classList.add('invert');
@@ -141,9 +124,8 @@ build.addEventListener('mouseleave', () => {
 /* TO CREATE */
 
 create.addEventListener('mouseenter', (e) => {
-    const rect = e.target.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
+    const x = e.clientX;
+    const y = e.clientY;
 
     expand(textureLayer, x, y);
 });
