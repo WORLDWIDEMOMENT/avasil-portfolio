@@ -6,109 +6,81 @@
 <title>Dual System</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-    background: black;
-    color: white;
-    font-family: Helvetica, Arial, sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    background:black;
+    color:white;
+    font-family:Helvetica, Arial, sans-serif;
+    height:100vh;
+    overflow:hidden;
 }
 
-/* Основные блоки */
+/* Зоны */
 .zone {
-    position: absolute;
-    bottom: 140px;
-    z-index: 10;
-    cursor: pointer;
+    position:absolute;
+    bottom:140px;
+    z-index:10;
 }
 
 .main-title {
-    font-size: 72px;
-    font-weight: 600;
-    letter-spacing: 12px;
-    text-transform: uppercase;
+    font-size:72px;
+    font-weight:600;
+    letter-spacing:12px;
+    text-transform:uppercase;
+    cursor:pointer;
 }
 
 .sub {
-    margin-top: 20px;
-    font-size: 16px;
-    letter-spacing: 4px;
-    line-height: 1.8;
-    opacity: 0.7;
+    margin-top:20px;
+    font-size:16px;
+    letter-spacing:4px;
+    line-height:1.8;
+    opacity:0.7;
 }
 
-#build {
-    left: 80px;
-    text-align: left;
-}
-
-#create {
-    right: 80px;
-    text-align: right;
-}
+#build { left:80px; }
+#create { right:80px; text-align:right; }
 
 /* Белый слой */
-.white-layer {
-    position: fixed;
-    inset: 0;
-    background: white;
-    clip-path: circle(0px at 0 0);
-    transition: clip-path 1s cubic-bezier(.77,0,.18,1);
-    z-index: 2;
+.white-layer,
+.texture-layer {
+    position:fixed;
+    inset:0;
+    clip-path:circle(0px at 0 0);
+    transition:clip-path 1s cubic-bezier(.77,0,.18,1);
 }
 
-/* Текстурный слой */
+.white-layer {
+    background:white;
+    z-index:2;
+}
+
 .texture-layer {
-    position: fixed;
-    inset: 0;
-    background-image: url("https://images.unsplash.com/photo-1519608487953-e999c86e7455");
-    background-size: cover;
-    background-position: center;
-    clip-path: circle(0px at 0 0);
-    transition: clip-path 1.1s cubic-bezier(.77,0,.18,1);
-    z-index: 1;
+    background-image:url("https://images.unsplash.com/photo-1519608487953-e999c86e7455");
+    background-size:cover;
+    background-position:center;
+    z-index:1;
 }
 
 /* Инверсия */
-.invert {
-    color: black;
-}
+.invert { color:black; }
 
 /* Нижняя ссылка */
 .bottom-link {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    letter-spacing: 4px;
-    opacity: 0.6;
-    cursor: pointer;
-    z-index: 10;
-    text-transform: uppercase;
+    position:absolute;
+    bottom:40px;
+    width:100%;
+    text-align:center;
+    font-size:14px;
+    letter-spacing:4px;
+    opacity:0.6;
+    cursor:pointer;
+    text-transform:uppercase;
 }
 
-.bottom-link:hover {
-    opacity: 1;
-}
+.bottom-link:hover { opacity:1; }
 
-/* Адаптив */
-@media (max-width: 768px) {
-    .main-title {
-        font-size: 36px;
-    }
-    .sub {
-        font-size: 14px;
-    }
-    #build { left: 40px; }
-    #create { right: 40px; }
-}
 </style>
 </head>
 
@@ -143,48 +115,62 @@ body {
 
 const whiteLayer = document.querySelector('.white-layer');
 const textureLayer = document.querySelector('.texture-layer');
-const build = document.querySelector('#build .main-title');
-const create = document.querySelector('#create .main-title');
+const buildTitle = document.querySelector('#build .main-title');
+const createTitle = document.querySelector('#create .main-title');
 
 let buildTimeout;
 let createTimeout;
+
+let lastBuildX = 0;
+let lastBuildY = 0;
+
+let lastCreateX = 0;
+let lastCreateY = 0;
 
 function expand(layer, x, y) {
     layer.style.clipPath = `circle(150% at ${x}px ${y}px)`;
 }
 
-function collapse(layer) {
-    layer.style.clipPath = `circle(0px at 0 0)`;
+function collapse(layer, x, y) {
+    layer.style.clipPath = `circle(0px at ${x}px ${y}px)`;
 }
 
-/* TO BUILD с задержкой */
-build.addEventListener('mouseenter', (e) => {
+/* TO BUILD */
+
+buildTitle.addEventListener('mouseenter', (e) => {
+
+    lastBuildX = e.clientX;
+    lastBuildY = e.clientY;
 
     buildTimeout = setTimeout(() => {
-        expand(whiteLayer, e.clientX, e.clientY);
+        expand(whiteLayer, lastBuildX, lastBuildY);
         document.querySelector('#build').classList.add('invert');
-    }, 250); // задержка 250ms
-
-});
-
-build.addEventListener('mouseleave', () => {
-    clearTimeout(buildTimeout);
-    collapse(whiteLayer);
-    document.querySelector('#build').classList.remove('invert');
-});
-
-/* TO CREATE с задержкой */
-create.addEventListener('mouseenter', (e) => {
-
-    createTimeout = setTimeout(() => {
-        expand(textureLayer, e.clientX, e.clientY);
     }, 250);
 
 });
 
-create.addEventListener('mouseleave', () => {
+buildTitle.addEventListener('mouseleave', () => {
+    clearTimeout(buildTimeout);
+    collapse(whiteLayer, lastBuildX, lastBuildY);
+    document.querySelector('#build').classList.remove('invert');
+});
+
+/* TO CREATE */
+
+createTitle.addEventListener('mouseenter', (e) => {
+
+    lastCreateX = e.clientX;
+    lastCreateY = e.clientY;
+
+    createTimeout = setTimeout(() => {
+        expand(textureLayer, lastCreateX, lastCreateY);
+    }, 250);
+
+});
+
+createTitle.addEventListener('mouseleave', () => {
     clearTimeout(createTimeout);
-    collapse(textureLayer);
+    collapse(textureLayer, lastCreateX, lastCreateY);
 });
 
 </script>
