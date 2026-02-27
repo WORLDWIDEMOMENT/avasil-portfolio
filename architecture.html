@@ -1,1 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авасиль :: Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: inherit;
+            font-size: 1.1rem;
+            transition: opacity 0.2s;
+        }
+
+        .nav a:hover {
+            opacity: 0.6;
+        }
+
+        .project-page {
+            background-color: #f0f0f0;
+            color: #111;
+            padding: 2.5rem;
+            border: 1px solid #333;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 4px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 450;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        .project-content {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .project-description p {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .project-meta {
+            border-left: 1px solid #333;
+            padding-left: 1.5rem;
+        }
+
+        .project-meta h3 {
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .project-meta ul {
+            list-style: none;
+        }
+
+        .project-meta li {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            text-decoration: none;
+            color: #111;
+            border-bottom: 1px solid #111;
+        }
+
+        /* ===== КОНТАКТЫ (твой блок) ===== */
+        .contact {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .contact a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .contact a:hover {
+            border-bottom-color: currentColor;
+        }
+
+        .divider {
+            color: #999;
+            margin: 0 0.5rem;
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            .project-content { grid-template-columns: 1fr; }
+            .project-meta { border-left: none; padding-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav">
+            <a href="index.html">Dual System</a>
+            <a href="about.html">About</a>
+        </nav>
+
+        <div class="project-page">
+            <h1>Architecture</h1>
+            <div class="project-content">
+                <div class="project-description">
+                    <p>Here will be your architectural projects. This page inherits the strict, grid-based aesthetic of the "TO BUILD" world.</p>
+                    <p>You can add images, descriptions, drawings — everything that shows your spatial studies.</p>
+                    <p>Each project can be its own page, or you can create a gallery right here.</p>
+                </div>
+                <div class="project-meta">
+                    <h3>Projects</h3>
+                    <ul>
+                        <li>→ Project 1 (2024)</li>
+                        <li>→ Project 2 (2023)</li>
+                        <li>→ Research (2023-2024)</li>
+                    </ul>
+                </div>
+            </div>
+            <a href="index.html" class="back-link">← Back to Dual System</a>
+        </div>
+
+        <!-- Твой блок контактов -->
+        <div class="contact">
+            <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+            <span class="divider">—</span>
+            <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+            <span class="divider">—</span>
+            <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+            <span class="divider">—</span>
+            <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+        </div>
+    </div>
+</body>
+</html>
