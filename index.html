@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anastasiya Vasileuskaya — Dual Architectural System</title>
+<title>Dual Architectural System</title>
 
 <style>
-
 * {
     margin: 0;
     padding: 0;
@@ -14,50 +13,29 @@
 }
 
 body {
-    background: #000;
-    color: #fff;
+    background: black;
+    color: white;
     font-family: Helvetica, Arial, sans-serif;
+    height: 100vh;
     overflow: hidden;
-    height: 100vh;
-
-    opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
 }
 
-/* Анимация появления */
-@keyframes fadeIn {
-    to { opacity: 1; }
-}
-
-.container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-}
-
-/* Зоны */
+/* Основные зоны */
 .zone {
     position: absolute;
     width: 50%;
     height: 100%;
-
     display: flex;
-    align-items: flex-end;      /* текст ниже */
-    padding: 120px 80px;        /* расстояние от края */
-
-    font-size: 56px;            /* крупнее */
+    align-items: flex-end;
+    padding: 120px 80px;
+    font-size: 64px;
     font-weight: 600;
-    letter-spacing: 8px;
+    letter-spacing: 10px;
     text-transform: uppercase;
-
-    z-index: 4;
+    z-index: 5;
     text-decoration: none;
     color: inherit;
-    transition: 0.3s;
-}
-
-.zone:hover {
-    letter-spacing: 12px;
+    cursor: pointer;
 }
 
 .left {
@@ -70,35 +48,33 @@ body {
     justify-content: flex-end;
 }
 
-/* Радиальный слой */
-.reveal {
+/* Белый слой */
+.white-layer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
+    inset: 0;
+    background: white;
+    clip-path: circle(0px at 50% 50%);
+    transition: clip-path 0.8s cubic-bezier(.77,0,.18,1);
     z-index: 2;
-    mix-blend-mode: difference;
 }
 
-/* Текстура андеграунда */
-.texture {
+/* Текстурный слой */
+.texture-layer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
     background-image: url("https://images.unsplash.com/photo-1519608487953-e999c86e7455");
     background-size: cover;
     background-position: center;
-    pointer-events: none;
+    clip-path: circle(0px at 50% 50%);
+    transition: clip-path 0.9s cubic-bezier(.77,0,.18,1);
     z-index: 1;
-    opacity: 0;
-    transition: opacity 0.4s ease;
 }
 
-/* Нижняя подпись */
+/* Инверсия текста при белом фоне */
+.invert {
+    color: black !important;
+}
+
 .center-text {
     position: absolute;
     bottom: 40px;
@@ -107,82 +83,73 @@ body {
     font-size: 12px;
     letter-spacing: 3px;
     color: #555;
-    z-index: 4;
+    z-index: 5;
 }
 
-/* Адаптив */
 @media (max-width: 768px) {
     .zone {
-        font-size: 28px;
+        font-size: 32px;
         padding: 80px 40px;
     }
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="white-layer"></div>
+<div class="texture-layer"></div>
 
-    <a href="build.html" class="zone left">TO BUILD</a>
-    <a href="create.html" class="zone right">TO CREATE</a>
+<div class="zone left" id="build">TO BUILD</div>
+<div class="zone right" id="create">TO CREATE</div>
 
-    <div class="reveal"></div>
-    <div class="texture"></div>
-
-    <div class="center-text">
-        Anastasiya Vasileuskaya — Architectural System
-    </div>
-
+<div class="center-text">
+Anastasiya Vasileuskaya — Architectural System
 </div>
 
 <script>
 
-const reveal = document.querySelector('.reveal');
-const texture = document.querySelector('.texture');
+const whiteLayer = document.querySelector('.white-layer');
+const textureLayer = document.querySelector('.texture-layer');
+const build = document.getElementById('build');
+const create = document.getElementById('create');
 
-let lastX = 0;
-let lastY = 0;
-let radius = 300;
+function expand(layer, x, y) {
+    layer.style.clipPath = `circle(150% at ${x}px ${y}px)`;
+}
 
-document.addEventListener('mousemove', (e) => {
+function collapse(layer) {
+    layer.style.clipPath = `circle(0px at 50% 50%)`;
+}
 
-    const x = e.clientX;
-    const y = e.clientY;
-    const width = window.innerWidth;
+/* TO BUILD */
 
-    const dx = x - lastX;
-    const dy = y - lastY;
-    const speed = Math.sqrt(dx * dx + dy * dy);
+build.addEventListener('mouseenter', (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
 
-    radius = 250 + speed * 4; // реакция на скорость
+    expand(whiteLayer, x, y);
+    build.classList.add('invert');
+});
 
-    if (x < width / 2) {
+build.addEventListener('mouseleave', () => {
+    collapse(whiteLayer);
+    build.classList.remove('invert');
+});
 
-        texture.style.opacity = 0;
+/* TO CREATE */
 
-        reveal.style.background = `
-            radial-gradient(ellipse ${radius}px ${radius*0.6}px at ${x}px ${y}px,
-            white 0%,
-            white 50%,
-            transparent 100%)
-        `;
+create.addEventListener('mouseenter', (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
 
-    } else {
+    expand(textureLayer, x, y);
+});
 
-        texture.style.opacity = 1;
-
-        reveal.style.background = `
-            radial-gradient(ellipse ${radius}px ${radius*0.6}px at ${x}px ${y}px,
-            black 0%,
-            black 50%,
-            transparent 100%)
-        `;
-    }
-
-    lastX = x;
-    lastY = y;
+create.addEventListener('mouseleave', () => {
+    collapse(textureLayer);
 });
 
 </script>
