@@ -72,41 +72,25 @@ body{
 
 /* ---------- GLOBAL FOOTER ---------- */
 
-.global-footer{
-    position:fixed;
-    bottom:40px;
-    left:0;
-    width:100%;
-    padding:0 80px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:14px;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    z-index:1000;
-}
+<!-- GLOBAL FOOTER -->
 
-.global-footer a{
-    color:white;
-    text-decoration:none;
-    opacity:.6;
-    transition:opacity .3s ease;
-}
+<div class="global-footer">
 
-.global-footer a:hover{
-    opacity:1;
-}
+    <div class="footer-left">
+        <span class="current-page">About</span>
+    </div>
 
-.footer-right{
-    display:flex;
-    gap:16px;
-    align-items:center;
-}
+    <div class="footer-right">
+        <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+        <span>—</span>
+        <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+        <span>—</span>
+        <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+        <span>—</span>
+        <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+    </div>
 
-.footer-right span{
-    opacity:.3;
-}
+</div>
 
 /* ---------- BLUR LOAD ---------- */
 
@@ -135,7 +119,10 @@ body{
         gap:12px;
     }
 }
-
+.current-page{
+    opacity:.25;
+    pointer-events:none;
+}
 </style>
 </head>
 
