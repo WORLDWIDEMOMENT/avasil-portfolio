@@ -1,212 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авасиль :: About</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-body{
-    height:100vh;
-    overflow:hidden;
-    font-family:Helvetica, Arial, sans-serif;
-    color:white;
-}
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+            flex: 1;
+        }
 
-/* ---------- BACKGROUND ---------- */
+        .nav {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
 
-.background{
-    position:fixed;
-    inset:0;
-    background:url("images/about1.JPG") center/cover no-repeat;
-    filter:blur(20px);
-    transform:scale(1.05);
-    transition:filter 2.5s ease, transform 2.5s ease;
-}
+        .nav a {
+            text-decoration: none;
+            color: inherit;
+            font-size: 1.1rem;
+            transition: opacity 0.2s;
+        }
 
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-}
+        .nav a:hover {
+            opacity: 0.6;
+        }
 
-/* ---------- BACK ARROW ---------- */
+        h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 450;
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+        }
 
-.back{
-    position:fixed;
-    top:40px;
-    left:80px;
-    font-size:14px;
-    letter-spacing:4px;
-    text-transform:uppercase;
-    text-decoration:none;
-    color:white;
-    opacity:.6;
-    z-index:1000;
-    transition:opacity .3s ease;
-}
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
 
-.back:hover{
-    opacity:1;
-}
+        .about-build {
+            background-color: #f0f0f0;
+            color: #111;
+            padding: 2.5rem;
+            border: 1px solid #333;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 4px;
+        }
 
-/* ---------- CONTENT ---------- */
+        .about-build p {
+            font-size: 1.3rem;
+            max-width: 90%;
+            margin-bottom: 1rem;
+        }
 
-.content{
-    position:relative;
-    z-index:5;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    padding:80px;
-    max-width:900px;
-}
+        .signature-build {
+            margin-top: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-top: 1px solid #333;
+            padding-top: 1rem;
+        }
 
-.name{
-    font-size:72px;
-    letter-spacing:8px;
-    text-transform:uppercase;
-    font-weight:600;
-    margin-bottom:60px;
-}
+        .about-create {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            padding: 2.5rem;
+            border: 1px solid #ff4d4d;
+            box-shadow: 0 5px 20px rgba(255, 77, 77, 0.3);
+            border-radius: 4px;
+            position: relative;
+        }
 
-.manifesto{
-    font-size:20px;
-    line-height:1.8;
-    max-width:700px;
-}
+        .about-create::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: 100px;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 5px,
+                rgba(255, 77, 77, 0.1) 5px,
+                rgba(255, 77, 77, 0.1) 10px
+            );
+            pointer-events: none;
+        }
 
-.manifesto p{
-    margin-bottom:24px;
-}
+        .about-create p {
+            font-size: 1.3rem;
+            max-width: 90%;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
 
-/* ---------- GLOBAL FOOTER (как на главной) ---------- */
+        .about-create strong {
+            color: #ff4d4d;
+            font-weight: 500;
+        }
 
-.global-footer{
-    position:fixed;
-    bottom:40px;
-    right:80px;
-    display:flex;
-    gap:16px;
-    align-items:center;
-    font-size:14px;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    z-index:1000;
-}
+        .signature-create {
+            margin-top: 2rem;
+            color: #ff4d4d;
+            border-top: 1px solid #ff4d4d;
+            padding-top: 1rem;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
 
-.global-footer a{
-    color:white;
-    text-decoration:none;
-    opacity:.6;
-    transition:opacity .3s ease;
-}
+        .philosophy {
+            margin-top: 2rem;
+            padding: 2rem;
+            background-color: #fff;
+            border: 1px dashed #666;
+            text-align: center;
+        }
 
-.global-footer a:hover{
-    opacity:1;
-}
+        .philosophy p {
+            font-size: 1.1rem;
+            color: #333;
+        }
 
-.global-footer span{
-    opacity:.3;
-}
+        .pill {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
 
-/* ---------- BLUR LOAD ---------- */
+        .pill-build {
+            background-color: #333;
+            color: #fff;
+        }
 
-.loaded .background{
-    filter:blur(0px);
-    transform:scale(1);
-}
+        .pill-create {
+            background-color: #ff4d4d;
+            color: #fff;
+        }
 
-/* ---------- RESPONSIVE ---------- */
+        /* ===== КОНТАКТЫ (твой блок) ===== */
+        .contact {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            font-size: 1rem;
+        }
 
-@media(max-width:900px){
+        .contact a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
 
-    .name{
-        font-size:42px;
-    }
+        .contact a:hover {
+            border-bottom-color: currentColor;
+        }
 
-    .manifesto{
-        font-size:16px;
-    }
+        .divider {
+            color: #999;
+            margin: 0 0.5rem;
+        }
 
-    .content{
-        padding:40px;
-    }
-
-    .back{
-        left:40px;
-    }
-
-    .global-footer{
-        right:40px;
-        flex-wrap:wrap;
-        gap:12px;
-    }
-}
-
-</style>
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-build p, .about-create p { font-size: 1.1rem; }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <nav class="nav">
+            <a href="index.html">Dual System</a>
+            <a href="about.html">About</a>
+        </nav>
 
-<div class="background"></div>
-<div class="overlay"></div>
+        <h1>Anastasiya Vasileuskaya</h1>
 
-<a href="index.html" class="back">← Back</a>
+        <div class="about-grid">
+            <div class="about-build">
+                <p>I work at the intersection of architecture, research and generative systems.</p>
+                <p>Architecture for me is not an object — it is a spatial condition evolving through technology and narrative.</p>
+                <div class="signature-build">STRICT • PRECISE • STRUCTURAL</div>
+            </div>
+            <div class="about-create">
+                <p>Between <strong>structural precision</strong> and <strong>underground sensitivity</strong>,</p>
+                <p>I investigate how systems become expressive.</p>
+                <div class="signature-create">FLUID • RAW • AUTHENTIC</div>
+            </div>
+        </div>
 
-<div class="content">
+        <div class="philosophy">
+            <p>
+                <span class="pill pill-build">TO BUILD</span> 
+                meets 
+                <span class="pill pill-create">TO CREATE</span>
+            </p>
+            <p style="margin-top: 1rem; font-style: italic;">This dual system is not a contradiction — it's the core of my practice.</p>
+        </div>
 
-    <div class="name">
-        Anastasiya Vasileuskaya
+        <!-- Твой блок контактов -->
+        <div class="contact">
+            <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+            <span class="divider">—</span>
+            <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+            <span class="divider">—</span>
+            <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+            <span class="divider">—</span>
+            <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+        </div>
     </div>
-
-    <div class="manifesto">
-        <p>
-        I work at the intersection of architecture,
-        research and generative systems.
-        </p>
-
-        <p>
-        Architecture for me is not an object —
-        it is a spatial condition evolving
-        through technology and narrative.
-        </p>
-
-        <p>
-        Between structural precision
-        and underground sensitivity,
-        I investigate how systems become expressive.
-        </p>
-    </div>
-
-</div>
-
-<!-- FOOTER ВНИЗУ СПРАВА -->
-
-<div class="global-footer">
-    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-    <span>—</span>
-    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-    <span>—</span>
-    <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
-    <span>—</span>
-    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
-</div>
-
-<script>
-window.addEventListener("load",()=>{
-    setTimeout(()=>{
-        document.body.classList.add("loaded");
-    },4000);
-});
-</script>
-
 </body>
 </html>
