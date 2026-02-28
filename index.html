@@ -213,40 +213,38 @@ body{
         <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
     </div>
 </div>
-
 <script>
-const buildBtn = document.getElementById("buildBtn");
-const createBtn = document.getElementById("createBtn");
+const buildZone = document.getElementById("build");
+const createZone = document.getElementById("create");
 const buildLayer = document.querySelector(".build-layer");
 const createLayer = document.querySelector(".create-layer");
 const grid = document.querySelector(".grid");
-const buildZone = document.getElementById("build");
-const createZone = document.getElementById("create");
 
-buildBtn.addEventListener("mouseenter", () => {
+/* BUILD */
+buildZone.addEventListener("mouseenter", () => {
     buildLayer.style.clipPath = "circle(150% at 0% 100%)";
     document.body.classList.add("build-active");
     createZone.classList.add("fade-out");
     grid.classList.add("active");
 });
 
-buildBtn.addEventListener("mouseleave", () => {
+buildZone.addEventListener("mouseleave", () => {
     buildLayer.style.clipPath = "circle(0px at 0% 100%)";
     document.body.classList.remove("build-active");
     createZone.classList.remove("fade-out");
     grid.classList.remove("active");
 });
 
-createBtn.addEventListener("mouseenter", () => {
+/* CREATE */
+createZone.addEventListener("mouseenter", () => {
     createLayer.style.clipPath = "circle(150% at 100% 100%)";
     buildZone.classList.add("fade-out");
 });
 
-createBtn.addEventListener("mouseleave", () => {
+createZone.addEventListener("mouseleave", () => {
     createLayer.style.clipPath = "circle(0px at 100% 100%)";
     buildZone.classList.remove("fade-out");
 });
 </script>
-
 </body>
 </html>
