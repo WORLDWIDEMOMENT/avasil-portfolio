@@ -1,218 +1,214 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авасиль :: Dual System</title>
-    <style>
-        /* ===== БАЗОВЫЕ СБРОСЫ И ПЕРЕМЕННЫЕ ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dual System</title>
 
-        body
-        <div style="position: fixed; top: 0; left: 0; background: red; color: white; z-index: 9999;">TEST</div>
-        {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            width: 100%;
-            flex: 1;
-        }
+body{
+    background:black;
+    color:white;
+    font-family:Helvetica, Arial, sans-serif;
+    height:100vh;
+    overflow:hidden;
+}
 
-        /* ===== НАВИГАЦИЯ ===== */
-        .nav {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 0.5rem;
-        }
+/* ---------- ЗОНЫ ---------- */
 
-        .nav a {
-            text-decoration: none;
-            color: inherit;
-            font-size: 1.1rem;
-            letter-spacing: 0.02em;
-            transition: opacity 0.2s;
-        }
+.zone{
+    position:absolute;
+    bottom:140px;
+    z-index:10;
+    transition:opacity .4s ease, transform .4s ease, color .4s ease;
+}
 
-        .nav a:hover {
-            opacity: 0.6;
-        }
+.main-title{
+    font-size:72px;
+    font-weight:600;
+    letter-spacing:12px;
+    text-transform:uppercase;
+    cursor:pointer;
+}
 
-        /* ===== ЗАГОЛОВОК ===== */
-        h1 {
-            font-size: clamp(2rem, 8vw, 5rem);
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            margin-bottom: 2rem;
-        }
+.sub{
+    margin-top:20px;
+    font-size:16px;
+    letter-spacing:4px;
+    line-height:1.8;
+    opacity:.7;
+}
 
-        /* ===== ДВОЙНАЯ СЕТКА ===== */
-        .dual-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 1rem;
-        }
+#build{ left:80px; }
+#create{ right:80px; text-align:right; }
 
-        /* ===== БАЗОВЫЙ СТИЛЬ МИРА ===== */
-        .world {
-            padding: 2rem;
-            min-height: 60vh;
-            transition: all 0.3s ease;
-            border-radius: 4px;
-        }
+.fade-out{
+    opacity:0;
+    transform:translateY(10px);
+    pointer-events:none;
+}
 
-        .world h2 {
-            font-size: 2rem;
-            font-weight: 450;
-            margin-bottom: 2rem;
-            padding-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
+.invert{
+    color:black;
+}
 
-        .project-list {
-            list-style: none;
-        }
+/* ---------- СЛОИ ---------- */
 
-        .project-list li {
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
+.layer{
+    position:fixed;
+    inset:0;
+    clip-path:circle(0px at 50% 50%);
+    transition:clip-path 1.1s cubic-bezier(.77,0,.18,1);
+}
 
-        .project-list a {
-            text-decoration: none;
-            color: inherit;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s ease;
-        }
+/* BUILD слой */
+.build-layer{
+    background:white;
+    z-index:1;
+}
 
-        .project-list a:hover {
-            border-bottom-color: currentColor;
-        }
+/* CREATE слой */
+.create-layer{
+    background-size:cover;
+    background-position:center;
+    z-index:2;
+}
 
-        /* ===== МИР 1: TO BUILD (СТРОГОСТЬ) ===== */
-        .world-build {
-            background-color: #f0f0f0;
-            color: #111;
-            border: 1px solid #333;
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
+/* ---------- ВАЖНО ---------- */
+/* В ЭТОЙ СТРОКЕ ВПИШИ ПУТЬ К ТВОЕМУ ФОТО ГРАФФИТИ */
 
-        .world-build h2 {
-            border-bottom-color: #333;
-        }
+.create-layer{
+    background-image:url("images/graffitymain.jpg");
+}
 
-        /* ===== МИР 2: TO CREATE (АНДЕГРАУНД) ===== */
-        .world-create {
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            border: 1px solid #ff4d4d;
-            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.2);
-        }
+/* ---------- СЕТКА ---------- */
 
-        .world-create h2 {
-            border-bottom-color: #ff4d4d;
-            color: #ff4d4d;
-        }
+.grid{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:0;
+    z-index:3;
+    transition:opacity .6s ease;
 
-        .world-create a {
-            color: #fff;
-        }
+    background-image:
+        linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px);
 
-        .world-create a:hover {
-            border-bottom-color: #ff4d4d;
-        }
+    background-size:140px 140px;
+}
 
-        /* ===== КОНТАКТЫ (твой блок) ===== */
-        .contact {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid #ccc;
-            text-align: center;
-            font-size: 1rem;
-        }
+.grid.active{
+    opacity:1;
+}
 
-        .contact a {
-            color: inherit;
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s ease;
-        }
+/* ---------- НИЖНЯЯ ССЫЛКА ---------- */
 
-        .contact a:hover {
-            border-bottom-color: currentColor;
-        }
+.bottom-link{
+    position:absolute;
+    bottom:40px;
+    width:100%;
+    text-align:center;
+    font-size:14px;
+    letter-spacing:4px;
+    opacity:.6;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:opacity .3s ease;
+}
 
-        .divider {
-            color: #999;
-            margin: 0 0.5rem;
-        }
+.bottom-link:hover{ opacity:1; }
 
-        /* ===== АДАПТАЦИЯ ===== */
-        @media (max-width: 700px) {
-            .container { padding: 1rem; }
-            .dual-grid { grid-template-columns: 1fr; }
-            .world { min-height: auto; }
-            .contact span, .contact a { display: inline-block; margin: 0.2rem 0; }
-        }
-    </style>
+/* ---------- НОВЫЙ БЛОК ---------- */
+
+.bottom-bar{
+    position:absolute;
+    bottom:40px;
+    width:100%;
+    padding:0 80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    z-index:20;
+}
+
+.bottom-bar a{
+    color:inherit;
+    text-decoration:none;
+    opacity:.6;
+    transition:opacity .3s ease;
+}
+
+.bottom-bar a:hover{
+    opacity:1;
+}
+
+.contact{
+    display:flex;
+    gap:16px;
+    align-items:center;
+}
+
+.divider{
+    opacity:.3;
+}
+/* Инверсия нижней панели при BUILD */
+
+.build-active .bottom-bar a{
+    color:black;
+}
+
+.build-active .divider{
+    color:black;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <nav class="nav">
-            <a href="index.html">Dual System</a>
-            <a href="about.html">About</a>
-        </nav>
 
-        <h1>Dual System</h1>
+<div class="layer build-layer"></div>
+<div class="layer create-layer"></div>
+<div class="grid"></div>
 
-        <div class="dual-grid">
-            <section class="world world-build">
-                <h2>TO BUILD</h2>
-                <ul class="project-list">
-                    <li><a href="architecture.html">Architecture</a></li>
-                    <li><a href="urban.html">Urban / Research</a></li>
-                    <li><a href="ai.html">AI Experiments</a></li>
-                </ul>
-            </section>
-            <section class="world world-create">
-                <h2>TO CREATE</h2>
-                <ul class="project-list">
-                    <li><a href="design.html">Design</a></li>
-                    <li><a href="video.html">Video</a></li>
-                    <li><a href="radio.html">Local Radio</a></li>
-                </ul>
-            </section>
-        </div>
-
-        <!-- Твой блок контактов -->
-        <div class="contact">
-            <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-            <span class="divider">—</span>
-            <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-            <span class="divider">—</span>
-            <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
-            <span class="divider">—</span>
-            <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
-        </div>
+<div class="zone" id="build">
+    <div class="main-title">TO BUILD</div>
+    <div class="sub">
+        Architecture<br>
+        Urban / Research<br>
+        AI Experiments
     </div>
-</body>
-</html>
+</div>
+
+<div class="zone" id="create">
+    <div class="main-title">TO CREATE</div>
+    <div class="sub">
+        Design<br>
+        Video<br>
+        Local Radio
+    </div>
+</div>
+
+<div class="bottom-bar">
+
+    <div class="about-link">
+        <a href="about.html">Manifesto / About</a>
+    </div>
+
+    <div class="contact">
+        <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+        <span class="divider">—</span>
+        <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+        <span class="divider">—</span>
+        <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+        <span class="divider">—</span>
+        <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+    </div>
+
+</div>
+
+<script>
