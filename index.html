@@ -3,248 +3,444 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dual System</title>
-
+<title>AV — Dual System</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{
-    background: black url("images/front.jpg") center/cover no-repeat fixed;
-    color:white;
-    font-family:Helvetica, Arial, sans-serif;
-    height:100vh;
-    overflow:hidden;
+body {
+  background: black url("images/front.jpg") center/cover no-repeat fixed;
+  color: white;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  cursor: none;
 }
 
-/* ---------- СЛОИ ---------- */
+/* ── CUSTOM CURSOR ── */
+#cur {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .15s, height .15s;
+  mix-blend-mode: difference;
+}
+#cur.big {
+  width: 40px; height: 40px;
+}
+@media (hover: none) { #cur { display: none; } }
 
-.layer{
-    position:fixed;
-    inset:0;
-    transition:clip-path 1.2s cubic-bezier(.77,0,.18,1);
+/* ─────────────────────────────────────────
+   INTRO SEQUENCE
+   ───────────────────────────────────────── */
+
+/* dark veil that fades in over the photo */
+#intro-veil {
+  position: fixed;
+  inset: 0;
+  background: black;
+  opacity: 0;
+  z-index: 50;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+}
+#intro-veil.darken { opacity: .55; }
+
+/* the bar that shoots up from the bottom */
+#intro-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 2px;
+  background: white;
+  z-index: 51;
+  transform: translateY(0);
+  opacity: 0;
+  transition: opacity .1s ease;
+}
+#intro-bar.rise {
+  opacity: 1;
+  animation: barRise .9s cubic-bezier(.77, 0, .18, 1) forwards;
+}
+@keyframes barRise {
+  0%   { bottom: 0;    height: 2px; }
+  60%  { bottom: 48%;  height: 2px; }
+  75%  { bottom: 48%;  height: 2px; }
+  100% { bottom: 0;    height: 100vh; }
 }
 
-/* BUILD (белый слой сверху при активации) */
-.build-layer{
-    background:white;
-    z-index:2;
-    clip-path:circle(0px at 0% 100%);
+/* the white sweep that covers and then reveals everything */
+#intro-sweep {
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: 52;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s ease;
+}
+#intro-sweep.show { opacity: 1; pointer-events: auto; }
+#intro-sweep.hide {
+  opacity: 0;
+  transition: opacity .8s ease .1s;
 }
 
-/* CREATE (граффити слой) */
-.create-layer{
-    background:url("images/graffitymain.jpg") center/cover no-repeat;
-    z-index:1;
-    clip-path:circle(0px at 100% 100%);
+/* ── LAYERS ── */
+.layer {
+  position: fixed;
+  inset: 0;
+  transition: clip-path 1.2s cubic-bezier(.77, 0, .18, 1);
+}
+.build-layer {
+  background: white;
+  z-index: 2;
+  clip-path: circle(0px at 0% 100%);
+}
+.create-layer {
+  background: url("images/graffitymain.jpg") center/cover no-repeat;
+  z-index: 1;
+  clip-path: circle(0px at 100% 100%);
 }
 
-/* ---------- СЕТКА ---------- */
+/* ── GRID ── */
+.grid {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  opacity: 0; z-index: 3;
+  transition: opacity .7s ease;
+  background-image:
+    linear-gradient(rgba(0,0,0,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.07) 1px, transparent 1px);
+  background-size: 140px 140px;
+}
+.grid.active { opacity: 1; }
 
-.grid{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    opacity:0;
-    z-index:3;
-    transition:opacity .6s ease;
+/* ── CENTER DIVIDER ── */
+.center-line {
+  position: fixed;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(255,255,255,.14);
+  z-index: 5;
+  pointer-events: none;
+  transition: background .6s ease;
+}
+.build-active .center-line { background: rgba(0,0,0,.1); }
 
-    background-image:
-        linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px);
+/* ── AUTHOR SIGNATURE ── */
+.author {
+  position: fixed;
+  top: 34px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .28em; text-transform: uppercase;
+  opacity: .3; z-index: 20;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: color .4s;
+}
+.build-active .author { color: black; }
 
-    background-size:140px 140px;
+/* ── ZONES ── */
+.zone {
+  position: absolute;
+  bottom: 130px;
+  z-index: 10;
+  transition: opacity .4s ease, transform .4s ease, color .4s ease;
+}
+#build  { left: 80px; }
+#create { right: 80px; text-align: right; }
+
+.main-title {
+  font-size: 72px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: none;
+  line-height: 1;
+  transition: color .4s ease;
+  user-select: none;
 }
 
-.grid.active{
-    opacity:1;
+/* sub-links — hidden by default, revealed on hover/tap */
+.sub {
+  margin-top: 18px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .3s ease, transform .3s ease;
+  pointer-events: none;
 }
-
-/* ---------- ТЕКСТОВЫЕ ЗОНЫ ---------- */
-
-.zone{
-    position:absolute;
-    bottom:140px;
-    z-index:10;
-    transition:opacity .4s ease, transform .4s ease, color .4s ease;
+.sub.visible {
+  opacity: .75;
+  transform: none;
+  pointer-events: auto;
 }
-
-#build{ left:80px; }
-#create{ right:80px; text-align:right; }
-
-.main-title{
-    font-size:72px;
-    font-weight:600;
-    letter-spacing:12px;
-    text-transform:uppercase;
-    cursor:pointer;
-    transition:color .4s ease;
-}
-
-/* стили для ссылок внутри подменю */
 .sub a {
-    color: inherit;              /* наследуем цвет от родителя */
-    text-decoration: none;        /* убираем подчёркивание */
-    display: inline-block;        /* для отступов если надо */
-    transition: opacity 0.2s ease;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s, opacity .2s;
+}
+.sub a:nth-child(1) { transition-delay: .04s; }
+.sub a:nth-child(2) { transition-delay: .09s; }
+.sub a:nth-child(3) { transition-delay: .14s; }
+.sub a:hover { border-bottom-color: currentColor; }
+
+.build-active .zone { color: black; }
+
+.fade-out {
+  opacity: 0 !important;
+  transform: translateY(8px);
+  pointer-events: none;
 }
 
-.sub a:hover {
-    opacity: 0.7;                 /* лёгкое изменение при наведении */
+/* ── UI (zones + bottom bar) — fade in after intro ── */
+.ui-group {
+  opacity: 0;
+  transition: opacity .9s ease;
 }
+.ui-group.visible { opacity: 1; }
 
-.sub{
-    margin-top:20px;
-    font-size:16px;
-    letter-spacing:4px;
-    line-height:1.8;
-    opacity:.7;
+/* ── BOTTOM BAR ── */
+.bottom-bar {
+  position: absolute;
+  bottom: 36px; width: 100%;
+  padding: 0 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  z-index: 20;
+  transition: color .4s ease;
 }
-
-.fade-out{
-    opacity:0;
-    transform:translateY(10px);
-    pointer-events:none;
+.bottom-bar a {
+  color: inherit; text-decoration: none;
+  opacity: .45; transition: opacity .25s;
 }
+.bottom-bar a:hover { opacity: 1; }
+.contact { display: flex; gap: 14px; align-items: center; }
+.divider { opacity: .2; }
+.build-active .bottom-bar { color: black; }
 
-/* Инверсия текста при BUILD */
-.build-active .zone{
-    color:black;
+/* ── MOBILE ── */
+.tap-hint {
+  display: none;
+  position: fixed; bottom: 96px;
+  left: 50%; transform: translateX(-50%);
+  font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+  opacity: 0; z-index: 20; white-space: nowrap;
+  animation: pulse 2.8s ease infinite;
 }
+.tap-hint.visible { opacity: .35; }
+@keyframes pulse { 0%,100%{opacity:.25} 50%{opacity:.55} }
 
-/* ---------- НИЖНЯЯ ПАНЕЛЬ ---------- */
-
-.bottom-bar{
-    position:absolute;
-    bottom:40px;
-    width:100%;
-    padding:0 80px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:14px;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    z-index:20;
+@media (max-width: 900px) {
+  .main-title { font-size: 42px; letter-spacing: .1em; }
+  #build  { left: 32px; bottom: auto; top: 50%; transform: translateY(-58%); }
+  #create { right: 32px; bottom: auto; top: 50%; transform: translateY(-58%); }
+  .bottom-bar { padding: 0 32px; font-size: 9px; }
+  .contact { gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .tap-hint { display: block; }
 }
-
-.bottom-bar a{
-    color:inherit;
-    text-decoration:none;
-    opacity:.6;
-    transition:opacity .3s ease;
-}
-
-.bottom-bar a:hover{
-    opacity:1;
-}
-
-.contact{
-    display:flex;
-    gap:16px;
-    align-items:center;
-}
-
-.divider{
-    opacity:.3;
-}
-
-/* Инверсия нижней панели при BUILD */
-.build-active .bottom-bar{
-    color:black;
-}
-
-/* ---------- АДАПТИВ ---------- */
-
-@media(max-width:900px){
-
-    .main-title{
-        font-size:40px;
-    }
-
-    #build{ left:40px; }
-    #create{ right:40px; }
-
-    .bottom-bar{
-        padding:0 40px;
-        flex-direction:column;
-        gap:16px;
-        align-items:flex-start;
-    }
-
+@media (max-width: 560px) {
+  .main-title { font-size: 30px; }
+  #build  { left: 20px; }
+  #create { right: 20px; }
+  .contact { display: none; }
+  .bottom-bar { justify-content: center; }
 }
 </style>
 </head>
-
 <body>
 
+<div id="cur"></div>
+
+<!-- INTRO ELEMENTS -->
+<div id="intro-veil"></div>
+<div id="intro-bar"></div>
+<div id="intro-sweep"></div>
+
+<!-- LAYERS -->
 <div class="layer build-layer"></div>
 <div class="layer create-layer"></div>
 <div class="grid"></div>
+<div class="center-line"></div>
 
-<div class="zone" id="build">
-    <div class="main-title" id="buildBtn">TO BUILD</div>
-    <div class="sub">
-        <a href="architecture.html">Architecture</a><br>
-        <a href="urban.html">Urban / Research</a><br>
-        <a href="ai.html">AI Experiments</a>
-    </div>
+<!-- SIGNATURE -->
+<div class="author ui-group">A. Vasileuskaya</div>
+
+<!-- TO BUILD -->
+<div class="zone ui-group" id="build">
+  <div class="main-title" id="buildBtn">To Build</div>
+  <div class="sub" id="buildSub">
+    <a href="tobuild.html">Architecture</a>
+    <a href="tobuild.html?filter=urban">Urban · Research</a>
+    <a href="tobuild.html?filter=ai">AI Experiments</a>
+  </div>
 </div>
 
-<div class="zone" id="create">
-    <div class="main-title" id="createBtn">TO CREATE</div>
-    <div class="sub">
-        <a href="design.html">Design</a><br>
-        <a href="video.html">Video</a><br>
-        <a href="radio.html">Local Radio</a>
-    </div>
+<!-- TO CREATE -->
+<div class="zone ui-group" id="create">
+  <div class="main-title" id="createBtn">To Create</div>
+  <div class="sub" id="createSub">
+    <a href="visual.html">Visual</a>
+    <a href="video.html">Video</a>
+    <a href="radio.html">Local Radio</a>
+  </div>
 </div>
 
-<div class="bottom-bar">
-    <div class="about-link">
-        <a href="about.html">About</a>
-    </div>
-    <div class="contact">
-        <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-        <span class="divider">—</span>
-        <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-        <span class="divider">—</span>
-        <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
-        <span class="divider">—</span>
-        <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
-    </div>
+<!-- BOTTOM BAR -->
+<div class="bottom-bar ui-group">
+  <a href="about.html">About</a>
+  <div class="contact">
+    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+    <span class="divider">—</span>
+    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+    <span class="divider">—</span>
+    <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+    <span class="divider">—</span>
+    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+  </div>
 </div>
+
+<div class="tap-hint" id="tapHint">Tap to explore</div>
+
 <script>
-const buildZone = document.getElementById("build");
-const createZone = document.getElementById("create");
-const buildLayer = document.querySelector(".build-layer");
-const createLayer = document.querySelector(".create-layer");
-const grid = document.querySelector(".grid");
+  // ── CURSOR ──
+  const cur = document.getElementById('cur');
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', e => {
+      cur.style.left = e.clientX + 'px';
+      cur.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, .main-title').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('big'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+    });
+  }
 
-/* BUILD */
-buildZone.addEventListener("mouseenter", () => {
-    buildLayer.style.clipPath = "circle(150% at 0% 100%)";
-    document.body.classList.add("build-active");
-    createZone.classList.add("fade-out");
-    grid.classList.add("active");
-});
+  // ─────────────────────────────────────────
+  // INTRO SEQUENCE
+  //  0.0s — photo visible (body bg)
+  //  1.8s — veil darkens
+  //  2.8s — bar starts rising from bottom
+  //  3.7s — sweep flash (white)
+  //  4.0s — sweep fades out, UI fades in
+  // ─────────────────────────────────────────
+  const veil   = document.getElementById('intro-veil');
+  const bar    = document.getElementById('intro-bar');
+  const sweep  = document.getElementById('intro-sweep');
+  const uiEls  = document.querySelectorAll('.ui-group');
+  const tapHint = document.getElementById('tapHint');
 
-buildZone.addEventListener("mouseleave", () => {
-    buildLayer.style.clipPath = "circle(0px at 0% 100%)";
-    document.body.classList.remove("build-active");
-    createZone.classList.remove("fade-out");
-    grid.classList.remove("active");
-});
+  // step 1 — darken photo
+  setTimeout(() => {
+    veil.classList.add('darken');
+  }, 1800);
 
-/* CREATE */
-createZone.addEventListener("mouseenter", () => {
-    createLayer.style.clipPath = "circle(150% at 100% 100%)";
-    buildZone.classList.add("fade-out");
-});
+  // step 2 — bar rises
+  setTimeout(() => {
+    bar.classList.add('rise');
+  }, 2800);
 
-createZone.addEventListener("mouseleave", () => {
-    createLayer.style.clipPath = "circle(0px at 100% 100%)";
-    buildZone.classList.remove("fade-out");
-});
+  // step 3 — white flash sweep
+  setTimeout(() => {
+    sweep.classList.add('show');
+  }, 3650);
+
+  // step 4 — reveal interface
+  setTimeout(() => {
+    sweep.classList.remove('show');
+    sweep.classList.add('hide');
+    veil.style.opacity = '0';
+    veil.style.transition = 'opacity .4s ease';
+    bar.style.opacity = '0';
+    bar.style.transition = 'opacity .3s ease';
+
+    uiEls.forEach(el => el.classList.add('visible'));
+
+    if (!window.matchMedia('(hover: hover)').matches) {
+      tapHint.classList.add('visible');
+    }
+  }, 4050);
+
+  // ── BUILD / CREATE LOGIC ──
+  const buildZone  = document.getElementById('build');
+  const createZone = document.getElementById('create');
+  const buildSub   = document.getElementById('buildSub');
+  const createSub  = document.getElementById('createSub');
+  const buildLayer = document.querySelector('.build-layer');
+  const createLayer= document.querySelector('.create-layer');
+  const grid       = document.querySelector('.grid');
+  const isTouch    = () => !window.matchMedia('(hover: hover)').matches;
+
+  function activateBuild() {
+    buildLayer.style.clipPath = 'circle(150% at 0% 100%)';
+    document.body.classList.add('build-active');
+    createZone.classList.add('fade-out');
+    grid.classList.add('active');
+    buildSub.classList.add('visible');
+  }
+  function deactivateBuild() {
+    buildLayer.style.clipPath = 'circle(0px at 0% 100%)';
+    document.body.classList.remove('build-active');
+    createZone.classList.remove('fade-out');
+    grid.classList.remove('active');
+    buildSub.classList.remove('visible');
+  }
+  function activateCreate() {
+    createLayer.style.clipPath = 'circle(150% at 100% 100%)';
+    buildZone.classList.add('fade-out');
+    createSub.classList.add('visible');
+  }
+  function deactivateCreate() {
+    createLayer.style.clipPath = 'circle(0px at 100% 100%)';
+    buildZone.classList.remove('fade-out');
+    createSub.classList.remove('visible');
+  }
+  function deactivateAll() {
+    deactivateBuild();
+    deactivateCreate();
+  }
+
+  // desktop hover
+  buildZone.addEventListener('mouseenter',  activateBuild);
+  buildZone.addEventListener('mouseleave',  deactivateBuild);
+  createZone.addEventListener('mouseenter', activateCreate);
+  createZone.addEventListener('mouseleave', deactivateCreate);
+
+  // mobile tap
+  let buildOpen = false, createOpen = false;
+
+  document.getElementById('buildBtn').addEventListener('click', e => {
+    if (!isTouch()) return;
+    e.stopPropagation();
+    if (buildOpen) { deactivateAll(); buildOpen = false; }
+    else { deactivateAll(); activateBuild(); buildOpen = true; createOpen = false; }
+  });
+
+  document.getElementById('createBtn').addEventListener('click', e => {
+    if (!isTouch()) return;
+    e.stopPropagation();
+    if (createOpen) { deactivateAll(); createOpen = false; }
+    else { deactivateAll(); activateCreate(); createOpen = true; buildOpen = false; }
+  });
+
+  document.addEventListener('click', () => {
+    if (!isTouch()) return;
+    deactivateAll();
+    buildOpen = false; createOpen = false;
+  });
 </script>
 </body>
 </html>
