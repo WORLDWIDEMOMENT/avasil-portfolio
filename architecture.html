@@ -3,28 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TO BUILD — MAIN</title>
+  <title>TO BUILD — AV</title>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --black: #111111;
-      --white: #ffffff;
-      --gray: #888888;
-      --line:  #e0e0e0;
+      --bg:    #0c0c0c;
+      --white: #efefed;
+      --gray:  #555555;
+      --line:  #222222;
       --blue:  #0000ff;
-      --off:   #f2f2f2;
+      --card:  #111111;
     }
 
     body {
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background: var(--white);
-      color: var(--black);
+      background: var(--bg);
+      color: var(--white);
       min-height: 100vh;
       overflow-x: hidden;
       cursor: none;
     }
 
+    /* CURSOR */
     #cur {
       position: fixed;
       width: 10px; height: 10px;
@@ -33,20 +34,20 @@
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%,-50%);
-      transition: width .16s, height .16s;
-      mix-blend-mode: multiply;
+      transition: width .18s, height .18s, border-radius .18s, background .18s;
     }
     #cur.big {
-      width: 50px; height: 50px;
+      width: 46px; height: 46px;
       background: transparent;
-      border: 1.5px solid var(--black);
+      border: 1px solid rgba(255,255,255,.4);
     }
 
+    /* GRID BG */
     .grid-bg {
       position: fixed; inset: 0;
       background-image:
-        linear-gradient(rgba(0,0,0,.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,.045) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
       background-size: 48px 48px;
       pointer-events: none;
       z-index: 0;
@@ -54,94 +55,53 @@
     }
     .grid-bg.blur { filter: blur(4px); }
 
-    .vert {
-      position: fixed;
-      left: 18px; top: 50%;
-      transform: translateY(-50%) rotate(-90deg);
-      font-size: 88px;
-      font-weight: 700;
-      letter-spacing: -.03em;
-      color: rgba(0,0,0,.05);
-      pointer-events: none;
-      z-index: 0;
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    /* HEADER BAR */
+    /* HEADER */
     .header-bar {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: relative; z-index: 10;
+      display: flex; align-items: center;
       padding: 0 40px;
       height: 56px;
       border-bottom: 1px solid var(--line);
     }
     .back {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--black);
-      opacity: .45;
-      transition: opacity .2s;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none; color: var(--white);
+      opacity: .3; transition: opacity .2s;
     }
     .back:hover { opacity: 1; }
-    .header-right {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--gray);
-    }
 
     /* TITLE */
     .page-title {
       position: relative; z-index: 1;
       font-size: clamp(72px, 13vw, 160px);
-      font-weight: 700;
-      letter-spacing: -.04em;
-      line-height: .85;
-      text-align: center;
+      font-weight: 700; letter-spacing: -.04em; line-height: .85;
+      text-align: center; color: var(--white);
       padding: 48px 40px 44px;
       transition: filter .4s;
     }
     .page-title.blur { filter: blur(5px); pointer-events: none; }
 
-    /* FILTER ROW — full width under title */
+    /* FILTER ROW */
     .filter-row {
-      position: relative;
-      z-index: 10;
+      position: relative; z-index: 10;
       display: flex;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      width: 100%;
     }
     .filter-btn {
-      flex: 1;
-      padding: 14px 4px;
-      font-family: inherit;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      background: none;
-      border: none;
+      flex: 1; padding: 14px 4px;
+      font-family: inherit; font-size: 9px; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase;
+      background: none; border: none;
       border-right: 1px solid var(--line);
-      color: var(--gray);
-      cursor: none;
-      white-space: nowrap;
+      color: var(--gray); cursor: none;
+      white-space: nowrap; text-align: center;
       transition: background .15s, color .15s;
-      text-align: center;
     }
     .filter-btn:last-child { border-right: none; }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--black);
-      color: var(--white);
-    }
+    .filter-btn:hover { background: #1c1c1c; color: var(--white); }
+    .filter-btn.active { background: var(--blue); color: #fff; }
 
     /* GRID */
     .projects-grid {
@@ -154,21 +114,20 @@
     }
     .projects-grid.blur { filter: blur(5px); pointer-events: none; }
 
-    /* CARD */
+    /* CARD — equal height via flex column */
     .project-card {
+      display: flex; flex-direction: column;
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      cursor: none;
-      overflow: hidden;
-      position: relative;
-      opacity: 0;
-      transform: translateY(16px);
-      animation: cardIn .45s forwards;
+      background: var(--card);
+      cursor: none; overflow: hidden; position: relative;
+      opacity: 0; animation: fadeUp .45s forwards;
     }
     .project-card[hidden] { display: none; }
 
-    @keyframes cardIn {
-      to { opacity: 1; transform: none; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
     }
     .project-card:nth-child(1) { animation-delay: .04s; }
     .project-card:nth-child(2) { animation-delay: .09s; }
@@ -180,84 +139,68 @@
     .project-card:nth-child(8) { animation-delay: .39s; }
     .project-card:nth-child(9) { animation-delay: .44s; }
 
-    /* blue project number on hover */
     .card-number {
-      position: absolute;
-      top: 12px; left: 14px;
-      font-size: 10px; font-weight: 700;
-      letter-spacing: .12em;
-      color: var(--blue);
-      opacity: 0;
-      z-index: 5;
+      position: absolute; top: 12px; left: 14px;
+      font-size: 10px; font-weight: 700; letter-spacing: .12em;
+      color: var(--blue); opacity: 0; z-index: 5;
       transition: opacity .2s;
     }
     .project-card:hover .card-number { opacity: 1; }
 
-    /* image frame — 3:2 ratio */
+    /* IMAGE — fixed ratio, no flex-shrink */
     .card-img {
-      width: 100%;
-      aspect-ratio: 3/2;
-      overflow: hidden;
-      position: relative;
-      background: var(--off);
+      width: 100%; aspect-ratio: 3 / 2;
+      flex-shrink: 0; overflow: hidden;
+      position: relative; background: #1a1a1a;
     }
     .card-img img {
       width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: grayscale(100%);
-      transition: filter .5s, transform .6s;
+      object-fit: cover; display: block;
+      filter: grayscale(100%) brightness(.8);
+      transition: filter .55s, transform .6s;
     }
     .project-card:hover .card-img img {
-      filter: grayscale(0%);
+      filter: grayscale(0%) brightness(1);
       transform: scale(1.04);
     }
     .card-img.ph {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #ebebeb, #d8d8d8);
+      display: flex; align-items: center; justify-content: center;
     }
     .card-img.ph::after {
       content: attr(data-ph);
-      font-size: 8px;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: #c0c0c0;
-      text-align: center;
-      padding: 12px;
+      font-size: 8px; letter-spacing: .2em; text-transform: uppercase;
+      color: #333; text-align: center; padding: 12px;
     }
 
+    /* DESIGN TOUCH: cinematic gradient + subtitle lift */
     .card-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,0,255,0);
-      display: flex; align-items: flex-end;
-      padding: 14px;
-      transition: background .3s;
-      z-index: 2;
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 55%);
+      opacity: 0; transition: opacity .35s;
+      display: flex; align-items: flex-end; padding: 14px 16px;
     }
-    .project-card:hover .card-overlay { background: rgba(0,0,255,.07); }
+    .project-card:hover .card-overlay { opacity: 1; }
     .overlay-txt {
-      font-size: 9px; font-weight: 700;
+      font-size: 10px; font-weight: 700;
       letter-spacing: .2em; text-transform: uppercase;
-      color: white; opacity: 0;
-      transition: opacity .25s;
+      color: #fff;
+      transform: translateY(8px); transition: transform .35s;
     }
-    .project-card:hover .overlay-txt { opacity: 1; }
+    .project-card:hover .overlay-txt { transform: translateY(0); }
 
-    /* card meta */
+    /* META — fixed min-height so cards stay uniform */
     .card-meta {
+      flex: 1; /* fills remaining space */
       padding: 10px 14px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 8px;
       border-top: 1px solid var(--line);
+      min-height: 68px;
     }
     .card-name {
       font-size: 11px; font-weight: 700;
       letter-spacing: .04em; text-transform: uppercase;
-      line-height: 1.4; flex: 1;
+      line-height: 1.4; flex: 1; color: var(--white);
     }
     .card-year {
       font-size: 10px; color: var(--gray);
@@ -270,8 +213,7 @@
     .tag {
       font-size: 9px; font-weight: 700;
       letter-spacing: .08em; text-transform: uppercase;
-      color: var(--blue);
-      background: none; border: none;
+      color: var(--blue); background: none; border: none;
       cursor: none; padding: 0; line-height: 1.7;
       transition: opacity .15s;
     }
@@ -282,24 +224,18 @@
       position: fixed; inset: 0;
       display: flex; align-items: center; justify-content: center;
       visibility: hidden; opacity: 0;
-      transition: opacity .3s, visibility .3s;
-      z-index: 400;
+      transition: opacity .3s, visibility .3s; z-index: 400;
     }
     .modal.active { visibility: visible; opacity: 1; }
-
     .modal-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,.5);
+      position: absolute; inset: 0; background: rgba(0,0,0,.8);
     }
     .modal-content {
-      position: relative;
-      width: 92%; max-width: 1100px; max-height: 88vh;
-      background: var(--white);
-      z-index: 410;
-      display: grid;
-      grid-template-columns: 55% 45%;
-      overflow: hidden;
-      border: 1px solid var(--line);
+      position: relative; width: 92%;
+      max-width: 1100px; max-height: 88vh;
+      background: #0f0f0f; z-index: 410;
+      display: grid; grid-template-columns: 55% 45%;
+      overflow: hidden; border: 1px solid #2a2a2a;
       animation: mIn .28s ease;
     }
     @keyframes mIn {
@@ -307,74 +243,92 @@
       to   { opacity: 1; transform: none; }
     }
     .modal-gallery {
-      overflow: hidden; background: var(--off);
       display: flex; flex-direction: column;
+      background: #0a0a0a; overflow: hidden;
     }
     .modal-main-img {
       flex: 1; overflow: hidden;
       position: relative; min-height: 300px;
     }
     .modal-main-img img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: grayscale(10%);
-      transition: filter .3s;
+      width: 100%; height: 100%; object-fit: cover;
     }
-    .modal-main-img img:hover { filter: grayscale(0%); }
     .modal-main-img.ph {
       display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
-      font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #bbb;
+      font-size: 10px; letter-spacing: .15em;
+      text-transform: uppercase; color: #333;
     }
+
+    /* THUMBS — bottom bar indicator, no outline overlap */
     .modal-thumbs-row {
-      display: flex; border-top: 1px solid var(--line);
-      max-height: 90px; overflow-x: auto; flex-shrink: 0;
+      display: flex;
+      border-top: 1px solid #2a2a2a;
+      max-height: 80px; overflow-x: auto; flex-shrink: 0;
     }
     .thumb {
-      width: 90px; height: 90px; flex-shrink: 0;
-      object-fit: cover; filter: grayscale(40%);
-      border-right: 1px solid var(--line);
-      cursor: none; transition: filter .2s;
+      width: 80px; height: 80px; flex-shrink: 0;
+      object-fit: cover;
+      filter: brightness(.45);
+      border-right: 1px solid #1e1e1e;
+      cursor: none;
+      transition: filter .2s;
+      position: relative;
     }
-    .thumb:hover, .thumb.active {
-      filter: grayscale(0%);
-      outline: 2px solid var(--blue); outline-offset: -2px;
+    .thumb:last-child { border-right: none; }
+    .thumb:hover { filter: brightness(.75); }
+    /* bottom blue bar — contained, no spill onto neighbours */
+    .thumb.active {
+      filter: brightness(1);
+      box-shadow: inset 0 -3px 0 0 var(--blue);
     }
+
     .modal-info {
       padding: 36px 40px;
-      border-left: 1px solid var(--line);
+      border-left: 1px solid #2a2a2a;
       display: flex; flex-direction: column;
       gap: 16px; overflow-y: auto;
     }
     .modal-title {
       font-size: 20px; font-weight: 700;
       letter-spacing: -.01em; line-height: 1.1;
-      text-transform: uppercase;
+      text-transform: uppercase; color: var(--white);
     }
     .modal-year {
       font-size: 10px; letter-spacing: .12em;
       text-transform: uppercase; color: var(--gray);
     }
-    .modal-desc { font-size: 13px; line-height: 1.9; color: #444; flex: 1; }
+    .modal-desc { font-size: 13px; line-height: 1.9; color: #888; flex: 1; }
     .modal-specs {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 12px 20px;
-      border-top: 1px solid var(--line); padding-top: 20px;
+      border-top: 1px solid #2a2a2a; padding-top: 20px;
     }
     .spec label {
       display: block; font-size: 9px; letter-spacing: .2em;
       text-transform: uppercase; color: var(--gray); margin-bottom: 4px;
     }
-    .spec span { font-size: 12px; font-weight: 700; }
+    .spec span { font-size: 12px; font-weight: 700; color: var(--white); }
     .modal-close {
       position: absolute; top: 14px; right: 18px;
-      background: none; border: none;
-      font-size: 22px; color: var(--gray); cursor: none;
-      z-index: 420; transition: color .15s, transform .2s;
+      background: none; border: none; font-size: 22px;
+      color: var(--gray); cursor: none; z-index: 420;
+      transition: color .15s, transform .2s;
     }
-    .modal-close:hover { color: var(--black); transform: rotate(90deg); }
+    .modal-close:hover { color: var(--white); transform: rotate(90deg); }
 
     /* FOOTER */
+    .footer-left {
+      position: fixed; bottom: 32px; left: 40px;
+      z-index: 50; transition: filter .4s;
+    }
+    .footer-left.blur { filter: blur(5px); pointer-events: none; }
+    .footer-left a {
+      font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--white); text-decoration: none;
+      opacity: .3; transition: opacity .2s;
+    }
+    .footer-left a:hover { opacity: 1; }
+
     .global-footer {
       position: fixed; bottom: 32px; right: 48px;
       display: flex; gap: 14px; align-items: center;
@@ -382,22 +336,12 @@
       z-index: 50; transition: filter .4s;
     }
     .global-footer.blur { filter: blur(5px); pointer-events: none; }
-    .global-footer a { color: var(--black); text-decoration: none; opacity: .45; transition: opacity .2s; }
+    .global-footer a { color: var(--white); text-decoration: none; opacity: .3; transition: opacity .2s; }
     .global-footer a:hover { opacity: 1; }
-    .global-footer span { opacity: .2; }
+    .global-footer span { opacity: .15; }
 
-    .footer-left {
-      position: fixed; bottom: 32px; left: 40px;
-      display: flex; gap: 20px;
-      font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
-      z-index: 50; transition: filter .4s;
-    }
-    .footer-left.blur { filter: blur(5px); pointer-events: none; }
-    .footer-left a { color: var(--black); text-decoration: none; opacity: .45; transition: opacity .2s; }
-    .footer-left a:hover { opacity: 1; }
-
+    /* RESPONSIVE */
     @media (max-width: 900px) {
-      .vert { display: none; }
       .projects-grid { grid-template-columns: repeat(2,1fr); }
       .modal-content { grid-template-columns: 1fr; max-height: 92vh; }
       .modal-gallery { max-height: 260px; }
@@ -406,7 +350,7 @@
     }
     @media (max-width: 560px) {
       .projects-grid { grid-template-columns: 1fr; }
-      .filter-btn { font-size: 8px; letter-spacing: .1em; }
+      .filter-btn { font-size: 8px; letter-spacing: .08em; }
     }
   </style>
 </head>
@@ -414,32 +358,30 @@
 
 <div id="cur"></div>
 <div class="grid-bg" id="gridBg"></div>
-<div class="vert">TO BUILD</div>
 
 <div class="header-bar">
-  <a href="index.html" class="back">← AV</a>
-  <span class="header-right">Architecture</span>
+  <a href="index.html" class="back">← Back</a>
 </div>
 
 <h1 class="page-title" id="pageTitle">TO BUILD</h1>
 
 <div class="filter-row" id="filterRow">
   <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="villa">Villa</button>
+  <button class="filter-btn" data-filter="conceptual">Conceptual</button>
+  <button class="filter-btn" data-filter="ai">AI Experiments</button>
+  <button class="filter-btn" data-filter="masterplan">Masterplan</button>
   <button class="filter-btn" data-filter="residential">Residential</button>
   <button class="filter-btn" data-filter="interior">Interior</button>
-  <button class="filter-btn" data-filter="masterplan">Masterplan</button>
-  <button class="filter-btn" data-filter="conceptual">Conceptual</button>
   <button class="filter-btn" data-filter="published">Published</button>
 </div>
 
 <div class="projects-grid" id="projectsGrid">
 
-  <div class="project-card" data-tags="villa residential"
+  <div class="project-card" data-tags="residential"
     data-title="Villa Amelie" data-year="2023" data-location="Marbella, Spain"
-    data-type="Residential Villa" data-studio="Archidom Studio" data-status="Approved"
+    data-type="Residential Villa" data-studio="Archidom Studio"
     data-tools="AutoCAD, Revit, Lumion"
-    data-desc="Private tropical villa designed around family proximity — continuous ground-floor flow between kitchen, living, office, gym, and master bedroom. Open plan, panoramic pool, lush landscape integration."
+    data-desc="Private tropical villa designed around family proximity — continuous ground-floor flow between kitchen, living, office, gym, and master bedroom. Open plan, panoramic pool, lush landscape integration. Approved by client."
     data-images='["images/assets/build/villa-amelie-1.jpg","images/assets/build/villa-amelie-2.jpg","images/assets/build/villa-amelie-3.jpg"]'>
     <span class="card-number">01</span>
     <div class="card-img ph" data-ph="Villa Amelie">
@@ -449,15 +391,14 @@
     <div class="card-meta">
       <div><div class="card-name">Villa Amelie</div><div class="card-year">2023 · Marbella</div></div>
       <div class="card-tags">
-        <button class="tag" data-filter="villa">#VILLA</button>
         <button class="tag" data-filter="residential">#RESIDENTIAL</button>
       </div>
     </div>
   </div>
 
-  <div class="project-card" data-tags="interior residential"
+  <div class="project-card" data-tags="interior"
     data-title="Brownie Coffeehouse" data-year="2022" data-location="Molodechno, Belarus"
-    data-type="Interior / Commercial" data-studio="Independent" data-status="Built"
+    data-type="Interior / Commercial" data-studio="Independent"
     data-tools="AutoCAD, ArchiCAD, Lumion"
     data-desc="Interior transformation of a ground-floor space in a residential building. Urban mood, material research, and functional zoning — from concept through author's supervision to realisation."
     data-images='["images/assets/build/brownie-1.jpg","images/assets/build/brownie-2.jpg","images/assets/build/brownie-3.jpg"]'>
@@ -470,14 +411,13 @@
       <div><div class="card-name">Brownie Coffeehouse</div><div class="card-year">2022 · Molodechno</div></div>
       <div class="card-tags">
         <button class="tag" data-filter="interior">#INTERIOR</button>
-        <button class="tag" data-filter="residential">#RESIDENTIAL</button>
       </div>
     </div>
   </div>
 
   <div class="project-card" data-tags="conceptual published"
     data-title="Fortification — Quarteira" data-year="2022" data-location="Quarteira, Portugal"
-    data-type="Urban / Public" data-studio="ULisboa · Erasmus" data-status="Published · UPC Barcelona"
+    data-type="Urban / Public" data-studio="ULisboa · Erasmus"
     data-tools="AutoCAD, ArchiCAD, Photoshop"
     data-desc="Coastal protection system — a wall that communicates with the city and people rather than separating them. Accepted and published in a magazine of the Universitat Politècnica de Catalunya, Barcelona."
     data-images='["images/assets/build/fortification-1.jpg","images/assets/build/fortification-2.jpg","images/assets/build/fortification-3.jpg"]'>
@@ -495,9 +435,9 @@
     </div>
   </div>
 
-  <div class="project-card" data-tags="villa residential"
+  <div class="project-card" data-tags="residential"
     data-title="Villa Eric Madroñal" data-year="2023" data-location="Marbella, Spain"
-    data-type="Residential Villa" data-studio="Archidom Studio" data-status="In progress"
+    data-type="Residential Villa" data-studio="Archidom Studio"
     data-tools="Revit, Lumion, Photoshop"
     data-desc="Hillside villa commanding panoramic views of mountains and sea. Double-height living room, floor-to-ceiling windows, two fire pits positioned to face the views. Architecture that embraces its topography."
     data-images='["images/assets/build/villa-eric-1.jpg","images/assets/build/villa-eric-2.jpg","images/assets/build/villa-eric-3.jpg"]'>
@@ -509,7 +449,6 @@
     <div class="card-meta">
       <div><div class="card-name">Villa Eric Madroñal</div><div class="card-year">2023 · Marbella</div></div>
       <div class="card-tags">
-        <button class="tag" data-filter="villa">#VILLA</button>
         <button class="tag" data-filter="residential">#RESIDENTIAL</button>
       </div>
     </div>
@@ -517,7 +456,7 @@
 
   <div class="project-card" data-tags="residential masterplan"
     data-title="1295 — Residential Complex" data-year="2024" data-location="Minsk, Belarus"
-    data-type="Residential" data-studio="Zrobim Architects" data-status="Under construction"
+    data-type="Residential" data-studio="Zrobim Architects"
     data-tools="ArchiCAD, Enscape"
     data-desc="Two typologies of houses — sole lead architect role. Evolved from a single repeated type to a nuanced dual-typology response to views, noise, and architectural balance. Now under construction."
     data-images='["images/assets/build/1295-1.jpg","images/assets/build/1295-2.jpg","images/assets/build/1295-3.jpg"]'>
@@ -535,9 +474,9 @@
     </div>
   </div>
 
-  <div class="project-card" data-tags="villa masterplan"
+  <div class="project-card" data-tags="masterplan residential"
     data-title="Masterplan La Perla" data-year="2023" data-location="Cabrera, Dominican Republic"
-    data-type="Masterplan + Villas" data-studio="Archidom Studio" data-status="In progress · 1st villa approved"
+    data-type="Masterplan + Villas" data-studio="Archidom Studio"
     data-tools="AutoCAD, SketchUp, Lumion"
     data-desc="32,000 m² masterplan with two villa typologies — first-line sea-facing and second-line hillside. Floor-to-ceiling windows, ocean-first orientation, seamless indoor-outdoor language."
     data-images='["images/assets/build/laperla-1.jpg","images/assets/build/laperla-2.jpg","images/assets/build/laperla-3.jpg"]'>
@@ -549,7 +488,6 @@
     <div class="card-meta">
       <div><div class="card-name">Masterplan La Perla — DR</div><div class="card-year">2023 · Dominican Republic</div></div>
       <div class="card-tags">
-        <button class="tag" data-filter="villa">#VILLA</button>
         <button class="tag" data-filter="masterplan">#MASTERPLAN</button>
       </div>
     </div>
@@ -557,7 +495,7 @@
 
   <div class="project-card" data-tags="conceptual"
     data-title="Museum of Modern Art NOVA" data-year="2022" data-location="Minsk, Belarus"
-    data-type="Cultural / Public" data-studio="Graduation · Warsaw" data-status="Graduation work"
+    data-type="Cultural / Public" data-studio="Graduation · Warsaw"
     data-tools="AutoCAD, ArchiCAD, Lumion"
     data-desc="Contemporary art museum on the banks of the Swislocz River. Inspired by tectonic plate movements — static power frozen in concrete. Conceived as a cultural engine for expanding Belarus's creative landscape."
     data-images='["images/assets/build/nova-1.jpg","images/assets/build/nova-2.jpg","images/assets/build/nova-3.jpg"]'>
@@ -576,7 +514,7 @@
 
   <div class="project-card" data-tags="conceptual masterplan"
     data-title="Competition Alborada Benahavís" data-year="2023" data-location="Benahavís, Spain"
-    data-type="Competition / Hospitality" data-studio="Archidom Studio" data-status="Competition entry"
+    data-type="Competition / Hospitality" data-studio="Archidom Studio"
     data-tools="AutoCAD, Rhino, Photoshop"
     data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside — architecture as landscape continuation. Concept plans, sketches, diagrams, post-production."
     data-images='["images/assets/build/alborada-1.jpg","images/assets/build/alborada-2.jpg","images/assets/build/alborada-3.jpg"]'>
@@ -596,7 +534,7 @@
 
   <div class="project-card" data-tags="conceptual residential"
     data-title="Ageispolis" data-year="2022–2023" data-location="Conceptual"
-    data-type="Residential / Conceptual" data-studio="Personal project" data-status="Concept"
+    data-type="Residential / Conceptual" data-studio="Personal project"
     data-tools="ArchiCAD, Lumion, Photoshop"
     data-desc="One-floor house with three bedrooms and a hall overlooking a private garden. Unique perforated facade — small square windows creating light and shadow play while maintaining privacy."
     data-images='["images/assets/build/ageispolis-1.jpg","images/assets/build/ageispolis-2.jpg","images/assets/build/ageispolis-3.jpg"]'>
@@ -636,8 +574,8 @@
   </div>
 </div>
 
+<!-- FOOTER: About only, no Manifesto -->
 <div class="footer-left" id="footerLeft">
-  <a href="index.html">Manifesto</a>
   <a href="about.html">About</a>
 </div>
 <div class="global-footer" id="globalFooter">
@@ -651,6 +589,7 @@
 </div>
 
 <script>
+  // CURSOR
   const cur = document.getElementById('cur');
   document.addEventListener('mousemove', e => {
     cur.style.left = e.clientX + 'px';
@@ -661,11 +600,13 @@
     el.addEventListener('mouseleave', () => cur.classList.remove('big'));
   });
 
+  // BLUR
   const blurIds = ['pageTitle','projectsGrid','globalFooter','footerLeft','gridBg'];
   function setBlur(on) {
     blurIds.forEach(id => document.getElementById(id)?.classList.toggle('blur', on));
   }
 
+  // MODAL
   const modal       = document.getElementById('modal');
   const modalMain   = document.getElementById('modalMain');
   const modalThumbs = document.getElementById('modalThumbs');
@@ -683,10 +624,10 @@
     modalYear.textContent  = (d.year || '') + (d.location ? ' · ' + d.location : '');
     modalDesc.textContent  = d.desc || '';
 
+    // Status removed
     const specs = [
       { label: 'Type',   val: d.type },
       { label: 'Studio', val: d.studio },
-      { label: 'Status', val: d.status },
       { label: 'Tools',  val: d.tools },
     ].filter(s => s.val);
 
@@ -734,12 +675,13 @@
   document.getElementById('modalOverlay').addEventListener('click', closeModal);
   window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+  // FILTER
   function applyFilter(filter) {
     closeModal();
     document.querySelectorAll('.filter-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.filter === filter));
     document.querySelectorAll('.project-card').forEach(card => {
-      const show = filter === 'all' || card.dataset.tags.includes(filter);
+      const show = filter === 'all' || card.dataset.tags.split(' ').includes(filter);
       card.toggleAttribute('hidden', !show);
     });
   }
