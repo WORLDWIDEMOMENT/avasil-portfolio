@@ -9,11 +9,12 @@
 
     :root {
       --bg:    #0c0c0c;
-      --white: #efefed;
-      --gray:  #555555;
-      --line:  #222222;
-      --blue:  #0000ff;
-      --card:  #111111;
+      --white: #efefef;
+      --dim:   #888888;
+      --line:  #252525;
+      --blue:  #4d6aff;
+      --off:   #181818;
+      --card:  #141414;
     }
 
     body {
@@ -25,85 +26,118 @@
       cursor: none;
     }
 
-    /* CURSOR */
+    /* ── CURSOR ── */
     #cur {
       position: fixed;
-      width: 10px; height: 10px;
+      width: 8px; height: 8px;
       background: var(--blue);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%,-50%);
-      transition: width .18s, height .18s, border-radius .18s, background .18s;
+      transition: width .15s, height .15s;
     }
     #cur.big {
-      width: 46px; height: 46px;
+      width: 44px; height: 44px;
       background: transparent;
-      border: 1px solid rgba(255,255,255,.4);
+      border: 1px solid rgba(255,255,255,.35);
     }
 
-    /* GRID BG */
+    /* ── GRID BG ── */
     .grid-bg {
       position: fixed; inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
       background-size: 48px 48px;
       pointer-events: none;
       z-index: 0;
       transition: filter .4s;
     }
-    .grid-bg.blur { filter: blur(4px); }
+    .grid-bg.blur { filter: blur(6px); }
 
-    /* HEADER */
+    /* ── HEADER BAR ── */
     .header-bar {
-      position: relative; z-index: 10;
-      display: flex; align-items: center;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
       padding: 0 40px;
-      height: 56px;
+      height: 54px;
       border-bottom: 1px solid var(--line);
     }
     .back {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase;
-      text-decoration: none; color: var(--white);
-      opacity: .3; transition: opacity .2s;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--dim);
+      transition: color .2s;
     }
-    .back:hover { opacity: 1; }
+    .back:hover { color: var(--white); }
 
-    /* TITLE */
+    /* ── TITLE ── */
     .page-title {
       position: relative; z-index: 1;
-      font-size: clamp(72px, 13vw, 160px);
-      font-weight: 700; letter-spacing: -.04em; line-height: .85;
-      text-align: center; color: var(--white);
+      font-size: clamp(72px, 13vw, 158px);
+      font-weight: 700;
+      letter-spacing: -.04em;
+      line-height: .85;
+      text-align: center;
       padding: 48px 40px 44px;
+      color: var(--white);
       transition: filter .4s;
     }
     .page-title.blur { filter: blur(5px); pointer-events: none; }
 
-    /* FILTER ROW */
+    /* ── FILTER ROW — full width, equal columns ── */
     .filter-row {
-      position: relative; z-index: 10;
+      position: relative;
+      z-index: 10;
       display: flex;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
+      width: 100%;
     }
     .filter-btn {
-      flex: 1; padding: 14px 4px;
-      font-family: inherit; font-size: 9px; font-weight: 700;
-      letter-spacing: .15em; text-transform: uppercase;
-      background: none; border: none;
+      flex: 1;
+      padding: 16px 4px;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
       border-right: 1px solid var(--line);
-      color: var(--gray); cursor: none;
-      white-space: nowrap; text-align: center;
-      transition: background .15s, color .15s;
+      color: var(--dim);
+      cursor: none;
+      white-space: nowrap;
+      text-align: center;
+      transition: color .15s, background .15s;
+      position: relative;
     }
     .filter-btn:last-child { border-right: none; }
-    .filter-btn:hover { background: #1c1c1c; color: var(--white); }
-    .filter-btn.active { background: var(--blue); color: #fff; }
 
-    /* GRID */
+    /* my design choice: active = white text + blue bottom line, not full fill */
+    .filter-btn.active {
+      color: var(--white);
+      background: none;
+    }
+    .filter-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--blue);
+    }
+    .filter-btn:hover:not(.active) {
+      color: rgba(239,239,239,.65);
+      background: rgba(255,255,255,.03);
+    }
+
+    /* ── GRID ── */
     .projects-grid {
       position: relative; z-index: 1;
       display: grid;
@@ -114,20 +148,24 @@
     }
     .projects-grid.blur { filter: blur(5px); pointer-events: none; }
 
-    /* CARD — equal height via flex column */
+    /* ── CARD ── */
     .project-card {
-      display: flex; flex-direction: column;
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
+      cursor: none;
+      overflow: hidden;
+      position: relative;
       background: var(--card);
-      cursor: none; overflow: hidden; position: relative;
-      opacity: 0; animation: fadeUp .45s forwards;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: cardIn .45s forwards;
     }
     .project-card[hidden] { display: none; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: none; }
+    @keyframes cardIn {
+      to { opacity: 1; transform: none; }
     }
     .project-card:nth-child(1) { animation-delay: .04s; }
     .project-card:nth-child(2) { animation-delay: .09s; }
@@ -139,152 +177,192 @@
     .project-card:nth-child(8) { animation-delay: .39s; }
     .project-card:nth-child(9) { animation-delay: .44s; }
 
+    /* project number */
     .card-number {
-      position: absolute; top: 12px; left: 14px;
-      font-size: 10px; font-weight: 700; letter-spacing: .12em;
-      color: var(--blue); opacity: 0; z-index: 5;
+      position: absolute;
+      top: 12px; left: 14px;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .14em;
+      color: var(--blue);
+      opacity: 0;
+      z-index: 5;
       transition: opacity .2s;
     }
     .project-card:hover .card-number { opacity: 1; }
 
-    /* IMAGE — fixed ratio, no flex-shrink */
+    /* image frame — fixed 3:2 ratio always */
     .card-img {
-      width: 100%; aspect-ratio: 3 / 2;
-      flex-shrink: 0; overflow: hidden;
-      position: relative; background: #1a1a1a;
+      width: 100%;
+      aspect-ratio: 3/2;
+      overflow: hidden;
+      position: relative;
+      background: var(--off);
+      flex-shrink: 0;
     }
     .card-img img {
       width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      filter: grayscale(100%) brightness(.8);
-      transition: filter .55s, transform .6s;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(100%) brightness(.85);
+      transition: filter .5s, transform .6s;
     }
     .project-card:hover .card-img img {
-      filter: grayscale(0%) brightness(1);
+      filter: grayscale(20%) brightness(1);
       transform: scale(1.04);
     }
+
+    /* placeholder */
     .card-img.ph {
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a;
     }
     .card-img.ph::after {
       content: attr(data-ph);
-      font-size: 8px; letter-spacing: .2em; text-transform: uppercase;
-      color: #333; text-align: center; padding: 12px;
+      font-size: 8px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #3a3a3a;
+      text-align: center;
+      padding: 12px;
     }
 
-    /* DESIGN TOUCH: cinematic gradient + subtitle lift */
+    /* hover overlay */
     .card-overlay {
-      position: absolute; inset: 0; z-index: 2;
-      background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 55%);
-      opacity: 0; transition: opacity .35s;
-      display: flex; align-items: flex-end; padding: 14px 16px;
+      position: absolute; inset: 0;
+      background: rgba(77,106,255,0);
+      display: flex; align-items: flex-end;
+      padding: 14px;
+      transition: background .3s;
+      z-index: 2;
     }
-    .project-card:hover .card-overlay { opacity: 1; }
+    .project-card:hover .card-overlay { background: rgba(77,106,255,.12); }
     .overlay-txt {
-      font-size: 10px; font-weight: 700;
+      font-size: 9px; font-weight: 700;
       letter-spacing: .2em; text-transform: uppercase;
-      color: #fff;
-      transform: translateY(8px); transition: transform .35s;
+      color: rgba(255,255,255,.8);
+      opacity: 0; transition: opacity .25s;
     }
-    .project-card:hover .overlay-txt { transform: translateY(0); }
+    .project-card:hover .overlay-txt { opacity: 1; }
 
-    /* META — fixed min-height so cards stay uniform */
+    /* card meta — fixed height so all cards align */
     .card-meta {
-      flex: 1; /* fills remaining space */
-      padding: 10px 14px 14px;
-      display: flex; justify-content: space-between;
-      align-items: flex-start; gap: 8px;
+      padding: 12px 14px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
       border-top: 1px solid var(--line);
-      min-height: 68px;
+      flex: 1;
     }
+    .card-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
     .card-name {
       font-size: 11px; font-weight: 700;
-      letter-spacing: .04em; text-transform: uppercase;
-      line-height: 1.4; flex: 1; color: var(--white);
+      letter-spacing: .05em; text-transform: uppercase;
+      line-height: 1.35; color: var(--white);
     }
     .card-year {
-      font-size: 10px; color: var(--gray);
-      letter-spacing: .05em; margin-top: 2px;
+      font-size: 10px; color: var(--dim);
+      letter-spacing: .05em;
     }
+    /* fixed-height tag column so cards are same size */
     .card-tags {
       display: flex; flex-direction: column;
-      align-items: flex-end; gap: 2px;
+      align-items: flex-end;
+      gap: 0;
+      min-height: 42px;
+      justify-content: flex-start;
     }
     .tag {
       font-size: 9px; font-weight: 700;
-      letter-spacing: .08em; text-transform: uppercase;
-      color: var(--blue); background: none; border: none;
-      cursor: none; padding: 0; line-height: 1.7;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--blue);
+      background: none; border: none;
+      cursor: none; padding: 2px 0; line-height: 1.6;
       transition: opacity .15s;
     }
-    .tag:hover { opacity: .5; }
+    .tag:hover { opacity: .6; }
 
-    /* MODAL */
+    /* ── MODAL ── */
     .modal {
       position: fixed; inset: 0;
       display: flex; align-items: center; justify-content: center;
       visibility: hidden; opacity: 0;
-      transition: opacity .3s, visibility .3s; z-index: 400;
+      transition: opacity .3s, visibility .3s;
+      z-index: 400;
     }
     .modal.active { visibility: visible; opacity: 1; }
     .modal-overlay {
-      position: absolute; inset: 0; background: rgba(0,0,0,.8);
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.75);
     }
     .modal-content {
-      position: relative; width: 92%;
-      max-width: 1100px; max-height: 88vh;
-      background: #0f0f0f; z-index: 410;
-      display: grid; grid-template-columns: 55% 45%;
-      overflow: hidden; border: 1px solid #2a2a2a;
+      position: relative;
+      width: 92%; max-width: 1060px; max-height: 88vh;
+      background: #111111;
+      border: 1px solid var(--line);
+      z-index: 410;
+      display: grid;
+      grid-template-columns: 55% 45%;
+      overflow: hidden;
       animation: mIn .28s ease;
     }
     @keyframes mIn {
-      from { opacity: 0; transform: translateY(14px) scale(.98); }
+      from { opacity: 0; transform: translateY(12px) scale(.985); }
       to   { opacity: 1; transform: none; }
     }
+
+    /* gallery */
     .modal-gallery {
+      overflow: hidden; background: var(--off);
       display: flex; flex-direction: column;
-      background: #0a0a0a; overflow: hidden;
     }
     .modal-main-img {
       flex: 1; overflow: hidden;
       position: relative; min-height: 300px;
     }
     .modal-main-img img {
-      width: 100%; height: 100%; object-fit: cover;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%);
+      transition: filter .3s;
     }
+    .modal-main-img img:hover { filter: grayscale(0%); }
     .modal-main-img.ph {
       display: flex; align-items: center; justify-content: center;
-      font-size: 10px; letter-spacing: .15em;
-      text-transform: uppercase; color: #333;
+      background: #181818;
+      font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #3a3a3a;
     }
 
-    /* THUMBS — bottom bar indicator, no outline overlap */
+    /* thumbnails — no overlapping outline fix: use inset box-shadow */
     .modal-thumbs-row {
       display: flex;
-      border-top: 1px solid #2a2a2a;
+      border-top: 1px solid var(--line);
       max-height: 80px; overflow-x: auto; flex-shrink: 0;
     }
     .thumb {
       width: 80px; height: 80px; flex-shrink: 0;
       object-fit: cover;
-      filter: brightness(.45);
-      border-right: 1px solid #1e1e1e;
+      filter: grayscale(50%) brightness(.7);
+      border-right: 1px solid var(--line);
       cursor: none;
-      transition: filter .2s;
-      position: relative;
+      transition: filter .2s, box-shadow .2s;
     }
     .thumb:last-child { border-right: none; }
-    .thumb:hover { filter: brightness(.75); }
-    /* bottom blue bar — contained, no spill onto neighbours */
+    .thumb:hover {
+      filter: grayscale(0%) brightness(1);
+    }
+    /* inset shadow = no overflow, no overlap */
     .thumb.active {
-      filter: brightness(1);
-      box-shadow: inset 0 -3px 0 0 var(--blue);
+      filter: grayscale(0%) brightness(1);
+      box-shadow: inset 0 -3px 0 var(--blue);
     }
 
+    /* modal info */
     .modal-info {
-      padding: 36px 40px;
-      border-left: 1px solid #2a2a2a;
+      padding: 32px 36px;
+      border-left: 1px solid var(--line);
       display: flex; flex-direction: column;
       gap: 16px; overflow-y: auto;
     }
@@ -294,53 +372,54 @@
       text-transform: uppercase; color: var(--white);
     }
     .modal-year {
-      font-size: 10px; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--gray);
+      font-size: 10px; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--dim);
     }
-    .modal-desc { font-size: 13px; line-height: 1.9; color: #888; flex: 1; }
+    .modal-desc {
+      font-size: 13px; line-height: 1.85;
+      color: rgba(239,239,239,.65); flex: 1;
+    }
     .modal-specs {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px 20px;
-      border-top: 1px solid #2a2a2a; padding-top: 20px;
+      gap: 14px 20px;
+      border-top: 1px solid var(--line); padding-top: 20px;
     }
     .spec label {
       display: block; font-size: 9px; letter-spacing: .2em;
-      text-transform: uppercase; color: var(--gray); margin-bottom: 4px;
+      text-transform: uppercase; color: var(--dim); margin-bottom: 5px;
     }
     .spec span { font-size: 12px; font-weight: 700; color: var(--white); }
     .modal-close {
-      position: absolute; top: 14px; right: 18px;
-      background: none; border: none; font-size: 22px;
-      color: var(--gray); cursor: none; z-index: 420;
-      transition: color .15s, transform .2s;
+      position: absolute; top: 12px; right: 16px;
+      background: none; border: none;
+      font-size: 22px; color: var(--dim); cursor: none;
+      z-index: 420; transition: color .15s, transform .2s;
     }
     .modal-close:hover { color: var(--white); transform: rotate(90deg); }
 
-    /* FOOTER */
-    .footer-left {
-      position: fixed; bottom: 32px; left: 40px;
-      z-index: 50; transition: filter .4s;
-    }
-    .footer-left.blur { filter: blur(5px); pointer-events: none; }
-    .footer-left a {
-      font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--white); text-decoration: none;
-      opacity: .3; transition: opacity .2s;
-    }
-    .footer-left a:hover { opacity: 1; }
-
+    /* ── FOOTER ── */
     .global-footer {
-      position: fixed; bottom: 32px; right: 48px;
+      position: fixed; bottom: 30px; right: 44px;
       display: flex; gap: 14px; align-items: center;
       font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
       z-index: 50; transition: filter .4s;
     }
     .global-footer.blur { filter: blur(5px); pointer-events: none; }
-    .global-footer a { color: var(--white); text-decoration: none; opacity: .3; transition: opacity .2s; }
+    .global-footer a { color: var(--white); text-decoration: none; opacity: .35; transition: opacity .2s; }
     .global-footer a:hover { opacity: 1; }
     .global-footer span { opacity: .15; }
 
-    /* RESPONSIVE */
+    .footer-left {
+      position: fixed; bottom: 30px; left: 40px;
+      display: flex; gap: 20px;
+      font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+      z-index: 50; transition: filter .4s;
+    }
+    .footer-left.blur { filter: blur(5px); pointer-events: none; }
+    .footer-left a { color: var(--white); text-decoration: none; opacity: .35; transition: opacity .2s; }
+    .footer-left a:hover { opacity: 1; }
+
+    /* responsive */
     @media (max-width: 900px) {
       .projects-grid { grid-template-columns: repeat(2,1fr); }
       .modal-content { grid-template-columns: 1fr; max-height: 92vh; }
@@ -350,7 +429,7 @@
     }
     @media (max-width: 560px) {
       .projects-grid { grid-template-columns: 1fr; }
-      .filter-btn { font-size: 8px; letter-spacing: .08em; }
+      .filter-btn { font-size: 8px; letter-spacing: .1em; }
     }
   </style>
 </head>
@@ -359,12 +438,15 @@
 <div id="cur"></div>
 <div class="grid-bg" id="gridBg"></div>
 
+<!-- HEADER -->
 <div class="header-bar">
   <a href="index.html" class="back">← Back</a>
 </div>
 
+<!-- TITLE -->
 <h1 class="page-title" id="pageTitle">TO BUILD</h1>
 
+<!-- FILTERS: All - Conceptual - AI Experiments - Masterplan - Residential - Interior - Published -->
 <div class="filter-row" id="filterRow">
   <button class="filter-btn active" data-filter="all">All</button>
   <button class="filter-btn" data-filter="conceptual">Conceptual</button>
@@ -375,13 +457,14 @@
   <button class="filter-btn" data-filter="published">Published</button>
 </div>
 
+<!-- GRID -->
 <div class="projects-grid" id="projectsGrid">
 
-  <div class="project-card" data-tags="residential"
+  <div class="project-card" data-tags="villa residential"
     data-title="Villa Amelie" data-year="2023" data-location="Marbella, Spain"
     data-type="Residential Villa" data-studio="Archidom Studio"
     data-tools="AutoCAD, Revit, Lumion"
-    data-desc="Private tropical villa designed around family proximity — continuous ground-floor flow between kitchen, living, office, gym, and master bedroom. Open plan, panoramic pool, lush landscape integration. Approved by client."
+    data-desc="Private tropical villa designed around family proximity — continuous ground-floor flow between kitchen, living, office, gym, and master bedroom. Open plan, panoramic pool, lush landscape integration."
     data-images='["images/assets/build/villa-amelie-1.jpg","images/assets/build/villa-amelie-2.jpg","images/assets/build/villa-amelie-3.jpg"]'>
     <span class="card-number">01</span>
     <div class="card-img ph" data-ph="Villa Amelie">
@@ -389,14 +472,18 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Villa Amelie</div><div class="card-year">2023 · Marbella</div></div>
+      <div class="card-info">
+        <div class="card-name">Villa Amelie</div>
+        <div class="card-year">2023 · Marbella</div>
+      </div>
       <div class="card-tags">
+        <button class="tag" data-filter="villa">#VILLA</button>
         <button class="tag" data-filter="residential">#RESIDENTIAL</button>
       </div>
     </div>
   </div>
 
-  <div class="project-card" data-tags="interior"
+  <div class="project-card" data-tags="interior residential"
     data-title="Brownie Coffeehouse" data-year="2022" data-location="Molodechno, Belarus"
     data-type="Interior / Commercial" data-studio="Independent"
     data-tools="AutoCAD, ArchiCAD, Lumion"
@@ -408,9 +495,13 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Brownie Coffeehouse</div><div class="card-year">2022 · Molodechno</div></div>
+      <div class="card-info">
+        <div class="card-name">Brownie Coffeehouse</div>
+        <div class="card-year">2022 · Molodechno</div>
+      </div>
       <div class="card-tags">
         <button class="tag" data-filter="interior">#INTERIOR</button>
+        <button class="tag" data-filter="residential">#RESIDENTIAL</button>
       </div>
     </div>
   </div>
@@ -427,7 +518,10 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Fortification — Quarteira</div><div class="card-year">2022 · Portugal</div></div>
+      <div class="card-info">
+        <div class="card-name">Fortification — Quarteira</div>
+        <div class="card-year">2022 · Portugal</div>
+      </div>
       <div class="card-tags">
         <button class="tag" data-filter="conceptual">#CONCEPTUAL</button>
         <button class="tag" data-filter="published">#PUBLISHED</button>
@@ -435,7 +529,7 @@
     </div>
   </div>
 
-  <div class="project-card" data-tags="residential"
+  <div class="project-card" data-tags="villa residential"
     data-title="Villa Eric Madroñal" data-year="2023" data-location="Marbella, Spain"
     data-type="Residential Villa" data-studio="Archidom Studio"
     data-tools="Revit, Lumion, Photoshop"
@@ -447,8 +541,12 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Villa Eric Madroñal</div><div class="card-year">2023 · Marbella</div></div>
+      <div class="card-info">
+        <div class="card-name">Villa Eric Madroñal</div>
+        <div class="card-year">2023 · Marbella</div>
+      </div>
       <div class="card-tags">
+        <button class="tag" data-filter="villa">#VILLA</button>
         <button class="tag" data-filter="residential">#RESIDENTIAL</button>
       </div>
     </div>
@@ -466,7 +564,10 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">1295 — Residential Complex</div><div class="card-year">2024 · Minsk</div></div>
+      <div class="card-info">
+        <div class="card-name">1295 — Residential Complex</div>
+        <div class="card-year">2024 · Minsk</div>
+      </div>
       <div class="card-tags">
         <button class="tag" data-filter="residential">#RESIDENTIAL</button>
         <button class="tag" data-filter="masterplan">#MASTERPLAN</button>
@@ -474,7 +575,7 @@
     </div>
   </div>
 
-  <div class="project-card" data-tags="masterplan residential"
+  <div class="project-card" data-tags="villa masterplan"
     data-title="Masterplan La Perla" data-year="2023" data-location="Cabrera, Dominican Republic"
     data-type="Masterplan + Villas" data-studio="Archidom Studio"
     data-tools="AutoCAD, SketchUp, Lumion"
@@ -486,8 +587,12 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Masterplan La Perla — DR</div><div class="card-year">2023 · Dominican Republic</div></div>
+      <div class="card-info">
+        <div class="card-name">Masterplan La Perla — DR</div>
+        <div class="card-year">2023 · Dominican Republic</div>
+      </div>
       <div class="card-tags">
+        <button class="tag" data-filter="villa">#VILLA</button>
         <button class="tag" data-filter="masterplan">#MASTERPLAN</button>
       </div>
     </div>
@@ -505,7 +610,10 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Museum of Modern Art "NOVA"</div><div class="card-year">2022 · Minsk</div></div>
+      <div class="card-info">
+        <div class="card-name">Museum of Modern Art "NOVA"</div>
+        <div class="card-year">2022 · Minsk</div>
+      </div>
       <div class="card-tags">
         <button class="tag" data-filter="conceptual">#CONCEPTUAL</button>
       </div>
@@ -524,7 +632,10 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Competition Alborada</div><div class="card-year">2023 · Benahavís</div></div>
+      <div class="card-info">
+        <div class="card-name">Competition Alborada</div>
+        <div class="card-year">2023 · Benahavís</div>
+      </div>
       <div class="card-tags">
         <button class="tag" data-filter="conceptual">#CONCEPTUAL</button>
         <button class="tag" data-filter="masterplan">#MASTERPLAN</button>
@@ -544,7 +655,10 @@
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
-      <div><div class="card-name">Ageispolis</div><div class="card-year">2022–2023</div></div>
+      <div class="card-info">
+        <div class="card-name">Ageispolis</div>
+        <div class="card-year">2022–2023</div>
+      </div>
       <div class="card-tags">
         <button class="tag" data-filter="conceptual">#CONCEPTUAL</button>
         <button class="tag" data-filter="residential">#RESIDENTIAL</button>
@@ -552,7 +666,7 @@
     </div>
   </div>
 
-</div>
+</div><!-- /grid -->
 
 <!-- MODAL -->
 <div class="modal" id="modal">
@@ -574,7 +688,7 @@
   </div>
 </div>
 
-<!-- FOOTER: About only, no Manifesto -->
+<!-- FOOTER — only About, no Manifesto -->
 <div class="footer-left" id="footerLeft">
   <a href="about.html">About</a>
 </div>
@@ -589,7 +703,6 @@
 </div>
 
 <script>
-  // CURSOR
   const cur = document.getElementById('cur');
   document.addEventListener('mousemove', e => {
     cur.style.left = e.clientX + 'px';
@@ -600,13 +713,11 @@
     el.addEventListener('mouseleave', () => cur.classList.remove('big'));
   });
 
-  // BLUR
   const blurIds = ['pageTitle','projectsGrid','globalFooter','footerLeft','gridBg'];
   function setBlur(on) {
     blurIds.forEach(id => document.getElementById(id)?.classList.toggle('blur', on));
   }
 
-  // MODAL
   const modal       = document.getElementById('modal');
   const modalMain   = document.getElementById('modalMain');
   const modalThumbs = document.getElementById('modalThumbs');
@@ -624,7 +735,7 @@
     modalYear.textContent  = (d.year || '') + (d.location ? ' · ' + d.location : '');
     modalDesc.textContent  = d.desc || '';
 
-    // Status removed
+    // Status removed per request
     const specs = [
       { label: 'Type',   val: d.type },
       { label: 'Studio', val: d.studio },
@@ -675,7 +786,6 @@
   document.getElementById('modalOverlay').addEventListener('click', closeModal);
   window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // FILTER
   function applyFilter(filter) {
     closeModal();
     document.querySelectorAll('.filter-btn').forEach(b =>
