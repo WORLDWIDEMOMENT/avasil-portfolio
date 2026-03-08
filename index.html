@@ -16,82 +16,69 @@ body {
   cursor: none;
 }
 
-/* ── CUSTOM CURSOR ── */
+/* ── CURSOR ── */
 #cur {
   position: fixed;
-  width: 8px; height: 8px;
+  width: 10px; height: 10px;
   background: white;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: width .15s, height .15s;
+  transition: width .16s, height .16s;
   mix-blend-mode: difference;
 }
 #cur.big {
-  width: 40px; height: 40px;
+  width: 50px; height: 50px;
 }
 @media (hover: none) { #cur { display: none; } }
 
-/* ─────────────────────────────────────────
-   INTRO SEQUENCE
-   ───────────────────────────────────────── */
+/* ─────────────────────────────
+   INTRO
+   ───────────────────────────── */
 
-/* dark veil that fades in over the photo */
+/* 1. Лёгкое затемнение поверх фото */
 #intro-veil {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: black;
   opacity: 0;
   z-index: 50;
   pointer-events: none;
-  transition: opacity 1.2s ease;
+  transition: opacity 1.0s ease;
 }
-#intro-veil.darken { opacity: .55; }
+#intro-veil.darken { opacity: .22; }
 
-/* the bar that shoots up from the bottom */
-#intro-bar {
+/* 2. Вертикальная линия — делит экран пополам */
+#intro-line {
   position: fixed;
+  left: 50%;
   bottom: 0;
-  left: 0; right: 0;
-  height: 2px;
+  width: 1px;
+  height: 0;
   background: white;
   z-index: 51;
-  transform: translateY(0);
-  opacity: 0;
-  transition: opacity .1s ease;
-}
-#intro-bar.rise {
-  opacity: 1;
-  animation: barRise .9s cubic-bezier(.77, 0, .18, 1) forwards;
-}
-@keyframes barRise {
-  0%   { bottom: 0;    height: 2px; }
-  60%  { bottom: 48%;  height: 2px; }
-  75%  { bottom: 48%;  height: 2px; }
-  100% { bottom: 0;    height: 100vh; }
-}
-
-/* the white sweep that covers and then reveals everything */
-#intro-sweep {
-  position: fixed;
-  inset: 0;
-  background: white;
-  z-index: 52;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity .5s ease;
+  transition: height .7s cubic-bezier(.77, 0, .18, 1);
 }
-#intro-sweep.show { opacity: 1; pointer-events: auto; }
-#intro-sweep.hide {
+#intro-line.rise { height: 100vh; }
+
+/* После интро линия остаётся как center-line (чуть прозрачнее) */
+#intro-line.settle {
+  transition: background .6s ease;
+  background: rgba(255,255,255,.15);
+}
+.build-active #intro-line.settle { background: rgba(0,0,0,.1); }
+
+/* 3. UI группа — появляется после линии */
+.ui-group {
   opacity: 0;
-  transition: opacity .8s ease .1s;
+  transition: opacity .8s ease;
 }
+.ui-group.visible { opacity: 1; }
 
 /* ── LAYERS ── */
 .layer {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   transition: clip-path 1.2s cubic-bezier(.77, 0, .18, 1);
 }
 .build-layer {
@@ -118,19 +105,7 @@ body {
 }
 .grid.active { opacity: 1; }
 
-/* ── CENTER DIVIDER ── */
-.center-line {
-  position: fixed;
-  left: 50%; top: 0; bottom: 0;
-  width: 1px;
-  background: rgba(255,255,255,.14);
-  z-index: 5;
-  pointer-events: none;
-  transition: background .6s ease;
-}
-.build-active .center-line { background: rgba(0,0,0,.1); }
-
-/* ── AUTHOR SIGNATURE ── */
+/* ── SIGNATURE ── */
 .author {
   position: fixed;
   top: 34px; left: 50%;
@@ -159,36 +134,26 @@ body {
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
-  cursor: none;
-  line-height: 1;
+  cursor: none; line-height: 1;
   transition: color .4s ease;
   user-select: none;
 }
 
-/* sub-links — hidden by default, revealed on hover/tap */
 .sub {
   margin-top: 18px;
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: .24em;
-  text-transform: uppercase;
+  font-size: 12px; font-weight: 400;
+  letter-spacing: .24em; text-transform: uppercase;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity .3s ease, transform .3s ease;
   pointer-events: none;
 }
-.sub.visible {
-  opacity: .75;
-  transform: none;
-  pointer-events: auto;
-}
+.sub.visible { opacity: .75; transform: none; pointer-events: auto; }
 .sub a {
-  display: block;
-  color: inherit;
-  text-decoration: none;
+  display: block; color: inherit; text-decoration: none;
   padding: 8px 0;
   border-bottom: 1px solid transparent;
-  transition: border-color .2s, opacity .2s;
+  transition: border-color .2s;
 }
 .sub a:nth-child(1) { transition-delay: .04s; }
 .sub a:nth-child(2) { transition-delay: .09s; }
@@ -203,30 +168,16 @@ body {
   pointer-events: none;
 }
 
-/* ── UI (zones + bottom bar) — fade in after intro ── */
-.ui-group {
-  opacity: 0;
-  transition: opacity .9s ease;
-}
-.ui-group.visible { opacity: 1; }
-
 /* ── BOTTOM BAR ── */
 .bottom-bar {
-  position: absolute;
-  bottom: 36px; width: 100%;
+  position: absolute; bottom: 36px; width: 100%;
   padding: 0 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   font-size: 11px; font-weight: 700;
   letter-spacing: .2em; text-transform: uppercase;
-  z-index: 20;
-  transition: color .4s ease;
+  z-index: 20; transition: color .4s ease;
 }
-.bottom-bar a {
-  color: inherit; text-decoration: none;
-  opacity: .45; transition: opacity .25s;
-}
+.bottom-bar a { color: inherit; text-decoration: none; opacity: .45; transition: opacity .25s; }
 .bottom-bar a:hover { opacity: 1; }
 .contact { display: flex; gap: 14px; align-items: center; }
 .divider { opacity: .2; }
@@ -239,9 +190,8 @@ body {
   left: 50%; transform: translateX(-50%);
   font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
   opacity: 0; z-index: 20; white-space: nowrap;
-  animation: pulse 2.8s ease infinite;
 }
-.tap-hint.visible { opacity: .35; }
+.tap-hint.visible { animation: pulse 2.8s ease infinite; }
 @keyframes pulse { 0%,100%{opacity:.25} 50%{opacity:.55} }
 
 @media (max-width: 900px) {
@@ -265,21 +215,15 @@ body {
 
 <div id="cur"></div>
 
-<!-- INTRO ELEMENTS -->
 <div id="intro-veil"></div>
-<div id="intro-bar"></div>
-<div id="intro-sweep"></div>
+<div id="intro-line"></div>
 
-<!-- LAYERS -->
 <div class="layer build-layer"></div>
 <div class="layer create-layer"></div>
 <div class="grid"></div>
-<div class="center-line"></div>
 
-<!-- SIGNATURE -->
 <div class="author ui-group">A. Vasileuskaya</div>
 
-<!-- TO BUILD -->
 <div class="zone ui-group" id="build">
   <div class="main-title" id="buildBtn">To Build</div>
   <div class="sub" id="buildSub">
@@ -289,7 +233,6 @@ body {
   </div>
 </div>
 
-<!-- TO CREATE -->
 <div class="zone ui-group" id="create">
   <div class="main-title" id="createBtn">To Create</div>
   <div class="sub" id="createSub">
@@ -299,7 +242,6 @@ body {
   </div>
 </div>
 
-<!-- BOTTOM BAR -->
 <div class="bottom-bar ui-group">
   <a href="about.html">About</a>
   <div class="contact">
@@ -329,52 +271,46 @@ body {
     });
   }
 
-  // ─────────────────────────────────────────
+  // ─────────────────────────────
   // INTRO SEQUENCE
-  //  0.0s — photo visible (body bg)
-  //  1.8s — veil darkens
-  //  2.8s — bar starts rising from bottom
-  //  3.7s — sweep flash (white)
-  //  4.0s — sweep fades out, UI fades in
-  // ─────────────────────────────────────────
-  const veil   = document.getElementById('intro-veil');
-  const bar    = document.getElementById('intro-bar');
-  const sweep  = document.getElementById('intro-sweep');
-  const uiEls  = document.querySelectorAll('.ui-group');
+  //  0.0s  — фото
+  //  1.8s  — лёгкое затемнение (22%)
+  //  2.2s  — вертикальная линия вылетает снизу, делит экран
+  //  2.8s  — линия осела, UI появляется, линия становится полупрозрачной
+  // ─────────────────────────────
+  const veil    = document.getElementById('intro-veil');
+  const line    = document.getElementById('intro-line');
+  const uiEls   = document.querySelectorAll('.ui-group');
   const tapHint = document.getElementById('tapHint');
 
-  // step 1 — darken photo
+  // 1.8s — лёгкое затемнение
   setTimeout(() => {
     veil.classList.add('darken');
   }, 1800);
 
-  // step 2 — bar rises
+  // 2.2s — линия вылетает снизу
   setTimeout(() => {
-    bar.classList.add('rise');
-  }, 2800);
+    line.classList.add('rise');
+  }, 2200);
 
-  // step 3 — white flash sweep
+  // 2.8s — UI появляется, линия остаётся как divider
   setTimeout(() => {
-    sweep.classList.add('show');
-  }, 3650);
-
-  // step 4 — reveal interface
-  setTimeout(() => {
-    sweep.classList.remove('show');
-    sweep.classList.add('hide');
+    // убираем вуаль
     veil.style.opacity = '0';
-    veil.style.transition = 'opacity .4s ease';
-    bar.style.opacity = '0';
-    bar.style.transition = 'opacity .3s ease';
+    veil.style.transition = 'opacity .5s ease';
 
+    // линия переходит в постоянный divider
+    line.classList.add('settle');
+
+    // показываем интерфейс
     uiEls.forEach(el => el.classList.add('visible'));
 
     if (!window.matchMedia('(hover: hover)').matches) {
       tapHint.classList.add('visible');
     }
-  }, 4050);
+  }, 2900);
 
-  // ── BUILD / CREATE LOGIC ──
+  // ── BUILD / CREATE ──
   const buildZone  = document.getElementById('build');
   const createZone = document.getElementById('create');
   const buildSub   = document.getElementById('buildSub');
@@ -408,12 +344,9 @@ body {
     buildZone.classList.remove('fade-out');
     createSub.classList.remove('visible');
   }
-  function deactivateAll() {
-    deactivateBuild();
-    deactivateCreate();
-  }
+  function deactivateAll() { deactivateBuild(); deactivateCreate(); }
 
-  // desktop hover
+  // desktop
   buildZone.addEventListener('mouseenter',  activateBuild);
   buildZone.addEventListener('mouseleave',  deactivateBuild);
   createZone.addEventListener('mouseenter', activateCreate);
