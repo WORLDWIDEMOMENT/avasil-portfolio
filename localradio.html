@@ -1,1 +1,507 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Radio — AV</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:    #080808;
+  --white: #e8e8e8;
+  --dim:   #444;
+  --line:  #1a1a1a;
+  --red:   #ff2d2d;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Space Mono', 'Courier New', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cur {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--red);
+  border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .15s, height .15s;
+}
+#cur.big { width: 44px; height: 44px; background: transparent; border: 1px solid var(--red); }
+@media (hover: none) { #cur { display: none; } }
+
+/* ── SCANLINES ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,.012) 2px,
+    rgba(255,255,255,.012) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── NOISE ── */
+.noise {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+}
+
+/* ── PAGE LAYOUT ── */
+.page { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 32px 48px 0;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 24px;
+  gap: 24px;
+}
+
+.back {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  text-decoration: none; color: var(--dim);
+  transition: color .2s;
+  white-space: nowrap;
+}
+.back:hover { color: var(--white); }
+
+/* broadcast info */
+.broadcast-info {
+  display: flex;
+  gap: 32px;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  flex-wrap: wrap;
+}
+.broadcast-info .live {
+  color: var(--red);
+  display: flex; align-items: center; gap: 6px;
+}
+.live-dot {
+  width: 6px; height: 6px;
+  background: var(--red); border-radius: 50%;
+  animation: blink 1.4s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+/* ── HERO TEXT ── */
+.hero {
+  padding: 44px 48px 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.station-name {
+  font-size: clamp(52px, 8vw, 110px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: .88;
+  text-transform: uppercase;
+  /* glitch offset effect */
+  position: relative;
+}
+.station-name::before {
+  content: 'LOCAL RADIO';
+  position: absolute; top: 0; left: 0;
+  color: var(--red);
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  transform: translateX(-3px);
+  opacity: .6;
+  animation: glitch 6s steps(1) infinite;
+}
+@keyframes glitch {
+  0%,92%,100% { transform: translateX(-3px); clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%); }
+  93% { transform: translateX(3px); clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%); }
+  95% { transform: translateX(-2px); clip-path: polygon(0 10%, 100% 10%, 100% 22%, 0 22%); }
+  97% { transform: translateX(0); clip-path: polygon(0 80%, 100% 80%, 100% 90%, 0 90%); }
+}
+
+.station-desc {
+  margin-top: 20px;
+  font-size: clamp(11px, 1vw, 13px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.7;
+  color: rgba(232,232,232,.45);
+  max-width: 580px;
+}
+
+/* ── PLAYLISTS GRID ── */
+.playlists {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+}
+
+.playlist-card {
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  cursor: none;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  transition: background .2s;
+}
+.playlist-card:last-child { border-right: none; }
+.playlist-card:hover { background: rgba(255,255,255,.025); }
+
+/* track number */
+.card-num {
+  position: absolute;
+  top: 14px; left: 14px;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--red);
+  z-index: 2;
+}
+
+/* cover image */
+.cover-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: #111;
+  flex-shrink: 0;
+}
+.cover-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(30%) brightness(.85);
+  transition: filter .5s, transform .6s;
+}
+.playlist-card:hover .cover-wrap img {
+  filter: grayscale(0%) brightness(1);
+  transform: scale(1.04);
+}
+
+/* placeholder while loading */
+.cover-placeholder {
+  position: absolute; inset: 0;
+  background: #111;
+  display: flex; align-items: center; justify-content: center;
+}
+.cover-placeholder .vinyl {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at 50%,
+    #1a1a1a 0px, #1a1a1a 4px,
+    #222 4px, #222 8px
+  );
+  animation: spin 3s linear infinite;
+  position: relative;
+}
+.cover-placeholder .vinyl::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 10px; height: 10px;
+  background: #333; border-radius: 50%;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* play overlay */
+.play-overlay {
+  position: absolute; inset: 0;
+  background: rgba(255,45,45,.0);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .25s;
+  z-index: 3;
+}
+.playlist-card:hover .play-overlay { background: rgba(255,45,45,.12); }
+.play-icon {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: white; opacity: 0;
+  transition: opacity .2s;
+}
+.playlist-card:hover .play-icon { opacity: 1; }
+
+/* card info */
+.card-info {
+  padding: 14px 16px 18px;
+  border-top: 1px solid var(--line);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.card-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  /* shimmer while loading */
+}
+.card-title.loading {
+  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+  background-size: 200%;
+  animation: shimmer 1.5s infinite;
+  color: transparent;
+  border-radius: 2px;
+  height: 14px; width: 80%;
+}
+@keyframes shimmer { from{background-position:200%} to{background-position:-200%} }
+
+.card-tracks {
+  font-size: 9px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--dim);
+}
+.card-tracks.loading {
+  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+  background-size: 200%;
+  animation: shimmer 1.5s infinite;
+  color: transparent;
+  border-radius: 2px;
+  height: 10px; width: 50%;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 16px 48px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.contact {
+  display: flex; gap: 14px; align-items: center;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+}
+.contact a { color: var(--white); text-decoration: none; opacity: .35; transition: opacity .2s; }
+.contact a:hover { opacity: 1; }
+.contact .sep { opacity: .18; }
+.freq {
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--dim);
+  font-style: italic;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .playlists { grid-template-columns: repeat(2, 1fr); }
+  .playlist-card:nth-child(2) { border-right: none; }
+  .playlist-card:nth-child(3) { border-right: 1px solid var(--line); border-top: 1px solid var(--line); }
+  .playlist-card:last-child { border-top: 1px solid var(--line); }
+  .header { padding: 24px 24px 20px; }
+  .hero { padding: 28px 24px 24px; }
+  .footer { padding: 14px 24px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+@media (max-width: 560px) {
+  .playlists { grid-template-columns: repeat(2, 1fr); }
+  .station-name { font-size: clamp(40px, 12vw, 70px); }
+  .contact { flex-wrap: wrap; gap: 8px; }
+  .contact .sep { display: none; }
+  .broadcast-info { gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div class="noise"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <a href="index.html" class="back">← Back</a>
+    <div class="broadcast-info">
+      <span class="live"><span class="live-dot"></span>On air</span>
+      <span id="clock">--:-- UTC</span>
+      <span>Curated by AV</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="station-name">LOCAL RADIO</div>
+    <p class="station-desc">
+      Four channels, no schedule. Music that lives in the space between thinking and forgetting —
+      collected across cities, time zones and states of mind. Not a genre. A frequency.
+      Play loud or not at all.
+    </p>
+  </div>
+
+  <!-- PLAYLISTS -->
+  <div class="playlists" id="playlists">
+
+    <!-- cards injected by JS -->
+    <a class="playlist-card" id="card-0"
+       href="https://open.spotify.com/playlist/0mg0X028fIt8EwH5yi3Czf"
+       target="_blank" rel="noopener">
+      <span class="card-num">01</span>
+      <div class="cover-wrap">
+        <div class="cover-placeholder"><div class="vinyl"></div></div>
+        <div class="play-overlay"><span class="play-icon">↗ Open</span></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title loading" id="title-0">Loading...</div>
+        <div class="card-tracks loading" id="tracks-0">—</div>
+      </div>
+    </a>
+
+    <a class="playlist-card" id="card-1"
+       href="https://open.spotify.com/playlist/4YMNrlPjp3nTenV6Qkn4Tc"
+       target="_blank" rel="noopener">
+      <span class="card-num">02</span>
+      <div class="cover-wrap">
+        <div class="cover-placeholder"><div class="vinyl"></div></div>
+        <div class="play-overlay"><span class="play-icon">↗ Open</span></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title loading" id="title-1">Loading...</div>
+        <div class="card-tracks loading" id="tracks-1">—</div>
+      </div>
+    </a>
+
+    <a class="playlist-card" id="card-2"
+       href="https://open.spotify.com/playlist/2BAdX7KOSo3hsDMlq37IBD"
+       target="_blank" rel="noopener">
+      <span class="card-num">03</span>
+      <div class="cover-wrap">
+        <div class="cover-placeholder"><div class="vinyl"></div></div>
+        <div class="play-overlay"><span class="play-icon">↗ Open</span></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title loading" id="title-2">Loading...</div>
+        <div class="card-tracks loading" id="tracks-2">—</div>
+      </div>
+    </a>
+
+    <a class="playlist-card" id="card-3"
+       href="https://open.spotify.com/playlist/77mIWmxJFdJGWar4EJdrjq"
+       target="_blank" rel="noopener">
+      <span class="card-num">04</span>
+      <div class="cover-wrap">
+        <div class="cover-placeholder"><div class="vinyl"></div></div>
+        <div class="play-overlay"><span class="play-icon">↗ Open</span></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title loading" id="title-3">Loading...</div>
+        <div class="card-tracks loading" id="tracks-3">—</div>
+      </div>
+    </a>
+
+  </div><!-- /playlists -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="contact">
+      <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+      <span class="sep">—</span>
+      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+      <span class="sep">—</span>
+      <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+      <span class="sep">—</span>
+      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+    </div>
+    <div class="freq">Frequency: whatever feels right</div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  // ── CURSOR ──
+  const cur = document.getElementById('cur');
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', e => {
+      cur.style.left = e.clientX + 'px';
+      cur.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, .playlist-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('big'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+    });
+  }
+
+  // ── LIVE CLOCK (UTC) ──
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getUTCHours()).padStart(2,'0');
+    const m = String(now.getUTCMinutes()).padStart(2,'0');
+    const s = String(now.getUTCSeconds()).padStart(2,'0');
+    document.getElementById('clock').textContent = `${h}:${m}:${s} UTC`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ── FETCH SPOTIFY COVERS VIA OEMBED ──
+  const playlists = [
+    { id: 0, url: 'https://open.spotify.com/playlist/0mg0X028fIt8EwH5yi3Czf' },
+    { id: 1, url: 'https://open.spotify.com/playlist/4YMNrlPjp3nTenV6Qkn4Tc' },
+    { id: 2, url: 'https://open.spotify.com/playlist/2BAdX7KOSo3hsDMlq37IBD' },
+    { id: 3, url: 'https://open.spotify.com/playlist/77mIWmxJFdJGWar4EJdrjq' },
+  ];
+
+  playlists.forEach(({ id, url }) => {
+    const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(url)}`;
+
+    fetch(oembedUrl)
+      .then(r => r.json())
+      .then(data => {
+        // inject cover image
+        const card = document.getElementById(`card-${id}`);
+        const coverWrap = card.querySelector('.cover-wrap');
+        const placeholder = coverWrap.querySelector('.cover-placeholder');
+
+        if (data.thumbnail_url) {
+          const img = document.createElement('img');
+          img.src = data.thumbnail_url;
+          img.alt = data.title || 'Playlist cover';
+          img.onload = () => {
+            placeholder.style.opacity = '0';
+            placeholder.style.transition = 'opacity .4s';
+            coverWrap.insertBefore(img, placeholder);
+          };
+        }
+
+        // inject title
+        const titleEl = document.getElementById(`title-${id}`);
+        titleEl.textContent = data.title || `Playlist ${id + 1}`;
+        titleEl.classList.remove('loading');
+
+        // inject provider
+        const tracksEl = document.getElementById(`tracks-${id}`);
+        tracksEl.textContent = 'Spotify playlist';
+        tracksEl.classList.remove('loading');
+      })
+      .catch(() => {
+        // fallback: remove shimmer, show generic label
+        const titleEl = document.getElementById(`title-${id}`);
+        titleEl.textContent = `Channel 0${id + 1}`;
+        titleEl.classList.remove('loading');
+        const tracksEl = document.getElementById(`tracks-${id}`);
+        tracksEl.textContent = 'Spotify playlist';
+        tracksEl.classList.remove('loading');
+      });
+  });
+</script>
+</body>
+</html>
