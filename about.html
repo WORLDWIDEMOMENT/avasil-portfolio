@@ -9,8 +9,8 @@
 
 :root {
   --white: #eeeeee;
-  --dim:   rgba(238,238,238,.45);
-  --line:  rgba(238,238,238,.12);
+  --dim:   rgba(238,238,238,.42);
+  --line:  rgba(238,238,238,.11);
   --strip: rgba(0,0,0,.72);
 }
 
@@ -35,52 +35,60 @@ html, body {
 #cur.big { width: 50px; height: 50px; }
 @media (hover: none) { #cur { display: none; } }
 
-/* ── PHOTO BG ── */
+/* ── PHOTO — full bleed ── */
 .bg {
   position: fixed; inset: 0; z-index: 0;
   background: url("images/about1.JPG") center/cover no-repeat;
-  animation: bgSettle 1.4s cubic-bezier(.4,0,.2,1) forwards;
+  animation: bgIn 1.4s cubic-bezier(.4,0,.2,1) forwards;
 }
-@keyframes bgSettle {
-  from { transform: scale(1.05); filter: brightness(.5); }
-  to   { transform: scale(1);    filter: brightness(.9); }
-}
-
-/* Left gradient — only darkens left edge slightly for text */
-.bg-left {
-  position: fixed; inset: 0; z-index: 1;
-  background: linear-gradient(to right, rgba(0,0,0,.55) 0%, rgba(0,0,0,.1) 55%, transparent 65%);
+@keyframes bgIn {
+  from { transform: scale(1.05); filter: brightness(.55); }
+  to   { transform: scale(1);    filter: brightness(1); }
 }
 
-/* RIGHT STRIP — hard edge, no gradient, solid dark panel */
-.right-strip {
-  position: fixed;
-  top: 0; right: 0; bottom: 0;
-  width: 38%;
-  background: var(--strip);
-  z-index: 1;
-  /* hard left edge — no gradient */
-  border-left: 1px solid rgba(255,255,255,.07);
+/* subtle top & bottom vignette — doesn't touch the sides */
+.vignette {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,.55) 0%, transparent 18%),
+    linear-gradient(to top,    rgba(0,0,0,.6)  0%, transparent 22%);
 }
 
 /* grain */
 .grain {
   position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: .04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
+  background-size: 180px;
 }
 
-/* ── PAGE ── */
+/* ── DARK STRIP — sharp edges, right portion, face stays clear ──
+   Starts at ~58% from left, goes to right edge.
+   Positioned from bottom so face area above is untouched. */
+.strip {
+  position: fixed;
+  /* starts right after the face — tune left% to taste */
+  left: 57%;
+  right: 0;
+  /* covers bottom ~70% of screen where text lives */
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  background: var(--strip);
+  /* NO blur, NO gradient — sharp rectangle */
+}
+
+/* ── PAGE SHELL ── */
 .page {
-  position: relative; z-index: 3;
+  position: relative; z-index: 4;
   height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* ── TOP BAR ── */
 .top-bar {
-  padding: 34px 48px 0;
+  padding: 36px 48px 0;
   opacity: 0;
   animation: fadeUp .6s ease .15s forwards;
 }
@@ -92,91 +100,93 @@ html, body {
 }
 .back:hover { color: var(--white); }
 
-/* ── MAIN CONTENT ── */
-.content {
+/* ── MAIN — two columns, anchored to bottom ── */
+.main {
   display: grid;
-  grid-template-columns: 62% 38%;
-  align-items: center; /* both columns vertically centered */
+  grid-template-columns: 57% 43%;
+  align-items: flex-end;        /* both blocks stick to the bottom */
+  flex: 1;
 }
 
-/* LEFT — manifesto */
+/* LEFT block — sits over the photo directly */
 .left {
-  padding: 0 56px 0 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 0 56px 52px 48px;
+  opacity: 0;
+  animation: fadeUp .7s ease .3s forwards;
 }
 
 .statement {
   font-size: 10px; font-weight: 700;
-  letter-spacing: .28em; text-transform: uppercase;
+  letter-spacing: .26em; text-transform: uppercase;
   color: rgba(238,238,238,.4);
-  margin-bottom: 22px;
-  opacity: 0;
-  animation: fadeUp .6s ease .3s forwards;
+  margin-bottom: 16px;
 }
 
 .manifesto {
-  font-size: clamp(30px, 3.8vw, 54px);
+  font-size: clamp(30px, 3.6vw, 52px);
   font-weight: 700;
-  letter-spacing: -.02em;
-  line-height: 1.05;
+  letter-spacing: -.025em;
+  line-height: 1.02;
   text-transform: uppercase;
-  margin-bottom: 24px;
-  opacity: 0;
-  animation: fadeUp .7s ease .4s forwards;
+  text-shadow: 0 2px 24px rgba(0,0,0,.5);
+  margin-bottom: 22px;
 }
 
 .sub-manifesto {
-  font-size: clamp(13px, 1.2vw, 16px);
+  font-size: clamp(12px, 1.1vw, 14px);
   font-weight: 300;
+  line-height: 1.6;
+  color: rgba(238,238,238,.6);
   font-style: italic;
-  line-height: 1.65;
-  color: rgba(238,238,238,.65);
-  max-width: 400px;
-  margin-bottom: 24px;
-  opacity: 0;
-  animation: fadeUp .6s ease .5s forwards;
+  max-width: 360px;
+  margin-bottom: 14px;
 }
 
 .precision {
-  font-size: clamp(12px, 1.1vw, 15px);
+  font-size: clamp(12px, 1.1vw, 14px);
   font-weight: 700;
-  letter-spacing: .02em;
   color: var(--white);
-  opacity: 0;
-  animation: fadeUp .6s ease .58s forwards;
 }
 .precision em {
   font-style: italic;
   font-weight: 300;
-  color: rgba(238,238,238,.65);
+  color: rgba(238,238,238,.6);
 }
 
-/* RIGHT — bio, sits inside the dark strip, vertically centered */
+/* RIGHT block — sits on the dark strip */
 .right {
-  padding: 0 44px 0 44px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0;
+  padding: 0 52px 52px 48px;
+  opacity: 0;
+  animation: fadeUp .7s ease .45s forwards;
+}
+
+.bio-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .26em; text-transform: uppercase;
+  color: rgba(238,238,238,.28);
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(238,238,238,.1);
+  padding-bottom: 12px;
 }
 
 .bio-text {
-  font-size: clamp(12px, 1.05vw, 14px);
+  font-size: clamp(12px, 1vw, 13.5px);
   font-weight: 300;
-  line-height: 1.8;
+  line-height: 1.78;
   color: rgba(238,238,238,.72);
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  opacity: 0;
-  animation: fadeUp .7s ease .55s forwards;
+  gap: 12px;
 }
-.bio-text p { max-width: 360px; }
 .bio-text strong {
   color: var(--white);
   font-weight: 600;
+}
+.bio-text .closing {
+  color: var(--white);
+  font-weight: 600;
+  font-size: clamp(12px, 1.05vw, 14px);
+  margin-top: 4px;
 }
 
 /* ── BOTTOM BAR ── */
@@ -184,56 +194,41 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 48px 28px;
+  padding: 14px 48px 28px;
   border-top: 1px solid var(--line);
   opacity: 0;
-  animation: fadeUp .6s ease .7s forwards;
+  animation: fadeUp .6s ease .65s forwards;
 }
 
 .contact {
   display: flex; gap: 14px; align-items: center;
   font-size: 10px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
+  letter-spacing: .16em; text-transform: uppercase;
 }
 .contact a { color: var(--white); text-decoration: none; opacity: .38; transition: opacity .2s; }
 .contact a:hover { opacity: 1; }
 .contact .sep { opacity: .18; }
+.year { font-size: 10px; font-weight: 700; letter-spacing: .2em; color: rgba(238,238,238,.2); }
 
-.year-tag {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(238,238,238,.2);
-}
-
-/* ── ANIMATION ── */
+/* ── ANIM ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: none; }
 }
 
 /* ── MOBILE ── */
 @media (max-width: 860px) {
   html, body { overflow-y: auto; height: auto; }
   .page { height: auto; min-height: 100svh; }
-  .right-strip { display: none; }
-  .bg-left {
-    background: linear-gradient(to bottom, rgba(0,0,0,.6) 0%, rgba(0,0,0,.45) 100%);
-  }
-  .content {
-    grid-template-columns: 1fr;
-    padding: 24px 28px 0;
-    gap: 32px;
-  }
-  .left { padding: 0; }
-  .right {
-    padding: 28px 0 0;
-    border-top: 1px solid var(--line);
-  }
-  .bio-text p { max-width: 100%; }
+  .strip { left: 0; top: 55vh; }
+  .main { grid-template-columns: 1fr; }
+  .left  { padding: 0 28px 36px; }
+  .right { padding: 32px 28px 36px; }
   .top-bar { padding: 28px 28px 0; }
-  .bottom-bar { padding: 16px 28px 28px; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .bottom-bar { padding: 14px 28px 24px; flex-direction: column; gap: 10px; align-items: flex-start; }
 }
 @media (max-width: 480px) {
+  .manifesto { font-size: clamp(26px, 8.5vw, 38px); }
   .contact { flex-wrap: wrap; gap: 8px; }
   .contact .sep { display: none; }
 }
@@ -243,9 +238,9 @@ html, body {
 
 <div id="cur"></div>
 <div class="bg"></div>
-<div class="bg-left"></div>
-<div class="right-strip"></div>
+<div class="vignette"></div>
 <div class="grain"></div>
+<div class="strip"></div>
 
 <div class="page">
 
@@ -253,51 +248,51 @@ html, body {
     <a href="index.html" class="back">← Back</a>
   </div>
 
-  <div class="content">
+  <div class="main">
 
-    <!-- LEFT -->
+    <!-- LEFT: manifesto, over photo -->
     <div class="left">
       <div class="statement">Anastasiya Vasileuskaya</div>
-
       <div class="manifesto">
-        This is not<br>a portfolio.<br>
-        This is an<br>evolving system.
+        This is not<br>
+        a portfolio.<br>
+        This is an<br>
+        evolving system.
       </div>
-
       <div class="sub-manifesto">
         Built at the intersection of spatial design,<br>
         urban research, AI experimentation<br>
         and visual storytelling.
       </div>
-
       <div class="precision">
         Professional precision. <em>Underground sensitivity.</em>
       </div>
     </div>
 
-    <!-- RIGHT — inside dark strip -->
+    <!-- RIGHT: bio, over dark strip -->
     <div class="right">
+      <div class="bio-label">Practice</div>
       <div class="bio-text">
         <p>
           Trained as an architect. Operating beyond it.
           Years of practice across Southern Europe and beyond —
-          working at the scale of villas, master plans, and cities,
+          at the scale of villas, master plans and cities,
           at studios that think across disciplines.
         </p>
         <p>
           The work moves between <strong>architecture, spatial research,
-          brand strategy and visual culture</strong> —
-          not because the boundaries are unclear,
-          but because they were never interesting to begin with.
+          brand strategy and visual culture</strong> — not because
+          the boundaries are unclear, but because they were
+          never interesting to begin with.
         </p>
         <p>
           A parallel practice in video, photography, custom clothing
-          and AI-assisted design. Shaped by exposure to
-          <strong>Slavic, Mediterranean and worldwide contexts</strong> —
-          each one leaving a different understanding of
-          how people inhabit space and image.
+          and AI-assisted design. Shaped by <strong>Slavic,
+          Mediterranean and Latin American contexts</strong> —
+          each one a different understanding of how people
+          inhabit space and image.
         </p>
-        <p><strong>Everything connects. Nothing is separate.</strong></p>
+        <p class="closing">Everything connects. Nothing is separate.</p>
       </div>
     </div>
 
@@ -313,7 +308,7 @@ html, body {
       <span class="sep">—</span>
       <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
     </div>
-    <div class="year-tag">AV — 2025</div>
+    <div class="year">AV — 2025</div>
   </div>
 
 </div>
