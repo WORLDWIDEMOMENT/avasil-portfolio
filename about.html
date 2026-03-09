@@ -7,10 +7,12 @@
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* text selection */
+::selection { background: #2a2a2a; color: #eeeeee; }
+
 :root {
   --white: #eeeeee;
-  --dim:   rgba(238,238,238,.42);
-  --line:  rgba(238,238,238,.11);
+  --dim:   rgba(238,238,238,.4);
   --strip: rgba(0,0,0,.72);
 }
 
@@ -35,182 +37,150 @@ html, body {
 #cur.big { width: 50px; height: 50px; }
 @media (hover: none) { #cur { display: none; } }
 
-/* ── PHOTO — full bleed ── */
+/* ── FULL-BLEED PHOTO ── */
 .bg {
   position: fixed; inset: 0; z-index: 0;
   background: url("images/about1.JPG") center/cover no-repeat;
   animation: bgIn 1.4s cubic-bezier(.4,0,.2,1) forwards;
 }
 @keyframes bgIn {
-  from { transform: scale(1.05); filter: brightness(.55); }
+  from { transform: scale(1.06); filter: brightness(.55); }
   to   { transform: scale(1);    filter: brightness(1); }
-}
-
-/* subtle top & bottom vignette — doesn't touch the sides */
-.vignette {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    linear-gradient(to bottom, rgba(0,0,0,.55) 0%, transparent 18%),
-    linear-gradient(to top,    rgba(0,0,0,.6)  0%, transparent 22%);
 }
 
 /* grain */
 .grain {
-  position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: .04;
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px;
+  background-size: 180px 180px;
 }
 
-/* ── DARK STRIP — sharp edges, right portion, face stays clear ──
-   Starts at ~58% from left, goes to right edge.
-   Positioned from bottom so face area above is untouched. */
-.strip {
+/* ── LEFT DARK OVERLAY — covers ~42% from left, no gradient ── */
+.overlay-left {
   position: fixed;
-  /* starts right after the face — tune left% to taste */
-  left: 57%;
-  right: 0;
-  /* covers bottom ~70% of screen where text lives */
-  top: 0;
-  bottom: 0;
-  z-index: 3;
-  background: var(--strip);
-  /* NO blur, NO gradient — sharp rectangle */
+  top: 0; left: 0; bottom: 0;
+  width: 42%;
+  background: rgba(0,0,0,.68);
+  z-index: 2;
 }
 
-/* ── PAGE SHELL ── */
+/* ── RIGHT DARK STRIP — sharp left edge, from ~68% to right ── */
+.overlay-right {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 32%;
+  background: rgba(0,0,0,.70);
+  z-index: 2;
+}
+
+/* ── UI LAYER ── */
 .page {
-  position: relative; z-index: 4;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position: fixed; inset: 0; z-index: 3;
+  pointer-events: none;
 }
+.page a, .page button { pointer-events: auto; }
 
-/* ── TOP BAR ── */
-.top-bar {
-  padding: 36px 48px 0;
-  opacity: 0;
-  animation: fadeUp .6s ease .15s forwards;
-}
+/* ── BACK ── */
 .back {
+  position: absolute;
+  top: 36px; left: 48px;
   font-size: 11px; font-weight: 700;
   letter-spacing: .18em; text-transform: uppercase;
   text-decoration: none; color: var(--dim);
   transition: color .2s;
+  opacity: 0;
+  animation: fadeUp .6s ease .2s forwards;
+  pointer-events: auto;
 }
 .back:hover { color: var(--white); }
 
-/* ── MAIN — two columns, anchored to bottom ── */
-.main {
-  display: grid;
-  grid-template-columns: 57% 43%;
-  align-items: flex-end;        /* both blocks stick to the bottom */
-  flex: 1;
-}
-
-/* LEFT block — sits over the photo directly */
-.left {
-  padding: 0 56px 52px 48px;
-  opacity: 0;
-  animation: fadeUp .7s ease .3s forwards;
-}
-
-.statement {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(238,238,238,.4);
-  margin-bottom: 16px;
-}
-
-.manifesto {
-  font-size: clamp(30px, 3.6vw, 52px);
-  font-weight: 700;
-  letter-spacing: -.025em;
-  line-height: 1.02;
-  text-transform: uppercase;
-  text-shadow: 0 2px 24px rgba(0,0,0,.5);
-  margin-bottom: 22px;
-}
-
-.sub-manifesto {
-  font-size: clamp(12px, 1.1vw, 14px);
-  font-weight: 300;
-  line-height: 1.6;
-  color: rgba(238,238,238,.6);
-  font-style: italic;
-  max-width: 360px;
-  margin-bottom: 14px;
-}
-
-.precision {
-  font-size: clamp(12px, 1.1vw, 14px);
-  font-weight: 700;
-  color: var(--white);
-}
-.precision em {
-  font-style: italic;
-  font-weight: 300;
-  color: rgba(238,238,238,.6);
-}
-
-/* RIGHT block — sits on the dark strip */
-.right {
-  padding: 0 52px 52px 48px;
+/* ── LEFT TEXT BLOCK — bottom-left, within overlay-left ── */
+.block-left {
+  position: absolute;
+  bottom: 80px;
+  left: 48px;
+  width: 36%;
   opacity: 0;
   animation: fadeUp .7s ease .45s forwards;
 }
 
-.bio-label {
-  font-size: 9px; font-weight: 700;
+.author-label {
+  font-size: 10px; font-weight: 700;
   letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(238,238,238,.28);
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(238,238,238,.1);
-  padding-bottom: 12px;
+  color: rgba(238,238,238,.38);
+  margin-bottom: 18px;
+  display: block;
+}
+
+.manifesto {
+  font-size: clamp(30px, 3.4vw, 50px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.02;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.sub-manifesto {
+  font-size: clamp(12px, 1.05vw, 14px);
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(238,238,238,.6);
+  font-style: italic;
+  margin-bottom: 14px;
+  max-width: 360px;
+}
+
+.precision {
+  font-size: clamp(12px, 1.05vw, 14px);
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(238,238,238,.75);
+}
+.precision strong { color: var(--white); font-weight: 700; }
+
+/* ── RIGHT TEXT BLOCK — bottom-right, within overlay-right ── */
+.block-right {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 32%;
+  padding: 0 40px 0 36px;
+  opacity: 0;
+  animation: fadeUp .7s ease .6s forwards;
 }
 
 .bio-text {
-  font-size: clamp(12px, 1vw, 13.5px);
+  font-size: clamp(12px, 1.05vw, 14px);
   font-weight: 300;
-  line-height: 1.78;
+  line-height: 1.8;
   color: rgba(238,238,238,.72);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
-.bio-text strong {
-  color: var(--white);
+.bio-text strong { color: var(--white); font-weight: 600; }
+.bio-text .closer {
   font-weight: 600;
-}
-.bio-text .closing {
   color: var(--white);
-  font-weight: 600;
-  font-size: clamp(12px, 1.05vw, 14px);
-  margin-top: 4px;
 }
 
-/* ── BOTTOM BAR ── */
-.bottom-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 48px 28px;
-  border-top: 1px solid var(--line);
-  opacity: 0;
-  animation: fadeUp .6s ease .65s forwards;
-}
-
-.contact {
+/* ── BOTTOM-RIGHT — contacts ── */
+.footer-right {
+  position: absolute;
+  bottom: 30px; right: 48px;
   display: flex; gap: 14px; align-items: center;
   font-size: 10px; font-weight: 700;
   letter-spacing: .16em; text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp .6s ease .8s forwards;
+  pointer-events: auto;
 }
-.contact a { color: var(--white); text-decoration: none; opacity: .38; transition: opacity .2s; }
-.contact a:hover { opacity: 1; }
-.contact .sep { opacity: .18; }
-.year { font-size: 10px; font-weight: 700; letter-spacing: .2em; color: rgba(238,238,238,.2); }
+.footer-right a { color: var(--white); text-decoration: none; opacity: .4; transition: opacity .2s; }
+.footer-right a:hover { opacity: 1; }
+.footer-right .sep { opacity: .18; }
 
-/* ── ANIM ── */
+/* ── ANIMATIONS ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: none; }
@@ -219,18 +189,39 @@ html, body {
 /* ── MOBILE ── */
 @media (max-width: 860px) {
   html, body { overflow-y: auto; height: auto; }
-  .page { height: auto; min-height: 100svh; }
-  .strip { left: 0; top: 55vh; }
-  .main { grid-template-columns: 1fr; }
-  .left  { padding: 0 28px 36px; }
-  .right { padding: 32px 28px 36px; }
-  .top-bar { padding: 28px 28px 0; }
-  .bottom-bar { padding: 14px 28px 24px; flex-direction: column; gap: 10px; align-items: flex-start; }
+
+  .bg { position: fixed; }
+  .overlay-left  { width: 100%; background: rgba(0,0,0,.65); }
+  .overlay-right { display: none; }
+
+  .page { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 28px; }
+
+  .back { top: 28px; left: 24px; }
+
+  .block-left {
+    position: relative; bottom: auto; left: auto;
+    width: 100%; padding: 0 24px;
+    margin-bottom: 32px;
+  }
+
+  .block-right {
+    position: relative; bottom: auto; right: auto;
+    width: 100%; padding: 0 24px;
+    margin-bottom: 28px;
+    border-top: 1px solid rgba(238,238,238,.12);
+    padding-top: 24px;
+  }
+
+  .footer-right {
+    position: relative; bottom: auto; right: auto;
+    padding: 0 24px;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .footer-right .sep { display: none; }
 }
+
 @media (max-width: 480px) {
-  .manifesto { font-size: clamp(26px, 8.5vw, 38px); }
-  .contact { flex-wrap: wrap; gap: 8px; }
-  .contact .sep { display: none; }
+  .manifesto { font-size: 26px; }
 }
 </style>
 </head>
@@ -238,77 +229,71 @@ html, body {
 
 <div id="cur"></div>
 <div class="bg"></div>
-<div class="vignette"></div>
 <div class="grain"></div>
-<div class="strip"></div>
+
+<!-- sharp dark overlays — no gradients -->
+<div class="overlay-left"></div>
+<div class="overlay-right"></div>
 
 <div class="page">
 
-  <div class="top-bar">
-    <a href="index.html" class="back">← Back</a>
+  <a href="index.html" class="back">← Back</a>
+
+  <!-- LEFT TEXT — manifesto, low -->
+  <div class="block-left">
+    <span class="author-label">Anastasiya Vasileuskaya</span>
+
+    <div class="manifesto">
+      This is not<br>a portfolio.<br>
+      This is an<br>evolving system.
+    </div>
+
+    <div class="sub-manifesto">
+      Built at the intersection of spatial design,<br>
+      urban research, AI experimentation<br>
+      and visual storytelling.
+    </div>
+
+    <div class="precision">
+      <strong>Professional precision.</strong> Underground sensitivity.
+    </div>
   </div>
 
-  <div class="main">
-
-    <!-- LEFT: manifesto, over photo -->
-    <div class="left">
-      <div class="statement">Anastasiya Vasileuskaya</div>
-      <div class="manifesto">
-        This is not<br>
-        a portfolio.<br>
-        This is an<br>
-        evolving system.
-      </div>
-      <div class="sub-manifesto">
-        Built at the intersection of spatial design,<br>
-        urban research, AI experimentation<br>
-        and visual storytelling.
-      </div>
-      <div class="precision">
-        Professional precision. Underground sensitivity.
-      </div>
+  <!-- RIGHT TEXT — bio, low, on dark strip -->
+  <div class="block-right">
+    <div class="bio-text">
+      <p>
+        Trained as an architect. Operating beyond it.
+        Years of practice across Southern Europe and beyond —
+        working at the scale of villas, master plans and cities,
+        at studios that think across disciplines.
+      </p>
+      <p>
+        The work moves between <strong>architecture, spatial research,
+        brand strategy and visual culture</strong> — not because
+        the boundaries are unclear, but because they were never
+        interesting to begin with.
+      </p>
+      <p>
+        A parallel practice in video, photography, custom clothing
+        and AI-assisted design. Shaped by exposure to
+        <strong>Slavic, Mediterranean and Latin American contexts</strong> —
+        each one leaving a different understanding of how people
+        inhabit space and image.
+      </p>
+      <p class="closer">Everything connects. Nothing is separate.</p>
     </div>
-
-    <!-- RIGHT: bio, over dark strip -->
-    <div class="right">
-      <div class="bio-label">Practice</div>
-      <div class="bio-text">
-        <p>
-          Trained as an architect. Operating beyond it.
-          Years of practice across Southern Europe and beyond —
-          at the scale of villas, master plans and cities,
-          at studios that think across disciplines.
-        </p>
-        <p>
-          The work moves between <strong>architecture, spatial research,
-          brand strategy and visual culture</strong> — not because
-          the boundaries are unclear, but because they were
-          never interesting to begin with.
-        </p>
-        <p>
-          A parallel practice in video, photography, custom clothing
-          and AI-assisted design. Shaped by <strong>Slavic,
-          Mediterranean and Latin American contexts</strong> —
-          each one a different understanding of how people
-          inhabit space and image.
-        </p>
-        <p class="closing">Everything connects. Nothing is separate.</p>
-      </div>
-    </div>
-
   </div>
 
-  <div class="bottom-bar">
-    <div class="contact">
-      <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-      <span class="sep">—</span>
-      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-      <span class="sep">—</span>
-      <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
-      <span class="sep">—</span>
-      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
-    </div>
-    <div class="year">AV — 2025</div>
+  <!-- CONTACTS — bottom right -->
+  <div class="footer-right">
+    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+    <span class="sep">—</span>
+    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+    <span class="sep">—</span>
+    <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
+    <span class="sep">—</span>
+    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
   </div>
 
 </div>
