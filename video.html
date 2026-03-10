@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,23 +7,17 @@
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 ::selection { background: #2a2a2a; color: #eee; }
-
 :root {
   --white: #eeeeee;
   --dim:   rgba(238,238,238,.4);
   --line:  rgba(238,238,238,.1);
   --blue:  #4d6aff;
 }
-
 html, body {
   height: 100%; overflow: hidden;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: var(--white);
-  cursor: none;
-  background: #060606;
+  color: var(--white); cursor: none; background: #060606;
 }
-
-/* ── CURSOR ── */
 #cur {
   position: fixed; width: 10px; height: 10px;
   background: white; border-radius: 50%;
@@ -38,39 +31,24 @@ html, body {
 
 .bg {
   position: fixed; inset: 0; z-index: 0;
-  background-size: cover;
-  background-position: center;
-  transition: opacity .8s ease;
-}
-.bg-prev, .bg-next {
-  position: fixed; inset: 0; z-index: 0;
   background-size: cover; background-position: center;
-  opacity: 0; transition: opacity .8s ease;
 }
-
-/* dark veil over bg */
 .bg-veil {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
   background: rgba(0,0,0,.55);
 }
-
-/* grain */
 .grain {
   position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: .05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
 }
-
-/* ── PAGE LAYOUT ── */
 .page {
   position: fixed; inset: 0; z-index: 3;
-  display: grid;
-  grid-template-rows: auto 1fr auto auto;
+  display: grid; grid-template-rows: auto 1fr auto auto;
   pointer-events: none;
 }
 .page * { pointer-events: auto; }
 
-/* ── TOP BAR ── */
 .top-bar {
   display: flex; justify-content: space-between; align-items: center;
   padding: 32px 44px 0;
@@ -83,49 +61,31 @@ html, body {
 .back:hover { color: var(--white); }
 .page-label {
   font-size: 10px; font-weight: 700; letter-spacing: .28em;
-  text-transform: uppercase; color: var(--dim);
-  pointer-events: none;
+  text-transform: uppercase; color: var(--dim); pointer-events: none;
 }
 
-/* ── CENTER STAGE ── */
 .stage {
   display: flex; align-items: center; justify-content: center;
-  gap: 0; padding: 0 60px;
-  position: relative;
+  padding: 0 60px;
 }
-
-/* arrow buttons */
 .arrow {
-  flex-shrink: 0;
-  width: 52px; height: 52px;
-  border: 1px solid var(--line);
-  background: rgba(0,0,0,.3);
+  flex-shrink: 0; width: 52px; height: 52px;
+  border: 1px solid var(--line); background: rgba(0,0,0,.3);
   display: flex; align-items: center; justify-content: center;
-  cursor: none;
-  transition: border-color .2s, background .2s;
-  z-index: 10;
+  cursor: none; transition: border-color .2s, background .2s; z-index: 10;
 }
 .arrow:hover { border-color: rgba(238,238,238,.4); background: rgba(0,0,0,.6); }
 .arrow svg { width: 18px; height: 18px; fill: none; stroke: var(--white); stroke-width: 1.5; opacity: .7; }
 
-/* video frame */
-.video-frame {
-  flex: 1;
-  max-width: 860px;
-  position: relative;
-}
+.video-frame { flex: 1; max-width: 860px; position: relative; }
 .video-ratio {
   position: relative; width: 100%; padding-bottom: 56.25%;
-  background: #000;
-  box-shadow: 0 0 80px rgba(0,0,0,.8);
+  background: #000; box-shadow: 0 0 80px rgba(0,0,0,.8);
 }
 .video-ratio iframe {
   position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  border: none;
+  width: 100%; height: 100%; border: none;
 }
-
-/* video title + counter below player */
 .video-info {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 12px 0 0;
@@ -136,91 +96,64 @@ html, body {
   color: rgba(238,238,238,.8);
 }
 .video-counter {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .18em; color: var(--dim);
+  font-size: 10px; font-weight: 700; letter-spacing: .18em; color: var(--dim);
 }
 
-/* ── FILMSTRIP ── */
-.filmstrip-wrap {
-  padding: 20px 44px 0;
-  overflow: hidden;
-}
+.filmstrip-wrap { padding: 20px 44px 0; overflow: hidden; }
 .filmstrip {
-  display: flex; gap: 8px;
-  overflow-x: auto; padding-bottom: 4px;
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
   scrollbar-width: none;
 }
 .filmstrip::-webkit-scrollbar { display: none; }
-
 .strip-item {
-  flex-shrink: 0;
-  width: 120px;
-  cursor: none;
-  opacity: .45;
-  transition: opacity .2s;
-  position: relative;
+  flex-shrink: 0; width: 120px; cursor: none;
+  opacity: .45; transition: opacity .2s; position: relative;
 }
 .strip-item.active { opacity: 1; }
-.strip-item:hover { opacity: .8; }
+.strip-item:hover  { opacity: .8; }
 .strip-item.active::after {
-  content: '';
-  position: absolute; bottom: -4px; left: 0; right: 0;
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
   height: 2px; background: var(--blue);
 }
-
 .strip-thumb {
-  width: 120px; height: 68px;
-  object-fit: cover;
-  display: block;
-  filter: grayscale(60%);
-  transition: filter .25s;
+  width: 120px; height: 68px; object-fit: cover; display: block;
+  filter: grayscale(60%); transition: filter .25s;
 }
 .strip-item.active .strip-thumb,
-.strip-item:hover .strip-thumb { filter: grayscale(0%); }
-
-/* placeholder strip thumb */
+.strip-item:hover  .strip-thumb { filter: grayscale(0%); }
 .strip-ph {
-  width: 120px; height: 68px;
-  background: #1a1a1a;
+  width: 120px; height: 68px; background: #1a1a1a;
   display: flex; align-items: center; justify-content: center;
   font-size: 7px; letter-spacing: .15em; text-transform: uppercase; color: #333;
 }
-
 .strip-name {
-  font-size: 8px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: rgba(238,238,238,.5);
-  margin-top: 5px;
+  font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(238,238,238,.5); margin-top: 5px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-/* ── BOTTOM BAR ── */
 .bottom-bar {
   display: flex; justify-content: space-between; align-items: center;
   padding: 14px 44px 28px;
 }
 .caption {
-  font-size: 9px; font-weight: 400;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: rgba(238,238,238,.25);
-  font-style: italic;
-  max-width: 340px;
+  font-size: 9px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(238,238,238,.25); font-style: italic;
+  max-width: 420px; line-height: 1.6;
 }
 .footer-links {
   display: flex; gap: 14px; align-items: center;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
+  font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
 }
 .footer-links a { color: var(--white); text-decoration: none; opacity: .35; transition: opacity .2s; }
 .footer-links a:hover { opacity: 1; }
 .footer-links .sep { opacity: .18; }
 
-/* ── MOBILE ── */
 @media (max-width: 768px) {
   html, body { overflow-y: auto; height: auto; }
-  .page { position: relative; height: auto; }
+  .page { position: relative; height: auto; min-height: 100svh; }
   .bg, .bg-veil, .grain { position: fixed; }
-  .stage { padding: 0 16px; gap: 10px; }
+  .stage { padding: 0 12px; }
   .arrow { width: 38px; height: 38px; }
   .strip-item { width: 80px; }
   .strip-thumb, .strip-ph { width: 80px; height: 45px; }
@@ -240,31 +173,24 @@ html, body {
 <div class="grain"></div>
 
 <div class="page">
-
   <div class="top-bar">
-    <a href="index.html" class="back">← Back</a>
-    <span class="page-label">To Create · Video</span>
+    <a href="index.html" class="back">&#8592; Back</a>
+    <span class="page-label">To Create &middot; Video</span>
   </div>
 
   <div class="stage">
     <button class="arrow" id="btnPrev" aria-label="Previous">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
-
     <div class="video-frame">
       <div class="video-ratio">
-        <iframe id="vimeoFrame"
-          src=""
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+        <iframe id="vimeoFrame" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="video-info">
         <div class="video-title" id="vTitle"></div>
         <div class="video-counter" id="vCounter"></div>
       </div>
     </div>
-
     <button class="arrow" id="btnNext" aria-label="Next">
       <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
     </button>
@@ -278,155 +204,138 @@ html, body {
     <div class="caption" id="vCaption"></div>
     <div class="footer-links">
       <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-      <span class="sep">—</span>
+      <span class="sep">&mdash;</span>
       <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-      <span class="sep">—</span>
+      <span class="sep">&mdash;</span>
       <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
-      <span class="sep">—</span>
+      <span class="sep">&mdash;</span>
       <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
     </div>
   </div>
-
-</div><!-- /page -->
+</div>
 
 <script>
-// ═══════════════════════════════════════════════════
-//  ВИДЕО — ДОБАВЛЯЙ СЮДА
-//
-//  id       — Vimeo ID (цифры из URL vimeo.com/XXXXXXXX)
-//  title    — название видео
-//  caption  — подпись внизу (атмосферная строка)
-//  bg       — ★ ПУТЬ К ФОТО ФОНА (положи фото в папку images/video/)
-//  thumb    — превью для стрипа (можно тот же файл или кадр из видео)
-//
-//  Пример: { id: '1171844542', bg: 'images/video/bg-01.jpg', ... }
-// ═══════════════════════════════════════════════════
-const VIDEOS = [
+// ═══════════════════════════════════════════════════════
+//  ДОБАВЛЯЙ ВИДЕО СЮДА
+//  id      — Vimeo ID из URL vimeo.com/XXXXXXXXX
+//  title   — название
+//  caption — подпись внизу (можно оставить пустой '')
+//  bg      — фото фона → папка images/video/ в репозитории
+//  thumb   — vumbnail.com/XXXXXXXXX.jpg генерирует превью автоматически
+// ═══════════════════════════════════════════════════════
+var VIDEOS = [
   {
     id:      '1171844542',
     title:   'BIRDS',
-    caption: 'From Paris with love!',
+    caption: 'From Paris with love',
     bg:      'images/video/videobirds1.jpg',
     thumb:   'https://vumbnail.com/1171844542.jpg'
   },
   {
     id:      '1172106551',
     title:   'Rebirth Cycles',
-    caption: 'This story﻿ explores the path back to the beginning – a journey into the past, and a meditation on caring for abandoned homes. It's about capturing the last echoes of lives once lived within their walls. But these houses aren't empty; they're filled with the promise of return. Ultimately, this is a story about reincarnation, and the inevitability of cycles repeating. It's bound to happen again.',
-    bg:      'images/video/videoRebirthCycles.jpg',   // 
+    caption: 'A journey into the past. A meditation on caring for abandoned homes. The inevitability of cycles repeating.',
+    bg:      'images/video/videoRebirthCycles.jpg',
     thumb:   'https://vumbnail.com/1172106551.jpg'
   },
   {
     id:      '1172106388',
     title:   'LVL',
-    caption: 'Short experimental stuff with my friends',
-    bg:      'images/video/videolvl.jpg',   //
+    caption: 'Short experimental stuff with friends',
+    bg:      'images/video/videolvl.jpg',
     thumb:   'https://vumbnail.com/1172106388.jpg'
   },
-  {
-    id:      'XXXXXXXXX',
-    title:   'Film 04',
-    caption: '',
-    bg:      'images/video/bg-04.jpg',   // ← ★ ФОТО ФОНА #4
-    thumb:   ''
-  },
-];
-
-// ═══════════════════════════════════════════════════
-
-let current = 0;
-const frame    = document.getElementById('vimeoFrame');
-const bgEl     = document.getElementById('bgEl');
-const titleEl  = document.getElementById('vTitle');
-const counterEl= document.getElementById('vCounter');
-const captionEl= document.getElementById('vCaption');
-const strip    = document.getElementById('filmstrip');
-
-// build filmstrip
-VIDEOS.forEach((v, i) => {
-  const item = document.createElement('div');
-  item.className = 'strip-item' + (i === 0 ? ' active' : '');
-  item.dataset.index = i;
-
-  if (v.thumb) {
-    const img = document.createElement('img');
-    img.className = 'strip-thumb';
-    img.src = v.thumb;
-    img.alt = v.title;
-    img.onerror = function() {
-      this.replaceWith(makePh(v.title));
-    };
-    item.appendChild(img);
-  } else {
-    item.appendChild(makePh(v.title));
+    {
+    id:      '1172128536',
+    title:   'Short Walks Down Long Roads',
+    caption: 'Just a feeling.',
+    bg:      'images/video/videoshort1.jpg',
+    thumb:   'https://vumbnail.com/1172128536.jpg'
   }
+];
+// ═══════════════════════════════════════════════════════
 
-  const name = document.createElement('div');
-  name.className = 'strip-name';
-  name.textContent = v.title;
-  item.appendChild(name);
-
-  item.addEventListener('click', () => goTo(i));
-  strip.appendChild(item);
-});
+var current   = 0;
+var frame     = document.getElementById('vimeoFrame');
+var bgEl      = document.getElementById('bgEl');
+var titleEl   = document.getElementById('vTitle');
+var counterEl = document.getElementById('vCounter');
+var captionEl = document.getElementById('vCaption');
+var strip     = document.getElementById('filmstrip');
 
 function makePh(t) {
-  const d = document.createElement('div');
+  var d = document.createElement('div');
   d.className = 'strip-ph';
   d.textContent = t || 'video';
   return d;
 }
 
+VIDEOS.forEach(function(v, i) {
+  var item = document.createElement('div');
+  item.className = 'strip-item' + (i === 0 ? ' active' : '');
+
+  if (v.thumb) {
+    var img = document.createElement('img');
+    img.className = 'strip-thumb';
+    img.src = v.thumb;
+    img.alt = v.title;
+    img.onerror = function() { this.replaceWith(makePh(v.title)); };
+    item.appendChild(img);
+  } else {
+    item.appendChild(makePh(v.title));
+  }
+
+  var nameEl = document.createElement('div');
+  nameEl.className = 'strip-name';
+  nameEl.textContent = v.title;
+  item.appendChild(nameEl);
+
+  item.addEventListener('click', (function(idx){ return function(){ goTo(idx); }; })(i));
+  strip.appendChild(item);
+});
+
 function goTo(i) {
-  current = (i + VIDEOS.length) % VIDEOS.length;
-  const v = VIDEOS[current];
+  current = ((i % VIDEOS.length) + VIDEOS.length) % VIDEOS.length;
+  var v = VIDEOS[current];
 
-  // swap iframe src
-  const src = v.id && v.id !== 'XXXXXXXXX'
-    ? `https://player.vimeo.com/video/${v.id}?autoplay=1&dnt=1&color=ffffff&title=0&byline=0&portrait=0`
-    : '';
-  frame.src = src;
+  // NOTE: muted=0 keeps sound on — browser may still require user gesture
+  // If video doesn't autoplay, viewer just presses play in the Vimeo player
+  frame.src = 'https://player.vimeo.com/video/' + v.id +
+    '?autoplay=1&muted=0&dnt=1&color=ffffff&title=0&byline=0&portrait=0';
 
-  // swap bg
-  bgEl.style.backgroundImage = v.bg ? `url('${v.bg}')` : 'none';
-
-  // update ui
+  bgEl.style.backgroundImage = v.bg ? "url('" + v.bg + "')" : 'none';
   titleEl.textContent   = v.title   || '';
   captionEl.textContent = v.caption || '';
-  counterEl.textContent = `${String(current + 1).padStart(2,'0')} / ${String(VIDEOS.length).padStart(2,'0')}`;
+  counterEl.textContent =
+    String(current + 1).padStart(2, '0') + ' / ' +
+    String(VIDEOS.length).padStart(2, '0');
 
-  // update strip
-  document.querySelectorAll('.strip-item').forEach((el, idx) => {
+  document.querySelectorAll('.strip-item').forEach(function(el, idx) {
     el.classList.toggle('active', idx === current);
   });
 
-  // scroll strip item into view
-  const activeItem = strip.children[current];
-  if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  var active = strip.children[current];
+  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 }
 
-document.getElementById('btnPrev').addEventListener('click', () => goTo(current - 1));
-document.getElementById('btnNext').addEventListener('click', () => goTo(current + 1));
-
-// keyboard
-window.addEventListener('keydown', e => {
+document.getElementById('btnPrev').addEventListener('click', function(){ goTo(current - 1); });
+document.getElementById('btnNext').addEventListener('click', function(){ goTo(current + 1); });
+window.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft')  goTo(current - 1);
   if (e.key === 'ArrowRight') goTo(current + 1);
 });
 
-// init
 goTo(0);
 
-// ── CURSOR ──
-const cur = document.getElementById('cur');
+var cur = document.getElementById('cur');
 if (window.matchMedia('(hover: hover)').matches) {
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', function(e) {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
   });
-  document.querySelectorAll('a, button, .strip-item').forEach(el => {
-    el.addEventListener('mouseenter', () => cur.classList.add('big'));
-    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+  document.querySelectorAll('a, button, .strip-item').forEach(function(el) {
+    el.addEventListener('mouseenter', function(){ cur.classList.add('big'); });
+    el.addEventListener('mouseleave', function(){ cur.classList.remove('big'); });
   });
 }
 </script>
