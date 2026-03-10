@@ -29,15 +29,13 @@ html, body {
 #cur.big { width: 50px; height: 50px; }
 @media (hover: none) { #cur { display: none; } }
 
-/* ── CROSSFADE BACKGROUNDS ── */
-/* Two layers — we swap which one is on top */
 .bg-a, .bg-b {
   position: fixed; inset: 0; z-index: 0;
-  background-size: cover;      /* natural fill, no zoom */
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: blur(3px);           /* subtle blur hides low-res */
-  transform: scale(1.03);      /* compensate blur edge bleed */
+  filter: blur(3px);
+  transform: scale(1.03);
   transition: opacity .9s ease;
 }
 .bg-a { opacity: 1; }
@@ -53,7 +51,6 @@ html, body {
   background-size: 180px 180px;
 }
 
-/* ── PAGE ── */
 .page {
   position: fixed; inset: 0; z-index: 3;
   display: grid;
@@ -62,7 +59,6 @@ html, body {
 }
 .page * { pointer-events: auto; }
 
-/* top bar */
 .top-bar {
   display: flex; align-items: center;
   padding: 32px 44px 0;
@@ -74,7 +70,6 @@ html, body {
 }
 .back:hover { color: var(--white); }
 
-/* ── STAGE ── */
 .stage {
   display: flex; align-items: center; justify-content: center;
   padding: 0 48px;
@@ -99,7 +94,6 @@ html, body {
   width: 100%; height: 100%; border: none;
 }
 
-/* title row below player */
 .video-info {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 14px 2px 0;
@@ -114,7 +108,6 @@ html, body {
   color: rgba(238,238,238,.5);
 }
 
-/* ── FILMSTRIP ── */
 .filmstrip-wrap { padding: 18px 44px 0; overflow: hidden; }
 .filmstrip {
   display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px;
@@ -124,7 +117,6 @@ html, body {
 
 .strip-item {
   flex-shrink: 0; width: 130px; cursor: none;
-  /* bright by default — no dimming */
   opacity: .75; transition: opacity .2s, transform .2s;
   position: relative;
 }
@@ -136,7 +128,6 @@ html, body {
 }
 .strip-thumb {
   width: 130px; height: 74px; object-fit: cover; display: block;
-  /* NO grayscale — full color, full brightness */
   transition: transform .25s;
 }
 .strip-ph {
@@ -150,7 +141,6 @@ html, body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-/* ── BOTTOM BAR ── */
 .bottom-bar {
   display: flex; justify-content: space-between; align-items: center;
   padding: 12px 44px 26px;
@@ -169,7 +159,6 @@ html, body {
 .footer-links a:hover { opacity: 1; }
 .footer-links .sep { opacity: .18; }
 
-/* ── MOBILE ── */
 @media (max-width: 768px) {
   html, body { overflow-y: auto; height: auto; }
   .page { position: relative; height: auto; min-height: 100svh; }
@@ -189,7 +178,6 @@ html, body {
 <body>
 
 <div id="cur"></div>
-<!-- two bg layers for crossfade -->
 <div class="bg-a" id="bgA"></div>
 <div class="bg-b" id="bgB"></div>
 <div class="bg-veil"></div>
@@ -206,7 +194,6 @@ html, body {
     </button>
     <div class="video-frame">
       <div class="video-ratio">
-        <!-- NO autoplay — user clicks play themselves -->
         <iframe id="vimeoFrame" src="" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="video-info">
@@ -261,7 +248,7 @@ var VIDEOS = [
     bg:      'images/video/videoRebirthCycles.jpg',
     thumb:   'https://vumbnail.com/1172106551.jpg'
   },
-   {
+  {
     id:      '1172281707',
     title:   'Special Diary',
     caption: 'This is how life used to feel',
@@ -275,14 +262,14 @@ var VIDEOS = [
     bg:      'images/video/videolvl.jpg',
     thumb:   'https://vumbnail.com/1172106388.jpg'
   },
-    {
+  {
     id:      '1172128536',
     title:   'Short Walks Down Long Roads',
     caption: 'Just a feeling.',
     bg:      'images/video/videoshort1.jpg',
     thumb:   'https://vumbnail.com/1172128536.jpg'
-   },
-    {
+  },
+  {
     id:      '1172128536',
     title:   'Ruslan',
     caption: 'Just a feeling.',
@@ -290,21 +277,20 @@ var VIDEOS = [
     thumb:   'https://vumbnail.com/1172128536.jpg'
   }
   // добавляй новые видео здесь:
-  // ,{ id:'XXXXXXXXX', title:'Film 04', caption:'', bg:'images/video/bg-04.jpg', thumb:'https://vumbnail.com/XXXXXXXXX.jpg' }
+  // ,{ id:'XXXXXXXXX', title:'...', caption:'', bg:'images/video/bg.jpg', thumb:'https://vumbnail.com/XXXXXXXXX.jpg' }
 ];
 // ═══════════════════════════════════════════════════════
 
-var current   = 0;
-var frame     = document.getElementById('vimeoFrame');
-var bgA       = document.getElementById('bgA');
-var bgB       = document.getElementById('bgB');
-var activeLayer = 'a'; // which bg layer is on top
-var titleEl   = document.getElementById('vTitle');
-var counterEl = document.getElementById('vCounter');
-var captionEl = document.getElementById('vCaption');
-var strip     = document.getElementById('filmstrip');
+var current     = 0;
+var frame       = document.getElementById('vimeoFrame');
+var bgA         = document.getElementById('bgA');
+var bgB         = document.getElementById('bgB');
+var activeLayer = 'a';
+var titleEl     = document.getElementById('vTitle');
+var counterEl   = document.getElementById('vCounter');
+var captionEl   = document.getElementById('vCaption');
+var strip       = document.getElementById('filmstrip');
 
-// build filmstrip
 function makePh(t) {
   var d = document.createElement('div');
   d.className = 'strip-ph';
@@ -336,7 +322,6 @@ VIDEOS.forEach(function(v, i) {
   strip.appendChild(item);
 });
 
-// smooth bg crossfade between two layers
 function setBg(url) {
   if (activeLayer === 'a') {
     bgB.style.backgroundImage = url ? "url('" + url + "')" : 'none';
@@ -355,11 +340,9 @@ function goTo(i) {
   current = ((i % VIDEOS.length) + VIDEOS.length) % VIDEOS.length;
   var v = VIDEOS[current];
 
-  // NO autoplay — plain embed URL, user presses play
   frame.src = 'https://player.vimeo.com/video/' + v.id +
     '?dnt=1&color=ffffff&title=0&byline=0&portrait=0';
 
-  // crossfade background
   setBg(v.bg);
 
   titleEl.textContent   = v.title   || '';
@@ -384,7 +367,6 @@ window.addEventListener('keydown', function(e) {
 
 goTo(0);
 
-// cursor
 var cur = document.getElementById('cur');
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', function(e) {
