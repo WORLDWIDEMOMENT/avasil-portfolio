@@ -29,7 +29,7 @@ html, body {
 #cur.big { width: 50px; height: 50px; }
 @media (hover: none) { #cur { display: none; } }
 
-/* ── BACKGROUNDS ── */
+/* ── BG CROSSFADE ── */
 .bg-a, .bg-b {
   position: fixed; inset: 0; z-index: 0;
   background-size: cover; background-position: center; background-repeat: no-repeat;
@@ -52,41 +52,37 @@ html, body {
 .page {
   position: fixed; inset: 0; z-index: 3;
   display: grid;
-  grid-template-rows: auto auto 1fr auto auto;
+  grid-template-rows: auto 1fr auto auto;
   pointer-events: none;
 }
 .page * { pointer-events: auto; }
 
 /* ── TOP BAR ── */
 .top-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 30px 44px 0;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 32px 44px 0;
 }
 .back {
-  font-size: 11px; font-weight: 700; letter-spacing: .18em;
+  font-size: 12px; font-weight: 700; letter-spacing: .18em;
   text-transform: uppercase; text-decoration: none; color: var(--dim);
-  transition: color .2s;
+  transition: color .2s; flex-shrink: 0;
 }
 .back:hover { color: var(--white); }
 
-/* ── MANIFESTO BAND ── */
-.manifesto-bar {
-  padding: 18px 44px 0;
-  display: flex; align-items: baseline; gap: 32px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 16px;
-  margin-top: 16px;
+/* description — top right */
+.page-desc {
+  max-width: 300px; text-align: right;
+  pointer-events: none;
 }
-.manifesto-text {
-  font-size: clamp(11px, 1.1vw, 14px);
-  font-weight: 400; font-style: italic;
-  letter-spacing: .04em; line-height: 1.6;
-  color: rgba(238,238,238,.52);
-  max-width: 560px;
+.page-desc p {
+  font-size: 11px; font-weight: 400; line-height: 1.75;
+  letter-spacing: .04em;
+  color: rgba(238,238,238,.42);
+  font-style: italic;
 }
-.manifesto-text strong {
-  font-style: normal; font-weight: 700;
-  color: rgba(238,238,238,.8);
+.page-desc p strong {
+  font-style: normal; font-weight: 600;
+  color: rgba(238,238,238,.65);
 }
 
 /* ── STAGE ── */
@@ -110,30 +106,31 @@ html, body {
   box-shadow: 0 12px 80px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.06);
 }
 .video-ratio iframe {
-  position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; border: none;
 }
 
-/* title row — fixed height, no layout shift */
+/* title row — fixed height so nothing jumps */
 .video-info {
   display: flex; justify-content: space-between; align-items: baseline;
-  padding: 12px 2px 0;
-  height: 36px; /* fixed — prevents jump */
+  padding: 14px 2px 0;
+  height: 36px; /* fixed — prevents layout shift */
 }
 .video-title {
-  font-size: clamp(16px, 1.7vw, 22px);
-  font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  font-size: clamp(16px, 1.8vw, 22px);
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
   color: var(--white);
 }
 .video-counter {
   font-size: 13px; font-weight: 700; letter-spacing: .2em;
-  color: rgba(238,238,238,.5);
+  color: rgba(238,238,238,.55);
 }
 
 /* ── FILMSTRIP ── */
 .filmstrip-wrap {
-  padding: 14px 44px 0;
+  padding: 16px 44px 0;
   overflow: hidden;
-  position: relative; /* tooltip context */
+  position: relative; /* anchor for tooltip */
 }
 .filmstrip {
   display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px;
@@ -154,7 +151,6 @@ html, body {
 }
 .strip-thumb {
   width: 130px; height: 74px; object-fit: cover; display: block;
-  transition: transform .25s;
 }
 .strip-ph {
   width: 130px; height: 74px; background: #1e1e1e;
@@ -163,66 +159,83 @@ html, body {
 }
 .strip-name {
   font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-  color: rgba(238,238,238,.75); margin-top: 6px;
+  color: rgba(238,238,238,.75); margin-top: 7px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-/* ── FILM-FRAME TOOLTIP ── */
-/* appears above strip on hover, old-cinema perforations style */
-.film-tooltip {
-  position: fixed; /* fixed so it can escape overflow:hidden */
-  z-index: 200;
-  width: 240px;
+/* ── CINEMA TOOLTIP ── */
+/* Fixed panel that floats above the filmstrip */
+.cinema-tooltip {
+  position: fixed;
+  bottom: 0; /* recalculated via JS */
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 340px;
+  background: #0c0b09;
+  border: 1px solid rgba(255,255,255,.18);
   pointer-events: none;
+  z-index: 200;
   opacity: 0;
-  transform: translateY(6px);
   transition: opacity .22s ease, transform .22s ease;
 }
-.film-tooltip.visible {
-  opacity: 1; transform: translateY(0);
+.cinema-tooltip.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
-/* film sprocket holes strip on top & bottom */
-.film-perf {
-  display: flex; gap: 5px; padding: 0 8px;
-  background: #111;
+/* film sprocket strip — top & bottom */
+.cinema-tooltip::before,
+.cinema-tooltip::after {
+  content: '';
+  display: block;
+  height: 10px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 5px,
+      rgba(255,255,255,.12) 5px, rgba(255,255,255,.12) 6px,
+      transparent 6px, transparent 14px,
+      #1a1810 14px, #1a1810 20px
+    );
+  border-bottom: 1px solid rgba(255,255,255,.1);
 }
-.film-perf span {
-  width: 8px; height: 10px;
-  border: 1px solid #333;
-  border-radius: 1px;
-  background: #000;
-  flex-shrink: 0;
+.cinema-tooltip::after {
+  border-bottom: none;
+  border-top: 1px solid rgba(255,255,255,.1);
 }
-.film-perf.top { border-radius: 3px 3px 0 0; }
-.film-perf.bot { border-radius: 0 0 3px 3px; }
 
-.film-body {
-  background: #0e0e0e;
-  border-left: 1px solid #2a2a2a;
-  border-right: 1px solid #2a2a2a;
-  padding: 10px 14px 12px;
+.cinema-inner {
+  padding: 12px 16px;
 }
-.film-label {
+.cinema-label {
   font-size: 8px; font-weight: 700; letter-spacing: .28em;
-  text-transform: uppercase; color: var(--blue);
-  margin-bottom: 6px; display: block;
+  text-transform: uppercase; color: rgba(238,238,238,.3);
+  margin-bottom: 7px;
+  display: flex; justify-content: space-between; align-items: center;
 }
-.film-caption-text {
-  font-size: 11px; font-weight: 300; line-height: 1.65;
+.cinema-label span { color: var(--blue); }
+.cinema-text {
+  font-size: 11px; font-weight: 300; line-height: 1.7;
   color: rgba(238,238,238,.75); font-style: italic;
+  letter-spacing: .03em;
 }
 
-/* ── BOTTOM BAR ── */
+/* ── BOTTOM BAR — matching other pages ── */
 .bottom-bar {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 44px 24px;
+  padding: 10px 44px 28px;
+  border-top: 1px solid var(--line);
 }
+.footer-left a {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--white); text-decoration: none; opacity: .35; transition: opacity .2s;
+}
+.footer-left a:hover { opacity: 1; }
 .footer-links {
   display: flex; gap: 16px; align-items: center;
   font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
 }
-.footer-links a { color: var(--white); text-decoration: none; opacity: .4; transition: opacity .2s; }
+.footer-links a { color: var(--white); text-decoration: none; opacity: .35; transition: opacity .2s; }
 .footer-links a:hover { opacity: 1; }
 .footer-links .sep { opacity: .18; }
 
@@ -235,13 +248,13 @@ html, body {
   .arrow { width: 36px; height: 36px; }
   .strip-item { width: 90px; }
   .strip-thumb, .strip-ph { width: 90px; height: 51px; }
-  .filmstrip-wrap { padding: 12px 20px 0; }
-  .manifesto-bar { padding: 14px 20px 14px; gap: 16px; flex-direction: column; }
-  .bottom-bar { flex-direction: column; gap: 12px; align-items: flex-start; padding: 10px 20px 24px; }
-  .top-bar { padding: 24px 20px 0; }
+  .filmstrip-wrap { padding: 14px 20px 0; }
+  .bottom-bar { flex-direction: column; gap: 10px; align-items: flex-start; padding: 12px 20px 24px; }
+  .top-bar { padding: 24px 20px 0; flex-wrap: wrap; gap: 12px; }
+  .page-desc { text-align: left; max-width: 100%; }
   .footer-links { flex-wrap: wrap; gap: 8px; }
   .footer-links .sep { display: none; }
-  .film-tooltip { display: none; } /* on mobile, no hover */
+  .cinema-tooltip { width: 90vw; }
 }
 </style>
 </head>
@@ -253,14 +266,12 @@ html, body {
 <div class="bg-veil"></div>
 <div class="grain"></div>
 
-<!-- FILM TOOLTIP (global, moved by JS) -->
-<div class="film-tooltip" id="filmTooltip">
-  <div class="film-perf top" id="perfTop"></div>
-  <div class="film-body">
-    <span class="film-label">Director's Note</span>
-    <div class="film-caption-text" id="tooltipText"></div>
+<!-- CINEMA TOOLTIP — lives outside .page to avoid clipping -->
+<div class="cinema-tooltip" id="cinemaTooltip">
+  <div class="cinema-inner">
+    <div class="cinema-label">Note <span id="tooltipCounter"></span></div>
+    <div class="cinema-text" id="tooltipText"></div>
   </div>
-  <div class="film-perf bot" id="perfBot"></div>
 </div>
 
 <div class="page">
@@ -268,19 +279,15 @@ html, body {
   <!-- TOP BAR -->
   <div class="top-bar">
     <a href="index.html" class="back">&#8592; Back</a>
+    <div class="page-desc">
+      <p>I never trained to shoot — I just stopped being afraid of the camera.<br>
+      Noticing details through a lens became part of how I think.<br>
+      Editing became a form of experiment.<br>
+      <strong>The outcome is rarely known in advance. That's the point.</strong></p>
+    </div>
   </div>
 
-  <!-- MANIFESTO BAND -->
-  <div class="manifesto-bar">
-    <p class="manifesto-text">
-      <strong>I never trained to shoot — I just stopped being afraid of the camera.</strong>
-      Noticing details through a lens became part of how I think.
-      Editing became a form of experiment.
-      The outcome is rarely known in advance. That's the point.
-    </p>
-  </div>
-
-  <!-- VIDEO PLAYER -->
+  <!-- STAGE -->
   <div class="stage">
     <button class="arrow" id="btnPrev" aria-label="Previous">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -300,15 +307,16 @@ html, body {
   </div>
 
   <!-- FILMSTRIP -->
-  <div class="filmstrip-wrap">
+  <div class="filmstrip-wrap" id="filmstripWrap">
     <div class="filmstrip" id="filmstrip"></div>
   </div>
 
-  <!-- BOTTOM BAR -->
+  <!-- BOTTOM BAR — matching other pages -->
   <div class="bottom-bar">
-    <div class="footer-links">
+    <div class="footer-left">
       <a href="about.html">About</a>
-      <span class="sep">&mdash;</span>
+    </div>
+    <div class="footer-links">
       <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
       <span class="sep">&mdash;</span>
       <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
@@ -319,11 +327,16 @@ html, body {
     </div>
   </div>
 
-</div>
+</div><!-- /page -->
 
 <script>
 // ═══════════════════════════════════════════════════════
 //  ВИДЕО — редактируй только этот массив
+//  id      — Vimeo ID из URL: vimeo.com/XXXXXXXXX
+//  title   — название
+//  caption — подпись (показывается в тултипе при наведении на стрип)
+//  bg      — фото фона → папка images/video/ в репозитории
+//  thumb   — превью стрипа (vumbnail.com/ID.jpg — автоматически)
 // ═══════════════════════════════════════════════════════
 var VIDEOS = [
   {
@@ -379,25 +392,13 @@ var bgB         = document.getElementById('bgB');
 var activeLayer = 'a';
 var titleEl     = document.getElementById('vTitle');
 var counterEl   = document.getElementById('vCounter');
-var captionEl   = document.getElementById('vCaption');
 var strip       = document.getElementById('filmstrip');
-var tooltip     = document.getElementById('filmTooltip');
+var tooltip     = document.getElementById('cinemaTooltip');
 var tooltipText = document.getElementById('tooltipText');
-var perfTop     = document.getElementById('perfTop');
-var perfBot     = document.getElementById('perfBot');
+var tooltipCtr  = document.getElementById('tooltipCounter');
+var filmwrap    = document.getElementById('filmstripWrap');
+var hideTimer;
 
-// build perforations
-function buildPerfs(el, count) {
-  el.innerHTML = '';
-  for (var i = 0; i < count; i++) {
-    var s = document.createElement('span');
-    el.appendChild(s);
-  }
-}
-buildPerfs(perfTop, 9);
-buildPerfs(perfBot, 9);
-
-// build filmstrip
 function makePh(t) {
   var d = document.createElement('div');
   d.className = 'strip-ph';
@@ -405,10 +406,10 @@ function makePh(t) {
   return d;
 }
 
+// Build filmstrip
 VIDEOS.forEach(function(v, i) {
   var item = document.createElement('div');
   item.className = 'strip-item' + (i === 0 ? ' active' : '');
-  item.dataset.caption = v.caption || '';
 
   if (v.thumb) {
     var img = document.createElement('img');
@@ -426,44 +427,44 @@ VIDEOS.forEach(function(v, i) {
   nameEl.textContent = v.title;
   item.appendChild(nameEl);
 
+  // click → go to video
   item.addEventListener('click', (function(idx){ return function(){ goTo(idx); }; })(i));
 
-  // tooltip on hover
-  item.addEventListener('mouseenter', function(e) {
-    var cap = this.dataset.caption;
-    if (!cap) return;
-    tooltipText.textContent = cap;
-    var rect = this.getBoundingClientRect();
-    tooltip.style.left = Math.min(rect.left, window.innerWidth - 260) + 'px';
-    tooltip.style.top  = (rect.top - tooltip.offsetHeight - 14) + 'px';
+  // hover → show cinema tooltip
+  item.addEventListener('mouseenter', (function(idx){ return function(){
+    clearTimeout(hideTimer);
+    var v = VIDEOS[idx];
+    if (!v.caption) return;
+    tooltipText.textContent = v.caption;
+    tooltipCtr.textContent  = String(idx + 1).padStart(2,'0') + ' / ' + String(VIDEOS.length).padStart(2,'0');
+    // position tooltip just above filmstrip wrap
+    var rect = filmwrap.getBoundingClientRect();
+    tooltip.style.bottom = (window.innerHeight - rect.top + 14) + 'px';
     tooltip.classList.add('visible');
-    // reposition after render (height known)
-    requestAnimationFrame(function() {
-      tooltip.style.top = (rect.top - tooltip.offsetHeight - 14) + 'px';
-    });
-  });
-  item.addEventListener('mouseleave', function() {
-    tooltip.classList.remove('visible');
+  }; })(i));
+
+  item.addEventListener('mouseleave', function(){
+    hideTimer = setTimeout(function(){ tooltip.classList.remove('visible'); }, 120);
   });
 
   strip.appendChild(item);
 });
 
+// Keep tooltip visible when hovering it
+tooltip.addEventListener('mouseenter', function(){ clearTimeout(hideTimer); });
+tooltip.addEventListener('mouseleave', function(){ tooltip.classList.remove('visible'); });
+
 function setBg(url) {
   if (activeLayer === 'a') {
     bgB.style.backgroundImage = url ? "url('" + url + "')" : 'none';
-    bgB.style.opacity = '1';
-    bgA.style.opacity = '0';
-    activeLayer = 'b';
+    bgB.style.opacity = '1'; bgA.style.opacity = '0'; activeLayer = 'b';
   } else {
     bgA.style.backgroundImage = url ? "url('" + url + "')" : 'none';
-    bgA.style.opacity = '1';
-    bgB.style.opacity = '0';
-    activeLayer = 'a';
+    bgA.style.opacity = '1'; bgB.style.opacity = '0'; activeLayer = 'a';
   }
 }
 
-function goTo(i, pushState) {
+function goTo(i) {
   current = ((i % VIDEOS.length) + VIDEOS.length) % VIDEOS.length;
   var v = VIDEOS[current];
 
@@ -483,14 +484,22 @@ function goTo(i, pushState) {
   var active = strip.children[current];
   if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
-  // ── DEEP LINK: update URL without reload ──
-  // Share link will look like: video.html?v=2
-  // Anyone opening it lands directly on that video
-  if (pushState !== false && window.history && window.history.replaceState) {
-    var url = window.location.pathname + '?v=' + current;
-    window.history.replaceState({ v: current }, '', url);
+  // ── DEEP LINK: update URL hash so this video is shareable ──
+  // Share video.html#2 → opens directly on video index 2
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState(null, '', '#' + current);
   }
 }
+
+// ── Read URL hash on load for deep linking ──
+(function() {
+  var hash = window.location.hash.replace('#', '');
+  var idx  = parseInt(hash, 10);
+  if (!isNaN(idx) && idx >= 0 && idx < VIDEOS.length) {
+    current = idx;
+  }
+  goTo(current);
+})();
 
 document.getElementById('btnPrev').addEventListener('click', function(){ goTo(current - 1); });
 document.getElementById('btnNext').addEventListener('click', function(){ goTo(current + 1); });
@@ -499,15 +508,7 @@ window.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowRight') goTo(current + 1);
 });
 
-// ── READ DEEP LINK on load ──
-(function() {
-  var params = new URLSearchParams(window.location.search);
-  var v = parseInt(params.get('v'), 10);
-  var startAt = (!isNaN(v) && v >= 0 && v < VIDEOS.length) ? v : 0;
-  goTo(startAt, false);
-})();
-
-// cursor
+// Cursor
 var cur = document.getElementById('cur');
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', function(e) {
