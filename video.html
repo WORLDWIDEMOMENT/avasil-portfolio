@@ -125,9 +125,10 @@ html, body {
 }
 
 /* ── FILMSTRIP ── */
-.filmstrip-wrap { padding: 18px 44px 0; overflow: hidden; }
+.filmstrip-wrap { padding: 18px 44px 0; overflow: visible; }
 .filmstrip {
-  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px;
+  display: flex; gap: 10px; overflow-x: auto; overflow-y: visible;
+  padding-bottom: 8px; padding-top: 160px; margin-top: -160px;
   scrollbar-width: none;
 }
 .filmstrip::-webkit-scrollbar { display: none; }
@@ -298,7 +299,7 @@ html, body {
       <a href="about.html">About</a>
     </div>
     <div class="footer-links">
-      <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+      <a href="/cdn-cgi/l/email-protection#0f616e7966636a614f6d64217d7a"><span class="__cf_email__" data-cfemail="8ee0eff8e7e2ebe0ceece5a0fcfb">[email&#160;protected]</span></a>
       <span class="sep">&mdash;</span>
       <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
       <span class="sep">&mdash;</span>
@@ -310,7 +311,7 @@ html, body {
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════════════════════
 //  ВИДЕО — редактируй только этот массив
 //  id      — Vimeo ID из URL: vimeo.com/XXXXXXXXX
@@ -484,11 +485,4 @@ if (window.matchMedia('(hover: hover)').matches) {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
   });
-  document.querySelectorAll('a, button, .strip-item').forEach(function(el) {
-    el.addEventListener('mouseenter', function(){ cur.classList.add('big'); });
-    el.addEventListener('mouseleave', function(){ cur.classList.remove('big'); });
-  });
-}
-</script>
-</body>
-</html>
+  document.querySelectorAll('a, button, .st
