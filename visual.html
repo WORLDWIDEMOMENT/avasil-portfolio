@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Visual — AV</title>
+<!-- visual.html -->
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 ::selection { background: #2a2a2a; color: #eeeeee; }
@@ -218,7 +219,7 @@ body {
 </main>
 
 <footer class="footer">
-  <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+  <a href="/cdn-cgi/l/email-protection#6d030c1b040108032d0f06431f18"><span class="__cf_email__" data-cfemail="dfb1bea9b6b3bab19fbdb4f1adaa">[email&#160;protected]</span></a>
   <span class="sep">—</span>
   <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
   <span class="sep">—</span>
@@ -227,7 +228,7 @@ body {
   <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════════════════════════════════
    DATA
    sizes: tall | wide | sq | port | land
@@ -235,24 +236,24 @@ body {
    ═══════════════════════════════════════════════════ */
 const ITEMS = [
   // ── SCAN ──
-  { cat:'scan',   title:'Scan 01', size:'tall', img:'images/assets/create/scan/Scan1.jpg' },
-  { cat:'scan',   title:'Scan 02', size:'sq',   img:'images/assets/create/scan/Scan2.JPG' },
-  { cat:'scan',   title:'Scan 03', size:'port', img:'images/assets/create/scan/Scan3.JPG' },
-  { cat:'scan',   title:'Scan 04', size:'wide', img:'images/assets/create/scan/Scan4.JPG' },
-  { cat:'scan',   title:'Scan 05', size:'tall', img:'images/assets/create/scan/Scan5.JPG' },
-  { cat:'scan',   title:'Scan 06', size:'sq',   img:'images/assets/create/scan/Scan6.JPG' },
-  { cat:'scan',   title:'Scan 07', size:'land', img:'iimages/assets/create/scan/Scan7.jpg' },
-  { cat:'scan',   title:'Scan 08', size:'port', img:'images/assets/create/scan/Scan8.JPG' },
-  { cat:'scan',   title:'Scan 09', size:'port', img:'images/assets/create/scan/Scan9.JPG' },
-  { cat:'scan',   title:'Scan 10', size:'port', img:'images/assets/create/scan/Scan10.jpg' },
+  { cat:'scan',   title:'Scan 01', size:'tall', img:'images/assets/create/scan-01.jpg' },
+  { cat:'scan',   title:'Scan 02', size:'sq',   img:'images/assets/create/scan-02.jpg' },
+  { cat:'scan',   title:'Scan 03', size:'port', img:'images/assets/create/scan-03.jpg' },
+  { cat:'scan',   title:'Scan 04', size:'wide', img:'images/assets/create/scan-04.jpg' },
+  { cat:'scan',   title:'Scan 05', size:'tall', img:'images/assets/create/scan-05.jpg' },
+  { cat:'scan',   title:'Scan 06', size:'sq',   img:'images/assets/create/scan-06.jpg' },
+  { cat:'scan',   title:'Scan 07', size:'land', img:'images/assets/create/scan-07.jpg' },
+  { cat:'scan',   title:'Scan 08', size:'port', img:'images/assets/create/scan-08.jpg' },
   // ── NONE OF THEM IS ME ──
-  { cat:'none',   title:'#01',     size:'tall', img:'images/assets/create/portrait/Portrait1.jpg' },
-  { cat:'none',   title:'#02',     size:'wide', img:'images/assets/create/portrait/Portrait2.jpg' },
-  { cat:'none',   title:'#03',     size:'sq',   img:'images/assets/create/portrait/Portrait3.jpg' },
-  { cat:'none',   title:'#04',     size:'port', img:'images/assets/create/portrait/Portrait4.jpg' },
-  { cat:'none',   title:'#05',     size:'tall', img:'images/assets/create/portrait/Portrait5.jpg' },
-  { cat:'none',   title:'#06',     size:'land', img:'images/assets/create/portrait/Portrait6.jpg' },
-  
+  { cat:'none',   title:'#01',     size:'tall', img:'images/assets/create/none-01.jpg' },
+  { cat:'none',   title:'#02',     size:'wide', img:'images/assets/create/none-02.jpg' },
+  { cat:'none',   title:'#03',     size:'sq',   img:'images/assets/create/none-03.jpg' },
+  { cat:'none',   title:'#04',     size:'port', img:'images/assets/create/none-04.jpg' },
+  { cat:'none',   title:'#05',     size:'tall', img:'images/assets/create/none-05.jpg' },
+  { cat:'none',   title:'#06',     size:'land', img:'images/assets/create/none-06.jpg' },
+  { cat:'none',   title:'#07',     size:'sq',   img:'images/assets/create/none-07.jpg' },
+  { cat:'none',   title:'#08',     size:'port', img:'images/assets/create/none-08.jpg' },
+  { cat:'none',   title:'#09',     size:'wide', img:'images/assets/create/none-09.jpg' },
   // ── CUSTOM ──
   { cat:'custom', title:'Custom 01', size:'tall', img:'images/assets/create/custom-01.jpg' },
   { cat:'custom', title:'Custom 02', size:'sq',   img:'images/assets/create/custom-02.jpg' },
@@ -374,15 +375,4 @@ document.querySelectorAll('.tab').forEach(t =>
 render(activeCat, false);
 
 window.addEventListener('hashchange', () => {
-  const cat = readHash();
-  if (cat !== activeCat) {
-    activeCat = cat;
-    document.querySelectorAll('.tab').forEach(t =>
-      t.classList.toggle('active', t.dataset.cat === activeCat)
-    );
-    render(cat, true);
-  }
-});
-</script>
-</body>
-</html>
+  const cat = readHash
