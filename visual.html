@@ -23,21 +23,42 @@
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
-      background: var(--bg);
       color: var(--white);
       font-family: var(--sans);
       cursor: none;
     }
 
-    /* ── GRAIN ── */
+    /* ── BACKGROUND IMAGE ──────────────────────────────────────
+       Замени путь ниже на свою картинку.
+       Например: url('images/bg-visual.jpg')
+       Картинка должна лежать в корне репозитория или в images/.
+       Рекомендуется тёмная текстурная фотография.
+    ─────────────────────────────────────────────────────────── */
+    body {
+      background-image: url('images/assets/create/visualmain.jpg'); /* ← ТВОЯ КАРТИНКА */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    /* тёмная плёнка поверх фото — регулируй opacity (0 = прозрачно, 1 = глухо чёрный) */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: rgba(7,7,7, 0.72); /* ← ПРОЗРАЧНОСТЬ ТЁМНОГО СЛОЯ */
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── GRAIN (поверх всего) ── */
     body::before {
       content: '';
       position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       background-size: 180px 180px;
-      opacity: .04;
+      opacity: .05;
       pointer-events: none;
-      z-index: 8000;
+      z-index: 8500;
     }
 
     /* ── CURSOR ── */
@@ -67,7 +88,7 @@
     }
     .back {
       font-family: var(--sans);
-      font-size: 11px; font-weight: 700;
+      font-size: 13px; font-weight: 700;
       letter-spacing: .16em; text-transform: uppercase;
       text-decoration: none; color: var(--dim);
       transition: color .2s;
@@ -75,7 +96,7 @@
     .back:hover { color: var(--white); }
     .header-right {
       font-family: var(--mono);
-      font-size: 9px; letter-spacing: .18em;
+      font-size: 11px; letter-spacing: .18em;
       text-transform: uppercase; color: var(--dim);
     }
 
@@ -92,10 +113,10 @@
     }
     .f-btn {
       font-family: var(--mono);
-      font-size: 9px; font-weight: 700;
+      font-size: 12px; font-weight: 700;
       letter-spacing: .2em; text-transform: uppercase;
       background: none; border: none; color: var(--dim);
-      cursor: none; padding: 8px 18px;
+      cursor: none; padding: 8px 20px;
       transition: color .15s; position: relative;
     }
     .f-btn::after {
@@ -231,18 +252,18 @@
     .modal-caption { text-align: center; }
     .modal-title {
       font-family: var(--display);
-      font-size: clamp(26px, 4vw, 54px);
+      font-size: clamp(32px, 5vw, 68px);
       letter-spacing: .04em; color: var(--white); line-height: 1;
     }
     .modal-meta {
-      font-family: var(--mono); font-size: 10px;
+      font-family: var(--mono); font-size: 13px;
       letter-spacing: .12em; color: var(--dim);
-      margin-top: 6px; font-style: italic;
+      margin-top: 8px; font-style: italic;
     }
     .modal-desc {
-      font-family: var(--mono); font-size: 11px;
+      font-family: var(--mono); font-size: 13px;
       line-height: 1.85; color: rgba(237,237,237,.4);
-      max-width: 480px; margin: 10px auto 0; letter-spacing: .02em;
+      max-width: 500px; margin: 12px auto 0; letter-spacing: .02em;
     }
 
     .modal-nav {
@@ -259,7 +280,7 @@
     .modal-close {
       position: fixed; top: 22px; right: 32px;
       background: none; border: none;
-      font-family: var(--mono); font-size: 10px;
+      font-family: var(--mono); font-size: 13px;
       letter-spacing: .22em; text-transform: uppercase;
       color: var(--dim); cursor: none; z-index: 610;
       transition: color .2s;
@@ -268,7 +289,7 @@
 
     .modal-counter {
       position: fixed; top: 24px; left: 40px;
-      font-family: var(--mono); font-size: 10px;
+      font-family: var(--mono); font-size: 13px;
       letter-spacing: .2em; color: var(--dim); z-index: 610;
     }
 
@@ -371,17 +392,35 @@
    DATA
 ═══════════════════════════════════════════════ */
 const PROJECTS = [
-  // custom (0–3)
-  { title: "Untitled Jacket №1",  meta: "acrylic on denim · one of a kind",         desc: "Hand-painted. No sketch, no transfer. The painting grew from the fabric up.",                              cat: "custom",  img: "images/assets/create/custom-01.jpg", color: "#201228" },
-  { title: "Field Study",         meta: "acrylic on canvas jacket · sold",           desc: "Botanical study series. Plants as architecture — structure, system, repetition.",                         cat: "custom",  img: "images/assets/create/custom-02.jpg", color: "#122010" },
-  { title: "Flora Series No.4",   meta: "acrylic on cotton · one of a kind",         desc: "Part of the ongoing Flora series. Oversized botanical forms, bleeding edges.",                           cat: "custom",  img: "images/assets/create/custom-03.jpg", color: "#201808" },
-  { title: "Dark Moth",           meta: "acrylic on black denim · sold, London",     desc: "The first piece that sold internationally. The buyer never told me where it ended up.",                  cat: "custom",  img: "images/assets/create/custom-04.jpg", color: "#08080f" },
-  // art (4–7)
-  { title: "None of them is me — I",   meta: "self-portrait series · graphite · 2022",  desc: "A series about the gap between how you see yourself and how you appear. None of the versions is definitive.", cat: "art", img: "images/assets/create/art-none-01.jpg", color: "#1a0808" },
-  { title: "None of them is me — III", meta: "self-portrait series · ink · 2022",        desc: "Ink on paper. Third version. Each iteration further from the original.",                               cat: "art", img: "images/assets/create/art-none-03.jpg", color: "#0a0a1c" },
-  { title: "None of them is me — VII", meta: "self-portrait series · charcoal · 2023",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/art-none-07.jpg", color: "#18120a" },
-  { title: "Study in B",               meta: "ballpoint on paper · A3 · 2021",           desc: "Obsessive line work. Started as a doodle, lasted six hours.",                                         cat: "art", img: "images/assets/create/art-study-b.jpg",  color: "#0c1418" },
-  // texture (8–11)
+  // ─── CUSTOM ──────────────────────────────────────────────────────────────────
+  // img: путь к файлу от корня репо. Пример: "images/assets/create/custom-01.jpg"
+  // Файл кидаешь в папку images/assets/create/ в репозитории
+  { title: "Untitled Jacket №1",  meta: "acrylic on denim · one of a kind",         desc: "Hand-painted. No sketch, no transfer. The painting grew from the fabric up.",                              cat: "custom",  img: "images/assets/create/custom-01.jpg",  color: "#201228" },
+  { title: "Field Study",         meta: "acrylic on canvas jacket · sold",           desc: "Botanical study series. Plants as architecture — structure, system, repetition.",                         cat: "custom",  img: "images/assets/create/custom-02.jpg",  color: "#122010" },
+  { title: "Flora Series No.4",   meta: "acrylic on cotton · one of a kind",         desc: "Part of the ongoing Flora series. Oversized botanical forms, bleeding edges.",                           cat: "custom",  img: "images/assets/create/custom-03.jpg",  color: "#201808" },
+  { title: "Dark Moth",           meta: "acrylic on black denim · sold, London",     desc: "The first piece that sold internationally. The buyer never told me where it ended up.",                  cat: "custom",  img: "images/assets/create/custom-04.jpg",  color: "#08080f" },
+   // ─── SCAN ─────────────────────────────────────────────────────────────────────
+   { title: "Grains of the cities — I",   meta: "scan · graphic · 2023+",  desc: "Something somewhere.", cat: "art", img: "images/assets/create/scan/Scan1.jpg", color: "#1a0808" },
+   { title: "Grains of the cities — II", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan1.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — III", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan2.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — IV", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan3.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — V", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan4.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — VI", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan5.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — VII", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan6.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — VIII", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan7.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — IX", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan8.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — X", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan9.jpg", color: "#0a0a1c" },
+   { title: "Grains of the cities — X", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan10.jpg", color: "#0a0a1c" },
+ 
+  // ─── GRAPHIC ─────────────────────────────────────────────────────────────────────
+  { title: "None of them is me — I",   meta: "self-portrait series · graphic · 2024",  desc: "A series about the gap between how you see yourself and how you appear. None of the versions is definitive.", cat: "art", img: "images/assets/create/portrait/Portrait1.jpg", color: "#1a0808" },
+  { title: "None of them is me — II", meta: "self-portrait series · graphic · 2024",        desc: "Ink on paper. Third version. Each iteration further from the original.",                               cat: "art", img: "images/assets/create/portrait/Portrait2.jpg", color: "#0a0a1c" },
+  { title: "None of them is me — III", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait3.jpg", color: "#18120a" },
+  { title: "None of them is me — IV", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait4.jpg", color: "#18120a" },
+  { title: "None of them is me — V", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait5.jpg", color: "#18120a" },
+  { title: "None of them is me — VI", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait6.jpg", color: "#18120a" },
+  { title: "Study in B",               meta: "ballpoint on paper · A3 · 2021",           desc: "Obsessive line work. Started as a doodle, lasted six hours.",                                         cat: "art", img: "images/assets/create/portrait/Portrait4.jpg",  color: "#0c1418" },
+  // ─── TEXTURE ─────────────────────────────────────────────────────────────────
   { title: "Concrete, Minsk",      meta: "flatbed scanner · 1200 dpi · 2024",  desc: "Concrete fragment from a demolished building on Komsomolskaya. The city changes, the surface stays.",         cat: "texture", img: "images/assets/create/texture-concrete.jpg", color: "#161616" },
   { title: "Fabric Memory",        meta: "flatbed scanner · textile fragment · 2023", desc: "A piece of jacket lining from 1996. Scanning is a form of preservation.",                               cat: "texture", img: "images/assets/create/texture-fabric.jpg",   color: "#1a1410" },
   { title: "Rust Study",           meta: "flatbed scanner · oxidised metal · 2024",  desc: "Found on a fence near the construction site on Nezavisimosti. Brought home in a bag.",                   cat: "texture", img: "images/assets/create/texture-rust.jpg",     color: "#1a0d08" },
