@@ -28,29 +28,26 @@
       cursor: none;
     }
 
-    /* ── BACKGROUND IMAGE ──────────────────────────────────────
-       Замени путь ниже на свою картинку.
-       Например: url('images/bg-visual.jpg')
-       Картинка должна лежать в корне репозитория или в images/.
-       Рекомендуется тёмная текстурная фотография.
-    ─────────────────────────────────────────────────────────── */
+    /* ── BACKGROUND IMAGE ─────────────────────────────────────
+       url('images/assets/create/visualmain.jpg')  ← твоя картинка
+    ──────────────────────────────────────────────────────────── */
     body {
-      background-image: url('images/assets/create/visualmain.jpg'); /* ← ТВОЯ КАРТИНКА */
+      background-image: url('images/assets/create/visualmain.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
     }
-    /* тёмная плёнка поверх фото — регулируй opacity (0 = прозрачно, 1 = глухо чёрный) */
+    /* тёмная плёнка поверх фото — 0.0 = прозрачно, 1.0 = глухо чёрный */
     body::after {
       content: '';
       position: fixed; inset: 0;
-      background: rgba(7,7,7, 0.1); /* ← ПРОЗРАЧНОСТЬ ТЁМНОГО СЛОЯ */
+      background: rgba(7,7,7, 0.1);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* ── GRAIN (поверх всего) ── */
+    /* ── GRAIN ── */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -94,17 +91,12 @@
       transition: color .2s;
     }
     .back:hover { color: var(--white); }
-    .header-right {
-      font-family: var(--mono);
-      font-size: 11px; letter-spacing: .18em;
-      text-transform: uppercase; color: var(--dim);
-    }
 
     /* ── FILTER ROW ── */
     .filter-row {
       position: fixed; top: 54px; left: 0; right: 0;
       z-index: 200;
-      display: flex; justify-content: center; gap: 0;
+      display: flex; justify-content: center;
       padding: 0 40px;
       height: 46px; align-items: center;
       border-bottom: 1px solid var(--line);
@@ -142,24 +134,17 @@
       justify-content: center;
     }
 
-    /* scale wrapper — JS updates this */
-    #clusterScale {
-      transform-origin: center center;
-    }
+    #clusterScale { transform-origin: center center; }
 
-    /* float animation wrapper */
     #clusterFloat {
-      animation: clusterDrift 8s ease-in-out infinite;
+      animation: clusterDrift 9s ease-in-out infinite;
     }
     @keyframes clusterDrift {
       0%,100% { transform: translateY(0px); }
-      50%      { transform: translateY(-16px); }
+      50%      { transform: translateY(-20px); }
     }
 
-    /* cluster container — relative, sized by JS */
-    #cluster {
-      position: relative;
-    }
+    #cluster { position: relative; }
 
     /* ── CUBE ── */
     .cube {
@@ -167,47 +152,46 @@
       cursor: none;
       transition: opacity .45s ease;
     }
-    .cube.dimmed {
-      opacity: 0.08;
-      transition: opacity .45s ease;
-    }
-    .cube:hover { z-index: 9000 !important; }
+    .cube.dimmed { opacity: 0.07; }
+    .cube:hover  { z-index: 9000 !important; }
 
-    /* ── FACES ── */
-    /* W=160: top rhombus, left para, right para */
+    /* ── FACES  (W = 220px)
+       top  : rhombus  — polygon(110 0, 220 55, 110 110, 0 55)
+       left : para     — polygon(0 55, 110 110, 110 220, 0 165)
+       right: para     — polygon(110 110, 220 55, 220 165, 110 220)
+    ── */
     .face {
       position: absolute;
-      width: 160px; height: 160px;
+      width: 220px; height: 220px;
       background-size: cover;
       background-position: center;
     }
     .face-top {
-      clip-path: polygon(80px 0px, 160px 40px, 80px 80px, 0px 40px);
-      filter: brightness(1.05);
+      clip-path: polygon(110px 0px, 220px 55px, 110px 110px, 0px 55px);
+      filter: brightness(1.08);
       transition: filter .3s;
     }
     .face-left {
-      clip-path: polygon(0px 40px, 80px 80px, 80px 160px, 0px 120px);
-      filter: brightness(0.72);
+      clip-path: polygon(0px 55px, 110px 110px, 110px 220px, 0px 165px);
+      filter: brightness(0.70);
     }
     .face-right {
-      clip-path: polygon(80px 80px, 160px 40px, 160px 120px, 80px 160px);
-      filter: brightness(0.50);
+      clip-path: polygon(110px 110px, 220px 55px, 220px 165px, 110px 220px);
+      filter: brightness(0.48);
     }
-    .cube:hover .face-top    { filter: brightness(1.25); }
-    .cube:hover .face-left   { filter: brightness(0.85); }
-    .cube:hover .face-right  { filter: brightness(0.60); }
+    .cube:hover .face-top   { filter: brightness(1.30); }
+    .cube:hover .face-left  { filter: brightness(0.84); }
+    .cube:hover .face-right { filter: brightness(0.58); }
 
-    /* cube edge lines */
     .face-top::after, .face-left::after, .face-right::after {
       content: '';
       position: absolute; inset: 0;
-      box-shadow: inset 0 0 0 .5px rgba(255,255,255,.06);
+      box-shadow: inset 0 0 0 .5px rgba(255,255,255,.07);
       clip-path: inherit;
       pointer-events: none;
     }
 
-    /* ── DARKROOM MODAL ── */
+    /* ── MODAL ── */
     .modal {
       position: fixed; inset: 0;
       background: rgba(4,4,4,.97);
@@ -304,6 +288,7 @@
       opacity: .25; transition: opacity .2s; font-family: var(--sans);
     }
     .footer-left a:hover { opacity: 1; }
+
     .global-footer {
       position: fixed; bottom: 26px; right: 40px;
       display: flex; gap: 14px; align-items: center;
@@ -317,15 +302,13 @@
     .global-footer a:hover { opacity: 1; }
     .global-footer span { opacity: .1; }
 
-    /* page title — large, bottom-left of cluster area, faint */
     .page-label {
       position: fixed; bottom: 60px; left: 40px;
       font-family: var(--display);
       font-size: clamp(56px, 8vw, 110px);
       line-height: .85; letter-spacing: .02em;
       color: var(--white); opacity: .04;
-      pointer-events: none;
-      z-index: 10; user-select: none;
+      pointer-events: none; z-index: 10; user-select: none;
     }
   </style>
 </head>
@@ -333,21 +316,18 @@
 
 <div id="cur"></div>
 
-<!-- HEADER -->
 <div class="header-bar">
   <a href="index.html" class="back">← Back</a>
-  <span class="header-right">To Create · Visual</span>
 </div>
 
-<!-- FILTER -->
 <div class="filter-row">
   <button class="f-btn active" data-filter="all">All</button>
   <button class="f-btn" data-filter="custom">Custom</button>
-  <button class="f-btn" data-filter="art">Art</button>
+  <button class="f-btn" data-filter="scan">Scan</button>
+  <button class="f-btn" data-filter="art">Graphic</button>
   <button class="f-btn" data-filter="texture">Texture</button>
 </div>
 
-<!-- CLUSTER -->
 <div class="cluster-area">
   <div id="clusterScale">
     <div id="clusterFloat">
@@ -356,17 +336,17 @@
   </div>
 </div>
 
-<!-- PAGE TITLE (ghost) -->
 <div class="page-label">VISUAL</div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
   <button class="modal-close" id="modalClose">ESC ✕</button>
   <div class="modal-counter" id="modalCounter"></div>
   <button class="modal-nav modal-prev" id="modalPrev">‹</button>
   <button class="modal-nav modal-next" id="modalNext">›</button>
   <div class="modal-img-wrap" id="modalImgWrap">
-    <div class="modal-placeholder" id="modalPH"><span>Add image to images/assets/create/</span></div>
+    <div class="modal-placeholder" id="modalPH">
+      <span>Add image to images/assets/create/</span>
+    </div>
   </div>
   <div class="modal-caption">
     <div class="modal-title" id="modalTitle"></div>
@@ -375,7 +355,6 @@
   </div>
 </div>
 
-<!-- FOOTER -->
 <div class="footer-left"><a href="about.html">About</a></div>
 <div class="global-footer">
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
@@ -388,114 +367,144 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   DATA
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════
+   PROJECTS  (idx 0–24)
+   custom 0–3 | scan 4–13 | graphic 14–20 | texture 21–24
+═══════════════════════════════ */
 const PROJECTS = [
-  // ─── CUSTOM ──────────────────────────────────────────────────────────────────
-  // img: путь к файлу от корня репо. Пример: "images/assets/create/custom-01.jpg"
-  // Файл кидаешь в папку images/assets/create/ в репозитории
-  { title: "Untitled Jacket №1",  meta: "acrylic on denim · one of a kind",         desc: "Hand-painted. No sketch, no transfer. The painting grew from the fabric up.",                              cat: "custom",  img: "images/assets/create/custom-01.jpg",  color: "#201228" },
-  { title: "Field Study",         meta: "acrylic on canvas jacket · sold",           desc: "Botanical study series. Plants as architecture — structure, system, repetition.",                         cat: "custom",  img: "images/assets/create/custom-02.jpg",  color: "#122010" },
-  { title: "Flora Series No.4",   meta: "acrylic on cotton · one of a kind",         desc: "Part of the ongoing Flora series. Oversized botanical forms, bleeding edges.",                           cat: "custom",  img: "images/assets/create/custom-03.jpg",  color: "#201808" },
-  { title: "Dark Moth",           meta: "acrylic on black denim · sold, London",     desc: "The first piece that sold internationally. The buyer never told me where it ended up.",                  cat: "custom",  img: "images/assets/create/custom-04.jpg",  color: "#08080f" },
-   // ─── SCAN ─────────────────────────────────────────────────────────────────────
-   { title: "Grains of the cities — I",   meta: "scan · graphic · 2023+",  desc: "Something somewhere.", cat: "art", img: "images/assets/create/scan/Scan1.jpg", color: "#1a0808" },
-   { title: "Grains of the cities — II", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan1.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — III", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan2.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — IV", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan3.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — V", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan4.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — VI", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan5.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — VII", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan6.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — VIII", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan7.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — IX", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan8.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — X", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan9.jpg", color: "#0a0a1c" },
-   { title: "Grains of the cities — X", meta: "scan · graphic · 2023+",        desc: "Something somewhere.",                               cat: "art", img: "images/assets/create/scan/Scan10.jpg", color: "#0a0a1c" },
- 
-  // ─── GRAPHIC ─────────────────────────────────────────────────────────────────────
-  { title: "None of them is me — I",   meta: "self-portrait series · graphic · 2024",  desc: "A series about the gap between how you see yourself and how you appear. None of the versions is definitive.", cat: "art", img: "images/assets/create/portrait/Portrait1.jpg", color: "#1a0808" },
-  { title: "None of them is me — II", meta: "self-portrait series · graphic · 2024",        desc: "Ink on paper. Third version. Each iteration further from the original.",                               cat: "art", img: "images/assets/create/portrait/Portrait2.jpg", color: "#0a0a1c" },
-  { title: "None of them is me — III", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait3.jpg", color: "#18120a" },
-  { title: "None of them is me — IV", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait4.jpg", color: "#18120a" },
-  { title: "None of them is me — V", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait5.jpg", color: "#18120a" },
-  { title: "None of them is me — VI", meta: "self-portrait series · graphic · 2024",   desc: "Seventh version. The series continues until there are no more versions to make.",                     cat: "art", img: "images/assets/create/portrait/Portrait6.jpg", color: "#18120a" },
-  { title: "Study in B",               meta: "ballpoint on paper · A3 · 2021",           desc: "Obsessive line work. Started as a doodle, lasted six hours.",                                         cat: "art", img: "images/assets/create/portrait/Portrait4.jpg",  color: "#0c1418" },
-  // ─── TEXTURE ─────────────────────────────────────────────────────────────────
-  { title: "Concrete, Minsk",      meta: "flatbed scanner · 1200 dpi · 2024",  desc: "Concrete fragment from a demolished building on Komsomolskaya. The city changes, the surface stays.",         cat: "texture", img: "images/assets/create/texture-concrete.jpg", color: "#161616" },
-  { title: "Fabric Memory",        meta: "flatbed scanner · textile fragment · 2023", desc: "A piece of jacket lining from 1996. Scanning is a form of preservation.",                               cat: "texture", img: "images/assets/create/texture-fabric.jpg",   color: "#1a1410" },
-  { title: "Rust Study",           meta: "flatbed scanner · oxidised metal · 2024",  desc: "Found on a fence near the construction site on Nezavisimosti. Brought home in a bag.",                   cat: "texture", img: "images/assets/create/texture-rust.jpg",     color: "#1a0d08" },
-  { title: "Stone Yard, Marbella", meta: "flatbed scanner · limestone chip · 2023",  desc: "From the construction site of Villa Amelie. The same stone, a different scale.",                        cat: "texture", img: "images/assets/create/texture-stone.jpg",    color: "#121620" },
+  // ─── CUSTOM (0–3) ──────────────────────────────────────────────────────
+  // img: "images/assets/create/custom-01.jpg"  →  папка images/assets/create/
+  { title: "Untitled Jacket №1", meta: "acrylic on denim · one of a kind",     desc: "Hand-painted. No sketch, no transfer. The painting grew from the fabric up.",               cat: "custom",  img: "images/assets/create/custom-01.jpg",  color: "#201228" },
+  { title: "Field Study",        meta: "acrylic on canvas jacket · sold",       desc: "Botanical study series. Plants as architecture — structure, system, repetition.",             cat: "custom",  img: "images/assets/create/custom-02.jpg",  color: "#122010" },
+  { title: "Flora Series No.4",  meta: "acrylic on cotton · one of a kind",     desc: "Part of the ongoing Flora series. Oversized botanical forms, bleeding edges.",               cat: "custom",  img: "images/assets/create/custom-03.jpg",  color: "#201808" },
+  { title: "Dark Moth",          meta: "acrylic on black denim · sold, London", desc: "The first piece that sold internationally. The buyer never told me where it ended up.",      cat: "custom",  img: "images/assets/create/custom-04.jpg",  color: "#08080f" },
+
+  // ─── SCAN (4–13) ───────────────────────────────────────────────────────
+  // img: "images/assets/create/scan/Scan1.jpg" … Scan10.jpg
+  { title: "Grains of the cities — I",   meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan1.jpg",  color: "#1a0808" },
+  { title: "Grains of the cities — II",  meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan1.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — III", meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan2.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — IV",  meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan3.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — V",   meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan4.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — VI",  meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan5.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — VII", meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan6.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — VIII",meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan7.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — IX",  meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan8.jpg",  color: "#0a0a1c" },
+  { title: "Grains of the cities — X",   meta: "scan · graphic · 2023+", desc: "Something somewhere.", cat: "scan", img: "images/assets/create/scan/Scan10.jpg", color: "#0a0a1c" },
+
+  // ─── GRAPHIC (14–20) ──────────────────────────────────────────────────
+  // img: "images/assets/create/portrait/Portrait1.jpg" … Portrait6.jpg
+  { title: "None of them is me — I",   meta: "self-portrait series · graphic · 2024", desc: "A series about the gap between how you see yourself and how you appear. None of the versions is definitive.", cat: "art", img: "images/assets/create/portrait/Portrait1.jpg", color: "#1a0808" },
+  { title: "None of them is me — II",  meta: "self-portrait series · graphic · 2024", desc: "Ink on paper. Third version. Each iteration further from the original.",                                      cat: "art", img: "images/assets/create/portrait/Portrait2.jpg", color: "#0a0a1c" },
+  { title: "None of them is me — III", meta: "self-portrait series · graphic · 2024", desc: "Seventh version. The series continues until there are no more versions to make.",                              cat: "art", img: "images/assets/create/portrait/Portrait3.jpg", color: "#18120a" },
+  { title: "None of them is me — IV",  meta: "self-portrait series · graphic · 2024", desc: "Seventh version. The series continues until there are no more versions to make.",                              cat: "art", img: "images/assets/create/portrait/Portrait4.jpg", color: "#18120a" },
+  { title: "None of them is me — V",   meta: "self-portrait series · graphic · 2024", desc: "Seventh version. The series continues until there are no more versions to make.",                              cat: "art", img: "images/assets/create/portrait/Portrait5.jpg", color: "#18120a" },
+  { title: "None of them is me — VI",  meta: "self-portrait series · graphic · 2024", desc: "Seventh version. The series continues until there are no more versions to make.",                              cat: "art", img: "images/assets/create/portrait/Portrait6.jpg", color: "#18120a" },
+  { title: "Study in B",               meta: "ballpoint on paper · A3 · 2021",         desc: "Obsessive line work. Started as a doodle, lasted six hours.",                                                 cat: "art", img: "images/assets/create/portrait/Portrait4.jpg", color: "#0c1418" },
+
+  // ─── TEXTURE (21–24) ──────────────────────────────────────────────────
+  // img: "images/assets/create/texture-concrete.jpg" etc.
+  { title: "Concrete, Minsk",      meta: "flatbed scanner · 1200 dpi · 2024",         desc: "Concrete fragment from a demolished building on Komsomolskaya. The city changes, the surface stays.", cat: "texture", img: "images/assets/create/texture-concrete.jpg", color: "#161616" },
+  { title: "Fabric Memory",        meta: "flatbed scanner · textile fragment · 2023",  desc: "A piece of jacket lining from 1996. Scanning is a form of preservation.",                             cat: "texture", img: "images/assets/create/texture-fabric.jpg",   color: "#1a1410" },
+  { title: "Rust Study",           meta: "flatbed scanner · oxidised metal · 2024",    desc: "Found on a fence near the construction site on Nezavisimosti. Brought home in a bag.",               cat: "texture", img: "images/assets/create/texture-rust.jpg",     color: "#1a0d08" },
+  { title: "Stone Yard, Marbella", meta: "flatbed scanner · limestone chip · 2023",    desc: "From the construction site of Villa Amelie. The same stone, a different scale.",                    cat: "texture", img: "images/assets/create/texture-stone.jpg",    color: "#121620" },
 ];
 
-/* ═══════════════════════════════════════════════
-   CLUSTER GRID DEFINITION
-   [col, row, primaryProjectIdx]
-   Unified diamond mass — like manifold.art
-═══════════════════════════════════════════════ */
+const N = PROJECTS.length; // 25
+
+/* ═══════════════════════════════
+   SCATTERED GRID
+   [col, row, primaryIdx]
+   Layout: loose clusters + isolates across wide field
+   — как на скрине из фигмы
+═══════════════════════════════ */
 const GRID = [
-                         [2,0, 4],  [3,0, 8],
-              [1,1, 0],  [2,1, 9],  [3,1, 5],  [4,1, 1],
-  [0,2,10],   [1,2, 6],  [2,2, 2],  [3,2,11],  [4,2, 7],  [5,2, 3],
-              [1,3, 8],  [2,3, 4],  [3,3, 1],  [4,3,10],  [5,3, 5],
-                         [2,4, 3],  [3,4,11],  [4,4, 6],
-                                    [3,5, 2],
+  // top-left cluster (custom + scan)
+  [0,0,  0], [1,0,  3],
+  [0,1,  1], [1,1, 22],
+             [1,2,  2],
+
+  // isolated top
+  [4,0,  4],
+  [6,0, 14],
+
+  // top-right cluster (scan)
+  [8,0,  5], [9,0, 17],
+  [8,1,  6],  [9,1, 15],
+                         [10,1, 7],
+
+  // middle loose band
+  [3,2, 10], [4,2, 23],
+             [4,3, 11], [5,3, 21],
+  [3,3, 24],
+
+  // isolated mid
+  [7,2, 16],
+  [11,2, 8],
+
+  // mid-right cluster
+  [10,3,  9], [11,3, 18],
+              [11,4, 12],
+
+  // bottom-left cluster (graphic)
+  [1,4, 19], [2,4, 20],
+  [1,5, 13],
+
+  // bottom-center
+  [5,5, 21],
+  [7,4, 23],
+
+  // bottom-right isolated
+  [9,5,  2],
+  [12,3, 4],
 ];
 
-/* ═══════════════════════════════════════════════
-   GEOMETRY
-═══════════════════════════════════════════════ */
-const W  = 160;  // projected cube width
-const HX = W / 2;  // 80 — x step per col/row
-const HY = W / 4;  // 40 — y step
+/* ═══════════════════════════════
+   GEOMETRY  (W = 220)
+═══════════════════════════════ */
+const W  = 220;
+const HX = W / 2;   // 110 — horizontal step
+const HY = W / 4;   //  55 — vertical step
 
-// Find min x/y to offset so all positions ≥ 0
-const xs = GRID.map(([c,r]) => (c-r)*HX);
-const ys = GRID.map(([c,r]) => (c+r)*HY);
+const xs = GRID.map(([c,r]) => (c - r) * HX);
+const ys = GRID.map(([c,r]) => (c + r) * HY);
 const OX = -Math.min(...xs);
 const OY = -Math.min(...ys);
 const CONTAINER_W = Math.max(...xs) + OX + W;
 const CONTAINER_H = Math.max(...ys) + OY + W;
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════
    BUILD CLUSTER
-═══════════════════════════════════════════════ */
+═══════════════════════════════ */
 const clusterEl = document.getElementById('cluster');
 clusterEl.style.width  = CONTAINER_W + 'px';
 clusterEl.style.height = CONTAINER_H + 'px';
 
-// All cube elements (used by modal)
 const cubeEls = [];
 
 GRID.forEach(([col, row, primaryIdx], i) => {
-  const x = (col - row) * HX + OX;
-  const y = (col + row) * HY + OY;
+  const x     = (col - row) * HX + OX;
+  const y     = (col + row) * HY + OY;
   const zBase = -(col + row) * 100;
+  const p     = PROJECTS[primaryIdx % N];
 
   const cube = document.createElement('div');
-  cube.className = 'cube';
-  cube.dataset.cat   = PROJECTS[primaryIdx].cat;
-  cube.dataset.title = PROJECTS[primaryIdx].title;
-  cube.dataset.meta  = PROJECTS[primaryIdx].meta;
-  cube.dataset.desc  = PROJECTS[primaryIdx].desc;
-  cube.dataset.img   = PROJECTS[primaryIdx].img;
+  cube.className     = 'cube';
+  cube.dataset.cat   = p.cat;
+  cube.dataset.title = p.title;
+  cube.dataset.meta  = p.meta;
+  cube.dataset.desc  = p.desc;
+  cube.dataset.img   = p.img;
   cube.style.cssText = `left:${x}px; top:${y}px; z-index:${zBase};`;
 
-  // Each face shows a different project (cycle offset of 4 for max variety)
-  const faceAssign = [
-    PROJECTS[(primaryIdx)      % 12],
-    PROJECTS[(primaryIdx + 4)  % 12],
-    PROJECTS[(primaryIdx + 8)  % 12],
-  ];
-
-  ['top','left','right'].forEach((side, fi) => {
+  // Three faces — evenly spread through pool so neighbours differ
+  const step = Math.floor(N / 3);
+  [0, step, step * 2].forEach((offset, fi) => {
+    const fp   = PROJECTS[(primaryIdx + offset) % N];
     const face = document.createElement('div');
-    face.className = `face face-${side}`;
-    const fp = faceAssign[fi];
-    if (fp.img) {
-      // Will show image if it exists; onerror fallback via inline style
-      face.style.backgroundImage = `url('${fp.img}')`;
-    }
-    face.style.backgroundColor = fp.color;
+    face.className = `face face-${['top','left','right'][fi]}`;
+    face.style.backgroundImage  = `url('${fp.img}')`;
+    face.style.backgroundColor  = fp.color;
     cube.appendChild(face);
   });
 
@@ -504,39 +513,37 @@ GRID.forEach(([col, row, primaryIdx], i) => {
   clusterEl.appendChild(cube);
 });
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════
    RESPONSIVE SCALE
-═══════════════════════════════════════════════ */
+═══════════════════════════════ */
 const scaleEl = document.getElementById('clusterScale');
-
 function resize() {
-  const pad = 60;
+  const pad   = 50;
   const availW = window.innerWidth  - pad * 2;
-  const availH = window.innerHeight - 100 - 60 - pad * 2; // header+filter + footer
+  const availH = window.innerHeight - 100 - 60 - pad * 2;
   const s = Math.min(1, availW / CONTAINER_W, availH / CONTAINER_H);
   scaleEl.style.transform = `scale(${s})`;
 }
 resize();
 window.addEventListener('resize', resize);
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════
    FILTER
-═══════════════════════════════════════════════ */
+═══════════════════════════════ */
 document.querySelectorAll('.f-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const f = btn.dataset.filter;
     cubeEls.forEach(cube => {
-      const match = f === 'all' || cube.dataset.cat === f;
-      cube.classList.toggle('dimmed', !match);
+      cube.classList.toggle('dimmed', f !== 'all' && cube.dataset.cat !== f);
     });
   });
 });
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════
    MODAL
-═══════════════════════════════════════════════ */
+═══════════════════════════════ */
 const modal    = document.getElementById('modal');
 const imgWrap  = document.getElementById('modalImgWrap');
 const ph       = document.getElementById('modalPH');
@@ -545,17 +552,16 @@ const mMeta    = document.getElementById('modalMeta');
 const mDesc    = document.getElementById('modalDesc');
 const mCounter = document.getElementById('modalCounter');
 
-// Only non-dimmed cubes navigable
+let modalIdx = 0;
+
 function getActive() {
   return cubeEls.filter(c => !c.classList.contains('dimmed'));
 }
 
-let modalIdx = 0;
-
 function openModal(cubeIdx) {
   const active = getActive();
-  const cube = cubeEls[cubeIdx];
-  modalIdx = active.indexOf(cube);
+  const cube   = cubeEls[cubeIdx];
+  modalIdx     = active.indexOf(cube);
   if (modalIdx === -1) modalIdx = 0;
   renderModal(active);
   modal.classList.add('active');
@@ -604,9 +610,9 @@ window.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') navModal(+1);
 });
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════
    CURSOR
-═══════════════════════════════════════════════ */
+═══════════════════════════════ */
 const cur = document.getElementById('cur');
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', e => {
