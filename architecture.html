@@ -208,6 +208,24 @@
     }
     .project-card:hover .card-number { opacity: 1; }
 
+    /* ── EXTERNAL LINK BADGE ── */
+    .ext-badge {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 8px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 3px 7px;
+      backdrop-filter: blur(4px);
+      z-index: 5; opacity: 0;
+      transition: opacity .2s, color .2s;
+      pointer-events: none;
+    }
+    .project-card:hover .ext-badge { opacity: 1; color: var(--white); }
+    .project-card.external { border-left: 2px solid rgba(77,106,255,.25); }
+    .project-card.external:hover { border-left-color: var(--blue); }
+
     /* ── CARD IMAGE — no grayscale by default (performance) ──
        Если хочешь вернуть ч/б по умолчанию:
        раскомментируй строку filter: grayscale(100%) brightness(.85);
@@ -560,7 +578,7 @@
     data-title="Fortification — Quarteira" data-year="2022" data-location="Quarteira, Portugal"
     data-type="Urban / Public" data-studio="ULisboa · Erasmus"
     data-tools="AutoCAD, ArchiCAD, Photoshop"
-    data-desc="Three boards represent the final stage of the semester project in urban design at ULisboa. The main theme: defense «fortification». Analyzing Portuguese history, a tower was designed with levels for various needs — as a symbol of protection.
+    data-desc="Three boards represent the final stage of the semester project in urban design at ULisboa. The main theme: defense fortification. Analyzing Portugal's history, a tower was designed with levels for various needs — as a symbol of protection.
 
 Board 01: axonometry of the tower with all details. Board 02: floor plans, main sections. Board 03: topography, materials, sections and layers.
 
@@ -614,9 +632,9 @@ The result combines our vision of modern style for the area, the client's desire
 
   <!-- 05 House for a Young Couple -->
   <div class="project-card"
-    data-tags="interior conceptual AI experimets"
+    data-tags="interior conceptual"
     data-title="House for a Young Couple" data-year="2025" data-location="Cascais, Portugal"
-    data-type="Interior / Conceptual / AI" data-studio="Independent"
+    data-type="Interior / Conceptual" data-studio="Independent"
     data-tools="SketchUp, Lumion, AI"
     data-desc="A compact courtyard house designed for a young couple seeking a calm connection between interior and nature. Large sliding openings extend the living spaces into a private patio, while textured materials and soft daylight create a warm and intimate atmosphere. The project explores simplicity, natural light and subtle transitions between inside and outside."
     data-images='["images/assets/build/interior/interior1.jpg","images/assets/build/interior/interior2.jpeg","images/assets/build/interior/interior3.jpeg","images/assets/build/interior/interior4.jpeg"]'>
@@ -632,7 +650,6 @@ The result combines our vision of modern style for the area, the client's desire
       </div>
       <div class="card-tags">
         <button class="tag" data-filter="interior">#INTERIOR</button>
-        <button class="tag" data-filter="ai experiments">AIEXPERIMENTS</button>
         <button class="tag" data-filter="conceptual">#CONCEPTUAL</button>
       </div>
     </div>
@@ -695,8 +712,11 @@ The result combines our vision of modern style for the area, the client's desire
     data-type="Cultural / Public" data-studio="Graduation · Warsaw"
     data-tools="AutoCAD, ArchiCAD, Lumion"
     data-desc="The Museum of Modern Art NOVA is conceived as a fusion of cultural ambition and natural power — a place where art and landscape speak the same language.
+
 Located on Soltistinskaya Sloboda Square in Minsk, along the Svisloch River, the museum is designed as a catalyst for the city's cultural expansion.
+
 The form is inspired by a tectonic fault: walls rise from the ground on three sides, creating a sheltering roof that emerges organically from the earth. Two volumes shape the experience — one public (ticketing, administration), the other dedicated to storage. A rectangular gate marks the main entrance, framed by wide stairs.
+
 This project is an ode to nature's raw power — the movement of titanic plates frozen in time, with us as its witnesses."
     data-images='["images/assets/build/nova/nova1.jpg","images/assets/build/nova/nova2.jpg","images/assets/build/nova/nova3.jpg","images/assets/build/nova/nova4.jpg"]'>
     <span class="card-number">08</span>
@@ -721,14 +741,11 @@ This project is an ode to nature's raw power — the movement of titanic plates 
     data-title="Competition Alborada Benahavís" data-year="2023" data-location="Benahavís, Spain"
     data-type="Competition / Hospitality" data-studio="Archidom Studio"
     data-tools="AutoCAD, Rhino, Photoshop"
-    data-desc="Several architects and I participated in the  development of the competitive concept under the following conditions of the program: The Competition of ideas for the realization of the projects on the plots of «La Alborada» seeks the architectural proposal that allows to define the most appropriate to cover the following needs in each of the plots:
-a. Plot-1: private – sports equipment. The  property wants to develop an Andalusian architecture project surrounded by nature where to practice spiritual and yoga retreats (wellness retreat). 
-b. Plot-2: set of tourist apartments or  aparthotel, composed of independent buildings, arranged in an environment of nature. 
-In this competition, I took a direct part in the development of the concept of plans, the search and modernization of references,  the creation of sketches and diagrams, as  well as in post-processing, which shows on the final layout.."
-    data-images='["images/assets/build/xab/xab.jpg"]'>
+    data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside — architecture as landscape continuation. Concept plans, sketches, diagrams, post-production."
+    data-images='["images/assets/build/alborada-1.jpg","images/assets/build/alborada-2.jpg","images/assets/build/alborada-3.jpg"]'>
     <span class="card-number">09</span>
-    <div class="card-img" data-ph="Alborada Competition">
-     <img src="images/assets/build/xab/xab.jpg" alt="Alborada" loading="lazy"> 
+    <div class="card-img ph" data-ph="Alborada Competition">
+      <!-- <img src="images/assets/build/alborada-1.jpg" alt="Alborada" loading="lazy"> -->
       <div class="card-overlay"><span class="overlay-txt">Open project</span></div>
     </div>
     <div class="card-meta">
@@ -764,6 +781,146 @@ In this competition, I took a direct part in the development of the concept of p
       <div class="card-tags">
         <button class="tag" data-filter="conceptual">#CONCEPTUAL</button>
         <button class="tag" data-filter="residential">#RESIDENTIAL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ART LEBEDEV STUDIO ────────────────────────────────────────── -->
+
+  <!-- AL-01 Miriady Design Code -->
+  <div class="project-card external"
+    data-tags="masterplan residential"
+    data-title="Design Code — Miriady District"
+    data-external-url="https://www.artlebedev.com/enko/miriady/">
+    <span class="card-number">11</span>
+    <span class="ext-badge">↗ artlebedev.com</span>
+    <div class="card-img ph" data-ph="Miriady · Design Code">
+      <!-- Скриншот → images/assets/build/al/miriady.jpg
+           Затем: убери класс ph, раскомментируй img -->
+      <!-- <img src="images/assets/build/al/miriady.jpg" alt="Miriady Design Code" loading="lazy"> -->
+      <div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div>
+    </div>
+    <div class="card-meta">
+      <div class="card-info">
+        <div class="card-name">Design Code — Miriady District</div>
+        <div class="card-year">2024–2025 · Tyumen</div>
+      </div>
+      <div class="card-tags">
+        <button class="tag" data-filter="masterplan">#MASTERPLAN</button>
+        <button class="tag" data-filter="residential">#RESIDENTIAL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AL-02 TVEL Facades & Interiors -->
+  <div class="project-card external"
+    data-tags="residential"
+    data-title="TVEL — Façades & Interiors"
+    data-external-url="https://www.artlebedev.com/rosatom/tvel/">
+    <span class="card-number">12</span>
+    <span class="ext-badge">↗ artlebedev.com</span>
+    <div class="card-img ph" data-ph="TVEL · Façades & Interiors">
+      <!-- <img src="images/assets/build/al/tvel.jpg" alt="TVEL Facades" loading="lazy"> -->
+      <div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div>
+    </div>
+    <div class="card-meta">
+      <div class="card-info">
+        <div class="card-name">TVEL — Façades & Interiors</div>
+        <div class="card-year">2024–2025 · Russia</div>
+      </div>
+      <div class="card-tags">
+        <button class="tag" data-filter="residential">#FACADES</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AL-03 5ka Future Store -->
+  <div class="project-card external"
+    data-tags="interior"
+    data-title="5ka — Future Store Format"
+    data-external-url="https://www.artlebedev.com/5ka/future-st">
+    <span class="card-number">13</span>
+    <span class="ext-badge">↗ artlebedev.com</span>
+    <div class="card-img ph" data-ph="5ka · Future Store">
+      <!-- <img src="images/assets/build/al/5ka-store.jpg" alt="5ka Future Store" loading="lazy"> -->
+      <div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div>
+    </div>
+    <div class="card-meta">
+      <div class="card-info">
+        <div class="card-name">5ka — Future Store Format</div>
+        <div class="card-year">2025 · Russia</div>
+      </div>
+      <div class="card-tags">
+        <button class="tag" data-filter="interior">#INTERIOR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AL-04 5ka Identity -->
+  <div class="project-card external"
+    data-tags="interior ai"
+    data-title="5ka — Future Stores Identity"
+    data-external-url="https://www.artlebedev.com/5ka/future-stores-identity/">
+    <span class="card-number">14</span>
+    <span class="ext-badge">↗ artlebedev.com</span>
+    <div class="card-img ph" data-ph="5ka · Identity">
+      <!-- <img src="images/assets/build/al/5ka-identity.jpg" alt="5ka Identity" loading="lazy"> -->
+      <div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div>
+    </div>
+    <div class="card-meta">
+      <div class="card-info">
+        <div class="card-name">5ka — Future Stores Identity</div>
+        <div class="card-year">2025 · Russia</div>
+      </div>
+      <div class="card-tags">
+        <button class="tag" data-filter="interior">#INTERIOR</button>
+        <button class="tag" data-filter="ai">#AI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AL-05 Magnit Interiors -->
+  <div class="project-card external"
+    data-tags="interior masterplan"
+    data-title="Magnit — Retail Interiors"
+    data-external-url="https://www.artlebedev.com/magnit/interiors/">
+    <span class="card-number">15</span>
+    <span class="ext-badge">↗ artlebedev.com</span>
+    <div class="card-img ph" data-ph="Magnit · Retail Interiors">
+      <!-- <img src="images/assets/build/al/magnit-interiors.jpg" alt="Magnit Interiors" loading="lazy"> -->
+      <div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div>
+    </div>
+    <div class="card-meta">
+      <div class="card-info">
+        <div class="card-name">Magnit — Retail Interiors</div>
+        <div class="card-year">2025 · Russia</div>
+      </div>
+      <div class="card-tags">
+        <button class="tag" data-filter="interior">#INTERIOR</button>
+        <button class="tag" data-filter="masterplan">#RETAIL ROLLOUT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AL-06 Magnit Classroom -->
+  <div class="project-card external"
+    data-tags="interior conceptual"
+    data-title="Magnit — Classroom"
+    data-external-url="https://www.artlebedev.com/magnit/classroom/">
+    <span class="card-number">16</span>
+    <span class="ext-badge">↗ artlebedev.com</span>
+    <div class="card-img ph" data-ph="Magnit · Classroom">
+      <!-- <img src="images/assets/build/al/magnit-classroom.jpg" alt="Magnit Classroom" loading="lazy"> -->
+      <div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div>
+    </div>
+    <div class="card-meta">
+      <div class="card-info">
+        <div class="card-name">Magnit — Classroom</div>
+        <div class="card-year">2025 · Russia</div>
+      </div>
+      <div class="card-tags">
+        <button class="tag" data-filter="interior">#INTERIOR</button>
+        <button class="tag" data-filter="conceptual">#CONCEPTUAL</button>
       </div>
     </div>
   </div>
@@ -901,6 +1058,11 @@ In this competition, I took a direct part in the development of the concept of p
   document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('click', e => {
       if (e.target.classList.contains('tag')) return;
+      // external link cards → open in new tab
+      if (card.dataset.externalUrl) {
+        window.open(card.dataset.externalUrl, '_blank', 'noopener');
+        return;
+      }
       openModal(card);
     });
   });
