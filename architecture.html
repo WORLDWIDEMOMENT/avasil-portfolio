@@ -14,8 +14,6 @@
     #cur { position: fixed; width: 8px; height: 8px; background: var(--blue); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .15s, height .15s; }
     #cur.big { width: 44px; height: 44px; background: transparent; border: 1px solid rgba(255,255,255,.35); }
     @media (hover: none), (pointer: coarse) { #cur { display: none !important; } body { cursor: auto; } }
-    .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; transition: filter .4s; }
-    .grid-bg.blur { filter: blur(6px); }
     .sticky-top { position: sticky; top: 0; z-index: 100; background: var(--bg); }
     .header-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 54px; border-bottom: 1px solid var(--line); }
     .back { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; color: var(--dim); transition: color .2s; }
@@ -81,15 +79,20 @@
     .tag { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--blue); background: none; border: none; cursor: none; padding: 2px 0; line-height: 1.6; transition: opacity .15s; }
     .tag:hover { opacity: .6; }
     @media (hover: none), (pointer: coarse) { .tag { cursor: auto; } }
-    .modal { position: fixed; inset: 0; display: flex; align-items: flex-start; justify-content: center; padding: 32px 20px; visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; z-index: 400; overflow-y: auto; }
+    /* ── MODAL: fullscreen, image aligned to top (как синие линии на скрине) ── */
+    .modal { position: fixed; inset: 0; display: flex; align-items: flex-start; justify-content: center; padding: 0; visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; z-index: 400; overflow: hidden; }
     .modal.active { visibility: visible; opacity: 1; }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.82); z-index: -1; }
-    .modal-content { position: relative; width: 96%; max-width: 1280px; background: #111111; border: 1px solid var(--line); z-index: 410; display: grid; grid-template-columns: 58% 42%; animation: mIn .28s ease; }
-    @keyframes mIn { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: none; } }
-    .modal-gallery { display: flex; flex-direction: column; overflow: hidden; background: #0a0a0a; min-height: 420px; }
-    .modal-main-img { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; background: #0a0a0a; min-height: 320px; max-height: calc(90vh - 110px); overflow: hidden; }
-    .modal-main-img img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; }
-    .modal-main-img.ph { display: flex; align-items: center; justify-content: center; background: #181818; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #3a3a3a; min-height: 320px; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: -1; }
+    /* полный экран, фиксированная ширина инфо-панели */
+    .modal-content { position: relative; width: 100%; height: 100vh; background: #111; border: none; z-index: 410; display: grid; grid-template-columns: 1fr 400px; overflow: hidden; animation: mIn .25s ease; }
+    @keyframes mIn { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
+    /* левая колонка: галерея на весь экран */
+    .modal-gallery { display: flex; flex-direction: column; overflow: hidden; background: #080808; height: 100vh; }
+    /* изображение занимает всё свободное место, выровнено по ВЕРХНЕМУ краю */
+    .modal-main-img { flex: 1; display: flex; align-items: flex-start; justify-content: center; overflow: hidden; background: #080808; min-height: 0; }
+    .modal-main-img img { width: 100%; height: 100%; object-fit: contain; object-position: top center; display: block; }
+    .modal-main-img.ph { display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #3a3a3a; }
+    /* миниатюры — горизонтальная полоска внизу */
     .modal-thumbs-row { display: flex; flex-direction: row; height: 72px; flex-shrink: 0; overflow-x: auto; overflow-y: hidden; border-top: 1px solid var(--line); scrollbar-width: thin; scrollbar-color: #444 #1a1a1a; }
     .modal-thumbs-row::-webkit-scrollbar { height: 4px; }
     .modal-thumbs-row::-webkit-scrollbar-track { background: #1a1a1a; }
@@ -99,7 +102,8 @@
     .thumb:hover { opacity: .85; }
     .thumb.active { opacity: 1; box-shadow: inset 0 -3px 0 var(--blue); }
     @media (hover: none), (pointer: coarse) { .thumb { cursor: auto; } }
-    .modal-info { padding: 32px 36px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; overflow-y: auto; min-height: 420px; scrollbar-width: thin; scrollbar-color: #444 #1a1a1a; }
+    /* правая колонка: инфо, прокручивается */
+    .modal-info { height: 100vh; overflow-y: auto; padding: 32px 36px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; scrollbar-width: thin; scrollbar-color: #444 #1a1a1a; }
     .modal-info::-webkit-scrollbar { width: 5px; }
     .modal-info::-webkit-scrollbar-track { background: #1a1a1a; }
     .modal-info::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
@@ -126,13 +130,18 @@
     body::-webkit-scrollbar-track { background: #1a1a1a; }
     body::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; border: 1px solid #2a2a2a; }
     body::-webkit-scrollbar-thumb:hover { background: #666; }
+    /* сетка фона — чуть ярче чтобы была видна */
+    .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; transition: filter .4s; }
+    .grid-bg.blur { filter: blur(6px); }
     @media (max-width: 900px) {
       .projects-grid { grid-template-columns: repeat(2, 1fr); }
-      .modal-content { grid-template-columns: 1fr; width: 100%; margin: 0; }
-      .modal { padding: 0; }
-      .modal-gallery { min-height: 240px; }
-      .modal-main-img { max-height: 52vw; min-height: 200px; }
-      .modal-info { min-height: auto; padding: 20px 22px; }
+      /* мобайл: вертикальная раскладка, изображение занимает 70vh */
+      .modal-content { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: auto; min-height: 100vh; overflow: visible; }
+      .modal { overflow-y: auto; }
+      .modal-gallery { height: auto; flex-shrink: 0; }
+      /* изображение на мобайле — большое, почти на весь экран */
+      .modal-main-img { height: 70vh; flex: none; align-items: flex-start; }
+      .modal-info { height: auto; overflow-y: visible; padding: 24px 20px 40px; border-left: none; border-top: 1px solid var(--line); }
       .page-title { font-size: clamp(52px, 14vw, 100px); padding: 28px 24px 12px; }
       .page-subtitle { padding: 0 24px 24px; }
       .header-bar { padding: 0 20px; }
@@ -177,7 +186,7 @@
   <div class="project-card external" data-tags="masterplan residential published" data-title="Myriads. Design code of the residential district" data-external-url="https://www.artlebedev.com/enko/miriady/">
     <span class="card-number">01</span><span class="ext-badge">↗ artlebedev.com</span>
     <div class="card-img" data-ph="Miriady">
-      <img src="images/assets/build/als/miriady.jpg" alt="Miriady">
+      <img src="images/assets/build/als/miriady.jpg" alt="Miriady" fetchpriority="high">
       <div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div>
     </div>
     <div class="card-meta">
@@ -190,7 +199,7 @@
 
 The result combines our vision of modern style for the area, the client's desires, a versatile layout with all necessary amenities, and perfect landscaping." data-images='["images/assets/build/1295/12951.png","images/assets/build/1295/1295p1.jpg","images/assets/build/1295/1295p2.jpg","images/assets/build/1295/1295p3.jpg","images/assets/build/1295/1295p4.jpg","images/assets/build/1295/12952.png","images/assets/build/1295/12953.png","images/assets/build/1295/12954.png","images/assets/build/1295/12955.png","images/assets/build/1295/12956.png","images/assets/build/1295/12957.png","images/assets/build/1295/12958.png","images/assets/build/1295/12959.png","images/assets/build/1295/129510.png","images/assets/build/1295/129511.jpg","images/assets/build/1295/129512.jpg","images/assets/build/1295/129513.jpg","images/assets/build/1295/129514.jpg","images/assets/build/1295/129515.jpg","images/assets/build/1295/129516.jpg","images/assets/build/1295/129517.jpg"]'>
     <span class="card-number">02</span>
-    <div class="card-img" data-ph="1295 Complex"><img src="images/assets/build/1295/12951.png" alt="1295"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+    <div class="card-img" data-ph="1295 Complex"><img src="images/assets/build/1295/12951.png" alt="1295" fetchpriority="high"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
     <div class="card-meta"><div class="card-info"><div class="card-name">1295 — Residential Complex</div><div class="card-year">2024 · Minsk / Moscow</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
   </div>
 
@@ -268,9 +277,7 @@ This project is an ode to nature's raw power — the movement of titanic plates 
     <div class="card-meta"><div class="card-info"><div class="card-name">Museum of Modern Art "NOVA"</div><div class="card-year">2022 · Warsaw / Minsk</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div>
   </div>
 
-  <div class="project-card" data-tags="conceptual masterplan" data-title="Competition Alborada Benahavís" data-year="2023" data-location="Benahavís, Spain" data-type="Competition / Hospitality" data-studio="Archidom Studio" data-tools="AutoCAD, Rhino, Photoshop" data-desc="Several architects and I participated in the development of the competitive concept under the following conditions of the program: The Competition of ideas for the realization of the projects on the plots of "La Alborada" seeks the architectural proposal that allows to define the most appropriate to cover the following needs in each of the plots:
-a. Plot-1: private – sports equipment. The property wants to develop an Andalusian architecture project surrounded by nature where to practice spiritual and yoga retreats (wellness retreat).
-b. Plot-2: set of tourist apartments or aparthotel, composed of independent buildings, arranged in an environment of nature. In this competition I took a direct part in the development of the concept of plans, the search and modernization of references, the creation of sketches and diagrams, as well as in post-processing, which you can see on the final layout." data-images='["images/assets/build/xab/xab.jpg"]'>
+  <div class="project-card" data-tags="conceptual masterplan" data-title="Competition Alborada Benahavís" data-year="2023" data-location="Benahavís, Spain" data-type="Competition / Hospitality" data-studio="Archidom Studio" data-tools="AutoCAD, Rhino, Photoshop" data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside — architecture as landscape continuation. Concept plans, sketches, diagrams, post-production." data-images='["images/assets/build/xab/xab.jpg"]'>
     <span class="card-number">13</span>
     <div class="card-img" data-ph="Alborada"><img src="images/assets/build/xab/xab.jpg" alt="Alborada"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
     <div class="card-meta"><div class="card-info"><div class="card-name">Competition Alborada</div><div class="card-year">2023 · Benahavís</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="masterplan">#MASTERPLAN</button></div></div>
@@ -309,7 +316,6 @@ b. Plot-2: set of tourist apartments or aparthotel, composed of independent buil
 <div class="footer-left" id="footerLeft"><a href="about.html">About</a></div>
 <div class="global-footer" id="globalFooter">
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
-  <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank">ArtLebedev</a><span>—</span>
   <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a><span>—</span>
   <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a><span>—</span>
   <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
@@ -363,20 +369,20 @@ b. Plot-2: set of tourist apartments or aparthotel, composed of independent buil
     modal.classList.add('active'); modal.scrollTop = 0; setBlur(true);
   }
 
+  /* showImage: синхронно создаём img и сразу добавляем.
+     Нет probe/onload — нет race condition при быстром переключении миниатюр.
+     object-fit: contain в CSS гарантирует корректное отображение любых пропорций. */
   function showImage(src, alt) {
     modalMain.className = 'modal-main-img';
     modalMain.innerHTML = '';
-    const probe = new Image();
-    probe.onload = () => {
-      const el = document.createElement('img');
-      el.src = src; el.alt = alt || ''; el.loading = 'lazy';
-      modalMain.innerHTML = ''; modalMain.appendChild(el);
-    };
-    probe.onerror = () => {
+    const img = document.createElement('img');
+    img.alt = alt || '';
+    img.onerror = function() {
       modalMain.className = 'modal-main-img ph';
       modalMain.textContent = 'Not found: ' + src.split('/').pop();
     };
-    probe.src = src;
+    modalMain.appendChild(img);
+    img.src = src; // src после appendChild — браузер начнёт загрузку
   }
 
   function closeModal() { modal.classList.remove('active'); setBlur(false); }
