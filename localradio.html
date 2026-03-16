@@ -604,7 +604,7 @@ body::before {
     // clear previous highlight
     document.querySelectorAll('.playlist-card').forEach(c => c.classList.remove('drumlit'));
 
-    const chosen = Math.floor(Math.random() * PLAYLISTS.lenght);
+   const chosen = Math.floor(Math.random() * PLAYLISTS.length);
     const titles = PLAYLISTS.map(p => p.title);
     const totalItems = drumStrip.children.length;
 
