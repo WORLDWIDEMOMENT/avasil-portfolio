@@ -5,681 +5,651 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visual — AV</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
 
 <style>
-/* ────────────────────────────────────────────────────
-   RESET & VARIABLES
-──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 :root {
-  --bg:      #070707;
-  --white:   #ededed;
-  --dim:     #484848;
-  --line:    #1c1c1c;
-  --blue:    #4d6aff;
-  --green:   #00e676;
-  --mono:    'IBM Plex Mono', monospace;
-  --display: 'Bebas Neue', sans-serif;
-  --sans:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* ── LIGHT THEME ── */
+  --bg:        #f0ece5;   /* тёплый офф-вайт */
+  --fg:        #111111;
+  --dim:       #888;
+  --line:      rgba(0,0,0,.12);
+  --accent:    #4d6aff;
+  --card-bg:   #fff;
+  --shadow:    rgba(0,0,0,.13);
+
+  /* ── ШРИФТ ── */
+  --sans: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 html, body {
   width:100%; height:100%;
   overflow:hidden;
-  background: var(--bg);
-  color: var(--white);
-  cursor: none;
   font-family: var(--sans);
+  cursor:none;
+
+  /* ── ФОНОВЫЙ ЦВЕТ ── */
+  background-color: var(--bg);
+
+  /*
+  ══════════════════════════════════════════════
+  ФОНОВАЯ КАРТИНКА — раскомментируй и укажи путь:
+
+  background-image: url('images/assets/create/visualmain.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  Затем раскомментируй overlay ниже (.bg-overlay)
+  ══════════════════════════════════════════════
+  */
 }
 
-/* grain */
+/*
+  OVERLAY поверх фоновой картинки — раскомментируй вместе с картинкой:
+  .bg-overlay {
+    position:fixed; inset:0;
+    background:rgba(240,236,229,.72);
+    pointer-events:none; z-index:0;
+  }
+*/
+
+/* зернистость — очень тихая, почти незаметно */
 body::before {
   content:'';
   position:fixed; inset:0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px;
-  opacity:.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px;
+  opacity:.025;
   pointer-events:none;
   z-index:8000;
 }
 
-/* scanlines */
-body::after {
-  content:'';
-  position:fixed; inset:0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0px, transparent 3px,
-    rgba(0,0,0,.018) 3px, rgba(0,0,0,.018) 4px
-  );
-  pointer-events:none;
-  z-index:8001;
-}
-
-/* ────────────────────────────────────────────────────
-   FACE ID OVERLAY
-──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   APPLE FACE ID INTRO
+───────────────────────────────────────────── */
 #faceId {
   position:fixed; inset:0;
   background:#000;
   z-index:9500;
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
-  gap:20px;
-  transition: opacity .7s ease;
+  gap:24px;
+  transition: opacity .6s ease;
 }
 #faceId.out { opacity:0; pointer-events:none; }
 
-/* outer dashed ring */
-.fid-ring {
-  width:160px; height:200px;
-  border:1px dashed rgba(0,230,118,.2);
-  border-radius:50%;
+/* ── oval wrapper ── */
+.fid-wrap {
   position:relative;
-  display:flex; align-items:center; justify-content:center;
-  animation: ringPulse 1.4s ease-in-out infinite;
-}
-@keyframes ringPulse {
-  0%,100% { border-color:rgba(0,230,118,.18); }
-  50%      { border-color:rgba(0,230,118,.45); }
+  width:170px; height:210px;
 }
 
-/* face oval */
-.fid-oval {
-  width:130px; height:168px;
-  border:1.5px solid rgba(0,230,118,.5);
+/* контур овала */
+.fid-oval-ring {
+  position:absolute; inset:0;
   border-radius:50%;
-  position:relative;
-  overflow:hidden;
-}
-/* corner marks */
-.fid-oval::before, .fid-oval::after {
-  content:'';
-  position:absolute;
-  width:14px; height:14px;
-  border-color: var(--green);
-  border-style: solid;
-}
-.fid-oval::before { top:-1px; left:-1px; border-width:2px 0 0 2px; }
-.fid-oval::after  { bottom:-1px; right:-1px; border-width:0 2px 2px 0; }
-
-/* scan line */
-.fid-scan {
-  position:absolute;
-  left:-5%; right:-5%;
-  height:2px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-  box-shadow: 0 0 10px var(--green), 0 0 3px var(--green);
-  top:-4px;
-  animation: scanDown 2s ease-in-out forwards;
-}
-@keyframes scanDown {
-  0%   { top:-4px; opacity:0; }
-  8%   { opacity:1; }
-  92%  { opacity:1; }
-  100% { top:100%; opacity:0; }
+  border:2px solid rgba(255,255,255,.08);
 }
 
-/* dots on oval (decorative) */
+/* SVG dots track around oval */
+.fid-svg {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+}
+.fid-dot-track {
+  fill:none;
+  stroke:rgba(255,255,255,.0);
+}
+/* individual dot */
 .fid-dot {
-  position:absolute;
-  width:3px; height:3px;
-  background: var(--green);
-  border-radius:50%;
-  animation: dotBlink 1.2s ease-in-out infinite;
-}
-@keyframes dotBlink {
-  0%,100%{opacity:.3;} 50%{opacity:1;}
-}
-
-.fid-label {
-  font-family: var(--mono);
-  font-size:9px; letter-spacing:.4em; text-transform:uppercase;
-  color: var(--green);
-  opacity:0; animation: fidIn .4s ease .3s forwards;
-}
-.fid-status {
-  font-family: var(--mono);
-  font-size:8px; letter-spacing:.28em; text-transform:uppercase;
-  color:rgba(0,230,118,.5);
-  opacity:0; animation: fidIn .3s ease .6s forwards;
-}
-#fidGranted {
-  font-family: var(--display);
-  font-size:36px; letter-spacing:.12em;
-  color: var(--green);
-  text-shadow: 0 0 20px rgba(0,230,118,.5);
-  position:absolute;
+  r:3px;
+  fill:#fff;
   opacity:0;
 }
 
-@keyframes fidIn { to{opacity:1;} }
-@keyframes fidGrantedAnim {
-  0%   { opacity:0; transform:scale(.88); }
-  60%  { opacity:1; transform:scale(1.04); }
-  100% { opacity:1; transform:scale(1); }
+/* scanning arc — CSS animated */
+.fid-arc {
+  position:absolute; inset:0;
+  border-radius:50%;
+  border:2px solid transparent;
+  border-top-color:rgba(255,255,255,.7);
+  border-right-color:rgba(255,255,255,.25);
+  animation: arcSpin 1.4s linear infinite;
+  opacity:0;
+}
+@keyframes arcSpin { to { transform:rotate(360deg); } }
+
+/* progress ring (green) */
+.fid-progress-ring {
+  position:absolute; inset:-3px;
+  border-radius:50%;
+  border:2.5px solid transparent;
+  border-top-color: #30d158;
+  opacity:0;
+  animation: progressSpin .6s linear infinite;
+}
+@keyframes progressSpin { to { transform:rotate(360deg); } }
+
+/* face placeholder — Apple uses face mesh dots */
+.fid-face {
+  position:absolute; inset:0;
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  grid-template-rows:repeat(9,1fr);
+  padding:28px 24px;
+  opacity:0;
+  transition:opacity .4s;
+}
+.fid-mesh-dot {
+  width:2px; height:2px;
+  background:#fff;
+  border-radius:50%;
+  opacity:.15;
+  align-self:center;
+  justify-self:center;
+  transition: opacity .05s;
 }
 
-/* ────────────────────────────────────────────────────
-   CUSTOM CURSOR — CROSSHAIR + COORDS
-──────────────────────────────────────────────────── */
+/* checkmark */
+.fid-check {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0;
+  transition:opacity .3s;
+}
+.fid-check svg { width:52px; height:52px; }
+.fid-check-path {
+  stroke: #30d158;
+  stroke-width:2.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  fill:none;
+  stroke-dasharray:56;
+  stroke-dashoffset:56;
+}
+
+.fid-label {
+  font-family:var(--sans);
+  font-size:13px; font-weight:600; letter-spacing:.04em;
+  color:rgba(255,255,255,.75);
+  opacity:0; animation:fadeSlowIn .5s ease .2s forwards;
+}
+.fid-hint {
+  font-family:var(--sans);
+  font-size:11px; font-weight:400;
+  color:rgba(255,255,255,.32);
+  opacity:0; animation:fadeSlowIn .4s ease .5s forwards;
+  letter-spacing:.02em;
+}
+@keyframes fadeSlowIn { to { opacity:1; } }
+
+/* ─────────────────────────────────────────────
+   CURSOR — увеличивающийся круг
+───────────────────────────────────────────── */
 #cur {
   position:fixed;
+  width:12px; height:12px;
+  border:1.5px solid var(--fg);
+  border-radius:50%;
   pointer-events:none;
   z-index:9999;
   transform:translate(-50%,-50%);
-  transition: transform .08s ease;
+  transition:width .18s ease, height .18s ease, background .18s, border-color .18s;
 }
-
-.cur-h, .cur-v {
-  position:absolute;
-  background: var(--white);
-  mix-blend-mode:difference;
+#cur.hovering {
+  width:44px; height:44px;
+  background:rgba(77,106,255,.08);
+  border-color:var(--accent);
 }
-.cur-h { width:24px; height:1px; top:50%; left:50%; transform:translate(-50%,-50%); }
-.cur-v { height:24px; width:1px; left:50%; top:50%; transform:translate(-50%,-50%); }
+@media (hover:none) { #cur { display:none; } body { cursor:auto; } }
 
-.cur-center {
-  position:absolute; top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  width:3px; height:3px;
-  background: var(--blue);
-  border-radius:50%;
-  mix-blend-mode:normal;
-}
-
-.cur-data {
-  position:absolute;
-  top:16px; left:16px;
-  font-family: var(--mono);
-  font-size:7px; letter-spacing:.08em;
-  color:rgba(237,237,237,.35);
-  white-space:nowrap;
-  mix-blend-mode:normal;
-}
-
-#cur.on-interactive .cur-h { width:36px; }
-#cur.on-interactive .cur-v { height:36px; }
-#cur.on-interactive .cur-center { width:6px; height:6px; background:var(--blue); }
-
-/* ────────────────────────────────────────────────────
-   HEADER
-──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   HEADER — только ← BACK слева
+───────────────────────────────────────────── */
 .header-bar {
   position:fixed; top:0; left:0; right:0; z-index:200;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 40px; height:54px;
-  border-bottom:1px solid var(--line);
-  background:rgba(7,7,7,.92);
-  backdrop-filter:blur(10px);
+  height:54px;
+  display:flex; align-items:center;
+  padding:0 40px;
 }
 .back {
-  font-size:11px; font-weight:700;
-  letter-spacing:.16em; text-transform:uppercase;
+  font-family:var(--sans);
+  font-size:13px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase;
   text-decoration:none; color:var(--dim);
   transition:color .2s;
 }
-.back:hover { color:var(--white); }
-.header-title {
-  font-family: var(--display);
-  font-size:20px; letter-spacing:.1em;
-  color:rgba(237,237,237,.12);
-  user-select:none;
-}
+.back:hover { color:var(--fg); }
 
-/* ────────────────────────────────────────────────────
-   HUD ELEMENTS (TouchDesigner aesthetic)
-──────────────────────────────────────────────────── */
-.hud {
-  position:fixed;
-  font-family: var(--mono);
-  font-size:8px; letter-spacing:.16em; text-transform:uppercase;
-  pointer-events:none;
-  z-index:50;
-  line-height:1.9;
-}
-.hud-tl { top:68px; left:40px; color:rgba(77,106,255,.55); }
-.hud-tr { top:68px; right:40px; text-align:right; color:rgba(237,237,237,.18); }
-
-.hud-pulse {
-  display:inline-block;
-  width:5px; height:5px;
-  background:var(--blue);
-  border-radius:50%;
-  margin-right:6px;
-  vertical-align:middle;
-  animation: hudBlink 2.4s ease-in-out infinite;
-}
-@keyframes hudBlink { 0%,100%{opacity:1;} 50%{opacity:.2;} }
-
-/* ────────────────────────────────────────────────────
-   WALL (full-screen canvas)
-──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   WALL
+───────────────────────────────────────────── */
 .wall {
-  position:fixed;
-  inset:0;
-  overflow:visible;
+  position:fixed; inset:0;
 }
 
-/* ────────────────────────────────────────────────────
-   FOLDER / PATCH
-──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   FOLDER / PATCH  (увеличенный — 280px)
+───────────────────────────────────────────── */
 .folder {
   position:absolute;
-  width:210px;
+  width:280px;
   cursor:none;
-  /* floating set via JS */
+  --rot: 0deg;
 }
 .folder:hover { z-index:90 !important; }
 
-/* tape strip */
+/* tape */
 .folder-tape {
   position:absolute;
-  top:-11px; left:50%;
-  transform:translateX(-50%) rotate(-1deg);
-  width:72px; height:18px;
-  background:rgba(237,237,237,.09);
-  backdrop-filter:blur(4px);
+  top:-13px; left:50%;
+  transform:translateX(-50%) rotate(var(--tape-rot, -1deg));
+  width:84px; height:20px;
+  background:rgba(180,160,120,.22);
+  backdrop-filter:blur(2px);
   z-index:2;
   border-radius:1px;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
 }
 
-/* card body */
+/* card */
 .folder-card {
-  background:#0e0e0e;
-  border:1px solid #1f1f1f;
-  padding:10px;
+  background:var(--card-bg);
+  border:1px solid rgba(0,0,0,.07);
+  padding:12px;
+  box-shadow:0 4px 18px var(--shadow), 0 1px 4px rgba(0,0,0,.06);
   position:relative;
   transition:
-    transform .4s cubic-bezier(.23,1,.32,1),
-    box-shadow .4s ease,
+    transform .42s cubic-bezier(.23,1,.32,1),
+    box-shadow .42s ease,
     border-color .3s;
 }
 .folder:hover .folder-card {
-  transform:translateY(-4px) scale(1.01);
-  box-shadow:0 20px 50px rgba(0,0,0,.8), 0 0 0 1px rgba(77,106,255,.18);
-  border-color:rgba(77,106,255,.3);
+  transform:translateY(-6px) scale(1.015);
+  box-shadow:0 22px 55px rgba(0,0,0,.22), 0 0 0 1.5px rgba(77,106,255,.2);
+  border-color:rgba(77,106,255,.25);
 }
 
-/* empty folder style */
+/* empty */
 .folder.empty .folder-card {
+  background:rgba(255,255,255,.55);
   border-style:dashed;
-  border-color:#181818;
-  opacity:.45;
+  border-color:rgba(0,0,0,.1);
+  box-shadow:none;
 }
 .folder.empty:hover .folder-card {
-  border-color:#303030;
-  box-shadow:none;
   transform:none;
+  box-shadow:none;
 }
 
 /* photo stack */
 .folder-photos {
   position:relative;
-  height:136px;
-  margin-bottom:10px;
+  height:180px;
+  margin-bottom:12px;
 }
 .folder-photo, .folder-photo-ph {
   position:absolute;
-  width:124px; height:100px;
+  width:160px; height:128px;
+  box-shadow:2px 3px 16px rgba(0,0,0,.2);
   transition:transform .45s cubic-bezier(.23,1,.32,1);
-  box-shadow:2px 3px 14px rgba(0,0,0,.7);
 }
 .folder-photo { object-fit:cover; display:block; }
 .folder-photo-ph {
-  background:#151515;
+  background:#ece9e3;
   display:flex; align-items:center; justify-content:center;
 }
 .folder-photo-ph::after {
   content:attr(data-label);
-  font-family:var(--mono);
-  font-size:6px; letter-spacing:.18em; text-transform:uppercase;
-  color:#2a2a2a;
+  font-family:var(--sans);
+  font-size:8px; font-weight:700; letter-spacing:.18em;
+  text-transform:uppercase; color:#bbb;
 }
 
-/* stacking positions */
-.folder-photo:nth-child(1),.folder-photo-ph:nth-child(1) { transform:rotate(-4.5deg) translate(-4px,4px); z-index:3; left:4px; top:8px; }
-.folder-photo:nth-child(2),.folder-photo-ph:nth-child(2) { transform:rotate(2deg)   translate( 2px,0px); z-index:2; left:22px; top:2px; }
-.folder-photo:nth-child(3),.folder-photo-ph:nth-child(3) { transform:rotate(-1deg)  translate( 0px,6px); z-index:1; left:46px; top:10px; }
+/* стопка */
+.folder-photo:nth-child(1),.folder-photo-ph:nth-child(1) { transform:rotate(-5deg) translate(-5px,5px); z-index:3; left:6px; top:8px; }
+.folder-photo:nth-child(2),.folder-photo-ph:nth-child(2) { transform:rotate(2.5deg) translate( 2px,0); z-index:2; left:24px; top:2px; }
+.folder-photo:nth-child(3),.folder-photo-ph:nth-child(3) { transform:rotate(-1deg) translate( 0px,7px); z-index:1; left:52px; top:12px; }
 
-/* spread on hover */
+/* разлёт при hover */
 .folder:hover .folder-photo:nth-child(1),
-.folder:hover .folder-photo-ph:nth-child(1) { transform:rotate(-8deg)  translate(-18px, 8px); }
+.folder:hover .folder-photo-ph:nth-child(1) { transform:rotate(-9deg) translate(-22px,10px); }
 .folder:hover .folder-photo:nth-child(2),
-.folder:hover .folder-photo-ph:nth-child(2) { transform:rotate( 4deg)  translate(  4px,-10px); }
+.folder:hover .folder-photo-ph:nth-child(2) { transform:rotate(5deg) translate( 4px,-12px); }
 .folder:hover .folder-photo:nth-child(3),
-.folder:hover .folder-photo-ph:nth-child(3) { transform:rotate( 2deg)  translate( 18px, 4px); }
+.folder:hover .folder-photo-ph:nth-child(3) { transform:rotate(3deg) translate( 22px,6px); }
 
-/* label row */
-.folder-label {
+/* meta row */
+.folder-meta {
   display:flex; justify-content:space-between; align-items:flex-end;
-  border-top:1px solid var(--line);
-  padding-top:8px;
+  border-top:1px solid rgba(0,0,0,.07); padding-top:10px;
 }
 .folder-name {
-  font-family: var(--display);
-  font-size:20px; letter-spacing:.03em; line-height:1;
-  color:var(--white);
+  font-family:var(--sans);
+  font-size:17px; font-weight:800; letter-spacing:-.01em; line-height:1.1;
+  color:var(--fg);
+  text-transform:uppercase;
 }
-.folder.empty .folder-name { color:var(--dim); font-size:16px; }
+.folder.empty .folder-name { color:#bbb; }
 .folder-count {
-  font-family: var(--mono);
-  font-size:7px; letter-spacing:.1em;
-  color:var(--dim);
-}
-
-/* "TBA" tag on empty */
-.folder-tba {
-  font-family: var(--mono);
-  font-size:6px; letter-spacing:.2em; text-transform:uppercase;
-  color:rgba(77,106,255,.45);
-  padding:2px 5px;
-  border:1px solid rgba(77,106,255,.18);
-  margin-top:4px;
+  font-size:11px; font-weight:600;
+  color:var(--dim); letter-spacing:.02em;
 }
 
 /* "coming soon" flash */
 .folder-flash {
   position:absolute; inset:0;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(4px);
   display:flex; align-items:center; justify-content:center;
-  background:rgba(7,7,7,.92);
-  font-family:var(--mono);
-  font-size:8px; letter-spacing:.22em; text-transform:uppercase;
-  color:rgba(77,106,255,.7);
-  opacity:0;
-  pointer-events:none;
+  opacity:0; pointer-events:none;
   transition:opacity .2s;
   z-index:10;
+  font-size:12px; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--dim);
 }
 .folder.empty:active .folder-flash { opacity:1; }
 
-/* ────────────────────────────────────────────────────
-   FLOATING ANIMATION (via JS custom props)
-──────────────────────────────────────────────────── */
-@keyframes float0 { 0%,100%{translate:0 0px;} 50%{translate:0 -5px;} }
-@keyframes float1 { 0%,100%{translate:0 0px;} 50%{translate:0 -6px;} }
-@keyframes float2 { 0%,100%{translate:0 0px;} 50%{translate:0 -4px;} }
-@keyframes float3 { 0%,100%{translate:0 0px;} 50%{translate:0 -7px;} }
-@keyframes float4 { 0%,100%{translate:0 0px;} 50%{translate:0 -5px;} }
-@keyframes float5 { 0%,100%{translate:0 0px;} 50%{translate:0 -4px;} }
+/* плавание */
+@keyframes f0 { 0%,100%{translate:0 0} 50%{translate:0 -7px} }
+@keyframes f1 { 0%,100%{translate:0 0} 50%{translate:0 -9px} }
+@keyframes f2 { 0%,100%{translate:0 0} 50%{translate:0 -5px} }
+@keyframes f3 { 0%,100%{translate:0 0} 50%{translate:0 -8px} }
+@keyframes f4 { 0%,100%{translate:0 0} 50%{translate:0 -6px} }
+@keyframes f5 { 0%,100%{translate:0 0} 50%{translate:0 -5px} }
 
-/* ────────────────────────────────────────────────────
-   MODAL
-──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   MODAL — light
+───────────────────────────────────────────── */
 .modal {
-  position:fixed; inset:0;
-  z-index:400;
+  position:fixed; inset:0; z-index:400;
   display:flex; align-items:center; justify-content:center;
+  padding:50px 4vw;
   visibility:hidden; opacity:0;
-  transition:opacity .35s ease, visibility .35s;
-  padding:60px 3vw 40px;
+  transition:opacity .32s ease, visibility .32s;
 }
 .modal.active { visibility:visible; opacity:1; }
 
 .modal-bd {
   position:absolute; inset:0;
-  backdrop-filter:blur(14px) saturate(.7);
-  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(18px) brightness(.88);
+  background:rgba(240,236,229,.6);
 }
 
 .modal-panel {
   position:relative;
-  width:100%; max-width:1200px;
-  height:85vh;
-  background:#0c0c0c;
-  border:1px solid var(--line);
+  width:100%; max-width:1160px;
+  height:88vh;
+  background:#fff;
+  border:1px solid rgba(0,0,0,.1);
+  box-shadow:0 30px 80px rgba(0,0,0,.18);
   display:grid;
-  grid-template-columns:1fr 340px;
+  grid-template-columns: 1fr 320px;
   overflow:hidden;
   z-index:410;
-  transform:scale(.94);
+  transform:scale(.94) translateY(12px);
   transition:transform .38s cubic-bezier(.23,1,.32,1);
+  border-radius:4px;
 }
-.modal.active .modal-panel { transform:scale(1); }
-
-/* corner bracket decoration */
-.modal-corner {
-  position:absolute;
-  width:18px; height:18px;
-  border-color:var(--blue);
-  border-style:solid;
-  pointer-events:none;
-  z-index:5;
+.modal.active .modal-panel {
+  transform:scale(1) translateY(0);
 }
-.modal-corner.tl { top:-1px; left:-1px; border-width:2px 0 0 2px; }
-.modal-corner.tr { top:-1px; right:-1px; border-width:2px 2px 0 0; }
-.modal-corner.bl { bottom:-1px; left:-1px; border-width:0 0 2px 2px; }
-.modal-corner.br { bottom:-1px; right:-1px; border-width:0 2px 2px 0; }
 
-/* gallery side */
+/* gallery */
 .modal-gallery {
   display:flex; flex-direction:column;
-  overflow:hidden; background:#080808;
-  height:85vh; position:relative;
+  height:88vh; background:#f7f5f1; overflow:hidden;
+  position:relative;
 }
-.modal-img-wrap {
+.modal-img-area {
   flex:1; min-height:0;
   display:flex; align-items:flex-start; justify-content:center;
-  overflow:hidden;
-  background:#080808;
+  background:#f7f5f1; overflow:hidden;
 }
 .modal-main-img {
   width:100%; height:100%;
-  object-fit:contain;
-  object-position:top center;
+  object-fit:contain; object-position:top center;
   display:block;
 }
 
-/* nav arrows */
+/* nav */
 .modal-nav {
   position:absolute; top:50%; transform:translateY(-50%);
   background:none; border:none;
-  font-size:32px; color:rgba(237,237,237,.2);
+  font-size:28px; color:rgba(0,0,0,.2);
   cursor:none; padding:20px; z-index:10;
-  transition:color .2s;
+  transition:color .18s; line-height:1;
 }
-.modal-nav:hover { color:var(--white); }
+.modal-nav:hover { color:var(--fg); }
 .modal-prev { left:0; }
 .modal-next { right:0; }
 
-/* progress bar */
+/* progress */
 .modal-prog {
   position:absolute; bottom:72px; left:0;
-  height:1px; background:var(--blue);
-  transition:width .25s;
-  z-index:5;
+  height:2px; background:var(--accent);
+  transition:width .22s; z-index:5;
 }
 
-/* thumbnail strip */
+/* thumbnails + RIGHT FADE */
+.modal-thumbs-wrap {
+  position:relative; height:72px; flex-shrink:0;
+  border-top:1px solid rgba(0,0,0,.07);
+}
 .modal-thumbs {
-  height:72px; flex-shrink:0;
+  height:72px;
   display:flex; overflow-x:auto; overflow-y:hidden;
-  border-top:1px solid var(--line);
   scrollbar-width:none;
 }
 .modal-thumbs::-webkit-scrollbar { display:none; }
 .modal-thumb {
   width:72px; height:72px; flex-shrink:0;
-  object-fit:cover; opacity:.38;
-  border-right:1px solid var(--line);
-  cursor:none; transition:opacity .2s;
-  display:block;
+  object-fit:cover; opacity:.35;
+  border-right:1px solid rgba(0,0,0,.06);
+  cursor:none; transition:opacity .18s; display:block;
 }
 .modal-thumb:last-child { border-right:none; }
-.modal-thumb:hover { opacity:.75; }
-.modal-thumb.active { opacity:1; box-shadow:inset 0 -2.5px 0 var(--blue); }
+.modal-thumb:hover { opacity:.7; }
+.modal-thumb.active { opacity:1; box-shadow:inset 0 -2.5px 0 var(--accent); }
 
-/* info side */
+/* градиент-подсказка справа */
+.modal-thumbs-fade {
+  position:absolute; top:0; right:0;
+  width:80px; height:100%;
+  background:linear-gradient(to right, transparent, rgba(247,245,241,.95) 75%);
+  pointer-events:none; z-index:5;
+}
+
+/* info panel */
 .modal-info {
-  border-left:1px solid var(--line);
+  border-left:1px solid rgba(0,0,0,.08);
   display:flex; flex-direction:column;
   padding:28px 28px 24px;
-  overflow-y:auto; height:85vh;
-  scrollbar-width:thin; scrollbar-color:#333 transparent;
+  height:88vh; overflow-y:auto;
+  scrollbar-width:thin; scrollbar-color:#ddd transparent;
 }
 .modal-info::-webkit-scrollbar { width:4px; }
-.modal-info::-webkit-scrollbar-thumb { background:#333; }
+.modal-info::-webkit-scrollbar-thumb { background:#ddd; border-radius:2px; }
 
 .modal-proj-name {
-  font-family:var(--display);
-  font-size:clamp(28px,3.5vw,46px);
-  letter-spacing:.04em; line-height:1;
-  color:var(--white); margin-bottom:4px;
+  font-family:var(--sans);
+  font-size:clamp(24px,2.8vw,38px);
+  font-weight:900; letter-spacing:-.02em; line-height:1;
+  color:var(--fg); margin-bottom:4px;
+  text-transform:uppercase;
 }
 .modal-proj-sub {
-  font-family:var(--mono);
-  font-size:8px; letter-spacing:.22em; text-transform:uppercase;
-  color:var(--blue); margin-bottom:20px;
+  font-size:11px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:20px;
 }
 .modal-counter-display {
-  font-family:var(--mono);
-  font-size:28px; font-weight:700;
-  color:rgba(237,237,237,.08);
-  letter-spacing:.02em; line-height:1;
-  margin-bottom:20px;
+  font-size:42px; font-weight:900;
+  color:rgba(0,0,0,.05);
+  letter-spacing:-.02em; line-height:1;
+  margin-bottom:16px;
+  user-select:none;
 }
 .modal-proj-desc {
-  font-family:var(--mono);
-  font-size:11px; line-height:1.85;
-  color:rgba(237,237,237,.42);
-  font-style:italic; flex:1;
+  font-size:13px; line-height:1.9; font-weight:400;
+  color:rgba(0,0,0,.45); font-style:italic; flex:1;
+  white-space:pre-line;
 }
 .modal-close {
   position:absolute; top:12px; right:16px;
   background:none; border:none;
-  font-family:var(--mono); font-size:10px;
-  letter-spacing:.22em; text-transform:uppercase;
+  font-family:var(--sans); font-size:11px; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase;
   color:var(--dim); cursor:none; z-index:420;
-  transition:color .2s;
+  transition:color .18s;
 }
-.modal-close:hover { color:var(--white); }
+.modal-close:hover { color:var(--fg); }
 
-/* ────────────────────────────────────────────────────
+/* ─────────────────────────────────────────────
    FOOTER
-──────────────────────────────────────────────────── */
+───────────────────────────────────────────── */
 .footer-left {
   position:fixed; bottom:26px; left:40px;
-  font-size:10px; font-weight:700;
-  letter-spacing:.18em; text-transform:uppercase; z-index:50;
+  font-size:11px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; z-index:50;
 }
-.footer-left a {
-  color:var(--white); text-decoration:none;
-  opacity:.22; transition:opacity .2s; font-family:var(--sans);
-}
+.footer-left a { color:var(--fg); text-decoration:none; opacity:.3; transition:opacity .2s; }
 .footer-left a:hover { opacity:1; }
 
 .global-footer {
   position:fixed; bottom:26px; right:40px;
   display:flex; gap:12px; align-items:center;
-  font-size:10px; font-weight:700;
-  letter-spacing:.18em; text-transform:uppercase; z-index:50;
+  font-size:11px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; z-index:50;
 }
-.global-footer a {
-  color:var(--white); text-decoration:none;
-  opacity:.22; transition:opacity .2s; font-family:var(--sans);
-}
+.global-footer a { color:var(--fg); text-decoration:none; opacity:.3; transition:opacity .2s; }
 .global-footer a:hover { opacity:1; }
-.global-footer span { opacity:.1; }
+.global-footer span { opacity:.12; color:var(--fg); }
 
-/* ────────────────────────────────────────────────────
-   MOBILE — basic graceful degradation
-──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   MOBILE
+───────────────────────────────────────────── */
 @media (max-width:760px) {
-  .wall { overflow-y:auto; position:relative; min-height:100vh; padding:60px 20px 80px; }
-  .folder { position:relative !important; left:auto !important; top:auto !important; width:auto; margin-bottom:24px; }
-  .modal-panel { grid-template-columns:1fr; height:auto; max-height:92vh; overflow-y:auto; }
-  .modal-gallery { height:55vw; }
+  .wall { position:relative; overflow-y:auto; min-height:100vh; padding:70px 20px 100px; }
+  .folder { position:relative !important; left:auto !important; top:auto !important;
+    width:auto; margin-bottom:28px; animation:none !important; }
+  .modal-panel { grid-template-columns:1fr; height:auto; max-height:94vh; overflow-y:auto; }
+  .modal-gallery { height:60vw; }
   .modal-info { height:auto; }
-  .hud { display:none; }
   #cur { display:none; }
   body { cursor:auto; overflow:auto; }
   html { overflow:auto; }
+  .header-bar { padding:0 20px; }
+  .footer-left, .global-footer { font-size:9px; bottom:16px; }
+  .footer-left { left:20px; }
+  .global-footer { right:20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ──── FACE ID ──── -->
+<!-- FACE ID -->
 <div id="faceId">
-  <div class="fid-ring">
-    <div class="fid-oval">
-      <div class="fid-scan"></div>
-      <!-- dot decorations on oval edge -->
-      <div class="fid-dot" style="top:-2px;left:calc(50% - 2px);animation-delay:.1s"></div>
-      <div class="fid-dot" style="top:10px;left:-2px;animation-delay:.2s"></div>
-      <div class="fid-dot" style="top:10px;right:-2px;animation-delay:.3s"></div>
-      <div class="fid-dot" style="bottom:-2px;left:calc(50% - 2px);animation-delay:.4s"></div>
-      <div class="fid-dot" style="bottom:14px;left:-2px;animation-delay:.15s"></div>
-      <div class="fid-dot" style="bottom:14px;right:-2px;animation-delay:.25s"></div>
-      <div class="fid-dot" style="top:50%;left:-2px;transform:translateY(-50%);animation-delay:.35s"></div>
-      <div class="fid-dot" style="top:50%;right:-2px;transform:translateY(-50%);animation-delay:.05s"></div>
-    </div>
+  <div class="fid-wrap" id="fidWrap">
+    <div class="fid-oval-ring"></div>
+
+    <!-- SVG: dots + oval path for animated dots -->
+    <svg class="fid-svg" viewBox="0 0 170 210">
+      <!-- oval track для reference (invisible) -->
+      <ellipse id="ovalPath" cx="85" cy="105" rx="82" ry="102" fill="none"/>
+      <!-- mesh dots inside face -->
+      <g id="meshDots" opacity="0">
+        <!-- row 1 -->
+        <circle cx="60" cy="68" r="1.5" fill="white" opacity=".25"/>
+        <circle cx="75" cy="65" r="1.5" fill="white" opacity=".25"/>
+        <circle cx="90" cy="64" r="1.5" fill="white" opacity=".25"/>
+        <circle cx="105" cy="65" r="1.5" fill="white" opacity=".25"/>
+        <circle cx="120" cy="68" r="1.5" fill="white" opacity=".25"/>
+        <!-- row 2 -->
+        <circle cx="55" cy="82" r="1.5" fill="white" opacity=".2"/>
+        <circle cx="70" cy="78" r="1.5" fill="white" opacity=".2"/>
+        <circle cx="85" cy="77" r="1.5" fill="white" opacity=".2"/>
+        <circle cx="100" cy="78" r="1.5" fill="white" opacity=".2"/>
+        <circle cx="115" cy="82" r="1.5" fill="white" opacity=".2"/>
+        <!-- eyes -->
+        <circle cx="68" cy="95" r="2.5" fill="white" opacity=".45"/>
+        <circle cx="102" cy="95" r="2.5" fill="white" opacity=".45"/>
+        <!-- nose -->
+        <circle cx="82" cy="114" r="1.5" fill="white" opacity=".3"/>
+        <circle cx="90" cy="114" r="1.5" fill="white" opacity=".3"/>
+        <!-- mouth -->
+        <circle cx="72" cy="128" r="1.5" fill="white" opacity=".25"/>
+        <circle cx="82" cy="132" r="1.5" fill="white" opacity=".3"/>
+        <circle cx="92" cy="133" r="1.5" fill="white" opacity=".3"/>
+        <circle cx="102" cy="128" r="1.5" fill="white" opacity=".25"/>
+        <!-- chin -->
+        <circle cx="85" cy="148" r="1.5" fill="white" opacity=".15"/>
+      </g>
+      <!-- scanning arc (animated via CSS on .fid-arc wrapper) -->
+      <!-- checkmark -->
+      <g id="fidCheckSvg" opacity="0" transform="translate(85,105)">
+        <circle r="28" fill="rgba(48,209,88,.12)" stroke="rgba(48,209,88,.45)" stroke-width="1.5"/>
+        <path id="checkPath" d="M -11 0 L -3 9 L 13 -8"
+          stroke="#30d158" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"
+          fill="none" stroke-dasharray="36" stroke-dashoffset="36"/>
+      </g>
+    </svg>
+
+    <!-- scanning arc ring -->
+    <div class="fid-arc" id="fidArc"></div>
+    <!-- progress ring -->
+    <div class="fid-progress-ring" id="fidProgress"></div>
   </div>
-  <div class="fid-label">Face ID</div>
-  <div class="fid-status" id="fidStatus">Scanning</div>
-  <div id="fidGranted">ACCESS GRANTED</div>
+  <div class="fid-label" id="fidLabel">Face ID</div>
+  <div class="fid-hint"  id="fidHint">Move your face to set up Face ID</div>
 </div>
 
-<!-- ──── CURSOR ──── -->
-<div id="cur">
-  <div class="cur-h"></div>
-  <div class="cur-v"></div>
-  <div class="cur-center"></div>
-  <div class="cur-data" id="curData">X:0000 Y:0000</div>
-</div>
+<!-- CURSOR -->
+<div id="cur"></div>
 
-<!-- ──── HEADER ──── -->
+<!-- HEADER — только ← Back -->
 <div class="header-bar">
   <a href="index.html" class="back">← Back</a>
-  <div class="header-title">VISUAL</div>
-  <div style="width:56px"></div>
 </div>
 
-<!-- ──── HUD ──── -->
-<div class="hud hud-tl">
-  <span class="hud-pulse"></span>SYSTEM ONLINE<br>
-  <span style="margin-left:11px;color:rgba(237,237,237,.14);">AV · CREATIVE ARCHIVE</span>
-</div>
-<div class="hud hud-tr">
-  <div id="hudTime">--:--:--</div>
-  <div style="color:rgba(77,106,255,.35);">TO CREATE</div>
-</div>
-
-<!-- ──── WALL ──── -->
+<!-- WALL -->
 <div class="wall" id="wall"></div>
 
-<!-- ──── MODAL ──── -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-bd" id="modalBd"></div>
   <div class="modal-panel">
-    <div class="modal-corner tl"></div>
-    <div class="modal-corner tr"></div>
-    <div class="modal-corner bl"></div>
-    <div class="modal-corner br"></div>
     <button class="modal-close" id="modalClose">ESC ✕</button>
 
     <div class="modal-gallery" id="modalGallery">
-      <div class="modal-img-wrap">
+      <div class="modal-img-area">
         <img class="modal-main-img" id="modalImg" src="" alt="">
       </div>
       <button class="modal-nav modal-prev" id="navPrev">‹</button>
       <button class="modal-nav modal-next" id="navNext">›</button>
       <div class="modal-prog" id="modalProg"></div>
-      <div class="modal-thumbs" id="modalThumbs"></div>
+      <div class="modal-thumbs-wrap">
+        <div class="modal-thumbs" id="modalThumbs"></div>
+        <div class="modal-thumbs-fade"></div>
+      </div>
     </div>
 
     <div class="modal-info">
-      <div class="modal-proj-name"  id="modalName"></div>
-      <div class="modal-proj-sub"   id="modalSub"></div>
+      <div class="modal-proj-name"      id="modalName"></div>
+      <div class="modal-proj-sub"       id="modalSub"></div>
       <div class="modal-counter-display" id="modalNum"></div>
-      <p   class="modal-proj-desc"  id="modalDesc"></p>
+      <p   class="modal-proj-desc"      id="modalDesc"></p>
     </div>
   </div>
 </div>
 
-<!-- ──── FOOTER ──── -->
+<!-- FOOTER -->
 <div class="footer-left"><a href="about.html">About</a></div>
 <div class="global-footer">
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
@@ -689,64 +659,57 @@ body::after {
 </div>
 
 <script>
-/* ════════════════════════════════════════════════════
-   PROJECT DATA
-════════════════════════════════════════════════════ */
+/* ════════════════════════════════
+   PROJECTS
+════════════════════════════════ */
 const PROJECTS = [
   {
-    id: 'clo',
+    id: 'Custom Clothes Design',
     name: 'CLO',
     sub: 'CUSTOM CLOTHING',
     desc: 'Hand-painted garments.\nNo sketch, no transfer.\nThe painting grew from the fabric up.',
     images: Array.from({length:20}, (_,i) => `images/assets/create/clo/cloth${i+1}.jpg`),
-    rotation: -2.5,
-    pos: { left:'5%',  top:'13%' },
-    zIndex: 10,
-    floatAnim: 'float0', floatDur: '5.2s', floatDelay: '0s',
+    rot: -2.8, tape: -2, pos:{left:'5%', top:'14%'}, z:12,
+    anim:'f0', dur:'5.4s', delay:'0s',
   },
   {
-    id: 'scan',
+    id: 'Scan',
     name: 'SCAN',
     sub: 'GRAINS OF THE CITIES',
     desc: 'Cities leave marks.\nScanned surfaces, found materials.\nConcrete, rust, fabric, stone.',
     images: Array.from({length:10}, (_,i) => `images/assets/create/scan/Scan${i+1}.jpg`),
-    rotation: 1.8,
-    pos: { left:'56%', top:'10%' },
-    zIndex: 11,
-    floatAnim: 'float1', floatDur: '6.8s', floatDelay: '1.1s',
+    rot: 1.9, tape: 1.2, pos:{left:'54%', top:'8%'}, z:11,
+    anim:'f1', dur:'6.6s', delay:'1.2s',
   },
   {
-    id: 'portrait',
-    name: 'NONE OF THEM IS ME',
-    sub: 'SELF-PORTRAIT SERIES · GRAPHIC',
+    id: 'Self-portrait',
+    name: 'NONE\nOF THEM\nIS ME',
+    sub: 'SELF-PORTRAIT SERIES',
     desc: 'A series about the gap between how you see yourself and how you appear.\n\nNone of the versions is definitive.',
     images: Array.from({length:6}, (_,i) => `images/assets/create/portrait/Portrait${i+1}.jpg`),
-    rotation: -1.2,
-    pos: { left:'24%', top:'48%' },
-    zIndex: 12,
-    floatAnim: 'float2', floatDur: '4.9s', floatDelay: '0.6s',
+    rot: -1.3, tape: 0.8, pos:{left:'22%', top:'47%'}, z:13,
+    anim:'f2', dur:'4.8s', delay:'0.7s',
   },
   {
     id: 'pilots',
-    name: 'TWENTY ONE PILOTS',
+    name: 'TWENTY\nONE PILOTS',
     sub: 'HAND DRAWINGS · 2015–2019',
     desc: 'When I was younger, they shaped everything.\nAll my pain redirected through their image.\nEvery piece a different style, a different state.',
     images: Array.from({length:15}, (_,i) => `images/assets/create/pilots/pilots${i+1}.jpg`),
-    rotation: 2.2,
-    pos: { left:'67%', top:'50%' },
-    zIndex: 13,
-    floatAnim: 'float3', floatDur: '7.1s', floatDelay: '1.8s',
+    rot: 2.4, tape: -1.5, pos:{left:'64%', top:'48%'}, z:14,
+    anim:'f3', dur:'7s', delay:'1.9s',
   },
   {
     id: 'graphic',
-    name: 'GRAPHIC',
-    sub: 'COMING SOON',
-    desc: '',
-    images: [],
-    rotation: -0.9,
-    pos: { left:'39%', top:'19%' },
-    zIndex: 9,
-    floatAnim: 'float4', floatDur: '5.7s', floatDelay: '0.3s',
+    name: 'Before the impact',
+    sub: ''HAND DRAWINGS · 2021',
+    desc: 'Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.
+The four-frame sequence captures a gradual shift in perception. What begins as a quiet, open field occupied by distant human figures transforms into a scene of tension and observation as a sudden trajectory appears in the sky.
+The work investigates the relationship between landscape, technology, and the human witness. The scale of the environment contrasts with the fragility of human presence, emphasizing how rapidly familiar spaces can be redefined by unforeseen events.
+Rather than depicting a specific narrative, the sequence reflects on perception, distance, and the transformation of landscape into a site of memory.',
+    images: [images/assets/create/beforetheimpact.jpg],
+    rot: -1, tape: 1, pos:{left:'38%', top:'22%'}, z:9,
+    anim:'f4', dur:'5.8s', delay:'0.4s',
     empty: true,
   },
   {
@@ -755,168 +718,197 @@ const PROJECTS = [
     sub: 'COMING SOON',
     desc: '',
     images: [],
-    rotation: 1.4,
-    pos: { left:'7%',  top:'63%' },
-    zIndex: 8,
-    floatAnim: 'float5', floatDur: '6.3s', floatDelay: '2.1s',
+    rot: 1.5, tape: -0.8, pos:{left:'6%', top:'61%'}, z:8,
+    anim:'f5', dur:'6.2s', delay:'2.2s',
     empty: true,
   },
 ];
 
-/* ════════════════════════════════════════════════════
-   FACE ID SEQUENCE
-════════════════════════════════════════════════════ */
-const faceIdEl  = document.getElementById('faceId');
-const fidStatus = document.getElementById('fidStatus');
-const fidGranted= document.getElementById('fidGranted');
+/* ════════════════════════════════
+   APPLE FACE ID SEQUENCE
+════════════════════════════════ */
+const fidEl       = document.getElementById('faceId');
+const fidArc      = document.getElementById('fidArc');
+const fidProgress = document.getElementById('fidProgress');
+const fidHint     = document.getElementById('fidHint');
+const fidMesh     = document.getElementById('meshDots');
+const fidCheckSvg = document.getElementById('fidCheckSvg');
+const checkPath   = document.getElementById('checkPath');
 
-setTimeout(() => { fidStatus.textContent = 'Identity verified'; }, 1600);
+// Step 1: show scanning arc
 setTimeout(() => {
-  fidGranted.style.animation = 'fidGrantedAnim .45s ease forwards';
-}, 1900);
+  fidArc.style.opacity = '1';
+  fidMesh.style.transition = 'opacity .6s';
+  fidMesh.style.opacity = '1';
+  fidHint.textContent = 'Scanning…';
+}, 300);
+
+// Step 2: scanning dots lighting up randomly
+let dotTimer;
+const meshDots = Array.from(fidMesh.querySelectorAll('circle'));
+dotTimer = setInterval(() => {
+  const d = meshDots[Math.floor(Math.random() * meshDots.length)];
+  const origOp = parseFloat(d.getAttribute('opacity'));
+  d.style.opacity = '1';
+  setTimeout(() => { d.style.opacity = String(origOp); }, 180);
+}, 60);
+
+// Step 3: switch to green progress
 setTimeout(() => {
-  faceIdEl.classList.add('out');
-}, 2500);
+  clearInterval(dotTimer);
+  fidArc.style.display = 'none';
+  fidProgress.style.opacity = '1';
+  fidHint.textContent = 'Move slightly higher';
+  fidHint.style.color = 'rgba(255,255,255,.55)';
+}, 1300);
 
-/* ════════════════════════════════════════════════════
-   CLOCK
-════════════════════════════════════════════════════ */
-function tick() {
-  const now = new Date();
-  const t = [now.getHours(), now.getMinutes(), now.getSeconds()]
-    .map(n => String(n).padStart(2,'0')).join(':');
-  document.getElementById('hudTime').textContent = t;
-}
-tick(); setInterval(tick, 1000);
+// Step 4: checkmark
+setTimeout(() => {
+  fidProgress.style.display = 'none';
+  fidCheckSvg.style.transition = 'opacity .3s';
+  fidCheckSvg.style.opacity = '1';
+  checkPath.style.transition = 'stroke-dashoffset .5s ease';
+  checkPath.style.strokeDashoffset = '0';
+  fidHint.textContent = 'Face ID';
+  fidHint.style.color = 'rgba(48,209,88,.8)';
+  // pulse all mesh dots
+  meshDots.forEach((d,i) => {
+    setTimeout(() => { d.style.opacity='1'; d.style.transition='opacity .08s'; }, i*18);
+  });
+}, 2000);
 
-/* ════════════════════════════════════════════════════
+// Step 5: fade out
+setTimeout(() => { fidEl.classList.add('out'); }, 2700);
+
+/* ════════════════════════════════
    CURSOR
-════════════════════════════════════════════════════ */
-const cur     = document.getElementById('cur');
-const curData = document.getElementById('curData');
-let cx = 0, cy = 0;
+════════════════════════════════ */
+const cur = document.getElementById('cur');
+if (window.matchMedia('(hover:hover)').matches) {
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+  });
+  document.addEventListener('mouseover', e => {
+    const hit = e.target.closest('a,button,.folder:not(.empty)');
+    cur.classList.toggle('hovering', !!hit);
+  });
+}
 
-document.addEventListener('mousemove', e => {
-  cx = e.clientX; cy = e.clientY;
-  cur.style.left = cx + 'px';
-  cur.style.top  = cy + 'px';
-  curData.textContent = `X:${String(cx).padStart(4,' ')} Y:${String(cy).padStart(4,' ')}`;
-});
-
-document.addEventListener('mouseover', e => {
-  const t = e.target.closest('a,button,.folder:not(.empty)');
-  cur.classList.toggle('on-interactive', !!t);
-});
-
-/* ════════════════════════════════════════════════════
+/* ════════════════════════════════
    BUILD FOLDERS
-════════════════════════════════════════════════════ */
+════════════════════════════════ */
 const wall = document.getElementById('wall');
 
-PROJECTS.forEach((p, idx) => {
+PROJECTS.forEach(p => {
   const div = document.createElement('div');
   div.className = 'folder' + (p.empty ? ' empty' : '');
   div.style.cssText = `
     left:${p.pos.left}; top:${p.pos.top};
-    transform:rotate(${p.rotation}deg);
-    z-index:${p.zIndex};
-    animation:${p.floatAnim} ${p.floatDur} ease-in-out ${p.floatDelay} infinite;
+    transform:rotate(${p.rot}deg);
+    z-index:${p.z};
+    animation:${p.anim} ${p.dur} ease-in-out ${p.delay} infinite;
   `;
-  div.dataset.id = p.id;
 
   // tape
   const tape = document.createElement('div');
   tape.className = 'folder-tape';
-  // slight random tape angle
-  tape.style.transform = `translateX(-50%) rotate(${-1 + Math.random() * 2.5}deg)`;
+  tape.style.setProperty('--tape-rot', p.tape + 'deg');
 
   // card
   const card = document.createElement('div');
   card.className = 'folder-card';
 
-  // photos
+  // photos area
   const photos = document.createElement('div');
   photos.className = 'folder-photos';
 
-  if (p.images.length > 0) {
-    p.images.slice(0, 3).forEach(src => {
+  const thumbSrcs = p.images.slice(0,3);
+  if (thumbSrcs.length > 0) {
+    thumbSrcs.forEach(src => {
       const img = document.createElement('img');
       img.className = 'folder-photo';
-      img.src = src;
-      img.alt = p.name;
-      img.onerror = () => img.style.opacity = '0';
+      img.src = src; img.alt = p.name;
+      img.onerror = () => { img.style.opacity='0'; };
       photos.appendChild(img);
     });
   } else {
-    for (let i = 0; i < 2; i++) {
+    for(let i=0;i<2;i++){
       const ph = document.createElement('div');
-      ph.className = 'folder-photo-ph';
-      ph.dataset.label = 'tba';
+      ph.className='folder-photo-ph'; ph.dataset.label='tba';
       photos.appendChild(ph);
     }
   }
 
-  // label row
-  const label = document.createElement('div');
-  label.className = 'folder-label';
-  label.innerHTML = `
-    <div class="folder-name">${p.name}</div>
-    <div class="folder-count">${p.images.length ? p.images.length + ' files' : 'tba'}</div>
+  // meta
+  const meta = document.createElement('div');
+  meta.className = 'folder-meta';
+  meta.innerHTML = `
+    <div class="folder-name" style="white-space:pre-line">${p.name}</div>
+    <div class="folder-count">${p.images.length || '—'}</div>
   `;
 
-  // flash for empty
+  // flash
   const flash = document.createElement('div');
   flash.className = 'folder-flash';
   flash.textContent = 'coming soon';
 
   card.appendChild(photos);
-  card.appendChild(label);
+  card.appendChild(meta);
   card.appendChild(flash);
   div.appendChild(tape);
   div.appendChild(card);
   wall.appendChild(div);
 
-  // click
   if (!p.empty) {
     div.addEventListener('click', () => openModal(p.id));
   }
 });
 
-/* ════════════════════════════════════════════════════
+/* ════════════════════════════════
    MODAL
-════════════════════════════════════════════════════ */
-const modal      = document.getElementById('modal');
-const modalImg   = document.getElementById('modalImg');
-const modalName  = document.getElementById('modalName');
-const modalSub   = document.getElementById('modalSub');
-const modalNum   = document.getElementById('modalNum');
-const modalDesc  = document.getElementById('modalDesc');
-const modalThumbs= document.getElementById('modalThumbs');
-const modalProg  = document.getElementById('modalProg');
+════════════════════════════════ */
+const modal       = document.getElementById('modal');
+const modalImg    = document.getElementById('modalImg');
+const modalName   = document.getElementById('modalName');
+const modalSub    = document.getElementById('modalSub');
+const modalNum    = document.getElementById('modalNum');
+const modalDesc   = document.getElementById('modalDesc');
+const modalThumbs = document.getElementById('modalThumbs');
+const modalProg   = document.getElementById('modalProg');
+const thumbsFade  = document.querySelector('.modal-thumbs-fade');
 
 let curImages = [], curIdx = 0;
 
 function openModal(id) {
   const p = PROJECTS.find(x => x.id === id);
   if (!p || !p.images.length) return;
-
   curImages = p.images;
   curIdx = 0;
-
-  modalName.textContent = p.name;
+  modalName.textContent = p.name.replace(/\n/g,' ');
   modalSub.textContent  = p.sub;
   modalDesc.textContent = p.desc;
 
-  // thumbs
+  // build thumbs
   modalThumbs.innerHTML = '';
-  p.images.forEach((src, i) => {
+  p.images.forEach((src,i) => {
     const img = document.createElement('img');
-    img.className = 'modal-thumb' + (i === 0 ? ' active' : '');
-    img.src = src;
-    img.alt = '';
+    img.className = 'modal-thumb' + (i===0?' active':'');
+    img.src=src; img.alt=''; img.loading='eager';
     img.addEventListener('click', () => showImg(i));
     modalThumbs.appendChild(img);
   });
+
+  // hide/show fade hint based on whether thumbs overflow
+  setTimeout(() => {
+    const overflows = modalThumbs.scrollWidth > modalThumbs.clientWidth;
+    thumbsFade.style.display = overflows ? 'block' : 'none';
+    // hide fade when user scrolls to end
+    modalThumbs.addEventListener('scroll', () => {
+      const atEnd = modalThumbs.scrollLeft + modalThumbs.clientWidth >= modalThumbs.scrollWidth - 4;
+      thumbsFade.style.opacity = atEnd ? '0' : '1';
+    });
+  }, 60);
 
   showImg(0);
   modal.classList.add('active');
@@ -924,54 +916,32 @@ function openModal(id) {
 
 function showImg(idx) {
   curIdx = idx;
-  const src = curImages[idx];
-
-  // update main image
-  modalImg.src = src;
+  modalImg.src = curImages[idx];
   modalImg.onerror = () => { modalImg.removeAttribute('src'); };
 
-  // counter
-  const n = idx + 1, total = curImages.length;
-  modalNum.textContent = String(n).padStart(2,'0') + ' · ' + String(total).padStart(2,'0');
+  const n=idx+1, t=curImages.length;
+  modalNum.textContent = String(n).padStart(2,'0') + ' · ' + String(t).padStart(2,'0');
+  modalProg.style.width = (n/t*100)+'%';
 
-  // progress
-  modalProg.style.width = (n / total * 100) + '%';
+  document.querySelectorAll('.modal-thumb').forEach((th,i) =>
+    th.classList.toggle('active', i===idx));
 
-  // thumbs
-  document.querySelectorAll('.modal-thumb').forEach((t, i) =>
-    t.classList.toggle('active', i === idx)
-  );
-
-  // scroll active thumb into view
-  const activeTh = modalThumbs.children[idx];
-  if (activeTh) activeTh.scrollIntoView({behavior:'smooth', block:'nearest', inline:'nearest'});
+  const act = modalThumbs.children[idx];
+  if (act) act.scrollIntoView({behavior:'smooth', block:'nearest', inline:'nearest'});
 }
 
-function navigate(dir) {
-  showImg((curIdx + dir + curImages.length) % curImages.length);
-}
-
+function nav(dir) { showImg((curIdx+dir+curImages.length)%curImages.length); }
 function closeModal() { modal.classList.remove('active'); }
 
-document.getElementById('navPrev').addEventListener('click',  () => navigate(-1));
-document.getElementById('navNext').addEventListener('click',  () => navigate(+1));
+document.getElementById('navPrev').addEventListener('click', e=>{e.stopPropagation();nav(-1);});
+document.getElementById('navNext').addEventListener('click', e=>{e.stopPropagation();nav(+1);});
 document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('modalBd').addEventListener('click',  closeModal);
-
+document.getElementById('modalBd').addEventListener('click', closeModal);
 window.addEventListener('keydown', e => {
   if (!modal.classList.contains('active')) return;
-  if (e.key === 'Escape')     closeModal();
-  if (e.key === 'ArrowLeft')  navigate(-1);
-  if (e.key === 'ArrowRight') navigate(+1);
-});
-
-/* ════════════════════════════════════════════════════
-   CURSOR — make interactive elements not cursor:none broken
-════════════════════════════════════════════════════ */
-// re-attach cursor tracking to dynamically added elements
-wall.addEventListener('mouseover', e => {
-  const folder = e.target.closest('.folder:not(.empty)');
-  cur.classList.toggle('on-interactive', !!folder);
+  if (e.key==='Escape')     closeModal();
+  if (e.key==='ArrowLeft')  nav(-1);
+  if (e.key==='ArrowRight') nav(+1);
 });
 </script>
 </body>
