@@ -53,7 +53,7 @@ body::before{
   flex:1;
   position:relative;
   overflow:hidden;
-  padding-top:80px;
+  padding-top: 80px;
   padding-bottom:86px;
 }
 
@@ -690,7 +690,7 @@ function distributeColumns() {
     const col = info.col;
     col.style.position  = 'absolute';
     col.style.left      = Math.round(x) + 'px';
-    col.style.top       = '0';
+    col.style.top       = '80px';
     col.style.width     = COL_W + 'px';
     /* z-index: increases left-to-right so right columns appear on top */
     col.style.zIndex    = String(i + 1);
