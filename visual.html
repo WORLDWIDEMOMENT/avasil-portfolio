@@ -14,7 +14,7 @@ html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-se
 body{
   display:flex;
   flex-direction:column;
-  background-image:url('images/assets/create/visualmain3.jpg');
+  background-image:url('images/assets/create/visualmain.jpg');
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
@@ -53,7 +53,7 @@ body::before{
   flex:1;
   position:relative;
   overflow:hidden;
-  padding-top:50px;
+  padding-top:80px;
   padding-bottom:86px;
 }
 
@@ -72,11 +72,11 @@ body::before{
 }
 
 .column-header{text-align:center;margin-bottom:12px;z-index:10;}
-.column-year{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
+.column-year{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
 /* ↓ ЗАГОЛОВОК КОЛОННЫ — поменяй color на #000 для чёрного */
-.column-title{font-size:10px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:2px;color:#f5f5f5;}
+.column-title{font-size:14px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:4px;color:#f5f5f5;}
 /* ↓ ПОДЗАГОЛОВОК КОЛОННЫ — поменяй color на #222 для чёрного */
-.column-subtitle{font-size:7px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:2px;color:#555;}
+.column-subtitle{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;color:#555;}
 
 /* ── IMAGE ITEM ── */
 .image-item{
@@ -189,14 +189,16 @@ body::before{
 .bottom-bar {
   position:fixed;
   bottom:0; left:0; right:0;
-  height:88px;
+  height:180px; /* выше — градиент начинается раньше */
   background: linear-gradient(to top,
-    rgba(8,8,8,.96) 0%,
-    rgba(8,8,8,.82) 55%,
+    rgba(8,8,8,.97) 0%,
+    rgba(8,8,8,.88) 25%,
+    rgba(8,8,8,.60) 50%,
+    rgba(8,8,8,.22) 72%,
     rgba(8,8,8,.0)  100%
   );
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   z-index:199;
   pointer-events:none;
 }
@@ -731,53 +733,30 @@ function buildScrollContainer() {
    are packed together. Between-group gap larger → visual
    separation between projects. All columns overlap slightly.
 
-   RATIO = betweenGap / withinGap. Increase for more
-   separation between projects, decrease for tighter overall.
+   Равные отступы между всеми колоннами:
+   gap = (W - 2*PADDING - N*COL_W) / (N - 1)
 ───────────────────────────────────────── */
 function distributeColumns() {
   const W = scrollContainer.clientWidth;
   if (!W) { requestAnimationFrame(distributeColumns); return; }
 
-  const PADDING  = 24;  /* left/right margin from edge */
-  const COL_W    = 100; /* column width in px */
-  const RATIO    = 1.5; /* between-group / within-group gap ratio */
+  const PADDING = 24;   /* ← отступ от краёв страницы */
+  const COL_W   = 100;  /* ← ширина каждой колонны в px */
 
-  /* collect column info before DOM restructure */
-  const groups  = Array.from(scrollContainer.querySelectorAll('.project-group'));
-  const colData = [];
-  groups.forEach((g, gi) => {
-    const cols = Array.from(g.querySelectorAll('.column'));
-    cols.forEach((col, ci) => {
-      colData.push({
-        col,
-        gi,
-        ci,
-        isLastInGroup: ci === cols.length - 1
-      });
-    });
-  });
+  /* collect all columns still inside project-group wrappers */
+  const groups = Array.from(scrollContainer.querySelectorAll('.project-group'));
+  const cols   = [];
+  groups.forEach(g => Array.from(g.querySelectorAll('.column')).forEach(c => cols.push(c)));
 
-  const N        = colData.length;
-  const nWithin  = colData.slice(0, -1).filter(c => !c.isLastInGroup).length;
-  const nBetween = colData.slice(0, -1).filter(c =>  c.isLastInGroup).length;
+  const N = cols.length;
+  if (N === 0) return;
 
-  /* Compute steps so everything fits within viewport width:
-     PADDING + nWithin*wg + nBetween*bg + COL_W + PADDING = W
-     bg = RATIO * wg  →  wg = (W - 2*PADDING - COL_W) / (nWithin + RATIO*nBetween)
+  /* Equal gap between every column.
+     Formula: PADDING + N*COL_W + (N-1)*gap + PADDING = W
+     → gap = (W - 2*PADDING - N*COL_W) / (N - 1)
+     Gap can go negative → columns overlap when they don't all fit.
   */
-  const available = W - 2 * PADDING - COL_W;
-  let wg = available / (nWithin + RATIO * nBetween);
-  let bg = wg * RATIO;
-
-  /* enforce overlap: step must be < COL_W so columns overlap */
-  const MAX_STEP = COL_W * 0.88; /* at least 12% overlap always */
-  if (wg > MAX_STEP) { wg = MAX_STEP; bg = MAX_STEP * RATIO; }
-  /* also cap bg to keep everything within viewport */
-  const totalIfCapped = PADDING + nWithin * wg + nBetween * bg + COL_W + PADDING;
-  if (totalIfCapped > W) {
-    const scale = (W - 2*PADDING - COL_W) / (nWithin * wg + nBetween * bg);
-    wg *= scale; bg *= scale;
-  }
+  const gap = N > 1 ? (W - 2 * PADDING - N * COL_W) / (N - 1) : 0;
 
   /* restructure DOM: move columns directly into scrollContainer */
   groups.forEach(g => {
@@ -785,20 +764,13 @@ function distributeColumns() {
     g.remove();
   });
 
-  /* position each column absolutely */
-  let x = PADDING;
-  colData.forEach((info, i) => {
-    const col = info.col;
-    col.style.position  = 'absolute';
-    col.style.left      = Math.round(x) + 'px';
-    col.style.top       = '0';
-    col.style.width     = COL_W + 'px';
-    /* z-index: increases left-to-right so right columns appear on top */
-    col.style.zIndex    = String(i + 1);
-
-    if (i < N - 1) {
-      x += info.isLastInGroup ? bg : wg;
-    }
+  /* position each column absolutely with equal spacing */
+  cols.forEach((col, i) => {
+    col.style.position = 'absolute';
+    col.style.left     = Math.round(PADDING + i * (COL_W + gap)) + 'px';
+    col.style.top      = '80px';
+    col.style.width    = COL_W + 'px';
+    col.style.zIndex   = String(i + 1);
   });
 }
 
