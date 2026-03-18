@@ -23,141 +23,93 @@ body::before{
   content:'';
   position:fixed;
   inset:0;
-  background:rgba(10,10,10,.72);
+  background:rgba(10,10,10,.68);
   z-index:-1;
 }
 
-/* ── CURSOR: circle + cross ── */
+/* ── CURSOR ── */
 #cur-ring {
-  position:fixed;
-  width:30px;
-  height:30px;
-  border:1px solid rgba(245,245,245,.45);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:9998;
-  transform:translate(-50%,-50%);
+  position:fixed;width:30px;height:30px;
+  border:1px solid rgba(245,245,245,.45);border-radius:50%;
+  pointer-events:none;z-index:9998;transform:translate(-50%,-50%);
   transition:left .1s ease,top .1s ease,width .2s,height .2s,border-color .2s;
 }
-#cur-ring.hover { width:46px; height:46px; border-color:rgba(245,245,245,.75); }
-/* crosshair lines at cursor center */
-#cur-cross {
-  position:fixed;
-  pointer-events:none;
-  z-index:9999;
-  transform:translate(-50%,-50%);
-}
-#cur-cross::before,#cur-cross::after {
-  content:'';
-  position:absolute;
-  background:rgba(245,245,245,.6);
-}
-#cur-cross::before { width:12px; height:1px; top:0; left:-6px; }
-#cur-cross::after  { width:1px; height:12px; left:0; top:-6px; }
-
-@media (hover:none),(pointer:coarse) {
-  * { cursor:auto !important; }
-  #cur-ring,#cur-cross { display:none; }
+#cur-ring.hover{width:46px;height:46px;border-color:rgba(245,245,245,.75);}
+#cur-cross{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cur-cross::before,#cur-cross::after{content:'';position:absolute;background:rgba(245,245,245,.6);}
+#cur-cross::before{width:12px;height:1px;top:0;left:-6px;}
+#cur-cross::after{width:1px;height:12px;left:0;top:-6px;}
+@media (hover:none),(pointer:coarse){
+  *{cursor:auto !important;}
+  #cur-ring,#cur-cross{display:none;}
 }
 
 /* ── SCROLL CONTAINER ──
-   padding-top:64px — space below the floating back link
-   padding-bottom:80px — space for the timeline bar
+   No horizontal scroll. Position:relative so columns can be absolutely placed.
+   padding-top: below the back link.
+   padding-bottom: space for timeline + footer.
 ── */
 .scroll-container{
   flex:1;
-  display:flex;
-  overflow-x:auto;
-  overflow-y:hidden;
-  scroll-behavior:smooth;
-  padding-top:64px;
-  padding-bottom:80px;
-  align-items:flex-start;
+  position:relative;
+  overflow:hidden;
+  padding-top:50px;
+  padding-bottom:86px;
 }
-.scroll-container::-webkit-scrollbar{height:4px}
-.scroll-container::-webkit-scrollbar-track{background:#1a1a1a}
-.scroll-container::-webkit-scrollbar-thumb{background:#666;border-radius:2px}
 
-/* ── PROJECT GROUP
-   gap:8px  — intra-project columns close together
-   margin:0 48px — inter-project columns far apart (≈96px gap between groups)
-   New projects added in JS automatically get same margins → equidistant.
-── */
-.project-group{
-  display:flex;
-  gap:8px;
-  flex-shrink:0;
-  margin:0 48px;
-  align-items:flex-start;
-}
+/* ── PROJECT GROUP — no visual effect, JS removes and replaces with abs columns ── */
+.project-group{ display:contents; }
 
 /* ── COLUMN ── */
 .column{
-  flex-shrink:0;
-  width:180px;
-  height:calc(100vh - 144px);
-  position:relative;
+  position:absolute; /* JS sets left, width, z-index */
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:flex-start;
-  padding:20px 15px;
-  gap:8px;
+  padding:20px 8px;
+  gap:6px;
 }
 
-.column-header{
-  position:relative;
-  text-align:center;
-  margin-bottom:15px;
-  z-index:10;
-}
-.column-year{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#999;}
-.column-title{font-size:11px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:3px;color:#f5f5f5;}
-.column-subtitle{font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:2px;color:#666;}
+.column-header{text-align:center;margin-bottom:12px;z-index:10;}
+.column-year{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
+.column-title{font-size:10px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:2px;color:#f5f5f5;}
+.column-subtitle{font-size:7px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:2px;color:#555;}
 
 /* ── IMAGE ITEM ── */
 .image-item{
   position:relative;
-  transition:all .3s cubic-bezier(.23,1,.32,1);
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.07);
   background:#1a1a1a;
   overflow:hidden;
   border-radius:1px;
   flex-shrink:0;
+  margin-top:-18px; /* overlap: each image slides up over the previous */
+  transition:filter .3s;
 }
+.image-item:first-of-type{ margin-top:0; }
 .image-item img{width:100%;height:100%;display:block;object-fit:cover;}
-.image-item:hover{filter:brightness(1.08);}
+.image-item:hover{
+  filter:brightness(1.15);
+  z-index:20;
+  position:relative;
+}
 
-/* ── BACK LINK (no panel, floating) ── */
-.hdr{
-  position:fixed;
-  top:18px;
-  left:36px;
-  z-index:150;
-}
-.back{
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  text-decoration:none;
-  color:#666;
-  transition:color .2s;
-}
+/* ── BACK LINK — floating, no panel ── */
+.hdr{position:fixed;top:18px;left:36px;z-index:150;}
+.back{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:#555;transition:color .2s;}
 .back:hover{color:#f5f5f5}
 
-/* ── MODAL ── */
+/* ── MODAL ──
+   Background = blur of the actual page behind it (not solid black).
+── */
 .modal{
-  position:fixed;
-  inset:0;
-  z-index:500;
-  background:rgba(0,0,0,.97);
-  backdrop-filter:blur(12px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  visibility:hidden;
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.45);   /* semi-transparent only */
+  backdrop-filter:blur(18px);   /* blurs the page content behind */
+  -webkit-backdrop-filter:blur(18px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
   transition:opacity .3s,visibility .3s;
   padding:40px;
 }
@@ -165,164 +117,123 @@ body::before{
 
 .modal-content{
   position:relative;
-  background:#1a1a1a;
-  border:1px solid rgba(255,255,255,.1);
-  max-width:95vw;
-  max-height:90vh;
-  width:100%;
-  display:flex;
-  border-radius:2px;
-  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  max-width:95vw;max-height:90vh;width:100%;
+  display:flex;border-radius:2px;overflow:hidden;
 }
-/* BTI: wider+taller since 4 images in a row need more space */
-.modal-content.mode-row{
-  max-width:99vw;
-  max-height:96vh;
-}
+.modal-content.mode-row{max-width:99vw;max-height:96vh;}
 
 .modal-image-section{
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  background:#0a0a0a;
+  flex:1;min-width:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:rgba(4,4,4,.65); /* semi-transparent dark for image area */
   position:relative;
 }
 
-/* ── SINGLE VIEW ── */
-.modal-single{
-  flex:1;
-  width:100%;
-  min-height:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+.modal-single{flex:1;width:100%;min-height:0;display:flex;align-items:center;justify-content:center;}
 .modal-single img{max-width:100%;max-height:100%;object-fit:contain;}
 
-/* ── MULTI VIEW (collage / row / group) ── */
 .modal-multi{
-  display:none; /* shown via .show */
-  flex:1;
-  width:100%;
-  min-height:0;
-  padding:12px;
-  gap:5px;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:nowrap;
-  overflow:hidden;
+  display:none;flex:1;width:100%;min-height:0;
+  padding:12px;gap:5px;align-items:center;justify-content:center;
+  flex-wrap:nowrap;overflow:hidden;
 }
-.modal-multi.show { display:flex; }
-/* collage: 3×2 grid */
-.modal-multi.mode-collage{
-  flex-wrap:wrap;
-  align-content:center;
-}
-.modal-multi.mode-collage img{
-  width:calc(33.33% - 5px);
-  height:auto;
-  max-height:42vh;
-  object-fit:contain;
-  border:1px solid rgba(255,255,255,.05);
-}
-/* row: up to 4 items in one line */
-.modal-multi.mode-row img{
-  flex:1 1 0;
-  min-width:0;
-  height:78vh;
-  object-fit:contain;
-  border:1px solid rgba(255,255,255,.05);
-}
-/* group: 1–3 CLO items side by side */
-.modal-multi.mode-group img{
-  flex:1 1 0;
-  min-width:0;
-  height:65vh;
-  object-fit:contain;
-  border:1px solid rgba(255,255,255,.05);
-}
+.modal-multi.show{display:flex;}
+.modal-multi.mode-collage{flex-wrap:wrap;align-content:center;}
+.modal-multi.mode-collage img{width:calc(33.33% - 5px);height:auto;max-height:42vh;object-fit:contain;border:1px solid rgba(255,255,255,.05);}
+.modal-multi.mode-row img{flex:1 1 0;min-width:0;height:78vh;object-fit:contain;border:1px solid rgba(255,255,255,.05);}
+.modal-multi.mode-group img{flex:1 1 0;min-width:0;height:65vh;object-fit:contain;border:1px solid rgba(255,255,255,.05);}
 
 .modal-nav-btn{
   position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
   color:#f5f5f5;width:40px;height:40px;border-radius:50%;font-size:18px;
   transition:all .2s;z-index:10;
 }
-.modal-nav-btn:hover{background:rgba(255,255,255,.2);}
-.modal-nav-btn.prev{left:15px}
-.modal-nav-btn.next{right:15px}
+.modal-nav-btn:hover{background:rgba(255,255,255,.18);}
+.modal-nav-btn.prev{left:15px}.modal-nav-btn.next{right:15px}
 .modal-nav-btn.off,.modal-counter.off{display:none}
+.modal-counter{position:absolute;bottom:15px;left:15px;font-size:10px;color:#999;background:rgba(0,0,0,.4);padding:6px 10px;border-radius:2px;}
 
-.modal-counter{
-  position:absolute;bottom:15px;left:15px;font-size:10px;color:#999;
-  background:rgba(0,0,0,.5);padding:6px 10px;border-radius:2px;
-}
-
+/* ── MODAL INFO PANEL ──
+   TEXTURE: replace `background` below with your texture.
+   Example: background: url('images/assets/create/scan/Scan1.jpg') center/cover, rgba(12,12,12,.88);
+   Or:      background: url('images/assets/background.jpg') center/cover, rgba(8,8,8,.85);
+── */
 .modal-info{
-  width:320px;padding:35px;display:flex;flex-direction:column;
-  gap:18px;overflow-y:auto;border-left:1px solid rgba(255,255,255,.1);
+  width:300px;padding:32px 28px;display:flex;flex-direction:column;
+  gap:16px;overflow-y:auto;border-left:1px solid rgba(255,255,255,.08);
   flex-shrink:0;
+  /* ↓ REPLACE THIS LINE WITH YOUR TEXTURE */
+  background:rgba(14,14,14,.92);
 }
-.modal-info::-webkit-scrollbar{width:4px}
-.modal-info::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
+.modal-info::-webkit-scrollbar{width:3px}
+.modal-info::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
 
-.modal-title{font-size:20px;font-weight:900;letter-spacing:-.01em;color:#f5f5f5;}
-.modal-subtitle{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#999;}
-.modal-desc{font-size:12px;line-height:1.6;color:#aaa;white-space:pre-line;flex:1;}
+.modal-title{font-size:18px;font-weight:900;letter-spacing:-.01em;color:#f5f5f5;}
+.modal-subtitle{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;}
+.modal-desc{font-size:11px;line-height:1.65;color:#999;white-space:pre-line;flex:1;}
 
 .modal-close{
-  position:absolute;top:20px;right:20px;background:none;border:none;
-  color:#999;font-size:24px;transition:color .2s;z-index:10;
+  position:absolute;top:18px;right:18px;background:none;border:none;
+  color:#888;font-size:22px;transition:color .2s;z-index:10;
 }
 .modal-close:hover{color:#f5f5f5}
 
-/* ── TIMELINE ── */
+/* ── TIMELINE ── fixed, above footer, spans full width ── */
 .timeline-bottom{
-  position:fixed;bottom:0;left:0;right:0;height:60px;
-  background:linear-gradient(to top,rgba(10,10,10,.98),rgba(10,10,10,.9));
-  border-top:1px solid rgba(255,255,255,.05);
-  display:flex;align-items:center;z-index:200;
-  overflow-x:auto;overflow-y:hidden;
+  position:fixed;
+  bottom:32px; /* above footer links */
+  left:0;right:0;
+  height:46px;
+  display:flex;align-items:center;
+  z-index:200;
+  pointer-events:none;
+  /* subtle bg so the line is readable */
+  background:linear-gradient(to top,rgba(10,10,10,.7),transparent);
 }
-.timeline-bottom::-webkit-scrollbar{height:3px}
-.timeline-bottom::-webkit-scrollbar-track{background:transparent}
-.timeline-bottom::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
 
+/* horizontal line spanning full width */
 .timeline-line{
-  position:absolute;bottom:50%;left:0;right:0;height:1px;
-  background:rgba(255,255,255,.1);transform:translateY(50%);z-index:1;
+  position:absolute;
+  left:24px;right:24px;
+  height:1px;
+  background:rgba(255,255,255,.12);
+  top:50%;transform:translateY(-50%);
+  z-index:1;
 }
+
+/* markers distributed evenly via flexbox */
 .timeline-content{
-  position:relative;height:100%;display:flex;align-items:center;
-  padding:0 40px;gap:80px;z-index:2;min-width:min-content;
+  position:relative;width:100%;height:100%;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  z-index:2;
 }
+
 .year-marker{
-  position:relative;display:flex;flex-direction:column;
-  align-items:center;gap:5px;white-space:nowrap;
+  display:flex;flex-direction:column;align-items:center;
+  gap:4px;white-space:nowrap;flex-shrink:0;
 }
-.year-dot{width:4px;height:4px;background:#666;border-radius:50%;}
-.year-marker.major .year-dot{width:6px;height:6px;background:#999;}
-.year-label{font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#999;}
-/* FUTURE marker: blue */
-.year-marker.future .year-dot{background:#4d6aff;width:6px;height:6px;}
+
+/* dot — size set via inline style in JS */
+.year-dot{
+  border-radius:50%;
+  background:rgba(255,255,255,.55);
+  flex-shrink:0;
+}
+.year-marker.future .year-dot{background:#4d6aff;box-shadow:0 0 8px rgba(77,106,255,.5);}
+
+.year-label{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#777;}
 .year-marker.future .year-label{color:#4d6aff;}
 
-/* ── FOOTER ── */
-.ftl{
-  position:fixed;bottom:68px;left:36px;z-index:100;
-  font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-}
-.ftl a{color:#f5f5f5;text-decoration:none;opacity:.25;transition:opacity .2s;}
+/* ── FOOTER — at very bottom ── */
+.ftl{position:fixed;bottom:10px;left:36px;z-index:100;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.ftl a{color:#f5f5f5;text-decoration:none;opacity:.22;transition:opacity .2s;}
 .ftl a:hover{opacity:1}
-.ftr{
-  position:fixed;bottom:68px;right:36px;z-index:100;
-  display:flex;gap:8px;align-items:center;
-  font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-}
-.ftr a{color:#f5f5f5;text-decoration:none;opacity:.25;transition:opacity .2s;}
+.ftr{position:fixed;bottom:10px;right:36px;z-index:100;display:flex;gap:8px;align-items:center;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.ftr a{color:#f5f5f5;text-decoration:none;opacity:.22;transition:opacity .2s;}
 .ftr a:hover{opacity:1}
 .ftr span{opacity:.08;color:#f5f5f5}
 </style>
@@ -333,10 +244,8 @@ body::before{
 <div id="cur-ring"></div>
 <div id="cur-cross"></div>
 
-<!-- HEADER: floating back link only, no panel -->
-<div class="hdr">
-  <a href="index.html" class="back">← Back</a>
-</div>
+<!-- BACK LINK — floating, no panel -->
+<div class="hdr"><a href="index.html" class="back">← Back</a></div>
 
 <div class="scroll-container" id="scrollContainer"></div>
 
@@ -361,12 +270,13 @@ body::before{
   </div>
 </div>
 
-<!-- TIMELINE -->
+<!-- TIMELINE — years 2019–FUTURE, fixed above footer -->
 <div class="timeline-bottom" id="timelineBottom">
   <div class="timeline-line"></div>
   <div class="timeline-content" id="timelineContent"></div>
 </div>
 
+<!-- FOOTER — at very bottom -->
 <div class="ftl"><a href="about.html">About</a></div>
 <div class="ftr">
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
@@ -377,111 +287,139 @@ body::before{
 
 <script>
 /* ─────────────────────────────────────────
-   CLO GROUPS  (0-indexed: cloth1 = index 0)
-   Each sub-array defines which file indices open together.
-   "13 один" → index 12 alone → group of 1
+   CLO GROUPS — each group has its own name and desc.
+   files: 0-indexed array of cloth file indices.
+   Edit name/desc here to update per-group modal text.
 ───────────────────────────────────────── */
 const CLO_GROUPS = [
-  [0,1,2],    // cloth1–3
-  [3,4],      // cloth4–5
-  [5,6],      // cloth6–7
-  [7,8,9],    // cloth8–10
-  [10,11],    // cloth11–12
-  [12],       // cloth13  (alone)
-  [13,14,15], // cloth14–16
-  [16,17],    // cloth17–18
-  [18,19]     // cloth19–20
+  {
+    files: [0,1,2],
+    name: 'TEKKONKINKREET',
+    desc: 'Hand-painted garments inspired by the aesthetic.\nNo sketch, no transfer.\nThe painting grew from the fabric up.'
+  },
+  {
+    files: [3,4],
+    name: 'UNTITLED SERIES',
+    desc: 'Experimental clothing pieces.\nExploring boundaries of wearable art.'
+  },
+  {
+    files: [5,6],
+    name: 'MIXED MEDIA · I',
+    desc: 'First experiments combining textile with paint and other materials.\nLayering textures directly onto the fabric.'
+  },
+  {
+    files: [7,8,9],
+    name: 'MIXED MEDIA · II',
+    desc: 'Continuing the series — heavier compositions.\nMore layers, more material conflict.'
+  },
+  {
+    files: [10,11],
+    name: 'MIXED MEDIA · III',
+    desc: 'Further layering of texture and paint.\nRestraint in palette, density in application.'
+  },
+  {
+    files: [12],
+    name: 'SOLO PIECE',
+    desc: 'A standalone work — singular in approach and execution.\nThis one needed nothing added.'
+  },
+  {
+    files: [13,14,15],
+    name: 'MIXED MEDIA · IV',
+    desc: 'New directions — larger scale, looser stroke.\nThe series becoming less about control.'
+  },
+  {
+    files: [16,17],
+    name: 'MIXED MEDIA · V',
+    desc: 'Late series. Restraint where earlier was excess.\nLess surface, more intention.'
+  },
+  {
+    files: [18,19],
+    name: 'MIXED MEDIA · VI',
+    desc: 'Final works in the CLO series.\nWhat remains when the system is exhausted.'
+  }
 ];
 
 function getCloGroup(idx) {
-  for (const g of CLO_GROUPS) if (g.includes(idx)) return g;
-  return [idx];
+  for (const g of CLO_GROUPS) {
+    if (g.files.includes(idx)) return g;
+  }
+  return { files: [idx], name: null, desc: null };
 }
 
 /* ─────────────────────────────────────────
    PROJECT DATA
-   FIX: year values changed from numeric expressions
-        (2018-2021 = -3, 2025-2026 = -1) to strings.
+   Image sizes: smaller (58–80px) to fit no-scroll layout.
+   Width/height vary per project type for visual interest.
 ───────────────────────────────────────── */
 const projects = [
   {
     id: 'pilots',
     year: '2018–2021',
-    month: 6,
     name: 'PILOTS',
     subtitle: 'HAND DRAWINGS · 2018–2021',
     desc: 'When I was younger, they shaped everything.\nAll my pain redirected through their image.\nEvery piece a different style, a different state.',
     files: Array.from({length:14}, (_,i) => ({
       path:   `images/assets/create/pilots/pilots${i+1}.jpg`,
-      width:  Math.round(130 - Math.random()*14),
-      height: Math.round(100 - Math.random()*7)
+      width:  Math.round(62 + Math.random()*14),
+      height: Math.round(46 + Math.random()*16)
     }))
   },
   {
     id: 'Self-Portrait',
     year: '2024',
-    month: 3,
     name: 'NONE OF THEM IS ME',
     subtitle: 'SELF-PORTRAIT SERIES · 2024',
     desc: 'A series about the gap between how you see yourself and how you appear.\n\nNone of the versions is definitive.',
     files: Array.from({length:6}, (_,i) => ({
       path:   `images/assets/create/portrait/Portrait${i+1}.jpg`,
-      width:  Math.round(95 - Math.random()*10),
-      height: Math.round(130 - Math.random()*15)
+      width:  Math.round(64 + Math.random()*12),
+      height: Math.round(82 + Math.random()*14)
     }))
   },
   {
     id: 'scan',
     year: '2025–2026',
-    month: 9,
     name: 'SCAN',
     subtitle: 'GRAINS OF THE CITIES',
     desc: 'Cities leave marks.\nScanned surfaces, found materials.\nConcrete, rust, fabric, stone.',
     files: Array.from({length:10}, (_,i) => ({
       path:   `images/assets/create/scan/Scan${i+1}.jpg`,
-      width:  Math.round(125 - Math.random()*12),
-      height: Math.round(98  - Math.random()*7)
+      width:  Math.round(66 + Math.random()*14),
+      height: Math.round(50 + Math.random()*14)
     }))
   },
   {
     id: 'clo',
     year: '2023',
-    month: 4,
     name: 'CLO',
     subtitle: 'CUSTOM CLOTHING',
-    subprojects: [
-      { name: 'TEKKONKINKREET',  desc: 'Hand-painted garments inspired by the aesthetic.\nNo sketch, no transfer.\nThe painting grew from the fabric up.' },
-      { name: 'UNTITLED SERIES', desc: 'Experimental clothing pieces.\nExploring boundaries of wearable art.' },
-      { name: 'MIXED MEDIA',     desc: 'Collaborative works combining textile and digital.' }
-    ],
+    desc: 'Hand-painted garments. No sketch, no transfer.',
     files: Array.from({length:20}, (_,i) => ({
-      path:       `images/assets/create/clo/cloth${i+1}.jpg`,
-      width:      Math.round(125 - Math.random()*12),
-      height:     Math.round(98  - Math.random()*8),
+      path:   `images/assets/create/clo/cloth${i+1}.jpg`,
+      width:  Math.round(60 + Math.random()*18),
+      height: Math.round(46 + Math.random()*16),
       subproject: i < 3 ? 0 : i < 5 ? 1 : 2
     }))
   },
   {
     id: 'bti',
     year: '2022',
-    month: 11,
     name: 'BEFORE THE IMPACT',
     subtitle: 'SILENT HORIZON',
-    desc: 'Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.\n\nThe four-frame sequence captures a gradual shift in perception. What begins as a quiet, open field transforms into a scene of tension as a sudden trajectory appears in the sky.\n\nThe work investigates landscape, technology, and the human witness.',
+    desc: 'Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.\n\nThe four-frame sequence captures a gradual shift in perception.',
     files: Array.from({length:4}, (_,i) => ({
       path:   `images/assets/create/bti/bti${i+1}.jpg`,
-      width:  Math.round(130 - Math.random()*12),
-      height: Math.round(100 - Math.random()*8)
+      width:  Math.round(68 + Math.random()*14),
+      height: Math.round(50 + Math.random()*14)
     }))
   },
   {
     id: 'graph',
     year: '—',
-    month: null,
     name: 'GRAPH',
     subtitle: 'GRAPHIC DESIGN · AI TOOLS',
     desc: 'Visual experiments in graphic design.\nPoster generation, identity exploration.\nAI-assisted image work.\n— in progress',
-    files: [] /* empty: shows header column only */
+    files: []
   }
 ];
 
@@ -489,7 +427,6 @@ const projects = [
    DOM REFS
 ───────────────────────────────────────── */
 const scrollContainer = document.getElementById('scrollContainer');
-const timelineBottom  = document.getElementById('timelineBottom');
 const timelineContent = document.getElementById('timelineContent');
 const modal           = document.getElementById('modal');
 const modalContent    = document.getElementById('modalContent');
@@ -520,7 +457,6 @@ if (window.matchMedia('(hover: hover)').matches) {
     curCross.style.left = e.clientX + 'px';
     curCross.style.top  = e.clientY + 'px';
   });
-  // Event delegation for hover effect — works on dynamically created elements
   document.addEventListener('mouseover', e => {
     if (e.target.closest('a, button, .image-item')) curRing.classList.add('hover');
   });
@@ -530,11 +466,11 @@ if (window.matchMedia('(hover: hover)').matches) {
 }
 
 /* ─────────────────────────────────────────
-   MODAL HELPERS
+   MODAL HELPERS — UNCHANGED from previous version
 ───────────────────────────────────────── */
 function setSingle() {
   modalSingleView.style.display = 'flex';
-  modalMultiView.className = 'modal-multi'; // clear all mode classes
+  modalMultiView.className = 'modal-multi';
   modalContent.classList.remove('mode-row');
 }
 function setMulti(mode) {
@@ -557,54 +493,50 @@ function buildMultiImgs(paths) {
   modalMultiView.innerHTML = '';
   paths.forEach(src => {
     const img = document.createElement('img');
-    img.src    = src;
-    img.alt    = '';
+    img.src = src; img.alt = '';
     img.onerror = () => { img.style.opacity = '0.2'; };
     modalMultiView.appendChild(img);
   });
 }
 
 /* ─────────────────────────────────────────
-   OPEN MODAL — dispatches by project id
+   OPEN MODAL
+   Portrait: 3×2 collage (unchanged)
+   BTI: 4 in one row (unchanged)
+   CLO: grouped, each group has its own name+desc from CLO_GROUPS
+   Others: single with nav (unchanged)
 ───────────────────────────────────────── */
 function openModal(proj, fileIdx) {
   currentProject  = proj;
   currentImageIdx = fileIdx;
 
-  /* ── PORTRAIT: all 6 as 3×2 collage ── */
   if (proj.id === 'Self-Portrait') {
     setMulti('collage');
     showNav(false);
     buildMultiImgs(proj.files.map(f => f.path));
     setInfo(proj.name, proj.subtitle, proj.desc);
 
-  /* ── BTI: all 4 in one row ── */
   } else if (proj.id === 'bti') {
     setMulti('row');
     showNav(false);
     buildMultiImgs(proj.files.map(f => f.path));
     setInfo(proj.name, proj.subtitle, proj.desc);
 
-  /* ── CLO: grouped per spec ── */
   } else if (proj.id === 'clo') {
-    const group  = getCloGroup(fileIdx);
-    const spIdx  = proj.files[fileIdx].subproject;
-    const sp     = proj.subprojects?.[spIdx];
-    setInfo(proj.name, sp?.name || proj.subtitle, sp?.desc || proj.desc);
+    /* Per-group name and desc from CLO_GROUPS */
+    const group = getCloGroup(fileIdx);
+    setInfo(proj.name, group.name || proj.subtitle, group.desc || proj.desc);
 
-    if (group.length === 1) {
-      // cloth13: single image, no nav
+    if (group.files.length === 1) {
       setSingle();
       modalImg.src = proj.files[fileIdx].path;
       showNav(false);
     } else {
-      // grouped images side by side
       setMulti('group');
       showNav(false);
-      buildMultiImgs(group.map(i => proj.files[i].path));
+      buildMultiImgs(group.files.map(i => proj.files[i].path));
     }
 
-  /* ── ALL OTHERS: single image with prev/next navigation ── */
   } else {
     setSingle();
     modalImg.src = proj.files[fileIdx].path;
@@ -616,9 +548,6 @@ function openModal(proj, fileIdx) {
   modal.classList.add('active');
 }
 
-/* ─────────────────────────────────────────
-   MODAL NAVIGATION (single mode only)
-───────────────────────────────────────── */
 function navSingle(dir) {
   if (!currentProject || !currentProject.files.length) return;
   currentImageIdx = (currentImageIdx + dir + currentProject.files.length) % currentProject.files.length;
@@ -630,7 +559,6 @@ modalClose.onclick = () => modal.classList.remove('active');
 modal.onclick      = e => { if (e.target === modal) modal.classList.remove('active'); };
 modalPrev.onclick  = () => navSingle(-1);
 modalNext.onclick  = () => navSingle(+1);
-
 document.addEventListener('keydown', e => {
   if (!modal.classList.contains('active')) return;
   if (e.key === 'Escape')     modal.classList.remove('active');
@@ -640,23 +568,22 @@ document.addEventListener('keydown', e => {
 
 /* ─────────────────────────────────────────
    BUILD SCROLL CONTAINER
-   Empty-files projects (GRAPH) get one header column.
-   Column spacing: gap:8px intra-project, margin:0 48px inter-project.
+   Creates project-group > column > image-item DOM.
+   Then calls distributeColumns() to position everything.
 ───────────────────────────────────────── */
 function buildScrollContainer() {
   scrollContainer.innerHTML = '';
   const PER_COL = 7;
 
   projects.forEach(proj => {
-    const group       = document.createElement('div');
-    group.className   = 'project-group';
-    const colCount    = proj.files.length > 0 ? Math.ceil(proj.files.length / PER_COL) : 1;
+    const group     = document.createElement('div');
+    group.className = 'project-group';
+    const colCount  = proj.files.length > 0 ? Math.ceil(proj.files.length / PER_COL) : 1;
 
     for (let col = 0; col < colCount; col++) {
-      const column = document.createElement('div');
+      const column    = document.createElement('div');
       column.className = 'column';
 
-      /* header on first column only */
       if (col === 0) {
         const hdr = document.createElement('div');
         hdr.className = 'column-header';
@@ -668,7 +595,6 @@ function buildScrollContainer() {
         column.appendChild(hdr);
       }
 
-      /* image items */
       const start = col * PER_COL;
       const end   = Math.min(start + PER_COL, proj.files.length);
       for (let i = start; i < end; i++) {
@@ -677,12 +603,10 @@ function buildScrollContainer() {
         item.className = 'image-item';
         item.style.width  = f.width  + 'px';
         item.style.height = f.height + 'px';
-
         const img = document.createElement('img');
-        img.src     = f.path;
-        img.alt     = `${proj.name} ${i + 1}`;
+        img.src = f.path;
+        img.alt = `${proj.name} ${i + 1}`;
         img.onerror = () => { img.style.opacity = '0.3'; };
-
         item.appendChild(img);
         item.onclick = () => openModal(proj, i);
         column.appendChild(item);
@@ -693,42 +617,134 @@ function buildScrollContainer() {
 
     scrollContainer.appendChild(group);
   });
+
+  distributeColumns();
 }
+
+/* ─────────────────────────────────────────
+   DISTRIBUTE COLUMNS
+   Removes project-group wrappers and positions each column
+   absolutely across the scroll container.
+
+   Within-group gap < column width → columns from same project
+   are packed together. Between-group gap larger → visual
+   separation between projects. All columns overlap slightly.
+
+   RATIO = betweenGap / withinGap. Increase for more
+   separation between projects, decrease for tighter overall.
+───────────────────────────────────────── */
+function distributeColumns() {
+  const W = scrollContainer.clientWidth;
+  if (!W) { requestAnimationFrame(distributeColumns); return; }
+
+  const PADDING  = 24;  /* left/right margin from edge */
+  const COL_W    = 100; /* column width in px */
+  const RATIO    = 1.5; /* between-group / within-group gap ratio */
+
+  /* collect column info before DOM restructure */
+  const groups  = Array.from(scrollContainer.querySelectorAll('.project-group'));
+  const colData = [];
+  groups.forEach((g, gi) => {
+    const cols = Array.from(g.querySelectorAll('.column'));
+    cols.forEach((col, ci) => {
+      colData.push({
+        col,
+        gi,
+        ci,
+        isLastInGroup: ci === cols.length - 1
+      });
+    });
+  });
+
+  const N        = colData.length;
+  const nWithin  = colData.slice(0, -1).filter(c => !c.isLastInGroup).length;
+  const nBetween = colData.slice(0, -1).filter(c =>  c.isLastInGroup).length;
+
+  /* Compute steps so everything fits within viewport width:
+     PADDING + nWithin*wg + nBetween*bg + COL_W + PADDING = W
+     bg = RATIO * wg  →  wg = (W - 2*PADDING - COL_W) / (nWithin + RATIO*nBetween)
+  */
+  const available = W - 2 * PADDING - COL_W;
+  let wg = available / (nWithin + RATIO * nBetween);
+  let bg = wg * RATIO;
+
+  /* enforce overlap: step must be < COL_W so columns overlap */
+  const MAX_STEP = COL_W * 0.88; /* at least 12% overlap always */
+  if (wg > MAX_STEP) { wg = MAX_STEP; bg = MAX_STEP * RATIO; }
+  /* also cap bg to keep everything within viewport */
+  const totalIfCapped = PADDING + nWithin * wg + nBetween * bg + COL_W + PADDING;
+  if (totalIfCapped > W) {
+    const scale = (W - 2*PADDING - COL_W) / (nWithin * wg + nBetween * bg);
+    wg *= scale; bg *= scale;
+  }
+
+  /* restructure DOM: move columns directly into scrollContainer */
+  groups.forEach(g => {
+    while (g.firstChild) scrollContainer.appendChild(g.firstChild);
+    g.remove();
+  });
+
+  /* position each column absolutely */
+  let x = PADDING;
+  colData.forEach((info, i) => {
+    const col = info.col;
+    col.style.position  = 'absolute';
+    col.style.left      = Math.round(x) + 'px';
+    col.style.top       = '0';
+    col.style.width     = COL_W + 'px';
+    /* z-index: increases left-to-right so right columns appear on top */
+    col.style.zIndex    = String(i + 1);
+
+    if (i < N - 1) {
+      x += info.isLastInGroup ? bg : wg;
+    }
+  });
+}
+
+/* re-distribute on resize */
+window.addEventListener('resize', distributeColumns);
 
 /* ─────────────────────────────────────────
    BUILD TIMELINE
-   FIX: was computing year as number (2018-2021 = -3).
-   Now proj.year is a string, displayed as-is.
-   Added FUTURE marker at the end.
+   Hardcoded years 2019 → 2026 → FUTURE.
+   Dot sizes reflect project activity in each year.
+   Positioned above footer via CSS (bottom:32px).
+   Distributed evenly via flexbox space-between.
 ───────────────────────────────────────── */
 function buildTimeline() {
   timelineContent.innerHTML = '';
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-  projects.forEach((proj, idx) => {
+  /* dot size reflects project activity that year */
+  const YEARS = [
+    { label: '2019', size: 14 }, /* pilots active */
+    { label: '2020', size: 14 }, /* pilots active */
+    { label: '2021', size: 12 }, /* pilots ending */
+    { label: '2022', size:  8 }, /* bti (4 files) */
+    { label: '2023', size: 22 }, /* clo (20 files — most active) */
+    { label: '2024', size: 13 }, /* portrait */
+    { label: '2025', size: 12 }, /* scan */
+    { label: '2026', size:  8 }, /* scan ending */
+    { label: 'FUTURE', size: 9, future: true }
+  ];
+
+  YEARS.forEach(y => {
     const m = document.createElement('div');
-    m.className = 'year-marker' + (idx % 2 === 0 ? ' major' : '');
-    m.innerHTML = `
-      <div class="year-dot"></div>
-      <div class="year-label">${proj.year}</div>
-      ${proj.month ? `<div class="year-label">${months[proj.month - 1]}</div>` : ''}
-    `;
+    m.className = 'year-marker' + (y.future ? ' future' : '');
+
+    const dot = document.createElement('div');
+    dot.className = 'year-dot';
+    dot.style.width  = y.size + 'px';
+    dot.style.height = y.size + 'px';
+
+    const label = document.createElement('div');
+    label.className = 'year-label';
+    label.textContent = y.label;
+
+    m.appendChild(dot);
+    m.appendChild(label);
     timelineContent.appendChild(m);
   });
-
-  /* FUTURE */
-  const fut = document.createElement('div');
-  fut.className = 'year-marker future';
-  fut.innerHTML = `<div class="year-dot"></div><div class="year-label">Future</div>`;
-  timelineContent.appendChild(fut);
 }
-
-/* ─────────────────────────────────────────
-   SYNC TIMELINE SCROLL WITH MAIN SCROLL
-───────────────────────────────────────── */
-scrollContainer.addEventListener('scroll', () => {
-  timelineBottom.scrollLeft = scrollContainer.scrollLeft;
-});
 
 /* ─────────────────────────────────────────
    INIT
