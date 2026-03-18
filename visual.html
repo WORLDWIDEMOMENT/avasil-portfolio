@@ -570,8 +570,8 @@ function buildScrollContainer() {
     const group = document.createElement('div');
     group.className = 'project-group';
     
-    // Split files into columns (max 10 per column)
-    const filesPerColumn = 10;
+    // Split files into columns (max 7 per column)
+    const filesPerColumn = 7;
     const columnCount = Math.ceil(proj.files.length / filesPerColumn);
     
     for(let col = 0; col < columnCount; col++) {
