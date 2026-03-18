@@ -14,7 +14,7 @@ html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-se
 body{
   display:flex;
   flex-direction:column;
-  background-image:url('images/assets/create/visualmain.jpg');
+  background-image:url('images/assets/create/visualmain3.jpg');
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
@@ -30,13 +30,13 @@ body::before{
 /* ── CURSOR ── */
 #cur-ring {
   position:fixed;width:30px;height:30px;
-  border:1px solid rgba(245,245,245,.45);border-radius:50%;
+  border:1px solid rgba(210,35,35,.55);border-radius:50%;
   pointer-events:none;z-index:9998;transform:translate(-50%,-50%);
   transition:left .1s ease,top .1s ease,width .2s,height .2s,border-color .2s;
 }
-#cur-ring.hover{width:46px;height:46px;border-color:rgba(245,245,245,.75);}
+#cur-ring.hover{width:46px;height:46px;border-color:rgba(210,35,35,.9);}
 #cur-cross{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
-#cur-cross::before,#cur-cross::after{content:'';position:absolute;background:rgba(245,245,245,.6);}
+#cur-cross::before,#cur-cross::after{content:'';position:absolute;background:rgba(210,35,35,.8);}
 #cur-cross::before{width:12px;height:1px;top:0;left:-6px;}
 #cur-cross::after{width:1px;height:12px;left:0;top:-6px;}
 @media (hover:none),(pointer:coarse){
@@ -53,7 +53,7 @@ body::before{
   flex:1;
   position:relative;
   overflow:hidden;
-  padding-top:80px;
+  padding-top:50px;
   padding-bottom:86px;
 }
 
@@ -675,6 +675,7 @@ function buildScrollContainer() {
     for (let col = 0; col < colCount; col++) {
       const column    = document.createElement('div');
       column.className = 'column';
+      column.dataset.projId = proj.id; /* used by distributeColumns for within/between gap */
       /* mark first column of each project for mobile spacing */
       if (col === 0) column.classList.add('group-start');
 
@@ -742,8 +743,6 @@ function distributeColumns() {
 
   const PADDING = 24;   /* ← отступ от краёв страницы */
   const COL_W   = 100;  /* ← ширина каждой колонны в px */
-  const BETWEEN_PROJ = 60; /* ← зазор между проектами в px */
-const WITHIN_PROJ  = 8;
 
   /* collect all columns still inside project-group wrappers */
   const groups = Array.from(scrollContainer.querySelectorAll('.project-group'));
@@ -753,12 +752,8 @@ const WITHIN_PROJ  = 8;
   const N = cols.length;
   if (N === 0) return;
 
-  /* Equal gap between every column.
-     Formula: PADDING + N*COL_W + (N-1)*gap + PADDING = W
-     → gap = (W - 2*PADDING - N*COL_W) / (N - 1)
-     Gap can go negative → columns overlap when they don't all fit.
-  */
-  const gap = N > 1 ? (W - 2 * PADDING - N * COL_W) / (N - 1) : 0;
+  const WITHIN_GAP  = 8;   /* ← px между колоннами одного проекта */
+  const BETWEEN_GAP = 48;  /* ← px между колоннами разных проектов */
 
   /* restructure DOM: move columns directly into scrollContainer */
   groups.forEach(g => {
@@ -766,13 +761,18 @@ const WITHIN_PROJ  = 8;
     g.remove();
   });
 
-  /* position each column absolutely with equal spacing */
+  /* position with different gap depending on project boundary */
+  let x = PADDING;
   cols.forEach((col, i) => {
     col.style.position = 'absolute';
-    col.style.left     = Math.round(PADDING + i * (COL_W + gap)) + 'px';
+    col.style.left     = Math.round(x) + 'px';
     col.style.top      = '80px';
     col.style.width    = COL_W + 'px';
     col.style.zIndex   = String(i + 1);
+    if (i < N - 1) {
+      const sameProj = cols[i].dataset.projId === cols[i + 1].dataset.projId;
+      x += COL_W + (sameProj ? WITHIN_GAP : BETWEEN_GAP);
+    }
   });
 }
 
