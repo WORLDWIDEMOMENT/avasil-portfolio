@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 * { cursor: none !important; }
-html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-serif;color:#f5f5f5;overflow:hidden}
+html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-serif;color:#f5f5f5;overflow:visible}
 
 body{
   display:flex;
@@ -118,7 +118,7 @@ body::before{
 .modal-content{
   position:relative;
   border:1px solid rgba(255,255,255,.12);
-  max-width:95vw;max-height:90vh;width:100%;
+  max-width:90vw;max-height:88vh;width:fit-content;
   display:flex;border-radius:2px;overflow:hidden;
 }
 .modal-content.mode-row{max-width:99vw;max-height:96vh;}
@@ -130,8 +130,8 @@ body::before{
   position:relative;
 }
 
-.modal-single{flex:1;width:100%;min-height:0;display:flex;align-items:center;justify-content:center;}
-.modal-single img{max-width:100%;max-height:100%;object-fit:contain;}
+.modal-single{flex:1;width:auto;min-height:0;display:flex;align-items:center;justify-content:center;}
+.modal-single img { max-width:80vw; max-height:80vh; width:auto; height:auto; object-fit:contain; }
 
 .modal-multi{
   display:none;flex:1;width:100%;min-height:0;
@@ -148,7 +148,7 @@ body::before{
   position:absolute;top:50%;transform:translateY(-50%);
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
   color:#f5f5f5;width:40px;height:40px;border-radius:50%;font-size:18px;
-  transition:all .2s;z-index:10;
+  transition:all .2s;z-index:50;
 }
 .modal-nav-btn:hover{background:rgba(255,255,255,.18);}
 .modal-nav-btn.prev{left:15px}.modal-nav-btn.next{right:15px}
