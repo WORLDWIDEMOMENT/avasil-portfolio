@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,23 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-serif;color:#f5f5f5;overflow:hidden}
 
-body{display:flex;flex-direction:column}
+/* BACKGROUND IMAGE - ВСТАВИТЬ ПУТЬ СЮДА */
+body{
+  display:flex;
+  flex-direction:column;
+  background-image:url('images/assets/background.jpg');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:rgba(10,10,10,.7);
+  z-index:-1;
+}
 
 /* MAIN SCROLL CONTAINER */
 .scroll-container{
@@ -19,11 +34,21 @@ body{display:flex;flex-direction:column}
   overflow-y:hidden;
   scroll-behavior:smooth;
   padding-bottom:80px;
+  align-items:flex-start;
 }
 
 .scroll-container::-webkit-scrollbar{height:4px}
 .scroll-container::-webkit-scrollbar-track{background:#1a1a1a}
 .scroll-container::-webkit-scrollbar-thumb{background:#666;border-radius:2px}
+
+/* PROJECT GROUP */
+.project-group{
+  display:flex;
+  gap:8px;
+  flex-shrink:0;
+  margin:0 20px;
+  align-items:flex-start;
+}
 
 /* COLUMN - VERTICAL STACK */
 .column{
@@ -64,12 +89,20 @@ body{display:flex;flex-direction:column}
   color:#f5f5f5;
 }
 
+.column-subtitle{
+  font-size:8px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-top:2px;
+  color:#666;
+}
+
 /* IMAGE ITEM */
 .image-item{
   position:relative;
   cursor:pointer;
   transition:all .3s cubic-bezier(.23,1,.32,1);
-  transform-origin:center;
   border:1px solid rgba(255,255,255,.08);
   background:#1a1a1a;
   overflow:hidden;
@@ -84,10 +117,14 @@ body{display:flex;flex-direction:column}
   object-fit:cover;
 }
 
+.image-item:hover{
+  filter:brightness(1.05);
+}
+
 /* CLICKED STATE */
 .image-item.active{
-  transform:scale(1.6)!important;
-  z-index:999!important;
+  transform:scale(1.3);
+  z-index:999;
   box-shadow:0 20px 60px rgba(0,0,0,.7);
 }
 
@@ -119,6 +156,148 @@ body{display:flex;flex-direction:column}
 
 .back:hover{color:#f5f5f5}
 
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:rgba(0,0,0,.98);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s,visibility .3s;
+  padding:40px;
+}
+
+.modal.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.modal-content{
+  position:relative;
+  background:#1a1a1a;
+  border:1px solid rgba(255,255,255,.1);
+  max-width:95vw;
+  max-height:90vh;
+  display:flex;
+  border-radius:2px;
+  overflow:hidden;
+}
+
+.modal-image-section{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:#0a0a0a;
+  position:relative;
+}
+
+.modal-image{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-image img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+
+.modal-nav-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  color:#f5f5f5;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  font-size:18px;
+  cursor:pointer;
+  transition:all .2s;
+  z-index:10;
+}
+
+.modal-nav-btn:hover{
+  background:rgba(255,255,255,.2);
+}
+
+.modal-nav-btn.prev{left:15px}
+.modal-nav-btn.next{right:15px}
+
+.modal-counter{
+  position:absolute;
+  bottom:15px;
+  left:15px;
+  font-size:10px;
+  color:#999;
+  background:rgba(0,0,0,.5);
+  padding:6px 10px;
+  border-radius:2px;
+}
+
+.modal-info{
+  width:320px;
+  padding:35px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  overflow-y:auto;
+  border-left:1px solid rgba(255,255,255,.1);
+}
+
+.modal-info::-webkit-scrollbar{width:4px}
+.modal-info::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
+
+.modal-title{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:-.01em;
+  color:#f5f5f5;
+}
+
+.modal-subtitle{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#999;
+}
+
+.modal-desc{
+  font-size:12px;
+  line-height:1.6;
+  color:#aaa;
+  white-space:pre-line;
+  flex:1;
+}
+
+.modal-close{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:none;
+  border:none;
+  color:#999;
+  font-size:24px;
+  cursor:pointer;
+  transition:color .2s;
+  z-index:10;
+}
+
+.modal-close:hover{color:#f5f5f5}
+
 /* TIMELINE - BOTTOM FIXED */
 .timeline-bottom{
   position:fixed;
@@ -133,14 +312,12 @@ body{display:flex;flex-direction:column}
   z-index:200;
   overflow-x:auto;
   overflow-y:hidden;
-  scroll-behavior:smooth;
 }
 
 .timeline-bottom::-webkit-scrollbar{height:3px}
 .timeline-bottom::-webkit-scrollbar-track{background:transparent}
 .timeline-bottom::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
 
-/* TIMELINE LINE */
 .timeline-line{
   position:absolute;
   bottom:50%;
@@ -152,25 +329,23 @@ body{display:flex;flex-direction:column}
   z-index:1;
 }
 
-/* TIMELINE CONTENT */
 .timeline-content{
   position:relative;
   height:100%;
   display:flex;
   align-items:center;
   padding:0 40px;
-  gap:120px;
+  gap:80px;
   z-index:2;
   min-width:min-content;
 }
 
-/* YEAR MARKER */
 .year-marker{
   position:relative;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:6px;
+  gap:5px;
   white-space:nowrap;
 }
 
@@ -179,12 +354,11 @@ body{display:flex;flex-direction:column}
   height:4px;
   background:#666;
   border-radius:50%;
-  transition:all .3s;
 }
 
 .year-marker.major .year-dot{
-  width:5px;
-  height:5px;
+  width:6px;
+  height:6px;
   background:#999;
 }
 
@@ -194,15 +368,6 @@ body{display:flex;flex-direction:column}
   letter-spacing:.08em;
   text-transform:uppercase;
   color:#999;
-}
-
-.month-label{
-  font-size:7px;
-  font-weight:500;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:#666;
-  margin-top:2px;
 }
 
 /* FOOTER */
@@ -258,138 +423,32 @@ body{display:flex;flex-direction:column}
   <a href="index.html" class="back">← Back</a>
 </div>
 
-<div class="scroll-container" id="scrollContainer">
-  <!-- COLUMN 1: 2019 PILOTS -->
-  <div class="column">
-    <div class="column-header">
-      <div class="column-year">2019</div>
-      <div class="column-title">PILOTS</div>
-    </div>
-    <div class="image-item" style="width:130px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots1.jpg" alt="1"></div>
-    <div class="image-item" style="width:120px;height:95px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots2.jpg" alt="2"></div>
-    <div class="image-item" style="width:135px;height:105px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots3.jpg" alt="3"></div>
-    <div class="image-item" style="width:125px;height:98px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots4.jpg" alt="4"></div>
-    <div class="image-item" style="width:130px;height:102px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots5.jpg" alt="5"></div>
-    <div class="image-item" style="width:122px;height:96px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots6.jpg" alt="6"></div>
-    <div class="image-item" style="width:132px;height:103px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots7.jpg" alt="7"></div>
-    <div class="image-item" style="width:128px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots8.jpg" alt="8"></div>
-    <div class="image-item" style="width:126px;height:99px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots9.jpg" alt="9"></div>
-    <div class="image-item" style="width:131px;height:102px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots10.jpg" alt="10"></div>
-    <div class="image-item" style="width:124px;height:97px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots11.jpg" alt="11"></div>
-    <div class="image-item" style="width:129px;height:101px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots12.jpg" alt="12"></div>
-    <div class="image-item" style="width:127px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots13.jpg" alt="13"></div>
-    <div class="image-item" style="width:133px;height:104px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots14.jpg" alt="14"></div>
-    <div class="image-item" style="width:121px;height:95px" onclick="toggleImage(this)"><img src="images/assets/create/pilots/pilots15.jpg" alt="15"></div>
-  </div>
+<div class="scroll-container" id="scrollContainer"></div>
 
-  <!-- COLUMN 2: 2020 PORTRAIT -->
-  <div class="column">
-    <div class="column-header">
-      <div class="column-year">2020</div>
-      <div class="column-title">PORTRAIT</div>
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <button class="modal-close" id="modalClose">✕</button>
+  <div class="modal-content">
+    <div class="modal-image-section">
+      <div class="modal-image">
+        <img id="modalImg" src="" alt="">
+      </div>
+      <button class="modal-nav-btn prev" id="modalPrev">‹</button>
+      <button class="modal-nav-btn next" id="modalNext">›</button>
+      <div class="modal-counter" id="modalCounter"></div>
     </div>
-    <div class="image-item" style="width:95px;height:130px" onclick="toggleImage(this)"><img src="images/assets/create/portrait/Portrait1.jpg" alt="1"></div>
-    <div class="image-item" style="width:98px;height:135px" onclick="toggleImage(this)"><img src="images/assets/create/portrait/Portrait2.jpg" alt="2"></div>
-    <div class="image-item" style="width:92px;height:128px" onclick="toggleImage(this)"><img src="images/assets/create/portrait/Portrait3.jpg" alt="3"></div>
-    <div class="image-item" style="width:100px;height:138px" onclick="toggleImage(this)"><img src="images/assets/create/portrait/Portrait4.jpg" alt="4"></div>
-    <div class="image-item" style="width:96px;height:132px" onclick="toggleImage(this)"><img src="images/assets/create/portrait/Portrait5.jpg" alt="5"></div>
-    <div class="image-item" style="width:97px;height:133px" onclick="toggleImage(this)"><img src="images/assets/create/portrait/Portrait6.jpg" alt="6"></div>
-  </div>
-
-  <!-- COLUMN 3: 2022 SCAN -->
-  <div class="column">
-    <div class="column-header">
-      <div class="column-year">2022</div>
-      <div class="column-title">SCAN</div>
+    <div class="modal-info">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-subtitle" id="modalSubtitle"></div>
+      <p class="modal-desc" id="modalDesc"></p>
     </div>
-    <div class="image-item" style="width:125px;height:98px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan1.jpg" alt="1"></div>
-    <div class="image-item" style="width:130px;height:102px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan2.jpg" alt="2"></div>
-    <div class="image-item" style="width:122px;height:96px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan3.jpg" alt="3"></div>
-    <div class="image-item" style="width:128px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan4.jpg" alt="4"></div>
-    <div class="image-item" style="width:126px;height:99px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan5.jpg" alt="5"></div>
-    <div class="image-item" style="width:131px;height:103px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan6.jpg" alt="6"></div>
-    <div class="image-item" style="width:124px;height:97px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan7.jpg" alt="7"></div>
-    <div class="image-item" style="width:129px;height:101px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan8.jpg" alt="8"></div>
-    <div class="image-item" style="width:127px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan9.jpg" alt="9"></div>
-    <div class="image-item" style="width:133px;height:104px" onclick="toggleImage(this)"><img src="images/assets/create/scan/Scan10.jpg" alt="10"></div>
-  </div>
-
-  <!-- COLUMN 4: 2023 CLO -->
-  <div class="column">
-    <div class="column-header">
-      <div class="column-year">2023</div>
-      <div class="column-title">CLO</div>
-    </div>
-    <div class="image-item" style="width:125px;height:98px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth1.jpg" alt="1"></div>
-    <div class="image-item" style="width:130px;height:102px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth2.jpg" alt="2"></div>
-    <div class="image-item" style="width:122px;height:96px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth3.jpg" alt="3"></div>
-    <div class="image-item" style="width:128px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth4.jpg" alt="4"></div>
-    <div class="image-item" style="width:126px;height:99px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth5.jpg" alt="5"></div>
-    <div class="image-item" style="width:131px;height:103px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth6.jpg" alt="6"></div>
-    <div class="image-item" style="width:124px;height:97px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth7.jpg" alt="7"></div>
-    <div class="image-item" style="width:129px;height:101px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth8.jpg" alt="8"></div>
-    <div class="image-item" style="width:127px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth9.jpg" alt="9"></div>
-    <div class="image-item" style="width:133px;height:104px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth10.jpg" alt="10"></div>
-    <div class="image-item" style="width:121px;height:95px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth11.jpg" alt="11"></div>
-    <div class="image-item" style="width:128px;height:101px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth12.jpg" alt="12"></div>
-    <div class="image-item" style="width:125px;height:98px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth13.jpg" alt="13"></div>
-    <div class="image-item" style="width:132px;height:103px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth14.jpg" alt="14"></div>
-    <div class="image-item" style="width:123px;height:96px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth15.jpg" alt="15"></div>
-    <div class="image-item" style="width:130px;height:102px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth16.jpg" alt="16"></div>
-    <div class="image-item" style="width:126px;height:99px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth17.jpg" alt="17"></div>
-    <div class="image-item" style="width:129px;height:101px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth18.jpg" alt="18"></div>
-    <div class="image-item" style="width:127px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth19.jpg" alt="19"></div>
-    <div class="image-item" style="width:131px;height:103px" onclick="toggleImage(this)"><img src="images/assets/create/clo/cloth20.jpg" alt="20"></div>
-  </div>
-
-  <!-- COLUMN 5: 2024 BTI -->
-  <div class="column">
-    <div class="column-header">
-      <div class="column-year">2024</div>
-      <div class="column-title">BTI</div>
-    </div>
-    <div class="image-item" style="width:130px;height:100px" onclick="toggleImage(this)"><img src="images/assets/create/bti/bti1.jpg" alt="1"></div>
-    <div class="image-item" style="width:128px;height:99px" onclick="toggleImage(this)"><img src="images/assets/create/bti/bti2.jpg" alt="2"></div>
-    <div class="image-item" style="width:132px;height:102px" onclick="toggleImage(this)"><img src="images/assets/create/bti/bti3.jpg" alt="3"></div>
-    <div class="image-item" style="width:126px;height:98px" onclick="toggleImage(this)"><img src="images/assets/create/bti/bti4.jpg" alt="4"></div>
   </div>
 </div>
 
 <!-- TIMELINE BOTTOM -->
 <div class="timeline-bottom" id="timelineBottom">
   <div class="timeline-line"></div>
-  <div class="timeline-content" id="timelineContent">
-    <div class="year-marker major">
-      <div class="year-dot"></div>
-      <div class="year-label">2019</div>
-      <div class="month-label">Jan</div>
-    </div>
-    <div class="year-marker">
-      <div class="year-dot"></div>
-      <div class="year-label">2020</div>
-      <div class="month-label">Jun</div>
-    </div>
-    <div class="year-marker">
-      <div class="year-dot"></div>
-      <div class="year-label">2021</div>
-      <div class="month-label">Mar</div>
-    </div>
-    <div class="year-marker major">
-      <div class="year-dot"></div>
-      <div class="year-label">2022</div>
-      <div class="month-label">Sep</div>
-    </div>
-    <div class="year-marker">
-      <div class="year-dot"></div>
-      <div class="year-label">2023</div>
-      <div class="month-label">Apr</div>
-    </div>
-    <div class="year-marker major">
-      <div class="year-dot"></div>
-      <div class="year-label">2024</div>
-      <div class="month-label">Dec</div>
-    </div>
-  </div>
+  <div class="timeline-content" id="timelineContent"></div>
 </div>
 
 <div class="ftl"><a href="about.html">About</a></div>
@@ -401,24 +460,224 @@ body{display:flex;flex-direction:column}
 </div>
 
 <script>
-let activeImage = null;
-
-function toggleImage(element) {
-  if(activeImage === element) {
-    element.classList.remove('active');
-    activeImage = null;
-  } else {
-    if(activeImage) {
-      activeImage.classList.remove('active');
-    }
-    element.classList.add('active');
-    activeImage = element;
+// PROJECT DATA STRUCTURE
+const projects = [
+  {
+    id: 'pilots',
+    year: 2019,
+    month: 6,
+    name: 'PILOTS',
+    subtitle: 'HAND DRAWINGS · 2015–2019',
+    desc: 'When I was younger, they shaped everything.\nAll my pain redirected through their image.\nEvery piece a different style, a different state.',
+    files: Array.from({length:15}, (_,i)=> ({
+      path: `images/assets/create/pilots/pilots${i+1}.jpg`,
+      width: 130-Math.random()*15,
+      height: 100-Math.random()*10
+    }))
+  },
+  {
+    id: 'Self-Portrait',
+    year: 2024,
+    month: 3,
+    name: 'NONE OF THEM IS ME',
+    subtitle: 'SELF-PORTRAIT SERIES',
+    desc: 'A series about the gap between how you see yourself and how you appear.\n\nNone of the versions is definitive.',
+    files: Array.from({length:6}, (_,i)=> ({
+      path: `images/assets/create/portrait/Portrait${i+1}.jpg`,
+      width: 95-Math.random()*10,
+      height: 130-Math.random()*15
+    }))
+  },
+  {
+    id: 'scan',
+    year: 2025-2026,
+    month: 9,
+    name: 'SCAN',
+    subtitle: 'GRAINS OF THE CITIES',
+    desc: 'Cities leave marks.\nScanned surfaces, found materials.\nConcrete, rust, fabric, stone.',
+    files: Array.from({length:10}, (_,i)=> ({
+      path: `images/assets/create/scan/Scan${i+1}.jpg`,
+      width: 125-Math.random()*12,
+      height: 98-Math.random()*8
+    }))
+  },
+  {
+    id: 'clo',
+    year: 2023,
+    month: 4,
+    name: 'CLO',
+    subtitle: 'CUSTOM CLOTHING',
+    subprojects: [
+      {
+        name: 'TEKKONKINKREET',
+        desc: 'Hand-painted garments inspired by the aesthetic.\nNo sketch, no transfer.\nThe painting grew from the fabric up.',
+        files: [1,2,3]
+      },
+      {
+        name: 'UNTITLED SERIES',
+        desc: 'Experimental clothing pieces.\nExploring boundaries of wearable art.',
+        files: [4,5]
+      },
+      {
+        name: 'MIXED MEDIA',
+        desc: 'Collaborative works combining textile and digital.',
+        files: Array.from({length:15}, (_,i)=>i+6)
+      }
+    ],
+    files: Array.from({length:20}, (_,i)=> ({
+      path: `images/assets/create/clo/cloth${i+1}.jpg`,
+      width: 125-Math.random()*12,
+      height: 98-Math.random()*8,
+      subproject: i < 3 ? 0 : i < 5 ? 1 : 2
+    }))
+  },
+  {
+    id: 'bti',
+    year: 2022,
+    month: 11,
+    name: 'BEFORE THE IMPACT',
+    subtitle: 'SILENT HORIZON',
+    desc: 'Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.\n\nThe four-frame sequence captures a gradual shift in perception. What begins as a quiet, open field occupied by distant human figures transforms into a scene of tension and observation as a sudden trajectory appears in the sky.\n\nThe work investigates the relationship between landscape, technology, and the human witness. The scale of the environment contrasts with the fragility of human presence, emphasizing how rapidly familiar spaces can be redefined by unforeseen events.\n\nRather than depicting a specific narrative, the sequence reflects on perception, distance, and the transformation of landscape into a site of memory.',
+    files: Array.from({length:4}, (_,i)=> ({
+      path: `images/assets/create/bti/bti${i+1}.jpg`,
+      width: 130-Math.random()*12,
+      height: 100-Math.random()*8
+    }))
   }
-}
+];
+
+let currentProject = null;
+let currentImageIdx = 0;
 
 const scrollContainer = document.getElementById('scrollContainer');
 const timelineBottom = document.getElementById('timelineBottom');
+const timelineContent = document.getElementById('timelineContent');
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
+const modalTitle = document.getElementById('modalTitle');
+const modalSubtitle = document.getElementById('modalSubtitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalCounter = document.getElementById('modalCounter');
+const modalClose = document.getElementById('modalClose');
+const modalPrev = document.getElementById('modalPrev');
+const modalNext = document.getElementById('modalNext');
 
+// BUILD SCROLL CONTAINER WITH AUTO-COLUMNS
+function buildScrollContainer() {
+  scrollContainer.innerHTML = '';
+  
+  projects.forEach(proj => {
+    const group = document.createElement('div');
+    group.className = 'project-group';
+    
+    // Split files into columns (max 10 per column)
+    const filesPerColumn = 10;
+    const columnCount = Math.ceil(proj.files.length / filesPerColumn);
+    
+    for(let col = 0; col < columnCount; col++) {
+      const column = document.createElement('div');
+      column.className = 'column';
+      
+      // Header only on first column
+      if(col === 0) {
+        const header = document.createElement('div');
+        header.className = 'column-header';
+        header.innerHTML = `
+          <div class="column-year">${proj.year}</div>
+          <div class="column-title">${proj.name}</div>
+          ${proj.subtitle ? `<div class="column-subtitle">${proj.subtitle}</div>` : ''}
+        `;
+        column.appendChild(header);
+      }
+      
+      // Add files for this column
+      const startIdx = col * filesPerColumn;
+      const endIdx = Math.min(startIdx + filesPerColumn, proj.files.length);
+      
+      for(let i = startIdx; i < endIdx; i++) {
+        const file = proj.files[i];
+        const item = document.createElement('div');
+        item.className = 'image-item';
+        item.style.width = Math.round(file.width) + 'px';
+        item.style.height = Math.round(file.height) + 'px';
+        
+        const img = document.createElement('img');
+        img.src = file.path;
+        img.alt = `${proj.name} ${i+1}`;
+        img.onerror = function() { this.style.opacity = '0.3'; };
+        
+        item.appendChild(img);
+        item.onclick = () => openModal(proj, i);
+        
+        column.appendChild(item);
+      }
+      
+      group.appendChild(column);
+    }
+    
+    scrollContainer.appendChild(group);
+  });
+}
+
+// TIMELINE WITH REAL DATES
+function buildTimeline() {
+  timelineContent.innerHTML = '';
+  
+  projects.forEach((proj, idx) => {
+    const marker = document.createElement('div');
+    marker.className = 'year-marker' + (idx % 2 === 0 ? ' major' : '');
+    
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    marker.innerHTML = `
+      <div class="year-dot"></div>
+      <div class="year-label">${proj.year}</div>
+      <div class="year-label">${monthNames[proj.month-1]}</div>
+    `;
+    
+    timelineContent.appendChild(marker);
+  });
+}
+
+// MODAL FUNCTIONS
+function openModal(proj, fileIdx) {
+  currentProject = proj;
+  currentImageIdx = fileIdx;
+  showModalImage();
+  modal.classList.add('active');
+}
+
+function showModalImage() {
+  const file = currentProject.files[currentImageIdx];
+  modalImg.src = file.path;
+  modalTitle.textContent = currentProject.name;
+  modalSubtitle.textContent = currentProject.subtitle || '';
+  modalDesc.textContent = currentProject.desc || '';
+  modalCounter.textContent = `${currentImageIdx + 1} / ${currentProject.files.length}`;
+}
+
+modalClose.onclick = () => modal.classList.remove('active');
+modal.onclick = (e) => {
+  if(e.target === modal) modal.classList.remove('active');
+};
+
+modalPrev.onclick = () => {
+  currentImageIdx = (currentImageIdx - 1 + currentProject.files.length) % currentProject.files.length;
+  showModalImage();
+};
+
+modalNext.onclick = () => {
+  currentImageIdx = (currentImageIdx + 1) % currentProject.files.length;
+  showModalImage();
+};
+
+document.addEventListener('keydown', (e) => {
+  if(!modal.classList.contains('active')) return;
+  if(e.key === 'Escape') modal.classList.remove('active');
+  if(e.key === 'ArrowLeft') modalPrev.click();
+  if(e.key === 'ArrowRight') modalNext.click();
+});
+
+// SYNC SCROLLS
 scrollContainer.addEventListener('scroll', () => {
   timelineBottom.scrollLeft = scrollContainer.scrollLeft;
 });
@@ -427,14 +686,10 @@ timelineBottom.addEventListener('scroll', () => {
   scrollContainer.scrollLeft = timelineBottom.scrollLeft;
 });
 
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape' && activeImage) {
-    activeImage.classList.remove('active');
-    activeImage = null;
-  }
-});
+// INIT
+buildScrollContainer();
+buildTimeline();
 </script>
 
 </body>
 </html>
-```
