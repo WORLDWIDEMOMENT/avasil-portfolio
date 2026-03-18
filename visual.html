@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 * { cursor: none !important; }
-html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-serif;color:#f5f5f5;overflow:visible}
+html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-serif;color:#f5f5f5;overflow:hidden}
 
 body{
   display:flex;
@@ -53,7 +53,7 @@ body::before{
   flex:1;
   position:relative;
   overflow:hidden;
-  padding-top: 80px;
+  padding-top:50px;
   padding-bottom:86px;
 }
 
@@ -73,7 +73,9 @@ body::before{
 
 .column-header{text-align:center;margin-bottom:12px;z-index:10;}
 .column-year{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
+/* ↓ ЗАГОЛОВОК КОЛОННЫ — поменяй color на #000 для чёрного */
 .column-title{font-size:10px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:2px;color:#f5f5f5;}
+/* ↓ ПОДЗАГОЛОВОК КОЛОННЫ — поменяй color на #222 для чёрного */
 .column-subtitle{font-size:7px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:2px;color:#555;}
 
 /* ── IMAGE ITEM ── */
@@ -118,7 +120,7 @@ body::before{
 .modal-content{
   position:relative;
   border:1px solid rgba(255,255,255,.12);
-  max-width:90vw;max-height:88vh;width:fit-content;
+  max-width:95vw;max-height:90vh;width:100%;
   display:flex;border-radius:2px;overflow:hidden;
 }
 .modal-content.mode-row{max-width:99vw;max-height:96vh;}
@@ -130,8 +132,8 @@ body::before{
   position:relative;
 }
 
-.modal-single{flex:1;width:auto;min-height:0;display:flex;align-items:center;justify-content:center;}
-.modal-single img { max-width:80vw; max-height:80vh; width:auto; height:auto; object-fit:contain; }
+.modal-single{flex:1;width:100%;min-height:0;display:flex;align-items:center;justify-content:center;}
+.modal-single img{max-width:100%;max-height:100%;object-fit:contain;}
 
 .modal-multi{
   display:none;flex:1;width:100%;min-height:0;
@@ -148,7 +150,7 @@ body::before{
   position:absolute;top:50%;transform:translateY(-50%);
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
   color:#f5f5f5;width:40px;height:40px;border-radius:50%;font-size:18px;
-  transition:all .2s;z-index:50;
+  transition:all .2s;z-index:10;
 }
 .modal-nav-btn:hover{background:rgba(255,255,255,.18);}
 .modal-nav-btn.prev{left:15px}.modal-nav-btn.next{right:15px}
@@ -180,17 +182,34 @@ body::before{
 }
 .modal-close:hover{color:#f5f5f5}
 
-/* ── TIMELINE ── fixed, above footer, spans full width ── */
+/* ── BOTTOM BAR — единая полоса градиент+блюр для таймлайна и ссылок ──
+   Покрывает всё снизу: backdrop-filter размывает колонны позади.
+   Высота: timeline (46px) + footer (32px) = 78px + немного запаса.
+── */
+.bottom-bar {
+  position:fixed;
+  bottom:0; left:0; right:0;
+  height:88px;
+  background: linear-gradient(to top,
+    rgba(8,8,8,.96) 0%,
+    rgba(8,8,8,.82) 55%,
+    rgba(8,8,8,.0)  100%
+  );
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index:199;
+  pointer-events:none;
+}
+
+/* ── TIMELINE ── */
 .timeline-bottom{
   position:fixed;
-  bottom:32px; /* above footer links */
+  bottom:32px;
   left:0;right:0;
   height:46px;
   display:flex;align-items:center;
   z-index:200;
   pointer-events:none;
-  /* subtle bg so the line is readable */
-  background:linear-gradient(to top,rgba(10,10,10,.7),transparent);
 }
 
 /* horizontal line spanning full width */
@@ -229,13 +248,68 @@ body::before{
 .year-marker.future .year-label{color:#4d6aff;}
 
 /* ── FOOTER — at very bottom ── */
-.ftl{position:fixed;bottom:10px;left:36px;z-index:100;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
-.ftl a{color:#f5f5f5;text-decoration:none;opacity:.75;transition:opacity .2s;}
+.ftl{position:fixed;bottom:10px;left:36px;z-index:201;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.ftl a{color:#f5f5f5;text-decoration:none;opacity:.75;transition:opacity .2s;pointer-events:auto;}
 .ftl a:hover{opacity:1}
-.ftr{position:fixed;bottom:10px;right:36px;z-index:100;display:flex;gap:8px;align-items:center;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
-.ftr a{color:#f5f5f5;text-decoration:none;opacity:.75;transition:opacity .2s;}
+.ftr{position:fixed;bottom:10px;right:36px;z-index:201;display:flex;gap:8px;align-items:center;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.ftr a{color:#f5f5f5;text-decoration:none;opacity:.75;transition:opacity .2s;pointer-events:auto;}
 .ftr a:hover{opacity:1}
-.ftr span{opacity:.08;color:#f5f5f5}
+.ftr span{opacity:.1;color:#f5f5f5}
+
+/* ── MODAL RESPONSIVE ──
+   На узких экранах (< 640px) и при narrow viewport (<50vh высоты):
+   убираем side-by-side, переходим в column: картинка сверху, текст снизу.
+── */
+@media (max-width: 640px), (max-height: 500px) {
+  .modal { padding: 0; align-items: flex-end; }
+  .modal-content {
+    flex-direction: column;
+    max-width: 100vw; max-height: 95vh;
+    width: 100%; border-radius: 6px 6px 0 0;
+    border-left: none; border-right: none; border-bottom: none;
+  }
+  .modal-content.mode-row { max-width: 100vw; max-height: 95vh; }
+  .modal-image-section { min-height: 0; max-height: 52vh; flex: 1; }
+  .modal-info {
+    width: 100%; max-height: 40vh;
+    border-left: none; border-top: 1px solid rgba(255,255,255,.08);
+    padding: 20px 20px 28px;
+    overflow-y: auto;
+  }
+  .modal-multi.mode-row img { height: 44vh; }
+  .modal-multi.mode-group img { height: 44vh; }
+  .modal-multi.mode-collage img { max-height: 24vh; }
+}
+
+/* ── MOBILE LAYOUT — горизонтальный скролл ──
+   На мобильном scroll-container переключается на overflow-x:auto,
+   колонны выстраиваются в ряд с фиксированной шириной.
+   distributeColumns() в JS пропускается на мобильном (см. JS).
+── */
+@media (max-width: 768px) {
+  .scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding-top: 60px;
+    padding-bottom: 90px;
+    /* убираем position:relative — колонны идут в потоке */
+  }
+  /* На мобиле колонны — обычный flow, не absolute */
+  .column {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 110px !important;
+    flex-shrink: 0;
+    margin-right: 6px;
+  }
+  /* между проектами — бо́льший зазор */
+  .column.group-start { margin-left: 24px; }
+}
+
 </style>
 </head>
 <body>
@@ -269,6 +343,9 @@ body::before{
     </div>
   </div>
 </div>
+
+<!-- BOTTOM BAR — градиент+блюр снизу, под таймлайном и ссылками -->
+<div class="bottom-bar"></div>
 
 <!-- TIMELINE — years 2019–FUTURE, fixed above footer -->
 <div class="timeline-bottom" id="timelineBottom">
@@ -353,10 +430,10 @@ function getCloGroup(idx) {
 ───────────────────────────────────────── */
 const projects = [
   {
-    id: 'Pilots',
-    year: '2019–2022',
+    id: 'pilots',
+    year: '2018–2021',
     name: 'PILOTS',
-    subtitle: 'HAND DRAWINGS · 2019–2022',
+    subtitle: 'HAND DRAWINGS · 2018–2021',
     desc: 'When I was younger, they shaped everything.\nAll my pain redirected through their image.\nEvery piece a different style, a different state.',
     files: Array.from({length:14}, (_,i) => ({
       path:   `images/assets/create/pilots/pilots${i+1}.jpg`,
@@ -379,7 +456,7 @@ const projects = [
   {
     id: 'scan',
     year: '2025–2026',
-    name: 'GRAINS OF THE CITIES',
+    name: 'SCAN',
     subtitle: 'GRAINS OF THE CITIES',
     desc: 'Cities leave marks.\nScanned surfaces, found materials.\nConcrete, rust, fabric, stone.',
     files: Array.from({length:10}, (_,i) => ({
@@ -389,8 +466,8 @@ const projects = [
     }))
   },
   {
-    id: 'CUSTOM CLOTHING',
-    year: '2020-2023',
+    id: 'clo',
+    year: '2023',
     name: 'CLO',
     subtitle: 'CUSTOM CLOTHING',
     desc: 'Hand-painted garments. No sketch, no transfer.',
@@ -406,10 +483,7 @@ const projects = [
     year: '2022',
     name: 'BEFORE THE IMPACT',
     subtitle: 'SILENT HORIZON',
-    desc: `Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.
-The four-frame sequence captures a gradual shift in perception. What begins as a quiet, open field occupied by distant human figures transforms into a scene of tension and observation as a sudden trajectory appears in the sky.
-The work investigates the relationship between landscape, technology, and the human witness. The scale of the environment contrasts with the fragility of human presence, emphasizing how rapidly familiar spaces can be redefined by unforeseen events.
-Rather than depicting a specific narrative, the sequence reflects on perception, distance, and the transformation of landscape into a site of memory.`,
+    desc: 'Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.\n\nThe four-frame sequence captures a gradual shift in perception.',
     files: Array.from({length:4}, (_,i) => ({
       path:   `images/assets/create/bti/bti${i+1}.jpg`,
       width:  Math.round(68 + Math.random()*14),
@@ -418,7 +492,7 @@ Rather than depicting a specific narrative, the sequence reflects on perception,
   },
   {
     id: 'graph',
-    year: '2025-',
+    year: '—',
     name: 'GRAPH',
     subtitle: 'GRAPHIC DESIGN · AI TOOLS',
     desc: 'Visual experiments in graphic design.\nPoster generation, identity exploration.\nAI-assisted image work.\n— in progress',
@@ -526,19 +600,20 @@ function openModal(proj, fileIdx) {
     setInfo(proj.name, proj.subtitle, proj.desc);
 
   } else if (proj.id === 'clo') {
-    /* Per-group name and desc from CLO_GROUPS */
     const group = getCloGroup(fileIdx);
     setInfo(proj.name, group.name || proj.subtitle, group.desc || proj.desc);
 
     if (group.files.length === 1) {
       setSingle();
       modalImg.src = proj.files[fileIdx].path;
-      showNav(false);
     } else {
       setMulti('group');
-      showNav(false);
       buildMultiImgs(group.files.map(i => proj.files[i].path));
     }
+    /* стрелки переключают между группами */
+    showNav(true);
+    const gIdx = CLO_GROUPS.findIndex(g => g.files.includes(fileIdx));
+    modalCounter.textContent = `${gIdx + 1} / ${CLO_GROUPS.length}`;
 
   } else {
     setSingle();
@@ -558,15 +633,26 @@ function navSingle(dir) {
   modalCounter.textContent = `${currentImageIdx + 1} / ${currentProject.files.length}`;
 }
 
+/* navigate between CLO groups */
+function navClo(dir) {
+  const gIdx    = CLO_GROUPS.findIndex(g => g.files.includes(currentImageIdx));
+  const nextIdx = (gIdx + dir + CLO_GROUPS.length) % CLO_GROUPS.length;
+  const nextGroup = CLO_GROUPS[nextIdx];
+  currentImageIdx = nextGroup.files[0]; /* first file of next group */
+  openModal(currentProject, currentImageIdx);
+}
+
 modalClose.onclick = () => modal.classList.remove('active');
 modal.onclick      = e => { if (e.target === modal) modal.classList.remove('active'); };
-modalPrev.onclick  = () => navSingle(-1);
-modalNext.onclick  = () => navSingle(+1);
+modalPrev.onclick  = () => currentProject?.id === 'clo' ? navClo(-1) : navSingle(-1);
+modalNext.onclick  = () => currentProject?.id === 'clo' ? navClo(+1) : navSingle(+1);
 document.addEventListener('keydown', e => {
   if (!modal.classList.contains('active')) return;
   if (e.key === 'Escape')     modal.classList.remove('active');
-  if (e.key === 'ArrowLeft'  && !modalPrev.classList.contains('off')) navSingle(-1);
-  if (e.key === 'ArrowRight' && !modalNext.classList.contains('off')) navSingle(+1);
+  if (e.key === 'ArrowLeft'  && !modalPrev.classList.contains('off'))
+    currentProject?.id === 'clo' ? navClo(-1) : navSingle(-1);
+  if (e.key === 'ArrowRight' && !modalNext.classList.contains('off'))
+    currentProject?.id === 'clo' ? navClo(+1) : navSingle(+1);
 });
 
 /* ─────────────────────────────────────────
@@ -577,8 +663,9 @@ document.addEventListener('keydown', e => {
 function buildScrollContainer() {
   scrollContainer.innerHTML = '';
   const PER_COL = 7;
+  const isMobile = window.innerWidth <= 768;
 
-  projects.forEach(proj => {
+  projects.forEach((proj, projIdx) => {
     const group     = document.createElement('div');
     group.className = 'project-group';
     const colCount  = proj.files.length > 0 ? Math.ceil(proj.files.length / PER_COL) : 1;
@@ -586,6 +673,8 @@ function buildScrollContainer() {
     for (let col = 0; col < colCount; col++) {
       const column    = document.createElement('div');
       column.className = 'column';
+      /* mark first column of each project for mobile spacing */
+      if (col === 0) column.classList.add('group-start');
 
       if (col === 0) {
         const hdr = document.createElement('div');
@@ -621,7 +710,16 @@ function buildScrollContainer() {
     scrollContainer.appendChild(group);
   });
 
-  distributeColumns();
+  /* On mobile: columns flow naturally in flex row — no absolute positioning */
+  if (!isMobile) {
+    distributeColumns();
+  } else {
+    /* unwrap groups so columns are direct flex children */
+    Array.from(scrollContainer.querySelectorAll('.project-group')).forEach(g => {
+      while (g.firstChild) scrollContainer.appendChild(g.firstChild);
+      g.remove();
+    });
+  }
 }
 
 /* ─────────────────────────────────────────
@@ -642,7 +740,7 @@ function distributeColumns() {
 
   const PADDING  = 24;  /* left/right margin from edge */
   const COL_W    = 100; /* column width in px */
-  const RATIO    = 2.5; /* between-group / within-group gap ratio */
+  const RATIO    = 1.5; /* between-group / within-group gap ratio */
 
   /* collect column info before DOM restructure */
   const groups  = Array.from(scrollContainer.querySelectorAll('.project-group'));
@@ -693,7 +791,7 @@ function distributeColumns() {
     const col = info.col;
     col.style.position  = 'absolute';
     col.style.left      = Math.round(x) + 'px';
-    col.style.top       = '80px';
+    col.style.top       = '0';
     col.style.width     = COL_W + 'px';
     /* z-index: increases left-to-right so right columns appear on top */
     col.style.zIndex    = String(i + 1);
@@ -705,7 +803,16 @@ function distributeColumns() {
 }
 
 /* re-distribute on resize */
-window.addEventListener('resize', distributeColumns);
+let lastMobile = window.innerWidth <= 768;
+window.addEventListener('resize', () => {
+  const nowMobile = window.innerWidth <= 768;
+  if (nowMobile !== lastMobile) {
+    lastMobile = nowMobile;
+    buildScrollContainer(); /* full rebuild when crossing breakpoint */
+  } else if (!nowMobile) {
+    distributeColumns();
+  }
+});
 
 /* ─────────────────────────────────────────
    BUILD TIMELINE
@@ -726,8 +833,8 @@ function buildTimeline() {
     { label: '2023', size: 22 }, /* clo (20 files — most active) */
     { label: '2024', size: 13 }, /* portrait */
     { label: '2025', size: 12 }, /* scan */
-    { label: '2026', size:  9 }, /* scan ending */
-    { label: 'FUTURE', size: 16, future: true }
+    { label: '2026', size:  8 }, /* scan ending */
+    { label: 'FUTURE', size: 9, future: true }
   ];
 
   YEARS.forEach(y => {
