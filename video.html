@@ -242,55 +242,96 @@ html, body {
 @media (max-width: 768px) {
   html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
   
-  /* Контроль ширины страницы, чтобы контент не выталкивал верстку вправо */
+  /* Отключаем Grid на мобильных, чтобы элементы не ломали верстку и не сдвигались */
   .page { 
+    display: block; 
     position: relative; 
     height: auto; 
     min-height: 100svh; 
-    width: 100%; 
-    max-width: 100%; 
+    width: 100vw; 
+    max-width: 100vw; 
     overflow-x: hidden; 
   }
   .bg-a, .bg-b, .bg-veil, .grain { position: fixed; }
 
-  /* Запрещаем сетке раздуваться */
   .top-bar, .stage, .filmstrip-wrap, .bottom-bar { 
+    width: 100vw;
+    max-width: 100vw;
     min-width: 0; 
     box-sizing: border-box; 
   }
 
-  .top-bar { padding: 24px 20px 0; flex-direction: column; gap: 16px; flex-wrap: wrap; }
-  .manifesto { max-width: 100%; font-size: 13px; text-align: left; }
+  /* Шапка */
+  .top-bar { 
+    padding: 24px 20px 0; 
+    display: flex;
+    flex-direction: column; 
+    gap: 16px; 
+  }
+  .manifesto { 
+    max-width: 100%; 
+    font-size: 13px; 
+    text-align: left; 
+  }
   
-  /* Сцена: Идеальное размещение */
+  /* УБИРАЕМ СТРЕЛКИ НА МОБИЛЬНОЙ ВЕРСИИ */
+  .arrow { 
+    display: none !important; 
+  }
+
+  /* Сцена: Теперь экран 100% будет центрирован */
   .stage { 
-    padding: 30px 0; 
-    flex-wrap: wrap; 
-    justify-content: center; 
+    display: block; 
+    padding: 32px 20px; /* 20px отступ слева и справа: экран ровно посередине */
   }
   
-  /* ВИДЕО ЗАНИМАЕТ 85% — оно станет меньше и не будет обрезаться */
   .video-frame { 
-    flex: 0 0 85%; 
-    max-width: 85%; 
-    order: 1; 
+    width: 100%; 
+    max-width: 100%; 
+    margin: 0 auto; /* Жесткое центрирование */
   }
-  .video-info { height: auto; padding-top: 12px; }
-  .video-title { font-size: 18px; white-space: normal; word-break: break-word; }
+  .video-info { 
+    height: auto; 
+    padding: 12px 0 0; 
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap; /* Заголовок перенесется, если он очень длинный */
+    gap: 8px;
+  }
+  .video-title { 
+    font-size: 18px; 
+    white-space: normal; 
+    word-break: break-word; 
+  }
   
-  /* Кнопки четко по центру под видео */
-  .arrow { margin-top: 20px; width: 44px; height: 44px; }
-  #btnPrev { order: 2; margin-right: 12px; }
-  #btnNext { order: 3; margin-left: 12px; }
-  
-  /* Остальное выравнивание под ширину 85% */
-  .filmstrip-wrap { padding: 0 7.5%; } /* 7.5% слева и справа = ровно под видео */
+  /* Миниатюры: Выровнены по той же линии (20px отступ) */
+  .filmstrip-wrap { 
+    padding: 0 20px; 
+  }
   .strip-item { width: 90px; }
   .strip-thumb, .strip-ph { width: 90px; height: 51px; }
   .cinema-tooltip { width: 140px; font-size: 10px; }
   
-  .bottom-bar { flex-direction: column; gap: 12px; align-items: flex-start; padding: 20px 7.5% 24px; }
-  .footer-links { flex-wrap: wrap; gap: 8px; }
+  /* Подвал: Настройка выравнивания по левому краю */
+  .bottom-bar { 
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    padding: 32px 20px 40px; /* 32px сверху опустит ссылки чуть ниже */
+    gap: 12px; 
+    margin-top: 0; 
+  }
+  .footer-links { 
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 12px; 
+    width: 100%;
+  }
+  /* Делаем почту на 100% ширины, чтобы IG и LinkedIn упали под неё на вторую строку */
+  .footer-links a[href^="mailto"] { 
+    width: 100%; 
+  }
   .footer-links .sep { display: none; }
 }
 </style>
