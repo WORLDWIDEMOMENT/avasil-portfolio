@@ -360,7 +360,6 @@ body::before{
 <div class="ftr">
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
   <a href="https://instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a><span>—</span>
-  <a href="https://behance.net/avasileuskaya" target="_blank">Behance</a><span>—</span>
   <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
 </div>
 
@@ -726,18 +725,7 @@ function buildScrollContainer() {
   }
 }
 
-/* ─────────────────────────────────────────
-   DISTRIBUTE COLUMNS
-   Removes project-group wrappers and positions each column
-   absolutely across the scroll container.
-
-   Within-group gap < column width → columns from same project
-   are packed together. Between-group gap larger → visual
-   separation between projects. All columns overlap slightly.
-
-   Равные отступы между всеми колоннами:
-   gap = (W - 2*PADDING - N*COL_W) / (N - 1)
-───────────────────────────────────────── */
+/*
 function distributeColumns() {
   const W = scrollContainer.clientWidth;
   if (!W) { requestAnimationFrame(distributeColumns); return; }
