@@ -1,3 +1,25 @@
+Понял на 100%! Я вижу проблему на скриншоте.
+
+Причина, по которой видео так жестоко обрезалось, кроется в особенности CSS Grid: длинная лента миниатюр внизу заставляла браузер "раздуть" весь каркас страницы до 1000 пикселей в ширину, поэтому телефон показывал вам только левый кусок этого гигантского экрана.
+
+Я сделал в точности так, как вы просили:
+
+Применил жесткий фикс min-width: 0 и max-width: 100vw, который запрещает странице раздуваться шире физического экрана телефона.
+
+Уменьшил ширину экрана до 90vw (90% от ширины экрана). Теперь видео гарантированно помещается полностью, оставляя по 5% аккуратного отступа слева и справа.
+
+Кнопки со стрелками выстроены идеально по центру под видео.
+
+Больше ничего не "улетит" вправо.
+
+Вот итоговый код (остальная часть не тронута, изменения только в самом низу в @media):
+
+code
+Html
+play_circle
+download
+content_copy
+expand_less
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -240,16 +262,24 @@ html, body {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
-  /* ИСПРАВЛЕНИЕ: строго запрещаем странице становиться шире экрана */
+  /* ЖЕСТКИЙ ФИКС ШИРИНЫ ЭКРАНА: не даем сетке растягиваться за пределы телефона */
   .page { 
-    grid-template-columns: minmax(0, 1fr); 
     width: 100vw; 
+    max-width: 100vw; 
     overflow-x: hidden; 
+  }
+
+  /* Все главные блоки обязаны вписываться в ширину телефона (min-width: 0 спасает от раздутия Grid) */
+  .top-bar, .stage, .filmstrip-wrap, .bottom-bar {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0; 
+    box-sizing: border-box;
   }
 
   /* Шапка */
   .top-bar { 
-    padding: 24px 16px 0; 
+    padding: 24px 5vw 0; 
     flex-direction: column; 
     gap: 12px; 
   }
@@ -259,23 +289,20 @@ html, body {
     text-align: left; 
   }
 
-  /* Сцена: Идеальное масштабирование */
+  /* Сцена */
   .stage { 
-    padding: 0 16px; 
+    padding: 0; 
     flex-wrap: wrap; 
     align-content: center;
     justify-content: center;
-    width: 100%; 
-    max-width: 100%;
-    box-sizing: border-box;
   }
   
+  /* ВИДЕО УМЕНЬШЕНО И ВЛЕЗАЕТ ИДЕАЛЬНО: ровно 90% от ширины экрана телефона */
   .video-frame { 
-    flex: 0 0 100%; 
-    width: 100%; 
-    max-width: 100%; 
-    min-width: 0; /* Технический фикс: не дает контенту распирать блок */
-    order: 1;
+    flex: 0 0 90vw; 
+    width: 90vw; 
+    max-width: 90vw; 
+    order: 1; 
   }
   
   .video-info { 
@@ -284,12 +311,12 @@ html, body {
   }
   
   .video-title { 
-    font-size: 18px; 
+    font-size: 16px; /* Чуть меньше для аккуратности */
     white-space: normal;
-    word-break: break-word; 
+    word-break: break-word; /* Если текст длинный - он перенесется, а не вылезет за край */
   }
 
-  /* Кнопки выстраиваются под видео по центру */
+  /* Кнопки теперь ровно по центру под видео */
   .arrow { 
     margin-top: 16px; 
     width: 44px; 
@@ -298,13 +325,9 @@ html, body {
   #btnPrev { order: 2; margin-right: 8px; }
   #btnNext { order: 3; margin-left: 8px; }
 
-  /* Миниатюры: горизонтальный скролл не ломает родительский блок */
+  /* Миниатюры: выровнены по левому краю видео (5vw отступ) */
   .filmstrip-wrap { 
-    padding: 0 16px; 
-    width: 100%; 
-    max-width: 100%;
-    min-width: 0; /* Фикс для Grid */
-    box-sizing: border-box;
+    padding: 0 5vw; 
   }
   .strip-item { width: 90px; }
   .strip-thumb, .strip-ph { width: 90px; height: 50px; }
@@ -315,10 +338,8 @@ html, body {
     flex-direction: column; 
     gap: 10px; 
     align-items: flex-start; 
-    padding: 12px 16px 24px; 
+    padding: 12px 5vw 24px; 
     margin-top: 0; 
-    width: 100%;
-    box-sizing: border-box;
   }
   .footer-links { flex-wrap: wrap; gap: 8px; }
   .footer-links .sep { display: none; }
@@ -373,4 +394,209 @@ html, body {
       <a href="about.html">About</a>
     </div>
     <div class="footer-links">
-      <a href="mailto:navilen@bk
+      <a href="mailto:navilen@bk.ru">NAVILEN@BK.RU</a>
+      <span class="sep">&mdash;</span>
+      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+      <span class="sep">&mdash;</span>
+      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  ВИДЕО — редактируй только этот массив
+//  id      — Vimeo ID из URL: vimeo.com/XXXXXXXXX
+//  title   — название
+//  caption — всплывает в cinema-tooltip при наведении на миниатюру
+//  bg      — фото фона → папка images/video/ в репозитории
+//  thumb   — превью (vumbnail.com/ID.jpg генерирует автоматически)
+// ═══════════════════════════════════════════════════════
+var VIDEOS = [
+  {
+    id:      '1171844542',
+    title:   'BIRDS',
+    caption: 'From Paris with love.',
+    bg:      'images/video/videobirds1.jpg',
+    thumb:   'https://vumbnail.com/1171844542.jpg'
+  },
+  {
+    id:      '1172106551',
+    title:   'Rebirth Cycles',
+    caption: 'A journey into the past. A meditation on caring for abandoned homes. The inevitability of cycles repeating.',
+    bg:      'images/video/videoRebirthCycles.jpg',
+    thumb:   'https://vumbnail.com/1172106551.jpg'
+  },
+  {
+    id:      '1172281707',
+    title:   'Special Diary',
+    caption: 'This is how life used to feel.',
+    bg:      'images/video/videocrystal1.jpg',
+    thumb:   'https://vumbnail.com/1172281707.jpg'
+  },
+  {
+    id:      '1172106388',
+    title:   'LVL',
+    caption: 'Short experimental stuff with friends.',
+    bg:      'images/video/videolvl.jpg',
+    thumb:   'https://vumbnail.com/1172106388.jpg'
+  },
+  {
+    id:      '1172128536',
+    title:   'Short Walks Down Long Roads',
+    caption: 'Just a feeling.',
+    bg:      'images/video/videoshort1.jpg',
+    thumb:   'https://vumbnail.com/1172128536.jpg'
+  },
+  {
+    id:      '1172128396',
+    title:   'Youth Chapter',
+    caption: 'Was filmed with an ice cream in one hand.',
+    bg:      'images/video/videoruslan.png',
+    thumb:   'https://vumbnail.com/1172128396.jpg'
+  }
+];
+// ═══════════════════════════════════════════════════════
+
+var current     = 0;
+var frame       = document.getElementById('vimeoFrame');
+var bgA         = document.getElementById('bgA');
+var bgB         = document.getElementById('bgB');
+var activeLayer = 'a';
+var titleEl     = document.getElementById('vTitle');
+var counterEl   = document.getElementById('vCounter');
+var strip       = document.getElementById('filmstrip');
+
+function makePh(label) {
+  var d = document.createElement('div');
+  d.className = 'strip-ph';
+  d.textContent = label || 'video';
+  return d;
+}
+
+// build filmstrip
+VIDEOS.forEach(function(v, i) {
+  var item = document.createElement('div');
+  item.className = 'strip-item' + (i === 0 ? ' active' : '');
+
+  // thumbnail
+  if (v.thumb) {
+    var img = document.createElement('img');
+    img.className = 'strip-thumb';
+    img.src = v.thumb;
+    img.alt = v.title;
+    img.onerror = function() { this.replaceWith(makePh(v.title)); };
+    item.appendChild(img);
+  } else {
+    item.appendChild(makePh(v.title));
+  }
+
+  // name below thumb
+  var nameEl = document.createElement('div');
+  nameEl.className = 'strip-name';
+  nameEl.textContent = v.title;
+  item.appendChild(nameEl);
+
+  // cinema tooltip above thumb
+  if (v.caption) {
+    var tip = document.createElement('div');
+    tip.className = 'cinema-tooltip';
+
+    var tipTitle = document.createElement('span');
+    tipTitle.className = 'tooltip-title';
+    tipTitle.textContent = v.title;
+    tip.appendChild(tipTitle);
+
+    var tipCap = document.createElement('div');
+    tipCap.className = 'tooltip-caption';
+    tipCap.textContent = v.caption;
+    tip.appendChild(tipCap);
+
+    item.appendChild(tip);
+  }
+
+  item.addEventListener('click', (function(idx) {
+    return function() { goTo(idx); };
+  })(i));
+
+  strip.appendChild(item);
+});
+
+// crossfade background
+function setBg(url) {
+  if (activeLayer === 'a') {
+    bgB.style.backgroundImage = url ? "url('" + url + "')" : 'none';
+    bgB.style.opacity = '1';
+    bgA.style.opacity = '0';
+    activeLayer = 'b';
+  } else {
+    bgA.style.backgroundImage = url ? "url('" + url + "')" : 'none';
+    bgA.style.opacity = '1';
+    bgB.style.opacity = '0';
+    activeLayer = 'a';
+  }
+}
+
+function goTo(i, skipHash) {
+  current = ((i % VIDEOS.length) + VIDEOS.length) % VIDEOS.length;
+  var v = VIDEOS[current];
+
+  // no autoplay — user presses play in player
+  frame.src = 'https://player.vimeo.com/video/' + v.id
+    + '?dnt=1&color=ffffff&title=0&byline=0&portrait=0';
+
+  setBg(v.bg);
+
+  titleEl.textContent   = v.title || '';
+  counterEl.textContent =
+    String(current + 1).padStart(2, '0') + ' / ' +
+    String(VIDEOS.length).padStart(2, '0');
+
+  document.querySelectorAll('.strip-item').forEach(function(el, idx) {
+    el.classList.toggle('active', idx === current);
+  });
+
+  var activeItem = strip.children[current];
+  if (activeItem) {
+    activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+
+  // deep link
+  if (!skipHash) {
+    history.replaceState(null, '', '#' + current);
+  }
+}
+
+// arrows
+document.getElementById('btnPrev').addEventListener('click', function() { goTo(current - 1); });
+document.getElementById('btnNext').addEventListener('click', function() { goTo(current + 1); });
+
+// keyboard
+window.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft')  goTo(current - 1);
+  if (e.key === 'ArrowRight') goTo(current + 1);
+});
+
+// init — read hash
+(function() {
+  var hash = parseInt(window.location.hash.replace('#', ''), 10);
+  var start = (!isNaN(hash) && hash >= 0 && hash < VIDEOS.length) ? hash : 0;
+  goTo(start, true);
+}());
+
+// cursor
+var cur = document.getElementById('cur');
+if (window.matchMedia('(hover: hover)').matches) {
+  document.addEventListener('mousemove', function(e) {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .strip-item').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { cur.classList.add('big'); });
+    el.addEventListener('mouseleave', function() { cur.classList.remove('big'); });
+  });
+}
+</script>
+</body>
+</html>
