@@ -362,30 +362,28 @@ body {
   createZone.addEventListener('mouseleave', deactivateCreate);
 
   // mobile tap
-  let buildOpen = false, createOpen = false;
+  let createOpen = false;
 
+  // TO BUILD: ссылки работают сразу, без активации слоя на мобиле
   buildZone.addEventListener('click', e => {
     if (!isTouch()) return;
-    // let sub-links navigate freely when open
-    if (e.target.tagName === 'A' && buildOpen) return;
-    e.preventDefault();
-    e.stopPropagation();
-    if (buildOpen) { deactivateAll(); buildOpen = false; }
-    else { deactivateAll(); activateBuild(); buildOpen = true; createOpen = false; }
+    // На мобиле позволяем переходить по ссылкам без активации слоя
+    if (e.target.tagName === 'A') return;
   });
 
   createZone.addEventListener('click', e => {
     if (!isTouch()) return;
+    // Позволяем переходить по ссылкам
     if (e.target.tagName === 'A' && createOpen) return;
     e.stopPropagation();
     if (createOpen) { deactivateAll(); createOpen = false; }
-    else { deactivateAll(); activateCreate(); createOpen = true; buildOpen = false; }
+    else { deactivateAll(); activateCreate(); createOpen = true; }
   });
 
   document.addEventListener('click', () => {
     if (!isTouch()) return;
     deactivateAll();
-    buildOpen = false; createOpen = false;
+    createOpen = false;
   });
 </script>
 </body>
