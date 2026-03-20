@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — AV</title>
+<title>About — AVASIL</title>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -189,40 +188,68 @@ html, body {
 
 /* ── MOBILE ── */
 @media (max-width: 860px) {
-  html, body { overflow-y: auto; height: auto; }
+  /* Allow vertical scroll */
+  html, body { overflow-y: auto; height: auto; cursor: auto; }
 
   .bg { position: fixed; }
-  .overlay-left  { width: 100%; background: rgba(0,0,0,.65); }
+  .overlay-left  { width: 100%; background: rgba(0,0,0,.62); }
   .overlay-right { display: none; }
 
-  .page { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 28px; }
+  /* Page flows top-to-bottom */
+  .page {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px 36px;
+    pointer-events: auto;
+  }
 
-  .back { top: 28px; left: 24px; }
+  /* Back at top, in flow */
+  .back {
+    position: relative;
+    top: auto; left: auto;
+    margin: 28px 0 28px;
+    display: inline-block;
+  }
 
+  /* Left block — full width, in flow */
   .block-left {
-    position: relative; bottom: auto; left: auto;
-    width: 100%; padding: 0 24px;
+    position: relative;
+    bottom: auto; left: auto;
+    width: 100%;
+    padding: 0;
     margin-bottom: 32px;
+    animation: fadeUp .7s ease .1s forwards;
   }
 
+  /* Right block — full width, below left */
   .block-right {
-    position: relative; bottom: auto; right: auto;
-    width: 100%; padding: 0 24px;
-    margin-bottom: 28px;
+    position: relative;
+    bottom: auto; right: auto;
+    width: 100%;
+    padding: 24px 0 0;
     border-top: 1px solid rgba(238,238,238,.12);
-    padding-top: 24px;
+    margin-bottom: 36px;
+    animation: fadeUp .7s ease .2s forwards;
   }
 
+  /* Contacts — wrap naturally */
   .footer-right {
-    position: relative; bottom: auto; right: auto;
-    padding: 0 24px;
-    flex-wrap: wrap; gap: 10px;
+    position: relative;
+    bottom: auto; right: auto;
+    padding: 0;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    animation: fadeUp .6s ease .3s forwards;
   }
   .footer-right .sep { display: none; }
+  .footer-right a { opacity: .7; font-size: 11px; }
 }
 
 @media (max-width: 480px) {
   .manifesto { font-size: 26px; }
+  .page { padding: 0 20px 32px; }
 }
 </style>
 </head>
@@ -246,7 +273,7 @@ html, body {
 
     <div class="manifesto">
       This is not<br>a portfolio.<br>
-      It is an<br>evolving system.
+      This is an<br>evolving system.
     </div>
 
     <div class="sub-manifesto">
@@ -266,27 +293,23 @@ html, body {
       <p>
         Trained as an architect. Operating beyond it.
         Years of practice across Southern Europe and beyond —
-        working on projects ranging from residential architecture
-        to urban-scale concepts and multidisciplinary productions,
-        including large creative events bringing together
-        architecture, media and performance.
+        working at the scale of villas, master plans and cities,
+        at studios that think across disciplines.
       </p>
       <p>
         The work moves between <strong>architecture, spatial research,
-        brand thinking and visual culture</strong> — not because
-        the boundaries are unclear, but because 
-        they were never interesting to begin with.
+        brand strategy and visual culture</strong> — not because
+        the boundaries are unclear, but because they were never
+        interesting to begin with.
       </p>
       <p>
-        Alongside architectural practice runs a parallel line of work
-        in video, photography, custom clothing and AI-assisted design.
-  </p>
-      <p>  
-        Shaped by exposure to Slavic, Mediterranean
-        and Latin American contexts —
-        each offering a different understanding
-        of how people inhabit space and image.
+        A parallel practice in video, photography, custom clothing
+        and AI-assisted design. Shaped by exposure to
+        <strong>Slavic, Mediterranean and Latin American contexts</strong> —
+        each one leaving a different understanding of how people
+        inhabit space and image.
       </p>
+      <p class="closer">Everything connects. Nothing is separate.</p>
     </div>
   </div>
 
@@ -294,7 +317,8 @@ html, body {
   <div class="footer-right">
     <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
     <span class="sep">—</span>
-    <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank">Artlebedev</a><span>—</span>
+    <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank">Artlebedev</a>
+    <span class="sep">—</span>
     <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
     <span class="sep">—</span>
     <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
@@ -304,18 +328,11 @@ html, body {
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const cur = document.getElementById('cur');
   if (window.matchMedia('(hover: hover)').matches) {
     document.addEventListener('mousemove', e => {
       cur.style.left = e.clientX + 'px';
       cur.style.top  = e.clientY + 'px';
     });
-    document.querySelectorAll('a').forEach(el => {
-      el.addEventListener('mouseenter', () => cur.classList.add('big'));
-      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
-    });
-  }
-</script>
-</body>
-</html>
+    doc
