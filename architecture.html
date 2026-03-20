@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TO BUILD — AV</title>
+  <title>AVASIL — TO BUILD</title>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -134,9 +134,10 @@
       /* мобайл: отступ убираем, окно на весь экран, контент скроллируется */
       .modal { padding: 0; overflow-y: auto; }
       .modal-content { grid-template-columns: 1fr; height: auto; min-height: 100vh; overflow: visible; border: none; }
-      .modal-gallery { height: auto; flex-shrink: 0; }
-      /* изображение на мобайле — большое, 65vh */
-      .modal-main-img { height: 65vh; flex: none; }
+      .modal-gallery { height: auto; flex-shrink: 0; display: flex; flex-direction: column; }
+      /* изображение: max-height вместо height — не растягивается если картинка меньше */
+      .modal-main-img { height: auto; max-height: 60vh; flex: none; align-items: center; justify-content: center; }
+      .modal-main-img img { width: auto; max-width: 100%; height: auto; max-height: 60vh; object-fit: contain; }
       .modal-info { height: auto; overflow-y: visible; padding: 24px 20px 80px; border-left: none; border-top: 1px solid var(--line); }
       .page-title { font-size: clamp(52px, 14vw, 100px); padding: 28px 24px 12px; }
       .page-subtitle { padding: 0 24px 24px; }
@@ -193,9 +194,9 @@
 
   <div class="project-card" data-tags="masterplan residential" data-title="1295 — Residential Complex" data-year="2024" data-location="Minsk, Belarus" data-type="Residential" data-studio="Zrobim Architects" data-tools="ArchiCAD, Enscape" data-desc="In this project, I served as the sole and primary executor — essentially the lead architect. Two types of houses designed for different buyers. Initially the clients wanted a single house type replicated across four areas, but nuances like window views, noise, and architectural balance led us to develop the design further for optimal usability.
 
-The result combines our vision of modern style for the area, the client's desires, a versatile layout with all necessary amenities, and perfect landscaping." data-images='["images/assets/build/1295/12951.jpg","images/assets/build/1295/1295p1.jpg","images/assets/build/1295/1295p2.jpg","images/assets/build/1295/1295p3.jpg","images/assets/build/1295/1295p4.jpg","images/assets/build/1295/12952.png","images/assets/build/1295/12953.jpg","images/assets/build/1295/12954.jpg","images/assets/build/1295/12955.png","images/assets/build/1295/12956.png","images/assets/build/1295/12957.png","images/assets/build/1295/12958.png","images/assets/build/1295/12959.png","images/assets/build/1295/129510.png","images/assets/build/1295/129511.jpg","images/assets/build/1295/129512.jpg","images/assets/build/1295/129513.jpg","images/assets/build/1295/129514.jpg","images/assets/build/1295/129515.jpg","images/assets/build/1295/129516.jpg","images/assets/build/1295/129517.jpg"]'>
+The result combines our vision of modern style for the area, the client's desires, a versatile layout with all necessary amenities, and perfect landscaping." data-images='["images/assets/build/1295/12951.png","images/assets/build/1295/1295p1.jpg","images/assets/build/1295/1295p2.jpg","images/assets/build/1295/1295p3.jpg","images/assets/build/1295/1295p4.jpg","images/assets/build/1295/12952.png","images/assets/build/1295/12953.png","images/assets/build/1295/12954.png","images/assets/build/1295/12955.png","images/assets/build/1295/12956.png","images/assets/build/1295/12957.png","images/assets/build/1295/12958.png","images/assets/build/1295/12959.png","images/assets/build/1295/129510.png","images/assets/build/1295/129511.jpg","images/assets/build/1295/129512.jpg","images/assets/build/1295/129513.jpg","images/assets/build/1295/129514.jpg","images/assets/build/1295/129515.jpg","images/assets/build/1295/129516.jpg","images/assets/build/1295/129517.jpg"]'>
     <span class="card-number">02</span>
-    <div class="card-img" data-ph="1295 Complex"><img src="images/assets/build/1295/12951.jpg" alt="1295" fetchpriority="high"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+    <div class="card-img" data-ph="1295 Complex"><img src="images/assets/build/1295/12951.png" alt="1295" fetchpriority="high"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
     <div class="card-meta"><div class="card-info"><div class="card-name">1295 — Residential Complex</div><div class="card-year">2024 · Minsk / Moscow</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
   </div>
 
@@ -261,29 +262,28 @@ The design focuses on ocean views, strong indoor–outdoor connections, large so
     <div class="card-meta"><div class="card-info"><div class="card-name">Brownie Coffeehouse</div><div class="card-year">2022 · Molodechno</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
   </div>
 
- <div class="project-card external" data-tags="interior" data-title="ALS 30 — Spatial Design for a Cultural Event" data-external-url="https://www.artlebedev.ru/news/2025/party/">
-    <span class="card-number">12</span><span class="ext-badge">↗ artlebedev.com</span>
-    <div class="card-img" data-ph="ALS 30 — Spatial Design for a Cultural Event"><img src="images/assets/build/als/als30.jpg" alt="Magnit Classroom"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com ↗</span></div></div>
-    <div class="card-meta"><div class="card-info"><div class="card-name">ALS 30 — Spatial Design for a Cultural Event</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div> 
-  </div>
-
-
-  <div class="project-card" data-tags="conceptual masterplan" data-title="Competition Alborada Benahavís" data-year="2023" data-location="Benahavís, Spain" data-type="Competition / Hospitality" data-studio="Archidom Studio" data-tools="AutoCAD, Rhino, Photoshop" data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside — architecture as landscape continuation. Concept plans, sketches, diagrams, post-production." data-images='["images/assets/build/xab/xab.jpg"]'>
-    <span class="card-number">13</span>
-    <div class="card-img" data-ph="Alborada"><img src="images/assets/build/xab/xab.jpg" alt="Alborada"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-    <div class="card-meta"><div class="card-info"><div class="card-name">Competition Alborada</div><div class="card-year">2021 · Benahavís</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="masterplan">#MASTERPLAN</button></div></div>
-  </div>
-
-  
-  
   <div class="project-card" data-tags="conceptual" data-title="Museum of Modern Art NOVA" data-year="2022" data-location="Warsaw / Minsk" data-type="Cultural / Public" data-studio="Graduation · Warsaw" data-tools="AutoCAD, ArchiCAD, Lumion" data-desc="The Museum of Modern Art NOVA is conceived as a fusion of cultural ambition and natural power — a place where art and landscape speak the same language.
 
 Located on Soltistinskaya Sloboda Square in Minsk, along the Svisloch River, the museum is designed as a catalyst for the city's cultural expansion.
+
 The form is inspired by a tectonic fault: walls rise from the ground on three sides, creating a sheltering roof that emerges organically from the earth. Two volumes shape the experience — one public (ticketing, administration), the other dedicated to storage. A rectangular gate marks the main entrance, framed by wide stairs.
+
 This project is an ode to nature's raw power — the movement of titanic plates frozen in time, with us as its witnesses." data-images='["images/assets/build/nova/nova1.jpg","images/assets/build/nova/nova2.jpg","images/assets/build/nova/nova3.jpg","images/assets/build/nova/nova4.jpg"]'>
-    <span class="card-number">14</span>
+    <span class="card-number">12</span>
     <div class="card-img" data-ph="Museum NOVA"><img src="images/assets/build/nova/nova2.jpg" alt="Museum NOVA"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
     <div class="card-meta"><div class="card-info"><div class="card-name">Museum of Modern Art "NOVA"</div><div class="card-year">2022 · Warsaw / Minsk</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div>
+  </div>
+
+  <div class="project-card" data-tags="conceptual masterplan" data-title="Competition Alborada Benahavís" data-year="2023" data-location="Benahavís, Spain" data-type="Competition / Hospitality" data-studio="Archidom Studio" data-tools="AutoCAD, Rhino, Photoshop" data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside — architecture as landscape continuation. Concept plans, sketches, diagrams, post-production." data-images='["images/assets/build/alborada-1.jpg","images/assets/build/alborada-2.jpg","images/assets/build/alborada-3.jpg"]'>
+    <span class="card-number">13</span>
+    <div class="card-img" data-ph="Alborada"><img src="images/assets/build/alborada-1.jpg" alt="Alborada"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+    <div class="card-meta"><div class="card-info"><div class="card-name">Competition Alborada</div><div class="card-year">2023 · Benahavís</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="masterplan">#MASTERPLAN</button></div></div>
+  </div>
+
+  <div class="project-card" data-tags="residential" data-title="Ageispolis" data-year="2022–2023" data-location="Conceptual" data-type="Residential" data-studio="Personal project" data-tools="ArchiCAD, Lumion, Photoshop" data-desc="One-floor house with three bedrooms and a hall overlooking a private garden. Unique perforated facade — small square windows creating light and shadow play while maintaining privacy." data-images='["images/assets/build/ageispolis-1.jpg","images/assets/build/ageispolis-2.jpg","images/assets/build/ageispolis-3.jpg"]'>
+    <span class="card-number">14</span>
+    <div class="card-img ph" data-ph="Ageispolis"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+    <div class="card-meta"><div class="card-info"><div class="card-name">Ageispolis</div><div class="card-year">2022–2023</div></div><div class="card-tags"><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
   </div>
 
   <div class="project-card" data-tags="residential" data-title="Villa Amelie" data-year="2023" data-location="Marbella, Spain" data-type="Residential Villa" data-studio="Archidom Studio" data-tools="AutoCAD, Revit, Lumion" data-desc="Private tropical villa designed around family proximity — continuous ground-floor flow between kitchen, living, office, gym, and master bedroom. Open plan, panoramic pool, lush landscape integration." data-images='["images/assets/build/villa-amelie-1.jpg","images/assets/build/villa-amelie-2.jpg","images/assets/build/villa-amelie-3.jpg"]'>
@@ -314,7 +314,8 @@ This project is an ode to nature's raw power — the movement of titanic plates 
 <div class="global-footer" id="globalFooter">
   <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank">Artlebedev</a><span>—</span>
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
-  <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a><span>—</span> 
+  <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a><span>—</span>
+  <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a><span>—</span>
   <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
 </div>
 
@@ -366,7 +367,9 @@ This project is an ode to nature's raw power — the movement of titanic plates 
     modal.classList.add('active'); modal.scrollTop = 0; setBlur(true);
   }
 
-  
+  /* showImage: синхронно создаём img и сразу добавляем.
+     Нет probe/onload — нет race condition при быстром переключении миниатюр.
+     object-fit: contain в CSS гарантирует корректное отображение любых пропорций. */
   function showImage(src, alt) {
     modalMain.className = 'modal-main-img';
     modalMain.innerHTML = '';
