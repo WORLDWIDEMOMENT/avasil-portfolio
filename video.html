@@ -242,9 +242,10 @@ html, body {
 @media (max-width: 768px) {
   html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
   
-  /* Отключаем Grid на мобильных, чтобы элементы не ломали верстку и не сдвигались */
+  /* Делаем колонку гибкой: это позволит выталкивать контент вниз */
   .page { 
-    display: block; 
+    display: flex; 
+    flex-direction: column;
     position: relative; 
     height: auto; 
     min-height: 100svh; 
@@ -279,16 +280,18 @@ html, body {
     display: none !important; 
   }
 
-  /* Сцена: Теперь экран 100% будет центрирован */
+  /* Сцена: flex: 1 заставляет этот блок забрать всё пустое пространство экрана,
+     отталкивая ленту и ссылки в самый низ. */
   .stage { 
     display: block; 
-    padding: 32px 20px; /* 20px отступ слева и справа: экран ровно посередине */
+    flex: 1; 
+    padding: 32px 20px; 
   }
   
   .video-frame { 
     width: 100%; 
     max-width: 100%; 
-    margin: 0 auto; /* Жесткое центрирование */
+    margin: 0 auto; 
   }
   .video-info { 
     height: auto; 
@@ -296,7 +299,7 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    flex-wrap: wrap; /* Заголовок перенесется, если он очень длинный */
+    flex-wrap: wrap; 
     gap: 8px;
   }
   .video-title { 
@@ -313,12 +316,13 @@ html, body {
   .strip-thumb, .strip-ph { width: 90px; height: 51px; }
   .cinema-tooltip { width: 140px; font-size: 10px; }
   
-  /* Подвал: Настройка выравнивания по левому краю */
+  /* Подвал: Ссылки выстраиваются в колонку и прижимаются к краю */
   .bottom-bar { 
     display: flex;
     flex-direction: column; 
     align-items: flex-start; 
-    padding: 32px 20px 40px; /* 32px сверху опустит ссылки чуть ниже */
+    /* 20px снизу делает их максимально близко к нижнему краю */
+    padding: 28px 20px 20px; 
     gap: 12px; 
     margin-top: 0; 
   }
