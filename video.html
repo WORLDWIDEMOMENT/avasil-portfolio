@@ -240,56 +240,66 @@ html, body {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
-  html, body { overflow-y: auto; height: auto; }
-  
-  /* Переключаем с Grid на Flex-колонку для плавного скролла */
-  .page { 
-    position: relative; 
+  /* Оставляем body неподвижным, а слой .page делаем скроллируемым */
+  .page {
+    display: block;        /* Выключаем grid, используем стандартный поток блоков */
+    overflow-y: auto;      /* Разрешаем вертикальный скролл внутри страницы */
+    overflow-x: hidden;
+    pointer-events: auto;  /* Обязательно, чтобы можно было взаимодействовать экраном */
+  }
+
+  /* Шапка: манифест опущен под Back и увеличен */
+  .top-bar { 
     display: flex; 
     flex-direction: column; 
-    min-height: 100svh; 
-    height: auto; 
+    gap: 16px; 
+    padding: 24px 20px 0; 
   }
-  
-  .bg-a, .bg-b, .bg-veil, .grain { position: fixed; }
-  
-  /* Шапка: манифест опущен под Back и увеличен */
-  .top-bar { padding: 24px 20px 0; flex-direction: column; gap: 14px; }
-  .manifesto { max-width: 100%; font-size: 13px; text-align: left; }
-  
-  /* Сцена: видео на всю ширину, кнопки по бокам снизу */
+  .manifesto { 
+    max-width: 100%; 
+    font-size: 13px; 
+    text-align: left; 
+  }
+
+  /* Сцена: видео на всю ширину, стрелки по бокам снизу */
   .stage { 
-    flex: 1; 
-    padding: 32px 0; 
+    display: flex; 
     flex-wrap: wrap; 
     justify-content: space-between; 
-    align-items: flex-start;
+    padding: 40px 0; 
   }
   .video-frame { 
     width: 100%; 
     max-width: 100%; 
     flex: 0 0 100%; 
-    order: -1; 
+    order: -1;            /* Ставим видео всегда выше стрелок */
   }
-  /* Внутренние отступы для текста, чтобы не прилипал к краям экрана */
-  .video-info { padding: 16px 20px 0; height: auto; }
-  .arrow { margin: 16px 20px 0; width: 44px; height: 44px; }
-  
-  /* Миниатюры: корректные отступы и размер */
+  .video-info { 
+    padding: 16px 20px 0; 
+    height: auto; 
+  }
+  .arrow { 
+    margin: 16px 20px 0; 
+    width: 44px; 
+    height: 44px; 
+  }
+
+  /* Миниатюры: корректные отступы */
   .filmstrip-wrap { padding: 0 20px; overflow: visible; }
   .strip-item { width: 100px; }
   .strip-thumb, .strip-ph { width: 100px; height: 56px; }
   .cinema-tooltip { width: 160px; font-size: 10px; }
-  
-  /* Футер */
+
+  /* Подвал: оставлен ваш оригинальный стиль */
   .bottom-bar { 
+    display: flex;
     flex-direction: column; 
-    gap: 16px; 
+    gap: 12px; 
     align-items: flex-start; 
     padding: 20px 20px 32px; 
-    margin-top: 16px; 
+    margin-top: 24px; 
   }
-  .footer-links { flex-wrap: wrap; gap: 12px; }
+  .footer-links { flex-wrap: wrap; gap: 8px; }
   .footer-links .sep { display: none; }
 }
 </style>
@@ -542,4 +552,9 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
   document.querySelectorAll('a, button, .strip-item').forEach(function(el) {
     el.addEventListener('mouseenter', function() { cur.classList.add('big'); });
-    el.addEventListene
+    el.addEventListener('mouseleave', function() { cur.classList.remove('big'); });
+  });
+}
+</script>
+</body>
+</html>
