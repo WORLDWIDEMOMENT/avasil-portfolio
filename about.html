@@ -3,334 +3,388 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — AVASIL</title>
+<title>AV — Dual System</title>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* text selection */
-::selection { background: #2a2a2a; color: #eeeeee; }
-
-:root {
-  --white: #eeeeee;
-  --dim:   rgba(238,238,238,.4);
-  --strip: rgba(0,0,0,.72);
-}
-
-html, body {
-  height: 100%; overflow: hidden;
+body {
+  background: black url("images/front.jpg") center/cover no-repeat fixed;
+  color: white;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: var(--white);
+  height: 100vh;
+  overflow: hidden;
   cursor: none;
-  background: #060606;
 }
 
 /* ── CURSOR ── */
 #cur {
   position: fixed;
   width: 10px; height: 10px;
-  background: white; border-radius: 50%;
-  pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
   transition: width .16s, height .16s;
   mix-blend-mode: difference;
 }
 #cur.big { width: 50px; height: 50px; }
 @media (hover: none) { #cur { display: none; } }
 
-/* ── FULL-BLEED PHOTO ── */
-.bg {
-  position: fixed; inset: 0; z-index: 0;
-  background: url("images/about1.JPG") center/cover no-repeat;
-  animation: bgIn 1.4s cubic-bezier(.4,0,.2,1) forwards;
+/* ── INTRO ── */
+#intro-veil {
+  position: fixed; inset: 0;
+  background: black;
+  opacity: 0; z-index: 50;
+  pointer-events: none;
+  transition: opacity 1.0s ease;
 }
-@keyframes bgIn {
-  from { transform: scale(1.06); filter: brightness(.55); }
-  to   { transform: scale(1);    filter: brightness(1); }
-}
+#intro-veil.darken { opacity: .22; }
 
-/* grain */
-.grain {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-}
-
-/* ── LEFT DARK OVERLAY — covers ~42% from left, no gradient ── */
-.overlay-left {
+#intro-line {
   position: fixed;
-  top: 0; left: 0; bottom: 0;
-  width: 42%;
-  background: rgba(0,0,0,.68);
+  left: 50%; bottom: 0;
+  width: 1px; height: 0;
+  background: white;
+  z-index: 51;
+  pointer-events: none;
+  transition: height .7s cubic-bezier(.77, 0, .18, 1);
+}
+#intro-line.rise { height: 100vh; }
+#intro-line.settle {
+  background: rgba(255,255,255,.15);
+  transition: background .8s ease;
+}
+.build-active #intro-line { background: rgba(0,0,0,.1); }
+
+/* ── LAYERS ── */
+.layer {
+  position: fixed; inset: 0;
+  transition: clip-path 1.2s cubic-bezier(.77, 0, .18, 1);
+}
+.build-layer {
+  background: white;
   z-index: 2;
+  clip-path: circle(0px at 0% 100%);
+}
+.create-layer {
+  background: url("images/main1.jpg") center/cover no-repeat;
+  z-index: 1;
+  clip-path: circle(0px at 100% 100%);
 }
 
-/* ── RIGHT DARK STRIP — sharp left edge, from ~68% to right ── */
-.overlay-right {
-  position: fixed;
-  top: 0; right: 0; bottom: 0;
-  width: 32%;
-  background: rgba(0,0,0,.70);
-  z-index: 2;
+/* ── GRID ── */
+.grid {
+  position: fixed; inset: 0;
+  pointer-events: none; opacity: 0; z-index: 3;
+  transition: opacity .7s ease;
+  background-image:
+    linear-gradient(rgba(0,0,0,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.07) 1px, transparent 1px);
+  background-size: 140px 140px;
+}
+.grid.active { opacity: 1; }
+
+/* ── SIGNATURE ── */
+.author {
+  position: fixed; top: 34px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .28em; text-transform: uppercase;
+  opacity: .3; z-index: 20;
+  white-space: nowrap; pointer-events: none;
+  transition: color .4s;
+}
+.build-active .author { color: black; }
+
+/* ── UI REVEAL ── */
+.ui-group { opacity: 0; transition: opacity .8s ease; }
+.ui-group.visible { opacity: 1; }
+
+/* ── ZONES ── */
+.zone {
+  position: absolute; bottom: 120px;
+  z-index: 10;
+  transition: opacity .4s ease, transform .4s ease, color .4s ease;
+}
+#build  { left: 80px; }
+#create { right: 80px; text-align: right; }
+
+/* Main title — BUILD is a link, CREATE is not */
+.main-title {
+  font-size: 72px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  cursor: none; line-height: 1;
+  transition: color .4s ease;
+  user-select: none;
+}
+.main-title a {
+  color: inherit; text-decoration: none;
 }
 
-/* ── UI LAYER ── */
-.page {
-  position: fixed; inset: 0; z-index: 3;
+/* ── SUB ITEMS ── */
+.sub {
+  margin-top: 16px;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: .24em; text-transform: uppercase;
+  line-height: 1;
+  opacity: .28;
+  transition: opacity .35s ease;
   pointer-events: none;
 }
-.page a, .page button { pointer-events: auto; }
+.zone.active .sub {
+  opacity: .85;
+  pointer-events: auto;
+}
 
-/* ── BACK ── */
-.back {
-  position: absolute;
-  top: 36px; left: 48px;
+/* TO BUILD subs — all go to same page, underline together */
+.sub-build a {
+  display: block; color: inherit; text-decoration: none;
+  padding: 7px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color .18s;
+}
+/* all three underline when hovering ANY of them */
+.sub-build:hover a {
+  border-bottom-color: currentColor;
+}
+
+/* TO CREATE subs — each independent */
+.sub-create a {
+  display: block; color: inherit; text-decoration: none;
+  padding: 7px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color .18s;
+}
+.sub-create a:hover {
+  border-bottom-color: currentColor;
+}
+
+/* text inversion on white layer */
+.build-active .zone { color: black; }
+
+.fade-out {
+  opacity: 0 !important;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar {
+  position: absolute; bottom: 36px; width: 100%;
+  padding: 0 80px;
+  display: flex; justify-content: space-between; align-items: center;
   font-size: 11px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
-  text-decoration: none; color: var(--dim);
-  transition: color .2s;
-  opacity: 0;
-  animation: fadeUp .6s ease .2s forwards;
-  pointer-events: auto;
+  letter-spacing: .2em; text-transform: uppercase;
+  z-index: 20; transition: color .4s ease;
 }
-.back:hover { color: var(--white); }
-
-/* ── LEFT TEXT BLOCK — bottom-left, within overlay-left ── */
-.block-left {
-  position: absolute;
-  bottom: 80px;
-  left: 48px;
-  width: 36%;
-  opacity: 0;
-  animation: fadeUp .7s ease .45s forwards;
-}
-
-.author-label {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(238,238,238,.38);
-  margin-bottom: 18px;
-  display: block;
-}
-
-.manifesto {
-  font-size: clamp(30px, 3.4vw, 50px);
-  font-weight: 700;
-  letter-spacing: -.02em;
-  line-height: 1.02;
-  text-transform: uppercase;
-  margin-bottom: 22px;
-}
-
-.sub-manifesto {
-  font-size: clamp(12px, 1.05vw, 14px);
-  font-weight: 300;
-  line-height: 1.7;
-  color: rgba(238,238,238,.6);
-  font-style: italic;
-  margin-bottom: 14px;
-  max-width: 360px;
-}
-
-.precision {
-  font-size: clamp(12px, 1.05vw, 14px);
-  font-weight: 400;
-  line-height: 1.5;
-  color: rgba(238,238,238,.75);
-}
-.precision strong { color: var(--white); font-weight: 700; }
-
-/* ── RIGHT TEXT BLOCK — bottom-right, within overlay-right ── */
-.block-right {
-  position: absolute;
-  bottom: 80px;
-  right: 0;
-  width: 32%;
-  padding: 0 40px 0 36px;
-  opacity: 0;
-  animation: fadeUp .7s ease .6s forwards;
-}
-
-.bio-text {
-  font-size: clamp(12px, 1.05vw, 14px);
-  font-weight: 300;
-  line-height: 1.8;
-  color: rgba(238,238,238,.72);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.bio-text strong { color: var(--white); font-weight: 600; }
-.bio-text .closer {
-  font-weight: 600;
-  color: var(--white);
-}
-
-/* ── BOTTOM-RIGHT — contacts ── */
-.footer-right {
-  position: absolute;
-  bottom: 30px; right: 48px;
-  display: flex; gap: 14px; align-items: center;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  opacity: 0;
-  animation: fadeUp .6s ease .8s forwards;
-  pointer-events: auto;
-}
-.footer-right a { color: var(--white); text-decoration: none; opacity: .4; transition: opacity .2s; }
-.footer-right a:hover { opacity: 1; }
-.footer-right .sep { opacity: .18; }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: none; }
-}
+.bottom-bar a { color: inherit; text-decoration: none; opacity: .45; transition: opacity .25s; }
+.bottom-bar a:hover { opacity: 1; }
+.contact { display: flex; gap: 14px; align-items: center; }
+.divider { opacity: .2; }
+.build-active .bottom-bar { color: black; }
 
 /* ── MOBILE ── */
-@media (max-width: 860px) {
-  /* Allow vertical scroll */
-  html, body { overflow-y: auto; height: auto; cursor: auto; }
-
-  .bg { position: fixed; }
-  .overlay-left  { width: 100%; background: rgba(0,0,0,.62); }
-  .overlay-right { display: none; }
-
-  /* Page flows top-to-bottom */
-  .page {
-    position: relative;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    padding: 0 24px 36px;
-    pointer-events: auto;
+@media (max-width: 900px) {
+  /* Картинка выше и уменьшена — сохраняю fixed attachment */
+  body {
+    background-size: 120%;
+    background-position: center 32%;
+    background-attachment: fixed;
   }
 
-  /* Back at top, in flow */
-  .back {
-    position: relative;
-    top: auto; left: auto;
-    margin: 28px 0 28px;
-    display: inline-block;
-  }
-
-  /* Left block — full width, in flow */
-  .block-left {
-    position: relative;
-    bottom: auto; left: auto;
-    width: 100%;
+  .main-title { font-size: 42px; letter-spacing: .1em; }
+  
+  /* Zones ниже картинки */
+  #build  { left: 20px; bottom: auto; top: auto; transform: none; padding-top: 430px; }
+  #create { right: 20px; bottom: auto; top: auto; transform: none; padding-top: 430px; }
+  
+  /* Bottom bar: ABOUT слева, остальное справа */
+  .bottom-bar { 
     padding: 0;
-    margin-bottom: 32px;
-    animation: fadeUp .7s ease .1s forwards;
-  }
-
-  /* Right block — full width, below left */
-  .block-right {
-    position: relative;
-    bottom: auto; right: auto;
+    font-size: 9px;
+    bottom: 20px;
     width: 100%;
-    padding: 24px 0 0;
-    border-top: 1px solid rgba(238,238,238,.12);
-    margin-bottom: 36px;
-    animation: fadeUp .7s ease .2s forwards;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-
-  /* Contacts — wrap naturally */
-  .footer-right {
-    position: relative;
-    bottom: auto; right: auto;
-    padding: 0;
-    flex-wrap: wrap;
-    gap: 10px 16px;
-    animation: fadeUp .6s ease .3s forwards;
+  
+  .contact { 
+    gap: 6px; 
+    flex-wrap: wrap; 
+    justify-content: flex-end;
+    align-items: center;
   }
-  .footer-right .sep { display: none; }
-  .footer-right a { opacity: .7; font-size: 11px; }
+  
+  .divider { display: inline; }
+  
+  .sub { opacity: .35; }
+  .zone.active .sub { opacity: .85; pointer-events: auto; }
 }
 
-@media (max-width: 480px) {
-  .manifesto { font-size: 26px; }
-  .page { padding: 0 20px 32px; }
+@media (max-width: 560px) {
+  body {
+    background-size: 130%;
+    background-position: center 30%;
+    background-attachment: fixed;
+  }
+
+  .main-title { font-size: 30px; }
+  
+  #build  { left: 16px; padding-top: 410px; }
+  #create { right: 16px; padding-top: 410px; }
+  
+  .bottom-bar { 
+    padding-left: 16px;
+    padding-right: 16px;
+    bottom: 16px;
+  }
+  
+  .contact { gap: 4px; }
+  .divider { display: none; }
 }
 </style>
 </head>
 <body>
 
 <div id="cur"></div>
-<div class="bg"></div>
-<div class="grain"></div>
+<div id="intro-veil"></div>
+<div id="intro-line"></div>
 
-<!-- sharp dark overlays — no gradients -->
-<div class="overlay-left"></div>
-<div class="overlay-right"></div>
+<div class="layer build-layer"></div>
+<div class="layer create-layer"></div>
+<div class="grid"></div>
 
-<div class="page">
+<div class="author ui-group">A. Vasileuskaya</div>
 
-  <a href="index.html" class="back">← Back</a>
-
-  <!-- LEFT TEXT — manifesto, low -->
-  <div class="block-left">
-    <span class="author-label">Anastasiya Vasileuskaya</span>
-
-    <div class="manifesto">
-      This is not<br>a portfolio.<br>
-      This is an<br>evolving system.
-    </div>
-
-    <div class="sub-manifesto">
-      Built at the intersection of spatial design,<br>
-      urban research, AI experimentation<br>
-      and visual storytelling.
-    </div>
-
-    <div class="precision">
-      <strong>Professional precision.</strong> Underground sensitivity.
-    </div>
+<!-- TO BUILD — title + all subs → architecture.html -->
+<div class="zone ui-group" id="build">
+  <div class="main-title">
+    <a href="architecture.html">To Build</a>
   </div>
-
-  <!-- RIGHT TEXT — bio, low, on dark strip -->
-  <div class="block-right">
-    <div class="bio-text">
-      <p>
-        Trained as an architect. Operating beyond it.
-        Years of practice across Southern Europe and beyond —
-        working at the scale of villas, master plans and cities,
-        at studios that think across disciplines.
-      </p>
-      <p>
-        The work moves between <strong>architecture, spatial research,
-        brand strategy and visual culture</strong> — not because
-        the boundaries are unclear, but because they were never
-        interesting to begin with.
-      </p>
-      <p>
-        A parallel practice in video, photography, custom clothing
-        and AI-assisted design. Shaped by exposure to
-        <strong>Slavic, Mediterranean and Latin American contexts</strong> —
-        each one leaving a different understanding of how people
-        inhabit space and image.
-      </p>
-      <p class="closer">Everything connects. Nothing is separate.</p>
-    </div>
+  <div class="sub sub-build">
+    <a href="architecture.html">Architecture</a>
+    <a href="architecture.html">Urban · Research</a>
+    <a href="architecture.html">AI Experiments</a>
   </div>
-
-  <!-- CONTACTS — bottom right -->
-  <div class="footer-right">
-    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-    <span class="sep">—</span>
-    <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank">Artlebedev</a>
-    <span class="sep">—</span>
-    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-    <span class="sep">—</span>
-    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
-  </div>
-
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- TO CREATE — title is not a link, subs go to separate pages -->
+<div class="zone ui-group" id="create">
+  <div class="main-title">To Create</div>
+  <div class="sub sub-create">
+    <a href="visual.html">Visual</a>
+    <a href="video.html">Video</a>
+    <a href="localradio.html">Local Radio</a>
+  </div>
+</div>
+
+<div class="bottom-bar ui-group">
+  <a href="about.html">About</a>
+  <div class="contact">
+    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+    <span class="divider">—</span>
+    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+    <span class="divider">—</span>
+    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+  </div>
+</div>
+
+<script>
+  // ── CURSOR ──
   const cur = document.getElementById('cur');
   if (window.matchMedia('(hover: hover)').matches) {
     document.addEventListener('mousemove', e => {
       cur.style.left = e.clientX + 'px';
       cur.style.top  = e.clientY + 'px';
     });
-    doc
+    document.querySelectorAll('a, .main-title').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('big'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+    });
+  }
+
+  // ── INTRO SEQUENCE ──
+  const veil  = document.getElementById('intro-veil');
+  const line  = document.getElementById('intro-line');
+  const uiEls = document.querySelectorAll('.ui-group');
+
+  setTimeout(() => veil.classList.add('darken'), 1800);
+  setTimeout(() => line.classList.add('rise'), 2200);
+  setTimeout(() => {
+    veil.style.opacity    = '0';
+    veil.style.transition = 'opacity .5s ease';
+    line.classList.add('settle');
+    uiEls.forEach(el => el.classList.add('visible'));
+  }, 2900);
+
+  // ── BUILD / CREATE LOGIC ──
+  const buildZone  = document.getElementById('build');
+  const createZone = document.getElementById('create');
+  const buildLayer = document.querySelector('.build-layer');
+  const createLayer= document.querySelector('.create-layer');
+  const grid       = document.querySelector('.grid');
+  const isTouch    = () => !window.matchMedia('(hover: hover)').matches;
+
+  function activateBuild() {
+    buildLayer.style.clipPath = 'circle(150% at 0% 100%)';
+    document.body.classList.add('build-active');
+    createZone.classList.add('fade-out');
+    createZone.classList.remove('active');
+    grid.classList.add('active');
+    buildZone.classList.add('active');
+  }
+  function deactivateBuild() {
+    buildLayer.style.clipPath = 'circle(0px at 0% 100%)';
+    document.body.classList.remove('build-active');
+    createZone.classList.remove('fade-out');
+    grid.classList.remove('active');
+    buildZone.classList.remove('active');
+  }
+  function activateCreate() {
+    createLayer.style.clipPath = 'circle(150% at 100% 100%)';
+    buildZone.classList.add('fade-out');
+    buildZone.classList.remove('active');
+    createZone.classList.add('active');
+  }
+  function deactivateCreate() {
+    createLayer.style.clipPath = 'circle(0px at 100% 100%)';
+    buildZone.classList.remove('fade-out');
+    createZone.classList.remove('active');
+  }
+  function deactivateAll() { deactivateBuild(); deactivateCreate(); }
+
+  // desktop hover
+  buildZone.addEventListener('mouseenter',  activateBuild);
+  buildZone.addEventListener('mouseleave',  deactivateBuild);
+  createZone.addEventListener('mouseenter', activateCreate);
+  createZone.addEventListener('mouseleave', deactivateCreate);
+
+  // mobile tap
+  let createOpen = false;
+
+  // TO BUILD: ссылки работают сразу, без активации слоя на мобиле
+  buildZone.addEventListener('click', e => {
+    if (!isTouch()) return;
+    // На мобиле позволяем переходить по ссылкам без активации слоя
+    if (e.target.tagName === 'A') return;
+  });
+
+  createZone.addEventListener('click', e => {
+    if (!isTouch()) return;
+    // Позволяем переходить по ссылкам
+    if (e.target.tagName === 'A' && createOpen) return;
+    e.stopPropagation();
+    if (createOpen) { deactivateAll(); createOpen = false; }
+    else { deactivateAll(); activateCreate(); createOpen = true; }
+  });
+
+  document.addEventListener('click', () => {
+    if (!isTouch()) return;
+    deactivateAll();
+    createOpen = false;
+  });
+</script>
+</body>
+</html>
