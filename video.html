@@ -40,7 +40,7 @@ html, body {
   background-position: center;
   background-repeat: no-repeat;
   filter: blur(3px);
-  transform: scale(1.03);   /* covers blur edges */
+  transform: scale(1.03);
   transition: opacity .9s ease;
 }
 .bg-a { opacity: 1; }
@@ -77,7 +77,6 @@ html, body {
 }
 .back:hover { color: var(--white); }
 
-/* manifesto top-right */
 .manifesto {
   text-align: right; max-width: 340px; pointer-events: none;
   font-size: clamp(12px, 1.1vw, 15px);
@@ -110,11 +109,10 @@ html, body {
   position: absolute; inset: 0; width: 100%; height: 100%; border: none;
 }
 
-/* video title row — fixed height so layout never shifts */
 .video-info {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 16px 2px 0;
-  height: 52px; /* fixed — prevents layout jump between videos */
+  height: 52px;
 }
 .video-title {
   font-size: clamp(22px, 2.6vw, 34px);
@@ -130,16 +128,15 @@ html, body {
 /* ── FILMSTRIP ── */
 .filmstrip-wrap {
   padding: 0 44px;
-  /* overflow visible so tooltips can escape upward */
   overflow: visible;
 }
 .filmstrip {
   display: flex; gap: 10px;
   overflow-x: auto;
-  overflow-y: visible;           /* tooltips must go up */
+  overflow-y: visible;
   padding-bottom: 6px;
-  padding-top: 180px;            /* invisible space above thumbs for tooltip */
-  margin-top: -180px;            /* pull back so no gap in layout */
+  padding-top: 180px;
+  margin-top: -180px;
   scrollbar-width: none;
 }
 .filmstrip::-webkit-scrollbar { display: none; }
@@ -170,11 +167,10 @@ html, body {
 }
 
 /* ── CINEMA TOOLTIP ── */
-/* anchored to left edge of each thumb — not centered */
 .cinema-tooltip {
   position: absolute;
-  bottom: calc(100% + 18px);  /* above the thumb */
-  left: 0;                    /* LEFT edge of that specific strip-item */
+  bottom: calc(100% + 18px);
+  left: 0;
   width: 210px;
   background: #0c0c0c;
   border: 1px solid rgba(238,238,238,.15);
@@ -184,10 +180,8 @@ html, body {
   transform: translateY(8px);
   transition: opacity .2s ease, transform .2s ease;
   z-index: 100;
-  /* film-frame: double inner border */
   box-shadow: inset 0 0 0 3px #0c0c0c, inset 0 0 0 4px rgba(238,238,238,.08);
 }
-/* sprocket holes — top & bottom */
 .cinema-tooltip::before,
 .cinema-tooltip::after {
   content: '';
@@ -211,14 +205,12 @@ html, body {
   line-height: 1.6; letter-spacing: .02em;
   color: rgba(238,238,238,.75);
 }
-
-/* show on hover — no translateX */
 .strip-item:hover .cinema-tooltip {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── BOTTOM BAR — same on all pages ── */
+/* ── BOTTOM BAR ── */
 .bottom-bar {
   display: flex; justify-content: space-between; align-items: center;
   padding: 10px 44px 28px;
@@ -240,20 +232,53 @@ html, body {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
-  html, body { overflow-y: auto; height: auto; }
+  html, body { overflow-y: auto; height: auto; cursor: auto; }
   .page { position: relative; height: auto; min-height: 100svh; }
   .bg-a, .bg-b, .bg-veil, .grain { position: fixed; }
-  .top-bar { padding: 24px 20px 0; flex-wrap: wrap; }
-  .manifesto { max-width: 100%; font-size: 11px; text-align: left; }
-  .stage { padding: 0 10px; }
-  .arrow { width: 36px; height: 36px; }
-  .video-info { height: auto; }
-  .filmstrip-wrap { padding: 0 20px; }
-  .strip-item { width: 90px; }
+
+  /* top bar */
+  .top-bar {
+    padding: 20px 16px 0;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .manifesto {
+    max-width: none;
+    flex: 1;
+    font-size: 10px;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  /* stage */
+  .stage { padding: 0; gap: 0; }
+  .arrow { display: none; }
+
+  /* видео на всю ширину */
+  .video-frame { max-width: 100%; width: 100%; }
+  .video-info { height: auto; padding: 10px 16px 0; }
+  .video-title { font-size: clamp(18px, 5vw, 26px); }
+
+  /* filmstrip */
+  .filmstrip-wrap { padding: 0 16px; }
+  .filmstrip { padding-top: 120px; margin-top: -120px; }
+  .strip-item { width: 90px; cursor: auto; }
   .strip-thumb, .strip-ph { width: 90px; height: 51px; }
-  .cinema-tooltip { width: 160px; font-size: 10px; }
-  .bottom-bar { flex-direction: column; gap: 12px; align-items: flex-start; padding: 10px 20px 24px; }
-  .footer-links { flex-wrap: wrap; gap: 8px; }
+  .cinema-tooltip { display: none; }
+
+  /* footer — About слева, ссылки в два ряда справа */
+  .bottom-bar {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 10px 16px 24px;
+  }
+  .footer-links {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
   .footer-links .sep { display: none; }
 }
 </style>
@@ -306,7 +331,7 @@ html, body {
       <a href="about.html">About</a>
     </div>
     <div class="footer-links">
-      <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+      <a href="/cdn-cgi/l/email-protection#2846495e41444d46684a43065a5d"><span class="__cf_email__" data-cfemail="523c33243b3e373c1230397c2027">[email&#160;protected]</span></a>
       <span class="sep">&mdash;</span>
       <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
       <span class="sep">&mdash;</span>
@@ -316,15 +341,7 @@ html, body {
 
 </div>
 
-<script>
-// ═══════════════════════════════════════════════════════
-//  ВИДЕО — редактируй только этот массив
-//  id      — Vimeo ID из URL: vimeo.com/XXXXXXXXX
-//  title   — название
-//  caption — всплывает в cinema-tooltip при наведении на миниатюру
-//  bg      — фото фона → папка images/video/ в репозитории
-//  thumb   — превью (vumbnail.com/ID.jpg генерирует автоматически)
-// ═══════════════════════════════════════════════════════
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var VIDEOS = [
   {
     id:      '1171844542',
@@ -368,10 +385,7 @@ var VIDEOS = [
     bg:      'images/video/videoruslan.png',
     thumb:   'https://vumbnail.com/1172128396.jpg'
   }
-  // добавляй новые видео здесь:
-  // ,{ id:'XXXXXXXXX', title:'...', caption:'', bg:'images/video/bg.jpg', thumb:'https://vumbnail.com/XXXXXXXXX.jpg' }
 ];
-// ═══════════════════════════════════════════════════════
 
 var current     = 0;
 var frame       = document.getElementById('vimeoFrame');
@@ -389,12 +403,10 @@ function makePh(label) {
   return d;
 }
 
-// build filmstrip
 VIDEOS.forEach(function(v, i) {
   var item = document.createElement('div');
   item.className = 'strip-item' + (i === 0 ? ' active' : '');
 
-  // thumbnail
   if (v.thumb) {
     var img = document.createElement('img');
     img.className = 'strip-thumb';
@@ -406,13 +418,11 @@ VIDEOS.forEach(function(v, i) {
     item.appendChild(makePh(v.title));
   }
 
-  // name below thumb
   var nameEl = document.createElement('div');
   nameEl.className = 'strip-name';
   nameEl.textContent = v.title;
   item.appendChild(nameEl);
 
-  // cinema tooltip above thumb
   if (v.caption) {
     var tip = document.createElement('div');
     tip.className = 'cinema-tooltip';
@@ -437,7 +447,6 @@ VIDEOS.forEach(function(v, i) {
   strip.appendChild(item);
 });
 
-// crossfade background
 function setBg(url) {
   if (activeLayer === 'a') {
     bgB.style.backgroundImage = url ? "url('" + url + "')" : 'none';
@@ -456,7 +465,6 @@ function goTo(i, skipHash) {
   current = ((i % VIDEOS.length) + VIDEOS.length) % VIDEOS.length;
   var v = VIDEOS[current];
 
-  // no autoplay — user presses play in player
   frame.src = 'https://player.vimeo.com/video/' + v.id
     + '?dnt=1&color=ffffff&title=0&byline=0&portrait=0';
 
@@ -476,41 +484,29 @@ function goTo(i, skipHash) {
     activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }
 
-  // deep link
   if (!skipHash) {
     history.replaceState(null, '', '#' + current);
   }
 }
 
-// arrows
 document.getElementById('btnPrev').addEventListener('click', function() { goTo(current - 1); });
 document.getElementById('btnNext').addEventListener('click', function() { goTo(current + 1); });
 
-// keyboard
 window.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft')  goTo(current - 1);
   if (e.key === 'ArrowRight') goTo(current + 1);
 });
 
-// init — read hash
 (function() {
   var hash = parseInt(window.location.hash.replace('#', ''), 10);
   var start = (!isNaN(hash) && hash >= 0 && hash < VIDEOS.length) ? hash : 0;
   goTo(start, true);
 }());
 
-// cursor
 var cur = document.getElementById('cur');
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', function(e) {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
   });
-  document.querySelectorAll('a, button, .strip-item').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { cur.classList.add('big'); });
-    el.addEventListener('mouseleave', function() { cur.classList.remove('big'); });
-  });
-}
-</script>
-</body>
-</html>
+  document.querySelectorAll('a, button, .stri
