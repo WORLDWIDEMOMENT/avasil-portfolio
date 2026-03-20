@@ -240,6 +240,13 @@ html, body {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
+  /* ИСПРАВЛЕНИЕ: строго запрещаем странице становиться шире экрана */
+  .page { 
+    grid-template-columns: minmax(0, 1fr); 
+    width: 100vw; 
+    overflow-x: hidden; 
+  }
+
   /* Шапка */
   .top-bar { 
     padding: 24px 16px 0; 
@@ -253,29 +260,36 @@ html, body {
   }
 
   /* Сцена: Идеальное масштабирование */
-  /* Обертка позволяет блокам переноситься на новую строку внутри фиксированного окна */
   .stage { 
     padding: 0 16px; 
     flex-wrap: wrap; 
-    align-content: center;  /* Центрируем все по вертикали на случай пустого места */
-    justify-content: center; /* Центрируем стрелки по горизонтали */
+    align-content: center;
+    justify-content: center;
+    width: 100%; 
+    max-width: 100%;
+    box-sizing: border-box;
   }
+  
   .video-frame { 
     flex: 0 0 100%; 
+    width: 100%; 
     max-width: 100%; 
-    order: 1; /* Обязательно выводим видео на первую строку */
+    min-width: 0; /* Технический фикс: не дает контенту распирать блок */
+    order: 1;
   }
+  
   .video-info { 
     padding: 12px 0 0; 
     height: auto; 
   }
+  
   .video-title { 
     font-size: 18px; 
-    white-space: normal; /* Позволяет слишком длинному тексту переноситься, чтобы не ломать экран */
+    white-space: normal;
     word-break: break-word; 
   }
 
-  /* Кнопки выстраиваются под видео рядом друг с другом по центру */
+  /* Кнопки выстраиваются под видео по центру */
   .arrow { 
     margin-top: 16px; 
     width: 44px; 
@@ -284,8 +298,14 @@ html, body {
   #btnPrev { order: 2; margin-right: 8px; }
   #btnNext { order: 3; margin-left: 8px; }
 
-  /* Миниатюры: горизонтальный скролл остается внутри своей области */
-  .filmstrip-wrap { padding: 0 16px; }
+  /* Миниатюры: горизонтальный скролл не ломает родительский блок */
+  .filmstrip-wrap { 
+    padding: 0 16px; 
+    width: 100%; 
+    max-width: 100%;
+    min-width: 0; /* Фикс для Grid */
+    box-sizing: border-box;
+  }
   .strip-item { width: 90px; }
   .strip-thumb, .strip-ph { width: 90px; height: 50px; }
   .cinema-tooltip { width: 140px; font-size: 10px; }
@@ -297,6 +317,8 @@ html, body {
     align-items: flex-start; 
     padding: 12px 16px 24px; 
     margin-top: 0; 
+    width: 100%;
+    box-sizing: border-box;
   }
   .footer-links { flex-wrap: wrap; gap: 8px; }
   .footer-links .sep { display: none; }
@@ -351,209 +373,4 @@ html, body {
       <a href="about.html">About</a>
     </div>
     <div class="footer-links">
-      <a href="mailto:navilen@bk.ru">NAVILEN@BK.RU</a>
-      <span class="sep">&mdash;</span>
-      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
-      <span class="sep">&mdash;</span>
-      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
-    </div>
-  </div>
-
-</div>
-
-<script>
-// ═══════════════════════════════════════════════════════
-//  ВИДЕО — редактируй только этот массив
-//  id      — Vimeo ID из URL: vimeo.com/XXXXXXXXX
-//  title   — название
-//  caption — всплывает в cinema-tooltip при наведении на миниатюру
-//  bg      — фото фона → папка images/video/ в репозитории
-//  thumb   — превью (vumbnail.com/ID.jpg генерирует автоматически)
-// ═══════════════════════════════════════════════════════
-var VIDEOS = [
-  {
-    id:      '1171844542',
-    title:   'BIRDS',
-    caption: 'From Paris with love.',
-    bg:      'images/video/videobirds1.jpg',
-    thumb:   'https://vumbnail.com/1171844542.jpg'
-  },
-  {
-    id:      '1172106551',
-    title:   'Rebirth Cycles',
-    caption: 'A journey into the past. A meditation on caring for abandoned homes. The inevitability of cycles repeating.',
-    bg:      'images/video/videoRebirthCycles.jpg',
-    thumb:   'https://vumbnail.com/1172106551.jpg'
-  },
-  {
-    id:      '1172281707',
-    title:   'Special Diary',
-    caption: 'This is how life used to feel.',
-    bg:      'images/video/videocrystal1.jpg',
-    thumb:   'https://vumbnail.com/1172281707.jpg'
-  },
-  {
-    id:      '1172106388',
-    title:   'LVL',
-    caption: 'Short experimental stuff with friends.',
-    bg:      'images/video/videolvl.jpg',
-    thumb:   'https://vumbnail.com/1172106388.jpg'
-  },
-  {
-    id:      '1172128536',
-    title:   'Short Walks Down Long Roads',
-    caption: 'Just a feeling.',
-    bg:      'images/video/videoshort1.jpg',
-    thumb:   'https://vumbnail.com/1172128536.jpg'
-  },
-  {
-    id:      '1172128396',
-    title:   'Youth Chapter',
-    caption: 'Was filmed with an ice cream in one hand.',
-    bg:      'images/video/videoruslan.png',
-    thumb:   'https://vumbnail.com/1172128396.jpg'
-  }
-];
-// ═══════════════════════════════════════════════════════
-
-var current     = 0;
-var frame       = document.getElementById('vimeoFrame');
-var bgA         = document.getElementById('bgA');
-var bgB         = document.getElementById('bgB');
-var activeLayer = 'a';
-var titleEl     = document.getElementById('vTitle');
-var counterEl   = document.getElementById('vCounter');
-var strip       = document.getElementById('filmstrip');
-
-function makePh(label) {
-  var d = document.createElement('div');
-  d.className = 'strip-ph';
-  d.textContent = label || 'video';
-  return d;
-}
-
-// build filmstrip
-VIDEOS.forEach(function(v, i) {
-  var item = document.createElement('div');
-  item.className = 'strip-item' + (i === 0 ? ' active' : '');
-
-  // thumbnail
-  if (v.thumb) {
-    var img = document.createElement('img');
-    img.className = 'strip-thumb';
-    img.src = v.thumb;
-    img.alt = v.title;
-    img.onerror = function() { this.replaceWith(makePh(v.title)); };
-    item.appendChild(img);
-  } else {
-    item.appendChild(makePh(v.title));
-  }
-
-  // name below thumb
-  var nameEl = document.createElement('div');
-  nameEl.className = 'strip-name';
-  nameEl.textContent = v.title;
-  item.appendChild(nameEl);
-
-  // cinema tooltip above thumb
-  if (v.caption) {
-    var tip = document.createElement('div');
-    tip.className = 'cinema-tooltip';
-
-    var tipTitle = document.createElement('span');
-    tipTitle.className = 'tooltip-title';
-    tipTitle.textContent = v.title;
-    tip.appendChild(tipTitle);
-
-    var tipCap = document.createElement('div');
-    tipCap.className = 'tooltip-caption';
-    tipCap.textContent = v.caption;
-    tip.appendChild(tipCap);
-
-    item.appendChild(tip);
-  }
-
-  item.addEventListener('click', (function(idx) {
-    return function() { goTo(idx); };
-  })(i));
-
-  strip.appendChild(item);
-});
-
-// crossfade background
-function setBg(url) {
-  if (activeLayer === 'a') {
-    bgB.style.backgroundImage = url ? "url('" + url + "')" : 'none';
-    bgB.style.opacity = '1';
-    bgA.style.opacity = '0';
-    activeLayer = 'b';
-  } else {
-    bgA.style.backgroundImage = url ? "url('" + url + "')" : 'none';
-    bgA.style.opacity = '1';
-    bgB.style.opacity = '0';
-    activeLayer = 'a';
-  }
-}
-
-function goTo(i, skipHash) {
-  current = ((i % VIDEOS.length) + VIDEOS.length) % VIDEOS.length;
-  var v = VIDEOS[current];
-
-  // no autoplay — user presses play in player
-  frame.src = 'https://player.vimeo.com/video/' + v.id
-    + '?dnt=1&color=ffffff&title=0&byline=0&portrait=0';
-
-  setBg(v.bg);
-
-  titleEl.textContent   = v.title || '';
-  counterEl.textContent =
-    String(current + 1).padStart(2, '0') + ' / ' +
-    String(VIDEOS.length).padStart(2, '0');
-
-  document.querySelectorAll('.strip-item').forEach(function(el, idx) {
-    el.classList.toggle('active', idx === current);
-  });
-
-  var activeItem = strip.children[current];
-  if (activeItem) {
-    activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }
-
-  // deep link
-  if (!skipHash) {
-    history.replaceState(null, '', '#' + current);
-  }
-}
-
-// arrows
-document.getElementById('btnPrev').addEventListener('click', function() { goTo(current - 1); });
-document.getElementById('btnNext').addEventListener('click', function() { goTo(current + 1); });
-
-// keyboard
-window.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowLeft')  goTo(current - 1);
-  if (e.key === 'ArrowRight') goTo(current + 1);
-});
-
-// init — read hash
-(function() {
-  var hash = parseInt(window.location.hash.replace('#', ''), 10);
-  var start = (!isNaN(hash) && hash >= 0 && hash < VIDEOS.length) ? hash : 0;
-  goTo(start, true);
-}());
-
-// cursor
-var cur = document.getElementById('cur');
-if (window.matchMedia('(hover: hover)').matches) {
-  document.addEventListener('mousemove', function(e) {
-    cur.style.left = e.clientX + 'px';
-    cur.style.top  = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button, .strip-item').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { cur.classList.add('big'); });
-    el.addEventListener('mouseleave', function() { cur.classList.remove('big'); });
-  });
-}
-</script>
-</body>
-</html>
+      <a href="mailto:navilen@bk
