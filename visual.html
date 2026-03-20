@@ -14,7 +14,7 @@ html,body{width:100%;height:100%;background:#0a0a0a;font-family:'Barlow',sans-se
 body{
   display:flex;
   flex-direction:column;
-  background-image:url('images/assets/create/visualmain3.jpg');
+  background-image:url('images/assets/create/visualmain.jpg');
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
@@ -74,9 +74,9 @@ body::before{
 .column-header{text-align:center;margin-bottom:12px;z-index:10;}
 .column-year{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
 /* ↓ ЗАГОЛОВОК КОЛОННЫ — поменяй color на #000 для чёрного */
-.column-title{font-size:14px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:4px;color:#000;}
+.column-title{font-size:14px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:4px;color:#f5f5f5;}
 /* ↓ ПОДЗАГОЛОВОК КОЛОННЫ — поменяй color на #222 для чёрного */
-.column-subtitle{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;color:#222;}
+.column-subtitle{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;color:#555;}
 
 /* ── IMAGE ITEM ── */
 .image-item{
@@ -250,10 +250,10 @@ body::before{
 .year-marker.future .year-label{color:#4d6aff;}
 
 /* ── FOOTER — at very bottom ── */
-.ftl{position:fixed;bottom:10px;left:36px;z-index:201;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.ftl{position:fixed;bottom:10px;left:36px;z-index:201;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
 .ftl a{color:#f5f5f5;text-decoration:none;opacity:.75;transition:opacity .2s;pointer-events:auto;}
 .ftl a:hover{opacity:1}
-.ftr{position:fixed;bottom:10px;right:36px;z-index:201;display:flex;gap:8px;align-items:center;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.ftr{position:fixed;bottom:10px;right:36px;z-index:201;display:flex;gap:8px;align-items:center;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
 .ftr a{color:#f5f5f5;text-decoration:none;opacity:.75;transition:opacity .2s;pointer-events:auto;}
 .ftr a:hover{opacity:1}
 .ftr span{opacity:.1;color:#f5f5f5}
@@ -287,13 +287,17 @@ body::before{
   }
   .modal-content.mode-row { max-width: 100vw; max-height: none; }
 
-  /* Секция изображения — не обрезаем */
+  /* Секция изображения — прижата к описанию снизу, без пустот */
   .modal-image-section {
     flex: none;
     width: 100%;
     height: auto;
     max-height: none;
     min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
   }
 
   /* Одиночная картинка — полная ширина, автовысота */
@@ -355,9 +359,19 @@ body::before{
     object-fit: contain;
   }
 
-  /* Nav кнопки */
-  .modal-nav-btn.prev { left: 8px; }
-  .modal-nav-btn.next { right: 8px; }
+  /* Nav кнопки — фиксированы внизу image-section, не скачут */
+  .modal-image-section { position: relative; }
+  .modal-nav-btn {
+    top: auto;
+    bottom: 12px;
+    transform: none;
+    background: rgba(140,140,140,.25);
+    border-color: rgba(180,180,180,.3);
+    color: rgba(255,255,255,.7);
+    width: 36px; height: 36px; font-size: 16px;
+  }
+  .modal-nav-btn.prev { left: 12px; }
+  .modal-nav-btn.next { right: 12px; }
 
   /* Инфо-панель: полная ширина под картинкой */
   .modal-info {
@@ -393,9 +407,9 @@ body::before{
     position: relative !important;
     left: auto !important;
     top: auto !important;
-    width: 110px !important;
+    width: 85px !important;
     flex-shrink: 0;
-    margin-right: 6px;
+    margin-right: 4px;
   }
   /* между проектами — бо́льший зазор */
   .column.group-start { margin-left: 24px; }
@@ -581,20 +595,6 @@ const projects = [
       height: Math.round(50 + Math.random()*14)
     }))
   },
-
-{
-    id: 'BY HAND',
-    year: '2022–2026',
-    name: 'BY HAND',
-    subtitle: 'PIESES OF ART OF DIFFERENT TIME.',
-    desc: 'All by hand.\nMostly by liner.',
-    files: Array.from({length:10}, (_,i) => ({
-      path:   `images/assets/create/art/art${i+1}.jpg`,
-      width:  Math.round(66 + Math.random()*14),
-      height: Math.round(50 + Math.random()*14)
-    }))
-  },
-  
   {
     id: 'graph',
     year: '—',
