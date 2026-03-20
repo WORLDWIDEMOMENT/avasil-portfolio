@@ -186,20 +186,67 @@ body {
 
 /* ── MOBILE ── */
 @media (max-width: 900px) {
-  .main-title { font-size: 42px; letter-spacing: .1em; }
-  #build  { left: 32px; bottom: auto; top: 50%; transform: translateY(-58%); }
-  #create { right: 32px; bottom: auto; top: 50%; transform: translateY(-58%); }
-  .bottom-bar { padding: 0 32px; font-size: 9px; }
-  .contact { gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-  .sub { opacity: .35; }
-  .zone.active .sub { opacity: .85; pointer-events: auto; }
+  /* Image: shrunk to upper portion, not full-cover */
+  body {
+    background-size: auto 58vh;
+    background-position: center 6%;
+    background-attachment: scroll;
+  }
+
+  /* Sub-items always visible on mobile — no tap needed to reveal */
+  .sub { opacity: .78; pointer-events: auto; }
+  .zone.active .sub { opacity: .85; }
+
+  /* Zones: positioned below the image bottom edge */
+  #build {
+    left: 24px;
+    bottom: auto;
+    top: 62vh;
+    transform: none;
+  }
+  #create {
+    right: 24px;
+    bottom: auto;
+    top: 62vh;
+    transform: none;
+    text-align: right;
+  }
+
+  .main-title { font-size: 38px; letter-spacing: .1em; }
+
+  /* Bottom bar: About left, links right — split by center line */
+  .bottom-bar {
+    padding: 0 24px;
+    font-size: 9px;
+    bottom: 28px;
+  }
+  .contact {
+    gap: 10px;
+    flex-wrap: nowrap;
+    /* right side starts from center */
+    padding-left: 50%;
+    justify-content: flex-end;
+  }
+  /* hide email on mobile, keep social links */
+  .contact a[href^="mailto"] { display: none; }
+  /* hide the divider after email */
+  .contact .divider:first-of-type { display: none; }
 }
+
 @media (max-width: 560px) {
+  body {
+    background-size: auto 56vh;
+    background-position: center 5%;
+  }
   .main-title { font-size: 30px; }
-  #build  { left: 20px; }
-  #create { right: 20px; }
-  .contact { display: none; }
-  .bottom-bar { justify-content: center; }
+  #build  { left: 16px; top: 60vh; }
+  #create { right: 16px; top: 60vh; }
+  .bottom-bar { padding: 0 16px; font-size: 8px; }
+  .contact {
+    display: flex;
+    padding-left: 52%;
+    gap: 8px;
+  }
 }
 </style>
 </head>
@@ -240,7 +287,7 @@ body {
 <div class="bottom-bar ui-group">
   <a href="about.html">About</a>
   <div class="contact">
-    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+    <a href="/cdn-cgi/l/email-protection#abc5caddc2c7cec5ebc9c085d9de"><span class="__cf_email__" data-cfemail="7f111e0916131a113f1d14510d0a">[email&#160;protected]</span></a>
     <span class="divider">—</span>
     <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
     <span class="divider">—</span>
@@ -250,7 +297,7 @@ body {
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── CURSOR ──
   const cur = document.getElementById('cur');
   if (window.matchMedia('(hover: hover)').matches) {
@@ -338,14 +385,4 @@ body {
     if (e.target.tagName === 'A' && createOpen) return;
     e.stopPropagation();
     if (createOpen) { deactivateAll(); createOpen = false; }
-    else { deactivateAll(); activateCreate(); createOpen = true; buildOpen = false; }
-  });
-
-  document.addEventListener('click', () => {
-    if (!isTouch()) return;
-    deactivateAll();
-    buildOpen = false; createOpen = false;
-  });
-</script>
-</body>
-</html>
+    else { deactivateAll(); activateCrea
