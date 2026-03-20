@@ -33,7 +33,7 @@ html, body {
 #cur.big { width: 50px; height: 50px; }
 @media (hover: none) { #cur { display: none; } }
 
-/* ── BG CROSSFADE — two layers ── */
+/* ── BG CROSSFADE ── */
 .bg-a, .bg-b {
   position: fixed; inset: 0; z-index: 0;
   background-size: cover;
@@ -56,7 +56,7 @@ html, body {
   background-size: 180px;
 }
 
-/* ── PAGE ── */
+/* ── PAGE (desktop) ── */
 .page {
   position: fixed; inset: 0; z-index: 3;
   display: grid;
@@ -152,9 +152,7 @@ html, body {
   content: ''; position: absolute; bottom: -5px; left: 0; right: 0;
   height: 2px; background: var(--blue);
 }
-.strip-thumb {
-  width: 130px; height: 74px; object-fit: cover; display: block;
-}
+.strip-thumb { width: 130px; height: 74px; object-fit: cover; display: block; }
 .strip-ph {
   width: 130px; height: 74px; background: #1e1e1e;
   display: flex; align-items: center; justify-content: center;
@@ -194,7 +192,6 @@ html, body {
 }
 .cinema-tooltip::before { top: -8px; }
 .cinema-tooltip::after  { bottom: -8px; }
-
 .tooltip-title {
   display: block;
   font-size: 8px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
@@ -205,10 +202,7 @@ html, body {
   line-height: 1.6; letter-spacing: .02em;
   color: rgba(238,238,238,.75);
 }
-.strip-item:hover .cinema-tooltip {
-  opacity: 1;
-  transform: translateY(0);
-}
+.strip-item:hover .cinema-tooltip { opacity: 1; transform: translateY(0); }
 
 /* ── BOTTOM BAR ── */
 .bottom-bar {
@@ -230,54 +224,78 @@ html, body {
 .footer-links a:hover { opacity: 1; }
 .footer-links .sep { opacity: .18; }
 
-/* ── MOBILE ── */
+/* ════════════════════════════════════════
+   MOBILE
+════════════════════════════════════════ */
 @media (max-width: 768px) {
-  html, body { overflow-y: auto; height: auto; cursor: auto; }
-  .page { position: relative; height: auto; min-height: 100svh; }
+
+  /* скролл вертикально */
+  html, body {
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    cursor: auto;
+  }
+
+  /* .page выходит из fixed в нормальный поток */
+  .page {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+  }
+
+  /* фон фиксирован */
   .bg-a, .bg-b, .bg-veil, .grain { position: fixed; }
 
-  /* top bar */
+  /* top bar: Back слева, manifesto справа — без переноса */
   .top-bar {
-    padding: 20px 16px 0;
+    padding: 20px 16px 12px;
     flex-wrap: nowrap;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
   }
+  .back { flex-shrink: 0; }
   .manifesto {
-    max-width: none;
     flex: 1;
+    max-width: none;
     font-size: 10px;
-    text-align: right;
     line-height: 1.6;
+    text-align: right;
   }
 
-  /* stage */
-  .stage { padding: 0; gap: 0; }
+  /* stage: стрелки убраны, видео на всю ширину */
+  .stage {
+    padding: 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
   .arrow { display: none; }
-
-  /* видео на всю ширину */
   .video-frame { max-width: 100%; width: 100%; }
   .video-info { height: auto; padding: 10px 16px 0; }
-  .video-title { font-size: clamp(18px, 5vw, 26px); }
+  .video-title  { font-size: clamp(18px, 5vw, 26px); }
+  .video-counter { font-size: 12px; }
 
   /* filmstrip */
   .filmstrip-wrap { padding: 0 16px; }
-  .filmstrip { padding-top: 120px; margin-top: -120px; }
+  .filmstrip { padding-top: 100px; margin-top: -100px; }
   .strip-item { width: 90px; cursor: auto; }
   .strip-thumb, .strip-ph { width: 90px; height: 51px; }
   .cinema-tooltip { display: none; }
 
-  /* footer — About слева, ссылки в два ряда справа */
+  /* footer: About слева, ссылки в два ряда справа */
   .bottom-bar {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    padding: 10px 16px 24px;
+    padding: 12px 16px 28px;
+    margin-top: 16px;
   }
   .footer-links {
     flex-direction: column;
     align-items: flex-end;
-    gap: 4px;
+    gap: 5px;
   }
   .footer-links .sep { display: none; }
 }
@@ -331,7 +349,7 @@ html, body {
       <a href="about.html">About</a>
     </div>
     <div class="footer-links">
-      <a href="/cdn-cgi/l/email-protection#2846495e41444d46684a43065a5d"><span class="__cf_email__" data-cfemail="523c33243b3e373c1230397c2027">[email&#160;protected]</span></a>
+      <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
       <span class="sep">&mdash;</span>
       <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
       <span class="sep">&mdash;</span>
@@ -341,7 +359,7 @@ html, body {
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 var VIDEOS = [
   {
     id:      '1171844542',
@@ -426,17 +444,14 @@ VIDEOS.forEach(function(v, i) {
   if (v.caption) {
     var tip = document.createElement('div');
     tip.className = 'cinema-tooltip';
-
     var tipTitle = document.createElement('span');
     tipTitle.className = 'tooltip-title';
     tipTitle.textContent = v.title;
     tip.appendChild(tipTitle);
-
     var tipCap = document.createElement('div');
     tipCap.className = 'tooltip-caption';
     tipCap.textContent = v.caption;
     tip.appendChild(tipCap);
-
     item.appendChild(tip);
   }
 
@@ -509,4 +524,11 @@ if (window.matchMedia('(hover: hover)').matches) {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
   });
-  document.querySelectorAll('a, button, .stri
+  document.querySelectorAll('a, button, .strip-item').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { cur.classList.add('big'); });
+    el.addEventListener('mouseleave', function() { cur.classList.remove('big'); });
+  });
+}
+</script>
+</body>
+</html>
