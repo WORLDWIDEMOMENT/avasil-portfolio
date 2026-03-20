@@ -314,8 +314,7 @@ This project is an ode to nature's raw power — the movement of titanic plates 
 <div class="global-footer" id="globalFooter">
   <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank">Artlebedev</a><span>—</span>
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
-  <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a><span>—</span>
-  <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a><span>—</span>
+  <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a><span>—</span> 
   <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
 </div>
 
@@ -367,9 +366,7 @@ This project is an ode to nature's raw power — the movement of titanic plates 
     modal.classList.add('active'); modal.scrollTop = 0; setBlur(true);
   }
 
-  /* showImage: синхронно создаём img и сразу добавляем.
-     Нет probe/onload — нет race condition при быстром переключении миниатюр.
-     object-fit: contain в CSS гарантирует корректное отображение любых пропорций. */
+  
   function showImage(src, alt) {
     modalMain.className = 'modal-main-img';
     modalMain.innerHTML = '';
