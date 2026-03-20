@@ -240,63 +240,63 @@ html, body {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
-  /* Запрещаем горизонтальный скролл (улетающую правую сторону) */
-  html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
-  .page { position: relative; height: auto; min-height: 100svh; overflow-x: hidden; width: 100%; }
-  .bg-a, .bg-b, .bg-veil, .grain { position: fixed; }
-
+  /* Шапка */
   .top-bar { 
-    padding: 24px 20px 0; 
+    padding: 24px 16px 0; 
     flex-direction: column; 
     gap: 12px; 
   }
   .manifesto { 
     max-width: 100%; 
-    font-size: 13px; 
+    font-size: 12px; 
     text-align: left; 
   }
 
+  /* Сцена: Идеальное масштабирование */
+  /* Обертка позволяет блокам переноситься на новую строку внутри фиксированного окна */
   .stage { 
-    padding: 32px 20px; 
+    padding: 0 16px; 
     flex-wrap: wrap; 
-    justify-content: space-between; 
-    width: 100%; 
+    align-content: center;  /* Центрируем все по вертикали на случай пустого места */
+    justify-content: center; /* Центрируем стрелки по горизонтали */
   }
   .video-frame { 
     flex: 0 0 100%; 
-    width: 100%; 
     max-width: 100%; 
-    min-width: 0; /* Техническое свойство: запрещает контенту распирать ширину видео за пределы экрана */
-    order: -1; 
+    order: 1; /* Обязательно выводим видео на первую строку */
   }
   .video-info { 
+    padding: 12px 0 0; 
     height: auto; 
-    padding: 16px 0 0; 
-    flex-wrap: wrap; /* Позволяет тексту заголовка переноситься */
-    gap: 8px;
   }
-  .video-title {
-    font-size: 18px; /* Чуть уменьшен для мобильных устройств */
-    white-space: normal; 
-    word-break: break-word; /* Обрезает слишком длинные названия, чтобы не ломать верстку */
+  .video-title { 
+    font-size: 18px; 
+    white-space: normal; /* Позволяет слишком длинному тексту переноситься, чтобы не ломать экран */
+    word-break: break-word; 
   }
+
+  /* Кнопки выстраиваются под видео рядом друг с другом по центру */
   .arrow { 
-    margin: 16px 0 0; 
+    margin-top: 16px; 
     width: 44px; 
     height: 44px; 
   }
+  #btnPrev { order: 2; margin-right: 8px; }
+  #btnNext { order: 3; margin-left: 8px; }
 
-  .filmstrip-wrap { padding: 0 20px; width: 100%; }
-  .strip-item { width: 100px; }
-  .strip-thumb, .strip-ph { width: 100px; height: 56px; }
-  .cinema-tooltip { width: 160px; font-size: 10px; }
+  /* Миниатюры: горизонтальный скролл остается внутри своей области */
+  .filmstrip-wrap { padding: 0 16px; }
+  .strip-item { width: 90px; }
+  .strip-thumb, .strip-ph { width: 90px; height: 50px; }
+  .cinema-tooltip { width: 140px; font-size: 10px; }
 
+  /* Подвал */
   .bottom-bar { 
     flex-direction: column; 
-    gap: 12px; 
+    gap: 10px; 
     align-items: flex-start; 
-    padding: 10px 20px 24px; 
-    width: 100%;
+    padding: 12px 16px 24px; 
+    margin-top: 0; 
   }
   .footer-links { flex-wrap: wrap; gap: 8px; }
   .footer-links .sep { display: none; }
