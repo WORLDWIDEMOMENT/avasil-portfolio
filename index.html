@@ -186,54 +186,63 @@ body {
 
 /* ── MOBILE ── */
 @media (max-width: 900px) {
-  /*
-    iOS fix: background-attachment:fixed freezes the page on Safari/iOS.
-    Override to scroll on mobile. Nothing else changed.
-  */
+  /* Картинка выше и уменьшена — сохраняю fixed attachment */
   body {
-    background-attachment: scroll;
-    background-size: auto 56vh;
-    background-position: center 14vh;
+    background-size: 120%;
+    background-position: center 32%;
+    background-attachment: fixed;
   }
 
   .main-title { font-size: 42px; letter-spacing: .1em; }
-
-  /*
-    Zones: positioned just below the image (image bottom ≈ 70vh).
-    Gap between them is natural via left/right placement.
-  */
-  #build  {
-    left: 20px;
-    top: 72vh;
-    bottom: auto;
-    transform: none;
+  
+  /* Zones ниже картинки */
+  #build  { left: 20px; bottom: auto; top: auto; transform: none; padding-top: 430px; }
+  #create { right: 20px; bottom: auto; top: auto; transform: none; padding-top: 430px; }
+  
+  /* Bottom bar: ABOUT слева, остальное справа */
+  .bottom-bar { 
+    padding: 0;
+    font-size: 9px;
+    bottom: 20px;
+    width: 100%;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-  #create {
-    right: 20px;
-    top: 72vh;
-    bottom: auto;
-    text-align: right;
-    transform: none;
+  
+  .contact { 
+    gap: 6px; 
+    flex-wrap: wrap; 
+    justify-content: flex-end;
+    align-items: center;
   }
-
-  /* Sub-items always visible on mobile — no tap needed to see them */
-  .sub { opacity: .55; pointer-events: auto; }
-  .zone.active .sub { opacity: 1; }
-
-  /* Bottom bar: ABOUT left, links right — hide email to save space */
-  .bottom-bar { padding: 0 20px; font-size: 9px; }
-  .email-link { display: none; }
-  /* hide divider adjacent to hidden email */
-  .email-link + .divider { display: none; }
-  .contact { gap: 6px; }
+  
+  .divider { display: inline; }
+  
+  .sub { opacity: .35; }
+  .zone.active .sub { opacity: .85; pointer-events: auto; }
 }
 
 @media (max-width: 560px) {
+  body {
+    background-size: 130%;
+    background-position: center 30%;
+    background-attachment: fixed;
+  }
+
   .main-title { font-size: 30px; }
-  #build  { left: 20px; }
-  #create { right: 20px; }
-  /* Keep contact visible (Instagram, Behance, LinkedIn) as in mockup */
-  .bottom-bar { justify-content: space-between; }
+  
+  #build  { left: 16px; padding-top: 410px; }
+  #create { right: 16px; padding-top: 410px; }
+  
+  .bottom-bar { 
+    padding-left: 16px;
+    padding-right: 16px;
+    bottom: 16px;
+  }
+  
+  .contact { gap: 4px; }
+  .divider { display: none; }
 }
 </style>
 </head>
@@ -274,7 +283,7 @@ body {
 <div class="bottom-bar ui-group">
   <a href="about.html">About</a>
   <div class="contact">
-    <a href="mailto:navilen@bk.ru" class="email-link">navilen@bk.ru</a>
+    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
     <span class="divider">—</span>
     <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
     <span class="divider">—</span>
@@ -284,7 +293,7 @@ body {
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // ── CURSOR ──
   const cur = document.getElementById('cur');
   if (window.matchMedia('(hover: hover)').matches) {
@@ -372,4 +381,14 @@ body {
     if (e.target.tagName === 'A' && createOpen) return;
     e.stopPropagation();
     if (createOpen) { deactivateAll(); createOpen = false; }
-    else { deactivateAll(); activateCrea
+    else { deactivateAll(); activateCreate(); createOpen = true; buildOpen = false; }
+  });
+
+  document.addEventListener('click', () => {
+    if (!isTouch()) return;
+    deactivateAll();
+    buildOpen = false; createOpen = false;
+  });
+</script>
+</body>
+</html>
