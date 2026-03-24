@@ -44,11 +44,6 @@ body::before{
   #cur-ring,#cur-cross{display:none;}
 }
 
-/* ── SCROLL CONTAINER ──
-   No horizontal scroll. Position:relative so columns can be absolutely placed.
-   padding-top: below the back link.
-   padding-bottom: space for timeline + footer.
-── */
 .scroll-container{
   flex:1;
   position:relative;
@@ -57,12 +52,10 @@ body::before{
   padding-bottom:86px;
 }
 
-/* ── PROJECT GROUP — no visual effect, JS removes and replaces with abs columns ── */
 .project-group{ display:contents; }
 
-/* ── COLUMN ── */
 .column{
-  position:absolute; /* JS sets left, width, z-index */
+  position:absolute;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -71,14 +64,38 @@ body::before{
   gap:6px;
 }
 
+/* ── CASE STUDY COLUMN — clickable, has a mini poster ── */
+.column.case-clickable {
+  cursor: pointer !important;
+}
+.column.case-clickable:hover .column-title {
+  color: #B03020;
+  transition: color .2s;
+}
+.case-mini-poster {
+  width: 84px;
+  margin-top: 12px;
+  border: 1px solid rgba(176,48,32,.35);
+  border-radius: 2px;
+  overflow: hidden;
+  background: #0F0D0C;
+}
+.case-mini-poster svg { display: block; }
+.case-open-hint {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #B03020;
+  margin-top: 8px;
+  opacity: .7;
+}
+
 .column-header{text-align:center;margin-bottom:12px;z-index:10;}
 .column-year{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
-/* ↓ ЗАГОЛОВОК КОЛОННЫ — поменяй color на #000 для чёрного */
 .column-title{font-size:14px;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;margin-top:4px;color:#000;}
-/* ↓ ПОДЗАГОЛОВОК КОЛОННЫ — поменяй color на #222 для чёрного */
 .column-subtitle{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;color:#222;}
 
-/* ── IMAGE ITEM ── */
 .image-item{
   position:relative;
   border:1px solid rgba(255,255,255,.07);
@@ -86,7 +103,7 @@ body::before{
   overflow:hidden;
   border-radius:1px;
   flex-shrink:0;
-  margin-top:-18px; /* overlap: each image slides up over the previous */
+  margin-top:-18px;
   transition:filter .3s;
 }
 .image-item:first-of-type{ margin-top:0; }
@@ -97,18 +114,14 @@ body::before{
   position:relative;
 }
 
-/* ── BACK LINK — floating, no panel ── */
 .hdr{position:fixed;top:18px;left:36px;z-index:150;}
 .back{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:#555;transition:color .2s;}
 .back:hover{color:#f5f5f5}
 
-/* ── MODAL ──
-   Background = blur of the actual page behind it (not solid black).
-── */
 .modal{
   position:fixed;inset:0;z-index:500;
-  background:rgba(0,0,0,.45);   /* semi-transparent only */
-  backdrop-filter:blur(18px);   /* blurs the page content behind */
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
   display:flex;align-items:center;justify-content:center;
   opacity:0;visibility:hidden;
@@ -125,11 +138,29 @@ body::before{
 }
 .modal-content.mode-row{max-width:99vw;max-height:96vh;}
 
+/* ── CASE STUDY MODAL — wider, no image section ── */
+.modal-content.mode-case {
+  max-width: 720px;
+  max-height: 88vh;
+}
+
 .modal-image-section{
   flex:1;min-width:0;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  background:rgba(4,4,4,.65); /* semi-transparent dark for image area */
+  background:rgba(4,4,4,.65);
   position:relative;
+}
+
+/* ── CASE POSTER SECTION ── */
+.modal-image-section.case-poster {
+  background: #0F0D0C;
+  flex: none;
+  width: 260px;
+  min-width: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
 
 .modal-single{flex:1;width:100%;min-height:0;display:flex;align-items:center;justify-content:center;}
@@ -157,24 +188,126 @@ body::before{
 .modal-nav-btn.off,.modal-counter.off{display:none}
 .modal-counter{position:absolute;bottom:15px;left:15px;font-size:10px;color:#999;background:rgba(0,0,0,.4);padding:6px 10px;border-radius:2px;}
 
-/* ── MODAL INFO PANEL ──
-   TEXTURE: replace `background` below with your texture.
-   Example: background: url('images/assets/create/scan/Scan1.jpg') center/cover, rgba(12,12,12,.88);
-   Or:      background: url('images/assets/background.jpg') center/cover, rgba(8,8,8,.85);
-── */
 .modal-info{
   width:300px;padding:32px 28px;display:flex;flex-direction:column;
   gap:16px;overflow-y:auto;border-left:1px solid rgba(255,255,255,.08);
   flex-shrink:0;
-  /* ↓ REPLACE THIS LINE WITH YOUR TEXTURE */
   background:rgba(14,14,14,.92);
 }
 .modal-info::-webkit-scrollbar{width:3px}
 .modal-info::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
 
+/* ── CASE STUDY INFO PANEL ── */
+.modal-info.case-info {
+  width: 100%;
+  flex: 1;
+  gap: 0;
+  border-left: none;
+  padding: 32px 32px;
+  background: rgba(10,10,10,.95);
+}
+
 .modal-title{font-size:18px;font-weight:900;letter-spacing:-.01em;color:#f5f5f5;}
 .modal-subtitle{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;}
 .modal-desc{font-size:11px;line-height:1.65;color:#999;white-space:pre-line;flex:1;}
+
+/* ── CASE STUDY RICH CONTENT STYLES ── */
+.case-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 6px;
+  display: block;
+}
+.case-rule {
+  height: 1px;
+  background: #B03020;
+  width: 32px;
+  margin: 18px 0 14px;
+}
+.case-rule.full { width: 100%; background: rgba(255,255,255,.07); margin: 20px 0; }
+.case-body {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #888;
+}
+.case-body strong {
+  color: #ccc;
+  font-weight: 600;
+}
+.case-swatches {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.case-swatch {
+  flex: 1;
+  height: 28px;
+  border-radius: 2px;
+  display: flex;
+  align-items: flex-end;
+  padding: 3px 5px;
+}
+.case-swatch span {
+  font-size: 7px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.case-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 8px;
+}
+.case-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.case-step:last-child { border-bottom: none; }
+.case-step-num {
+  font-size: 8px;
+  color: #444;
+  min-width: 16px;
+  padding-top: 2px;
+  letter-spacing: .06em;
+}
+.case-step-text {
+  font-size: 10px;
+  line-height: 1.6;
+  color: #777;
+}
+.case-step-text strong {
+  color: #bbb;
+  font-weight: 700;
+  display: block;
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+.case-tag {
+  display: inline-block;
+  font-size: 8px;
+  padding: 2px 7px;
+  border: 1px solid rgba(176,48,32,.4);
+  border-radius: 20px;
+  color: #B03020;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+.case-note {
+  font-size: 9px;
+  line-height: 1.6;
+  color: #555;
+  border-left: 1px solid #B03020;
+  padding-left: 10px;
+  margin-top: 12px;
+}
 
 .modal-close{
   position:absolute;top:18px;right:18px;background:none;border:none;
@@ -182,14 +315,10 @@ body::before{
 }
 .modal-close:hover{color:#f5f5f5}
 
-/* ── BOTTOM BAR — единая полоса градиент+блюр для таймлайна и ссылок ──
-   Покрывает всё снизу: backdrop-filter размывает колонны позади.
-   Высота: timeline (46px) + footer (32px) = 78px + немного запаса.
-── */
 .bottom-bar {
   position:fixed;
   bottom:0; left:0; right:0;
-  height:200px; /* выше — градиент начинается раньше */
+  height:200px;
   background: linear-gradient(to top,
     rgba(8,8,8,.97) 0%,
     rgba(8,8,8,.88) 25%,
@@ -203,7 +332,6 @@ body::before{
   pointer-events:none;
 }
 
-/* ── TIMELINE ── */
 .timeline-bottom{
   position:fixed;
   bottom:32px;
@@ -214,7 +342,6 @@ body::before{
   pointer-events:none;
 }
 
-/* horizontal line spanning full width */
 .timeline-line{
   position:absolute;
   left:24px;right:24px;
@@ -224,7 +351,6 @@ body::before{
   z-index:1;
 }
 
-/* markers distributed evenly via flexbox */
 .timeline-content{
   position:relative;width:100%;height:100%;
   display:flex;align-items:center;
@@ -238,7 +364,6 @@ body::before{
   gap:4px;white-space:nowrap;flex-shrink:0;
 }
 
-/* dot — size set via inline style in JS */
 .year-dot{
   border-radius:50%;
   background:rgba(255,255,255,.55);
@@ -249,7 +374,6 @@ body::before{
 .year-label{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#777;}
 .year-marker.future .year-label{color:#4d6aff;}
 
-/* ── FOOTER — at very bottom ── */
 .ftl{position:fixed;bottom:10px;left:36px;z-index:201;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
 .ftl a{color:#f5f5f5;text-decoration:none;opacity:.75;transition:opacity .2s;pointer-events:auto;}
 .ftl a:hover{opacity:1}
@@ -258,23 +382,14 @@ body::before{
 .ftr a:hover{opacity:1}
 .ftr span{opacity:.1;color:#f5f5f5}
 
-/* ── COUNTER: скрыт везде (desktop + mobile) ── */
 .modal-counter { display: none !important; }
 
-/* ── MODAL RESPONSIVE ──
-   Мобайл: modal занимает весь экран, скроллится вертикально.
-   Картинка — полная ширина, естественные пропорции (height:auto).
-   Текст — сразу под картинкой, без обрезки.
-── */
 @media (max-width: 640px), (max-height: 500px) {
-  /* Весь modal скроллируется */
   .modal {
     padding: 0;
     align-items: flex-start;
     overflow-y: auto;
   }
-
-  /* Контент — вертикальная колонка, высота по содержимому */
   .modal-content {
     flex-direction: column;
     width: 100%;
@@ -286,8 +401,10 @@ body::before{
     border: none;
   }
   .modal-content.mode-row { max-width: 100vw; max-height: none; }
-
-  /* Секция изображения — прижата к описанию снизу, без пустот */
+  .modal-content.mode-case {
+    max-width: 100vw;
+    max-height: none;
+  }
   .modal-image-section {
     flex: none;
     width: 100%;
@@ -299,8 +416,11 @@ body::before{
     align-items: stretch;
     justify-content: flex-end;
   }
-
-  /* Одиночная картинка — полная ширина, автовысота */
+  .modal-image-section.case-poster {
+    width: 100%;
+    min-width: 0;
+    padding: 32px 24px;
+  }
   .modal-single {
     flex: none;
     width: 100%;
@@ -312,8 +432,6 @@ body::before{
     max-height: none;
     object-fit: contain;
   }
-
-  /* Multi-режимы */
   .modal-multi {
     flex: none;
     width: 100%;
@@ -326,8 +444,6 @@ body::before{
     justify-content: flex-start;
     align-items: center;
   }
-
-  /* BTI: 4 кадра — горизонтальный скролл, каждый квадратный */
   .modal-multi.mode-row {
     overflow-x: auto;
   }
@@ -337,16 +453,12 @@ body::before{
     flex-shrink: 0;
     object-fit: contain;
   }
-
-  /* Группы CLO: горизонтальный скролл */
   .modal-multi.mode-group img {
     height: 65vw;
     width: auto;
     flex-shrink: 0;
     object-fit: contain;
   }
-
-  /* Portrait collage: 2 колонки, естественная высота */
   .modal-multi.mode-collage {
     flex-wrap: wrap;
     overflow-x: hidden;
@@ -358,8 +470,6 @@ body::before{
     max-height: none;
     object-fit: contain;
   }
-
-  /* Nav кнопки — фиксированы внизу image-section, не скачут */
   .modal-image-section { position: relative; }
   .modal-nav-btn {
     top: auto;
@@ -372,8 +482,6 @@ body::before{
   }
   .modal-nav-btn.prev { left: 12px; }
   .modal-nav-btn.next { right: 12px; }
-
-  /* Инфо-панель: полная ширина под картинкой */
   .modal-info {
     flex: none;
     width: 100%;
@@ -384,13 +492,11 @@ body::before{
     padding: 24px 20px 48px;
     overflow-y: visible;
   }
+  .modal-info.case-info {
+    padding: 24px 20px 48px;
+  }
 }
 
-/* ── MOBILE LAYOUT — горизонтальный скролл ──
-   На мобильном scroll-container переключается на overflow-x:auto,
-   колонны выстраиваются в ряд с фиксированной шириной.
-   distributeColumns() в JS пропускается на мобильном (см. JS).
-── */
 @media (max-width: 768px) {
   .scroll-container {
     overflow-x: auto;
@@ -400,9 +506,7 @@ body::before{
     align-items: flex-start;
     padding-top: 60px;
     padding-bottom: 90px;
-    /* убираем position:relative — колонны идут в потоке */
   }
-  /* На мобиле колонны — обычный flow, не absolute */
   .column {
     position: relative !important;
     left: auto !important;
@@ -411,19 +515,15 @@ body::before{
     flex-shrink: 0;
     margin-right: 4px;
   }
-  /* между проектами — бо́льший зазор */
   .column.group-start { margin-left: 24px; }
 }
-
 </style>
 </head>
 <body>
 
-<!-- CURSOR -->
 <div id="cur-ring"></div>
 <div id="cur-cross"></div>
 
-<!-- BACK LINK — floating, no panel -->
 <div class="hdr"><a href="index.html" class="back">← Back</a></div>
 
 <div class="scroll-container" id="scrollContainer"></div>
@@ -432,7 +532,7 @@ body::before{
 <div class="modal" id="modal">
   <button class="modal-close" id="modalClose">✕</button>
   <div class="modal-content" id="modalContent">
-    <div class="modal-image-section">
+    <div class="modal-image-section" id="modalImageSection">
       <div class="modal-single" id="modalSingleView">
         <img id="modalImg" src="" alt="">
       </div>
@@ -441,7 +541,7 @@ body::before{
       <button class="modal-nav-btn next" id="modalNext">›</button>
       <div class="modal-counter" id="modalCounter"></div>
     </div>
-    <div class="modal-info">
+    <div class="modal-info" id="modalInfo">
       <div class="modal-title"    id="modalTitle"></div>
       <div class="modal-subtitle" id="modalSubtitle"></div>
       <p   class="modal-desc"     id="modalDesc"></p>
@@ -449,16 +549,13 @@ body::before{
   </div>
 </div>
 
-<!-- BOTTOM BAR — градиент+блюр снизу, под таймлайном и ссылками -->
 <div class="bottom-bar"></div>
 
-<!-- TIMELINE — years 2019–FUTURE, fixed above footer -->
 <div class="timeline-bottom" id="timelineBottom">
   <div class="timeline-line"></div>
   <div class="timeline-content" id="timelineContent"></div>
 </div>
 
-<!-- FOOTER — at very bottom -->
 <div class="ftl"><a href="about.html">About</a></div>
 <div class="ftr">
   <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
@@ -468,170 +565,93 @@ body::before{
 </div>
 
 <script>
-/* ─────────────────────────────────────────
-   CLO GROUPS — each group has its own name and desc.
-   files: 0-indexed array of cloth file indices.
-   Edit name/desc here to update per-group modal text.
-───────────────────────────────────────── */
+/* ── CLO GROUPS ── */
 const CLO_GROUPS = [
-  {
-    files: [0,1,2],
-    name: 'TEKKONKINKREET',
-    desc: 'Hand-painted garments inspired by the aesthetic.\nNo sketch, no transfer.\nThe painting grew from the fabric up.'
-  },
-  {
-    files: [3,4],
-    name: '1ST PLACE',
-    desc: 'The very first experience of creation, simply due to the fact that the printing workshop refused to apply a print to the top of the T-shirt.'
-  },
-  {
-    files: [5,6],
-    name: 'Bandito Crew · I',
-    desc: 'Another full-fledged merch case for the released Twenty One Pilots album.'
-  },
-  {
-    files: [7,8,9],
-    name: 'Vans OldSchool · II',
-    desc: 'Old things are not recyclable - they have a new life.'
-  },
-  {
-    files: [10,11],
-    name: 'NARUTO · III',
-    desc: 'New nike t-shirt & itachi uchiha collab.\nRestraint in palette, density in application.'
-  },
-  {
-    files: [12],
-    name: 'Local Bandito',
-    desc: 'A standalone work — singular in approach and execution.\nThis one needed nothing added.'
-  },
-  {
-    files: [13,14,15],
-    name: 'Fairly local · IV',
-    desc: 'From creating art by hand,\nto recreating it on clothes and to selling it.'
-  },
-  {
-    files: [16,17],
-    name: 'Chlorine · V',
-    desc: 'Late series. Restraint where earlier was excess.\nLess surface, more intention.'
-  },
-  {
-    files: [18,19],
-    name: 'DATA CL · VI',
-    desc: 'Final works in the CLO series.\nWhat remains when the system is exhausted.'
-  }
+  { files:[0,1,2], name:'TEKKONKINKREET', desc:'Hand-painted garments inspired by the aesthetic.\nNo sketch, no transfer.\nThe painting grew from the fabric up.' },
+  { files:[3,4], name:'1ST PLACE', desc:'The very first experience of creation, simply due to the fact that the printing workshop refused to apply a print to the top of the T-shirt.' },
+  { files:[5,6], name:'Bandito Crew · I', desc:'Another full-fledged merch case for the released Twenty One Pilots album.' },
+  { files:[7,8,9], name:'Vans OldSchool · II', desc:'Old things are not recyclable - they have a new life.' },
+  { files:[10,11], name:'NARUTO · III', desc:'New nike t-shirt & itachi uchiha collab.\nRestraint in palette, density in application.' },
+  { files:[12], name:'Local Bandito', desc:'A standalone work — singular in approach and execution.\nThis one needed nothing added.' },
+  { files:[13,14,15], name:'Fairly local · IV', desc:'From creating art by hand,\nto recreating it on clothes and to selling it.' },
+  { files:[16,17], name:'Chlorine · V', desc:'Late series. Restraint where earlier was excess.\nLess surface, more intention.' },
+  { files:[18,19], name:'DATA CL · VI', desc:'Final works in the CLO series.\nWhat remains when the system is exhausted.' }
 ];
 
 function getCloGroup(idx) {
   for (const g of CLO_GROUPS) {
     if (g.files.includes(idx)) return g;
   }
-  return { files: [idx], name: null, desc: null };
+  return { files:[idx], name:null, desc:null };
 }
 
-/* ─────────────────────────────────────────
-   PROJECT DATA
-   Image sizes: smaller (58–80px) to fit no-scroll layout.
-   Width/height vary per project type for visual interest.
-───────────────────────────────────────── */
+/* ── PROJECTS ── */
 const projects = [
   {
-    id: 'pilots',
-    year: '2018–2021',
-    name: 'PILOTS / HAND DRAWINGS',
-    subtitle: 'HAND DRAWINGS · 2018–2021',
-    desc: 'Early studies in line, texture and atmosphere — before digital tools took over. A way of thinking on paper.',
-    files: Array.from({length:14}, (_,i) => ({
-      path:   `images/assets/create/pilots/pilots${i+1}.jpg`,
-      width:  Math.round(62 + Math.random()*14),
-      height: Math.round(46 + Math.random()*16)
-    }))
+    id:'pilots', year:'2018–2021', name:'PILOTS / HAND DRAWINGS',
+    subtitle:'HAND DRAWINGS · 2018–2021',
+    desc:'Early studies in line, texture and atmosphere — before digital tools took over. A way of thinking on paper.',
+    files:Array.from({length:14},(_,i)=>({path:`images/assets/create/pilots/pilots${i+1}.jpg`,width:Math.round(62+Math.random()*14),height:Math.round(46+Math.random()*16)}))
   },
   {
-    id: 'Self-Portrait',
-    year: '2024',
-    name: 'NONE OF THEM IS ME',
-    subtitle: 'SELF-PORTRAIT SERIES · 2024',
-    desc: 'Exploring the gap between how we see ourselves and how we appear. A study in identity through framing and gesture.\n\nNone of the versions is definitive.',
-    files: Array.from({length:6}, (_,i) => ({
-      path:   `images/assets/create/portrait/Portrait${i+1}.jpg`,
-      width:  Math.round(64 + Math.random()*12),
-      height: Math.round(82 + Math.random()*14)
-    }))
+    id:'Self-Portrait', year:'2024', name:'NONE OF THEM IS ME',
+    subtitle:'SELF-PORTRAIT SERIES · 2024',
+    desc:'Exploring the gap between how we see ourselves and how we appear. A study in identity through framing and gesture.\n\nNone of the versions is definitive.',
+    files:Array.from({length:6},(_,i)=>({path:`images/assets/create/portrait/Portrait${i+1}.jpg`,width:Math.round(64+Math.random()*12),height:Math.round(82+Math.random()*14)}))
   },
   {
-    id: 'scan',
-    year: '2025–2026',
-    name: 'SCAN',
-    subtitle: 'GRAINS OF THE CITIES',
-    desc: 'Fragments of urban texture — scanned, layered, recomposed. A visual archive of places in transition.',
-    files: Array.from({length:10}, (_,i) => ({
-      path:   `images/assets/create/scan/Scan${i+1}.jpg`,
-      width:  Math.round(66 + Math.random()*14),
-      height: Math.round(50 + Math.random()*14)
-    }))
+    id:'scan', year:'2025–2026', name:'SCAN',
+    subtitle:'GRAINS OF THE CITIES',
+    desc:'Fragments of urban texture — scanned, layered, recomposed. A visual archive of places in transition.',
+    files:Array.from({length:10},(_,i)=>({path:`images/assets/create/scan/Scan${i+1}.jpg`,width:Math.round(66+Math.random()*14),height:Math.round(50+Math.random()*14)}))
   },
   {
-    id: 'clo',
-    year: '2021-2023',
-    name: 'CLO',
-    subtitle: 'CUSTOM CLOTHING',
-    desc: 'Hand-painted garments as wearable architecture. Material, body and gesture — one surface.',
-    files: Array.from({length:20}, (_,i) => ({
-      path:   `images/assets/create/clo/cloth${i+1}.jpg`,
-      width:  Math.round(60 + Math.random()*18),
-      height: Math.round(46 + Math.random()*16),
-      subproject: i < 3 ? 0 : i < 5 ? 1 : 2
-    }))
+    id:'clo', year:'2021-2023', name:'CLO',
+    subtitle:'CUSTOM CLOTHING',
+    desc:'Hand-painted garments as wearable architecture. Material, body and gesture — one surface.',
+    files:Array.from({length:20},(_,i)=>({path:`images/assets/create/clo/cloth${i+1}.jpg`,width:Math.round(60+Math.random()*18),height:Math.round(46+Math.random()*16),subproject:i<3?0:i<5?1:2}))
   },
   {
-    id: 'bti',
-    year: '2022',
-    name: 'BEFORE THE IMPACT',
-    subtitle: 'A diptych in four parts',
-    desc: 'Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.\n\nThe four-frame sequence captures a gradual shift in perception.',
-    files: Array.from({length:4}, (_,i) => ({
-      path:   `images/assets/create/bti/bti${i+1}.jpg`,
-      width:  Math.round(68 + Math.random()*14),
-      height: Math.round(50 + Math.random()*14)
-    }))
+    id:'bti', year:'2022', name:'BEFORE THE IMPACT',
+    subtitle:'A diptych in four parts',
+    desc:'Silent Horizon explores the moment when an ordinary landscape becomes the stage for an unexpected event.\n\nThe four-frame sequence captures a gradual shift in perception.',
+    files:Array.from({length:4},(_,i)=>({path:`images/assets/create/bti/bti${i+1}.jpg`,width:Math.round(68+Math.random()*14),height:Math.round(50+Math.random()*14)}))
   },
-
-{
-    id: 'BY HAND',
-    year: '2022–2026',
-    name: 'BY HAND',
-    subtitle: 'PIESES OF ART OF DIFFERENT TIME.',
-    desc: 'A constellation of objects, drawings and experiments made over time. No single medium, one continuous curiosity.',
-    files: Array.from({length:10}, (_,i) => ({
-      path:   `images/assets/create/art/art${i+1}.jpg`,
-      width:  Math.round(66 + Math.random()*14),
-      height: Math.round(50 + Math.random()*14)
-    }))
-  },
-  
   {
-    id: 'graph',
-    year: '—',
-    name: 'GRAPH',
-    subtitle: 'GRAPHIC DESIGN · AI TOOLS',
-    desc: 'Visual experiments in graphic design.\nPoster generation, identity exploration.\nAI-assisted image work.\n— in progress',
-    files: []
+    id:'BY HAND', year:'2022–2026', name:'BY HAND',
+    subtitle:'PIESES OF ART OF DIFFERENT TIME.',
+    desc:'A constellation of objects, drawings and experiments made over time. No single medium, one continuous curiosity.',
+    files:Array.from({length:10},(_,i)=>({path:`images/assets/create/art/art${i+1}.jpg`,width:Math.round(66+Math.random()*14),height:Math.round(50+Math.random()*14)}))
+  },
+  /* ── NEW: ОСТАТОК case study ── */
+  {
+    id:'ostatok', year:'2025', name:'ОСТАТОК',
+    subtitle:'RESIDUE · EXHIBITION CONCEPT',
+    type:'case',
+    desc:'A group exhibition on urban memory, material trace, and disappearance.\n\nArt direction — self-initiated concept, 2025.',
+    files:[]
+  },
+  {
+    id:'graph', year:'—', name:'GRAPH',
+    subtitle:'GRAPHIC DESIGN · AI TOOLS',
+    desc:'Visual experiments in graphic design.\nPoster generation, identity exploration.\nAI-assisted image work.\n— in progress',
+    files:[]
   }
 ];
 
-/* ─────────────────────────────────────────
-   DOM REFS
-───────────────────────────────────────── */
+/* ── DOM REFS ── */
 const scrollContainer = document.getElementById('scrollContainer');
 const timelineContent = document.getElementById('timelineContent');
 const modal           = document.getElementById('modal');
 const modalContent    = document.getElementById('modalContent');
+const modalImageSection = document.getElementById('modalImageSection');
 const modalSingleView = document.getElementById('modalSingleView');
 const modalMultiView  = document.getElementById('modalMultiView');
 const modalImg        = document.getElementById('modalImg');
 const modalTitle      = document.getElementById('modalTitle');
 const modalSubtitle   = document.getElementById('modalSubtitle');
 const modalDesc       = document.getElementById('modalDesc');
+const modalInfo       = document.getElementById('modalInfo');
 const modalCounter    = document.getElementById('modalCounter');
 const modalClose      = document.getElementById('modalClose');
 const modalPrev       = document.getElementById('modalPrev');
@@ -640,12 +660,9 @@ const modalNext       = document.getElementById('modalNext');
 let currentProject  = null;
 let currentImageIdx = 0;
 
-/* ─────────────────────────────────────────
-   CURSOR
-───────────────────────────────────────── */
+/* ── CURSOR ── */
 const curRing  = document.getElementById('cur-ring');
 const curCross = document.getElementById('cur-cross');
-
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', e => {
     curRing.style.left  = e.clientX + 'px';
@@ -654,31 +671,29 @@ if (window.matchMedia('(hover: hover)').matches) {
     curCross.style.top  = e.clientY + 'px';
   });
   document.addEventListener('mouseover', e => {
-    if (e.target.closest('a, button, .image-item')) curRing.classList.add('hover');
+    if (e.target.closest('a, button, .image-item, .case-clickable')) curRing.classList.add('hover');
   });
   document.addEventListener('mouseout', e => {
-    if (e.target.closest('a, button, .image-item')) curRing.classList.remove('hover');
+    if (e.target.closest('a, button, .image-item, .case-clickable')) curRing.classList.remove('hover');
   });
 }
 
-/* ─────────────────────────────────────────
-   MODAL HELPERS — UNCHANGED from previous version
-───────────────────────────────────────── */
+/* ── MODAL HELPERS ── */
 function setSingle() {
   modalSingleView.style.display = 'flex';
   modalMultiView.className = 'modal-multi';
-  modalContent.classList.remove('mode-row');
+  modalContent.classList.remove('mode-row','mode-case');
 }
 function setMulti(mode) {
   modalSingleView.style.display = 'none';
   modalMultiView.className = 'modal-multi show mode-' + mode;
-  if (mode === 'row') modalContent.classList.add('mode-row');
+  if (mode==='row') modalContent.classList.add('mode-row');
   else modalContent.classList.remove('mode-row');
 }
 function showNav(on) {
-  modalPrev.classList.toggle('off', !on);
-  modalNext.classList.toggle('off', !on);
-  modalCounter.classList.toggle('off', !on);
+  modalPrev.classList.toggle('off',!on);
+  modalNext.classList.toggle('off',!on);
+  modalCounter.classList.toggle('off',!on);
 }
 function setInfo(title, subtitle, desc) {
   modalTitle.textContent    = title    || '';
@@ -690,55 +705,183 @@ function buildMultiImgs(paths) {
   paths.forEach(src => {
     const img = document.createElement('img');
     img.src = src; img.alt = '';
-    img.onerror = () => { img.style.opacity = '0.2'; };
+    img.onerror = ()=>{ img.style.opacity='0.2'; };
     modalMultiView.appendChild(img);
   });
 }
 
-/* ─────────────────────────────────────────
-   OPEN MODAL
-   Portrait: 3×2 collage (unchanged)
-   BTI: 4 in one row (unchanged)
-   CLO: grouped, each group has its own name+desc from CLO_GROUPS
-   Others: single with nav (unchanged)
-───────────────────────────────────────── */
+/* ── RESET MODAL STATE (called before each open) ── */
+function resetModal() {
+  modalContent.classList.remove('mode-case','mode-row');
+  modalImageSection.classList.remove('case-poster');
+  modalImageSection.style.display = '';
+  modalInfo.classList.remove('case-info');
+  modalInfo.style.width = '';
+  modalTitle.textContent = '';
+  modalSubtitle.textContent = '';
+  modalDesc.textContent = '';
+  modalDesc.style.display = '';
+  modalSingleView.style.display = 'flex';
+  modalMultiView.className = 'modal-multi';
+  modalImg.src = '';
+  showNav(false);
+}
+
+/* ── OPEN CASE STUDY MODAL ── */
+function openModalCase(proj) {
+  resetModal();
+  currentProject = proj;
+  modalContent.classList.add('mode-case');
+
+  /* Left: mini poster SVG */
+  modalImageSection.classList.add('case-poster');
+  modalSingleView.style.display = 'none';
+  modalMultiView.className = 'modal-multi';
+  /* Inject the poster SVG directly */
+  modalImageSection.insertAdjacentHTML('afterbegin', `
+    <svg width="212" viewBox="0 0 212 318" xmlns="http://www.w3.org/2000/svg" style="display:block;border-radius:2px;overflow:hidden;">
+      <rect width="212" height="318" fill="#0F0D0C"/>
+      <!-- scan grain: city silhouettes -->
+      <rect x="12" y="38" width="11" height="240" fill="#1E1A18" opacity=".9"/>
+      <rect x="27" y="24" width="8"  height="255" fill="#221E1B" opacity=".8"/>
+      <rect x="39" y="52" width="15" height="220" fill="#1A1714"/>
+      <rect x="58" y="18" width="10" height="262" fill="#252119" opacity=".9"/>
+      <rect x="72" y="36" width="7"  height="244" fill="#1A1714"/>
+      <rect x="82" y="12" width="20" height="270" fill="#2D2925" opacity=".85"/>
+      <rect x="106" y="28" width="9" height="252" fill="#231F1C"/>
+      <rect x="120" y="44" width="13" height="232" fill="#1E1A17"/>
+      <rect x="137" y="22" width="10" height="258" fill="#262220" opacity=".9"/>
+      <rect x="151" y="48" width="14" height="225" fill="#201D1A"/>
+      <rect x="170" y="32" width="9"  height="248" fill="#2A2622"/>
+      <rect x="184" y="18" width="15" height="264" fill="#1E1A18"/>
+      <!-- horizontal scan lines -->
+      <rect x="0" y="124" width="212" height="1" fill="#B03020" opacity=".65"/>
+      <rect x="0" y="172" width="212" height="1" fill="#7A6F68" opacity=".3"/>
+      <rect x="0" y="48"  width="212" height="1" fill="#F0EBE3" opacity=".05"/>
+      <rect x="0" y="82"  width="212" height="1" fill="#F0EBE3" opacity=".04"/>
+      <rect x="0" y="200" width="212" height="1" fill="#F0EBE3" opacity=".05"/>
+      <rect x="0" y="244" width="212" height="1" fill="#B03020" opacity=".22"/>
+      <!-- glitch displacement -->
+      <rect x="38"  y="148" width="50"  height="3" fill="#0F0D0C" opacity=".8"/>
+      <rect x="95"  y="148" width="40"  height="3" fill="#1E1A18" opacity=".6"/>
+      <rect x="0"   y="208" width="75"  height="2" fill="#0F0D0C" opacity=".6"/>
+      <rect x="80"  y="208" width="132" height="2" fill="#1E1A18" opacity=".5"/>
+      <!-- red traces -->
+      <rect x="12"  y="124" width="25" height="1" fill="#B03020"/>
+      <rect x="112" y="244" width="40" height="1" fill="#B03020"/>
+      <!-- bottom info -->
+      <rect x="12" y="282" width="188" height="1" fill="#B03020" opacity=".7"/>
+      <text x="12"  y="296" font-family="Barlow,sans-serif" font-size="9" font-weight="700" fill="#F0EBE3" letter-spacing="2">ОСТАТОК</text>
+      <text x="12"  y="308" font-family="Barlow,sans-serif" font-size="7" fill="#5A5048" letter-spacing="3">RESIDUE · 2025</text>
+      <!-- top label -->
+      <text x="12"  y="22"  font-family="Barlow,sans-serif" font-size="6" fill="#5A5048" letter-spacing="3">EXHIBITION CONCEPT</text>
+    </svg>
+  `);
+
+  /* Right: rich case study info */
+  modalInfo.classList.add('case-info');
+  modalInfo.innerHTML = `
+    <span class="case-label">Art direction — self-initiated · 2025</span>
+    <div style="font-size:22px;font-weight:900;letter-spacing:-.01em;color:#f5f5f5;line-height:1;margin-bottom:4px;">ОСТАТОК</div>
+    <div style="font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#B03020;margin-bottom:0;">RESIDUE</div>
+    <div class="case-rule"></div>
+
+    <span class="case-tag">Exhibition concept</span>
+    <span class="case-tag">Visual identity</span>
+    <span class="case-tag">Art direction</span>
+
+    <div class="case-rule full"></div>
+
+    <span class="case-label">Concept</span>
+    <p class="case-body">A group exhibition on urban memory, material trace, and disappearance. <strong>Cities accumulate and erase simultaneously.</strong> What remains — in grain, in scar, in scan — is rarely what was meant to be preserved.</p>
+    <p class="case-body" style="margin-top:8px;">Post-Soviet urban space built on layers of overwriting. Works in scan, photography, architectural drawing, video and textile. <strong>Venue: former industrial space or municipal archive.</strong> The architecture is part of the argument.</p>
+
+    <div class="case-rule full"></div>
+
+    <span class="case-label">Color system</span>
+    <div class="case-swatches">
+      <div class="case-swatch" style="background:#0F0D0C;border:1px solid #2A2520;">
+        <span style="color:#5A5048;">Residue Black</span>
+      </div>
+      <div class="case-swatch" style="background:#F0EBE3;border:1px solid #C8C2BA;">
+        <span style="color:#8A7F78;">Archive White</span>
+      </div>
+      <div class="case-swatch" style="background:#B03020;">
+        <span style="color:#F0CFC8;">Trace Red</span>
+      </div>
+    </div>
+
+    <div class="case-rule full"></div>
+
+    <span class="case-label">Art director logic</span>
+    <div class="case-steps">
+      <div class="case-step">
+        <span class="case-step-num">01</span>
+        <div class="case-step-text"><strong>Concept as constraint</strong>One phrase: «Scanning as archive». Everything that doesn't work with this phrase is out. Red — only a trace, never decoration.</div>
+      </div>
+      <div class="case-step">
+        <span class="case-step-num">02</span>
+        <div class="case-step-text"><strong>Form from context</strong>Post-Soviet urbanism as typography: Cyrillic at the same size as English — not as exoticism, but as architectural fact.</div>
+      </div>
+      <div class="case-step">
+        <span class="case-step-num">03</span>
+        <div class="case-step-text"><strong>System, not a set of files</strong>Poster, catalogue, and social media follow the same rules. Remove the logo — it's still clearly one exhibition.</div>
+      </div>
+      <div class="case-step">
+        <span class="case-step-num">04</span>
+        <div class="case-step-text"><strong>Space for curating</strong>The identity doesn't compete with the works. It's the archival paper beneath them.</div>
+      </div>
+    </div>
+
+    <p class="case-note">Concept developed and directed independently. No client. No brief. One constraint: what does a city remember?</p>
+  `;
+
+  showNav(false);
+  modal.classList.add('active');
+}
+
+/* ── OPEN MODAL ── */
 function openModal(proj, fileIdx) {
+  resetModal();
   currentProject  = proj;
   currentImageIdx = fileIdx;
+
+  if (proj.type === 'case') {
+    openModalCase(proj);
+    return;
+  }
 
   if (proj.id === 'Self-Portrait') {
     setMulti('collage');
     showNav(false);
-    buildMultiImgs(proj.files.map(f => f.path));
+    buildMultiImgs(proj.files.map(f=>f.path));
     setInfo(proj.name, proj.subtitle, proj.desc);
 
   } else if (proj.id === 'bti') {
     setMulti('row');
     showNav(false);
-    buildMultiImgs(proj.files.map(f => f.path));
+    buildMultiImgs(proj.files.map(f=>f.path));
     setInfo(proj.name, proj.subtitle, proj.desc);
 
   } else if (proj.id === 'clo') {
     const group = getCloGroup(fileIdx);
-    setInfo(proj.name, group.name || proj.subtitle, group.desc || proj.desc);
-
-    if (group.files.length === 1) {
+    setInfo(proj.name, group.name||proj.subtitle, group.desc||proj.desc);
+    if (group.files.length===1) {
       setSingle();
       modalImg.src = proj.files[fileIdx].path;
     } else {
       setMulti('group');
-      buildMultiImgs(group.files.map(i => proj.files[i].path));
+      buildMultiImgs(group.files.map(i=>proj.files[i].path));
     }
-    /* стрелки переключают между группами */
     showNav(true);
-    const gIdx = CLO_GROUPS.findIndex(g => g.files.includes(fileIdx));
-    modalCounter.textContent = `${gIdx + 1} / ${CLO_GROUPS.length}`;
+    const gIdx = CLO_GROUPS.findIndex(g=>g.files.includes(fileIdx));
+    modalCounter.textContent = `${gIdx+1} / ${CLO_GROUPS.length}`;
 
   } else {
     setSingle();
     modalImg.src = proj.files[fileIdx].path;
     showNav(true);
-    modalCounter.textContent = `${fileIdx + 1} / ${proj.files.length}`;
+    modalCounter.textContent = `${fileIdx+1} / ${proj.files.length}`;
     setInfo(proj.name, proj.subtitle, proj.desc);
   }
 
@@ -746,57 +889,80 @@ function openModal(proj, fileIdx) {
 }
 
 function navSingle(dir) {
-  if (!currentProject || !currentProject.files.length) return;
-  currentImageIdx = (currentImageIdx + dir + currentProject.files.length) % currentProject.files.length;
-  modalImg.src = currentProject.files[currentImageIdx].path;
-  modalCounter.textContent = `${currentImageIdx + 1} / ${currentProject.files.length}`;
+  if (!currentProject||!currentProject.files.length) return;
+  currentImageIdx=(currentImageIdx+dir+currentProject.files.length)%currentProject.files.length;
+  modalImg.src=currentProject.files[currentImageIdx].path;
+  modalCounter.textContent=`${currentImageIdx+1} / ${currentProject.files.length}`;
 }
 
-/* navigate between CLO groups */
 function navClo(dir) {
-  const gIdx    = CLO_GROUPS.findIndex(g => g.files.includes(currentImageIdx));
-  const nextIdx = (gIdx + dir + CLO_GROUPS.length) % CLO_GROUPS.length;
-  const nextGroup = CLO_GROUPS[nextIdx];
-  currentImageIdx = nextGroup.files[0]; /* first file of next group */
-  openModal(currentProject, currentImageIdx);
+  const gIdx=CLO_GROUPS.findIndex(g=>g.files.includes(currentImageIdx));
+  const nextIdx=(gIdx+dir+CLO_GROUPS.length)%CLO_GROUPS.length;
+  const nextGroup=CLO_GROUPS[nextIdx];
+  currentImageIdx=nextGroup.files[0];
+  openModal(currentProject,currentImageIdx);
 }
 
 modalClose.onclick = () => modal.classList.remove('active');
-modal.onclick      = e => { if (e.target === modal) modal.classList.remove('active'); };
-modalPrev.onclick  = () => currentProject?.id === 'clo' ? navClo(-1) : navSingle(-1);
-modalNext.onclick  = () => currentProject?.id === 'clo' ? navClo(+1) : navSingle(+1);
+modal.onclick      = e => { if (e.target===modal) modal.classList.remove('active'); };
+modalPrev.onclick  = () => currentProject?.id==='clo'?navClo(-1):navSingle(-1);
+modalNext.onclick  = () => currentProject?.id==='clo'?navClo(+1):navSingle(+1);
 document.addEventListener('keydown', e => {
   if (!modal.classList.contains('active')) return;
-  if (e.key === 'Escape')     modal.classList.remove('active');
-  if (e.key === 'ArrowLeft'  && !modalPrev.classList.contains('off'))
-    currentProject?.id === 'clo' ? navClo(-1) : navSingle(-1);
-  if (e.key === 'ArrowRight' && !modalNext.classList.contains('off'))
-    currentProject?.id === 'clo' ? navClo(+1) : navSingle(+1);
+  if (e.key==='Escape') modal.classList.remove('active');
+  if (e.key==='ArrowLeft'  && !modalPrev.classList.contains('off'))
+    currentProject?.id==='clo'?navClo(-1):navSingle(-1);
+  if (e.key==='ArrowRight' && !modalNext.classList.contains('off'))
+    currentProject?.id==='clo'?navClo(+1):navSingle(+1);
 });
 
-/* ─────────────────────────────────────────
-   BUILD SCROLL CONTAINER
-   Creates project-group > column > image-item DOM.
-   Then calls distributeColumns() to position everything.
-───────────────────────────────────────── */
+/* ── MINI POSTER SVG for the column ── */
+const MINI_POSTER_SVG = `
+<svg width="84" height="126" viewBox="0 0 84 126" xmlns="http://www.w3.org/2000/svg">
+  <rect width="84" height="126" fill="#0F0D0C"/>
+  <rect x="5"  y="10" width="5"  height="105" fill="#1E1A18" opacity=".9"/>
+  <rect x="13" y="6"  width="3"  height="112" fill="#221E1B"/>
+  <rect x="19" y="16" width="7"  height="98"  fill="#1A1714"/>
+  <rect x="29" y="4"  width="4"  height="116" fill="#252119" opacity=".9"/>
+  <rect x="36" y="5"  width="9"  height="114" fill="#2D2925" opacity=".85"/>
+  <rect x="48" y="10" width="4"  height="108" fill="#231F1C"/>
+  <rect x="55" y="14" width="6"  height="104" fill="#1E1A17"/>
+  <rect x="64" y="8"  width="4"  height="110" fill="#262220"/>
+  <rect x="71" y="12" width="6"  height="102" fill="#201D1A"/>
+  <rect x="0"  y="49" width="84" height="1" fill="#B03020" opacity=".7"/>
+  <rect x="0"  y="68" width="84" height="1" fill="#7A6F68" opacity=".3"/>
+  <rect x="15" y="58" width="20" height="2" fill="#0F0D0C" opacity=".8"/>
+  <rect x="38" y="58" width="15" height="2" fill="#1E1A18" opacity=".6"/>
+  <rect x="0"  y="82" width="84" height="1" fill="#B03020" opacity=".2"/>
+  <rect x="5"  y="49" width="10" height="1" fill="#B03020"/>
+  <rect x="0"  y="110" width="84" height="1" fill="#B03020" opacity=".5"/>
+  <text x="5"  y="120" font-family="Barlow,sans-serif" font-size="6" font-weight="700" fill="#F0EBE3" letter-spacing="1">ОСТАТОК</text>
+</svg>`;
+
+/* ── BUILD SCROLL CONTAINER ── */
 function buildScrollContainer() {
   scrollContainer.innerHTML = '';
   const PER_COL = 7;
   const isMobile = window.innerWidth <= 768;
 
   projects.forEach((proj, projIdx) => {
-    const group     = document.createElement('div');
+    const group    = document.createElement('div');
     group.className = 'project-group';
-    const colCount  = proj.files.length > 0 ? Math.ceil(proj.files.length / PER_COL) : 1;
+    const colCount = proj.files.length > 0 ? Math.ceil(proj.files.length/PER_COL) : 1;
 
-    for (let col = 0; col < colCount; col++) {
-      const column    = document.createElement('div');
+    for (let col=0; col<colCount; col++) {
+      const column     = document.createElement('div');
       column.className = 'column';
-      column.dataset.projId = proj.id; /* used by distributeColumns for within/between gap */
-      /* mark first column of each project for mobile spacing */
-      if (col === 0) column.classList.add('group-start');
+      column.dataset.projId = proj.id;
+      if (col===0) column.classList.add('group-start');
 
-      if (col === 0) {
+      /* CASE STUDY COLUMN */
+      if (proj.type==='case') {
+        column.classList.add('case-clickable');
+        column.onclick = () => openModalCase(proj);
+      }
+
+      if (col===0) {
         const hdr = document.createElement('div');
         hdr.className = 'column-header';
         hdr.innerHTML = `
@@ -805,11 +971,24 @@ function buildScrollContainer() {
           ${proj.subtitle ? `<div class="column-subtitle">${proj.subtitle}</div>` : ''}
         `;
         column.appendChild(hdr);
+
+        /* For case study: add mini poster + hint */
+        if (proj.type==='case') {
+          const poster = document.createElement('div');
+          poster.className = 'case-mini-poster';
+          poster.innerHTML = MINI_POSTER_SVG;
+          column.appendChild(poster);
+          const hint = document.createElement('div');
+          hint.className = 'case-open-hint';
+          hint.textContent = '→ Open';
+          column.appendChild(hint);
+        }
       }
 
-      const start = col * PER_COL;
-      const end   = Math.min(start + PER_COL, proj.files.length);
-      for (let i = start; i < end; i++) {
+      /* IMAGE ITEMS (normal projects) */
+      const start = col*PER_COL;
+      const end   = Math.min(start+PER_COL, proj.files.length);
+      for (let i=start; i<end; i++) {
         const f    = proj.files[i];
         const item = document.createElement('div');
         item.className = 'image-item';
@@ -817,8 +996,8 @@ function buildScrollContainer() {
         item.style.height = f.height + 'px';
         const img = document.createElement('img');
         img.src = f.path;
-        img.alt = `${proj.name} ${i + 1}`;
-        img.onerror = () => { img.style.opacity = '0.3'; };
+        img.alt = `${proj.name} ${i+1}`;
+        img.onerror = () => { img.style.opacity='0.3'; };
         item.appendChild(img);
         item.onclick = () => openModal(proj, i);
         column.appendChild(item);
@@ -826,15 +1005,12 @@ function buildScrollContainer() {
 
       group.appendChild(column);
     }
-
     scrollContainer.appendChild(group);
   });
 
-  /* On mobile: columns flow naturally in flex row — no absolute positioning */
   if (!isMobile) {
     distributeColumns();
   } else {
-    /* unwrap groups so columns are direct flex children */
     Array.from(scrollContainer.querySelectorAll('.project-group')).forEach(g => {
       while (g.firstChild) scrollContainer.appendChild(g.firstChild);
       g.remove();
@@ -842,114 +1018,78 @@ function buildScrollContainer() {
   }
 }
 
-/* ─────────────────────────────────────────
-   DISTRIBUTE COLUMNS
-   Removes project-group wrappers and positions each column
-   absolutely across the scroll container.
-
-   Within-group gap < column width → columns from same project
-   are packed together. Between-group gap larger → visual
-   separation between projects. All columns overlap slightly.
-
-   Равные отступы между всеми колоннами:
-   gap = (W - 2*PADDING - N*COL_W) / (N - 1)
-───────────────────────────────────────── */
+/* ── DISTRIBUTE COLUMNS ── */
 function distributeColumns() {
   const W = scrollContainer.clientWidth;
   if (!W) { requestAnimationFrame(distributeColumns); return; }
 
-  const PADDING = 24;   /* ← отступ от краёв страницы */
-  const COL_W   = 100;  /* ← ширина каждой колонны в px */
+  const PADDING = 24;
+  const COL_W   = 100;
 
-  /* collect all columns still inside project-group wrappers */
   const groups = Array.from(scrollContainer.querySelectorAll('.project-group'));
   const cols   = [];
   groups.forEach(g => Array.from(g.querySelectorAll('.column')).forEach(c => cols.push(c)));
 
   const N = cols.length;
-  if (N === 0) return;
+  if (N===0) return;
 
-  const WITHIN_GAP  = 8;   /* ← px между колоннами одного проекта */
-  const BETWEEN_GAP = 48;  /* ← px между колоннами разных проектов */
+  const WITHIN_GAP  = 8;
+  const BETWEEN_GAP = 48;
 
-  /* restructure DOM: move columns directly into scrollContainer */
   groups.forEach(g => {
     while (g.firstChild) scrollContainer.appendChild(g.firstChild);
     g.remove();
   });
 
-  /* position with different gap depending on project boundary */
   let x = PADDING;
   cols.forEach((col, i) => {
     col.style.position = 'absolute';
     col.style.left     = Math.round(x) + 'px';
     col.style.top      = '80px';
     col.style.width    = COL_W + 'px';
-    col.style.zIndex   = String(i + 1);
-    if (i < N - 1) {
-      const sameProj = cols[i].dataset.projId === cols[i + 1].dataset.projId;
+    col.style.zIndex   = String(i+1);
+    if (i < N-1) {
+      const sameProj = cols[i].dataset.projId === cols[i+1].dataset.projId;
       x += COL_W + (sameProj ? WITHIN_GAP : BETWEEN_GAP);
     }
   });
 }
 
-/* re-distribute on resize */
 let lastMobile = window.innerWidth <= 768;
 window.addEventListener('resize', () => {
   const nowMobile = window.innerWidth <= 768;
   if (nowMobile !== lastMobile) {
     lastMobile = nowMobile;
-    buildScrollContainer(); /* full rebuild when crossing breakpoint */
+    buildScrollContainer();
   } else if (!nowMobile) {
     distributeColumns();
   }
 });
 
-/* ─────────────────────────────────────────
-   BUILD TIMELINE
-   Hardcoded years 2019 → 2026 → FUTURE.
-   Dot sizes reflect project activity in each year.
-   Positioned above footer via CSS (bottom:32px).
-   Distributed evenly via flexbox space-between.
-───────────────────────────────────────── */
+/* ── BUILD TIMELINE ── */
 function buildTimeline() {
   timelineContent.innerHTML = '';
-
-  /* dot size reflects project activity that year */
   const YEARS = [
-    { label: '2019', size: 14 }, /* pilots active */
-    { label: '2020', size: 14 }, /* pilots active */
-    { label: '2021', size: 12 }, /* pilots ending */
-    { label: '2022', size:  8 }, /* bti (4 files) */
-    { label: '2023', size: 22 }, /* clo (20 files — most active) */
-    { label: '2024', size: 13 }, /* portrait */
-    { label: '2025', size: 12 }, /* scan */
-    { label: '2026', size:  8 }, /* scan ending */
-    { label: 'FUTURE', size: 9, future: true }
+    {label:'2019',size:14},{label:'2020',size:14},{label:'2021',size:12},
+    {label:'2022',size:8},{label:'2023',size:22},{label:'2024',size:13},
+    {label:'2025',size:14},{label:'2026',size:8},{label:'FUTURE',size:9,future:true}
   ];
-
   YEARS.forEach(y => {
     const m = document.createElement('div');
-    m.className = 'year-marker' + (y.future ? ' future' : '');
-
+    m.className = 'year-marker' + (y.future?' future':'');
     const dot = document.createElement('div');
     dot.className = 'year-dot';
-    dot.style.width  = y.size + 'px';
-    dot.style.height = y.size + 'px';
-
+    dot.style.width = y.size+'px';
+    dot.style.height = y.size+'px';
     const label = document.createElement('div');
     label.className = 'year-label';
     label.textContent = y.label;
-
     m.appendChild(dot);
     m.appendChild(label);
     timelineContent.appendChild(m);
   });
 }
 
-/* ─────────────────────────────────────────
-   INIT
-───────────────────────────────────────── */
 buildScrollContainer();
 buildTimeline();
 </script>
