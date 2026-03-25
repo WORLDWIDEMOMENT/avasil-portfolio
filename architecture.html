@@ -418,35 +418,6 @@ This project is an ode to nature's raw power — the movement of titanic plates 
     btnSingle.addEventListener('click', () => { grid.classList.remove('cols-2'); grid.classList.add('cols-1'); btnSingle.classList.add('active'); btnDouble.classList.remove('active'); });
     btnDouble.addEventListener('click', () => { grid.classList.add('cols-2'); grid.classList.remove('cols-1'); btnDouble.classList.add('active'); btnSingle.classList.remove('active'); });
   }
-
-     1.  architecture.html  (To Build)
-     
-     Логика: хэш = номер карточки (01, 02, 03…)
-     Внешние проекты открываются в новой вкладке,
-     внутренние — в модалке.
-     
-     Вставить в конец <script>, перед </script>
-     ══════════════════════════════════════════ -->
-<script id="arch-snippet">
-// ── DEEP LINK: architecture.html#02 → открыть проект 02 ──
-(function () {
-  const hash = decodeURIComponent(location.hash.slice(1)).trim();
-  if (!hash) return;
-  // ждём чуть-чуть, чтобы фильтры и карточки уже были в DOM
-  setTimeout(function () {
-    document.querySelectorAll('.project-card').forEach(function (card) {
-      const numEl = card.querySelector('.card-number');
-      if (numEl && numEl.textContent.trim() === hash) {
-        if (card.dataset.externalUrl) {
-          window.open(card.dataset.externalUrl, '_blank', 'noopener');
-        } else {
-          openModal(card);
-        }
-      }
-    });
-  }, 80);
-}());
-  
 </script>
 </body>
 </html>
