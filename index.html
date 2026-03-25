@@ -616,12 +616,26 @@ fetch('projects.json')
   .then(data => { projects = data; })
   .catch(() => {
     projects = [
-      { title: "Housing Block A",  category: "Architecture",    description: "Жилой комплекс в контексте существующей застройки.",     image: "", url: "architecture.html" },
-      { title: "Urban Void",       category: "Urban · Research",description: "Картографирование незастроенных территорий.",            image: "", url: "architecture.html" },
-      { title: "GAN Facade",       category: "AI Experiments",  description: "Генерация фасадных решений с помощью нейросети.",        image: "", url: "architecture.html" },
-      { title: "Interference",     category: "Visual",          description: "Серия работ о наложении систем.",                       image: "", url: "visual.html"       },
-      { title: "Noise Floor",      category: "Video",           description: "Пространство между звуком и тишиной.",                  image: "", url: "video.html"        },
-      { title: "Broadcast 01",     category: "Local Radio",     description: "О звуке двора и полевых записях.",                      image: "", url: "localradio.html"   }
+      { title: "Myriads.",         category: "Architecture", description: "Design code of the residential district.",                          image: "images/assets/build/als/miriady.jpg",          url: "architecture.html#01" },
+      { title: "1295",   category: "Architecture", description: "Residential Complex.",                           image: "images/assets/build/1295/12951.jpg",           url: "architecture.html#02" },
+      { title: "Meaning of Fortification",     category: "Architecture", description: "The final stage of the semester project in urban design at ULisboa. The main theme: defense fortification.",      image: "images/assets/build/fortification/fortification1.jpg", url: "architecture.html#03" },
+      { title: "House for a Young Couple",     category: "Architecture", description: "A compact courtyard house designed for a young couple.",                              image: "images/assets/build/interior/interior1.jpg",   url: "architecture.html#06" },
+      { title: "Brownie Coffeehouse",          category: "Architecture", description: "Interior design for local coffeehouse.",       image: "images/assets/build/brownie/brownie1.JPG",     url: "architecture.html#11" },
+      { title: "Museum of Modern Art NOVA",    category: "Architecture", description: "The Museum of Modern Art NOVA.",      image: "images/assets/build/nova/nova2.jpg",           url: "architecture.html#14" },
+      { title: "PILOTS / Hand Drawings",       category: "Visual",       description: "Early touches of the materials.",        image: "images/assets/create/pilots/pilots1.jpg",      url: "visual.html#pilots"   },
+      { title: "None of them is me",           category: "Visual",       description: "A Self-Portrait series.",                               image: "images/assets/create/portrait/Portrait1.jpg",  url: "visual.html#Self-Portrait" },
+      { title: "SCAN — Grains of the Cities",  category: "Visual",       description: "Fragments of urban texture.",                      image: "images/assets/create/scan/Scan1.jpg",          url: "visual.html#scan"     },
+      { title: "CLO — Custom Clothing",        category: "Visual",       description: "Hand-painted garments as wearable architecture.",                             image: "images/assets/create/clo/cloth1.jpg",          url: "visual.html#clo"      },
+      { title: "ОСТАТОК / Residue",            category: "Visual",       description: "A group exhibition on urban memory.",      image: "",                                             url: "visual.html#ostatok"  },
+      { title: "BIRDS",                        category: "Video",        description: "From Paris with love.",                              image: "images/video/videobirds1.jpg",                 url: "video.html#0"         },
+      { title: "Rebirth Cycles",               category: "Video",        description: "A journey into the past.",                       image: "images/video/videoRebirthCycles.jpg",          url: "video.html#1"         },
+      { title: "Special Diary",               category: "Video",        description: "This is how life used to feel.",                   image: "images/video/videocrystal1.jpg",               url: "video.html#2"         },
+       { title: "Short Walks Down Long Roads",               category: "Video",        description: "Just a feeling.",                   image: "images/video/videoshort1.jpg",               url: "video.html#3"         },
+      { title: "Channel 01",                   category: "Local Radio",  description: "Made for you.",                        image: "",                                             url: "localradio.html#0"    },
+      { title: "Channel 02",                   category: "Local Radio",  description: "Made for you.",                        image: "",                                             url: "localradio.html#1"    },
+      { title: "Channel 03",                   category: "Local Radio",  description: "Made for you.",           image: "",                                             url: "localradio.html#2"    },
+      { title: "Channel 04",                   category: "Local Radio",  description: "Made for you.",              image: "",                                             url: "localradio.html#3"    },
+      { title: "Channel 05",                   category: "Local Radio",  description: "Made for you.",              image: "",                                             url: "localradio.html#4"    }
     ];
   });
 
