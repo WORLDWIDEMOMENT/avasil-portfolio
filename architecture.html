@@ -143,25 +143,26 @@
     .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; transition: filter .4s; }
     .grid-bg.blur { filter: blur(6px); }
     @media (max-width: 900px) {
-      .modal-main-img {
-  flex: none;
-  height: auto;
-}
-.modal-main-img img {
-  height: auto;
-}
       .projects-grid { grid-template-columns: repeat(2, 1fr); }
       /* мобайл: отступ убираем, окно на весь экран, контент скроллируется */
       .modal { padding: 0; overflow-y: auto; }
       .modal-content { grid-template-columns: 1fr; height: auto; min-height: 100vh; overflow: visible; border: none; }
-     .modal-gallery {
+    .modal-gallery {
   display: flex;
   flex-direction: column;
+  height: auto;
 }
-
-.modal-main-img { 
-  flex: 1;
-  min-height: 0;
+.modal-main-img {
+  flex: none;
+  height: auto;
+  display: block;
+  overflow: hidden;
+}
+.modal-main-img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }
       .modal-info { height: auto; overflow-y: visible; padding: 24px 20px 80px; border-left: none; border-top: 1px solid var(--line); }
       .page-title { font-size: clamp(52px, 14vw, 100px); padding: 28px 24px 12px; }
