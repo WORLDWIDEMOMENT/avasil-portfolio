@@ -215,7 +215,7 @@ body::before {
 .playlists {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   border-top: 1px solid var(--line);
 }
 .playlist-card {
@@ -289,7 +289,7 @@ body::before {
   flex: 1; display: flex; flex-direction: column; gap: 4px;
 }
 .card-title {
-  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  font-size: 11px; font-weight: 700; letter-spacing: .05em;
   text-transform: uppercase; line-height: 1.3; color: var(--white);
 }
 .card-title.loading {
@@ -481,8 +481,6 @@ body::before {
       <span class="sep">—</span>
       <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
       <span class="sep">—</span>
-      <a href="https://www.behance.net/avasileuskaya" target="_blank">Behance</a>
-      <span class="sep">—</span>
       <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
     </div>
   </div>
@@ -519,6 +517,7 @@ body::before {
     { id: 1, url: 'https://open.spotify.com/playlist/4YMNrlPjp3nTenV6Qkn4Tc', title: 'Channel 02' },
     { id: 2, url: 'https://open.spotify.com/playlist/2BAdX7KOSo3hsDMlq37IBD', title: 'Channel 03' },
     { id: 3, url: 'https://open.spotify.com/playlist/77mIWmxJFdJGWar4EJdrjq', title: 'Channel 04' },
+    { id: 4, url: 'https://open.spotify.com/playlist/1ajzqkENf7NBuPTVNyJPjQ', title: 'Channel 05' },
   ];
 
   // ── BUILD DRUM STRIP ──
@@ -602,18 +601,18 @@ body::before {
     // clear previous highlight
     document.querySelectorAll('.playlist-card').forEach(c => c.classList.remove('drumlit'));
 
-    const chosen = Math.floor(Math.random() * 4);
+    const chosen = Math.floor(Math.random() * 5);
     const titles = PLAYLISTS.map(p => p.title);
     const totalItems = drumStrip.children.length;
 
     // We want to land on 'chosen' index in one of the middle repetitions
     // target: somewhere in rep 5 (of 12) so there's room above and below
     const targetRep = 5;
-    const targetIndex = targetRep * 4 + chosen;
+    const targetIndex = targetRep * 5 + chosen;
     const targetOffset = targetIndex * ITEM_H;
 
     // extra spins: add several full rounds for drama
-    const extraSpins = (3 + Math.floor(Math.random() * 3)) * 4 * ITEM_H;
+    const extraSpins = (3 + Math.floor(Math.random() * 3)) * 5 * ITEM_H;
     const finalOffset = targetOffset + extraSpins;
 
     // eased animation via JS
