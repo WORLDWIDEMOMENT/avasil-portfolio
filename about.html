@@ -12,7 +12,7 @@ html,body{height:100%;overflow:hidden;font-family:'Helvetica Neue',Helvetica,Ari
 #cur{position:fixed;width:10px;height:10px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .16s,height .16s;mix-blend-mode:difference}
 #cur.big{width:50px;height:50px}
 @media(hover:none){#cur{display:none}}
-.bg{position:fixed;inset:0;z-index:0;background:url("images/about1.JPG") center/cover no-repeat;animation:bgIn 1.4s cubic-bezier(.4,0,.2,1) forwards}
+.bg{position:fixed;inset:0;z-index:0;background:url("images/about1.webp") center/cover no-repeat;animation:bgIn 1.4s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes bgIn{from{transform:scale(1.06);filter:brightness(.55)}to{transform:scale(1);filter:brightness(1)}}
 .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px}
 .overlay-left{position:fixed;top:0;left:0;bottom:0;width:42%;background:rgba(0,0,0,.68);z-index:2}
