@@ -158,10 +158,10 @@
       .projects-grid,.projects-grid.cols-2,.projects-grid.cols-1{grid-template-columns:1fr}
       .projects-grid.mobile-2col{grid-template-columns:repeat(2,1fr) !important}
 
-      /* Filter row: horizontal scroll, single row */
-      .filter-row{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom:none}
+      /* Filter row: horizontal scroll, single row, gradient fade hint at edges */
+      .filter-row{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom:none;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}
       .filter-row::-webkit-scrollbar{display:none}
-      .filter-btn{flex:0 0 auto;font-size:9px;padding:13px 12px;white-space:nowrap;border-right:1px solid var(--line)}
+      .filter-btn{flex:0 0 auto;font-size:9px;padding:13px 14px;white-space:nowrap;border-right:1px solid var(--line)}
       .filter-btn:last-child{border-right:none}
 
       /* Typography */
@@ -426,19 +426,15 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
     }
 
     /* ── SHOW IMAGE ──
-       Replaces only the <img> inside modal-stage; prev/next buttons live in
-       .modal-stage-wrap (parent) so they are never wiped. */
+       Arrows live in .modal-stage-wrap (parent of modalMain), so
+       clearing modalMain.innerHTML is always safe. */
     function showImage(index){
       if (!currentImages.length) return;
       currentIndex = (index + currentImages.length) % currentImages.length;
       const src = currentImages[currentIndex];
       zoomSource = src;
       modalMain.className = 'modal-stage';
-      // Remove old img and lens only, preserve nothing else (stage-wrap holds arrows)
-      const oldImg = modalMain.querySelector('img');
-      const oldLens = modalMain.querySelector('.lens');
-      if (oldImg) oldImg.remove();
-      if (oldLens) oldLens.remove();
+      modalMain.innerHTML = '';          // wipe img, lens, AND any stale text nodes
       const img = new Image();
       img.alt = currentAlt;
       img.src = src;
@@ -498,6 +494,16 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
       });
     });
 
+    /* ── FILTER – scroll active button to center of the row ── */
+    function scrollFilterIntoView(btn){
+      const row = document.getElementById('filterRow');
+      if (!row) return;
+      // Only auto-scroll on mobile where the row is overflow-x:auto
+      if (window.innerWidth > 620) return;
+      const targetLeft = btn.offsetLeft - (row.clientWidth / 2) + (btn.offsetWidth / 2);
+      row.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+    }
+
     document.querySelectorAll('.filter-btn').forEach(btn=>btn.addEventListener('click',()=>{
       const filter = btn.dataset.filter;
       document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b===btn));
@@ -505,16 +511,23 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
         const tags = (card.dataset.tags||'').toLowerCase().split(/\s+/);
         card.toggleAttribute('hidden', filter!=='all' && !tags.includes(filter));
       });
+      scrollFilterIntoView(btn);
     }));
 
     document.querySelectorAll('.tag').forEach(tag=>tag.addEventListener('click',e=>{
       e.stopPropagation();
       const filter = tag.dataset.filter;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));
+      let activeBtn;
+      document.querySelectorAll('.filter-btn').forEach(b=>{
+        const match = b.dataset.filter===filter;
+        b.classList.toggle('active', match);
+        if (match) activeBtn = b;
+      });
       document.querySelectorAll('.project-card').forEach(card=>{
         const tags = (card.dataset.tags||'').toLowerCase().split(/\s+/);
         card.toggleAttribute('hidden', filter!=='all' && !tags.includes(filter));
       });
+      if (activeBtn) scrollFilterIntoView(activeBtn);
       document.getElementById('filterRow').scrollIntoView({behavior:'smooth',block:'nearest'});
     }));
 
