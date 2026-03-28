@@ -31,34 +31,22 @@
       position:fixed;top:0;left:0;right:0;height:42px;z-index:220;
       display:flex;align-items:center;justify-content:space-between;
       padding:0 36px;
+      background:rgba(10,10,10,.82);
+      backdrop-filter:blur(6px);
     }
     .back{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:#555;transition:color .2s;white-space:nowrap}
     .back:hover{color:#f5f5f5}
-    .page-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-    .page-links a{color:#f5f5f5;text-decoration:none;opacity:.55;transition:opacity .2s;white-space:nowrap}
-    .page-links a:hover{opacity:1}
-    .page-links .sep{opacity:.18;color:#f5f5f5}
+    /* Page links: same style as .back */
+    .page-links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:flex-end}
+    .page-links a{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:#555;transition:color .2s;white-space:nowrap}
+    .page-links a:hover{color:#f5f5f5}
 
     /* ── TICKER ── */
-    .ticker-bar{position:fixed;top:42px;left:0;right:0;z-index:210;overflow:hidden;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-    .ticker-text{display:flex;white-space:nowrap;animation:marquee 40s linear infinite;color:rgba(139,139,139,.55);font-size:10px;letter-spacing:.28em;text-transform:uppercase}
-    .ticker-text span{padding-right:24px;flex-shrink:0}
+    .ticker-bar{position:fixed;top:42px;left:0;right:0;z-index:210;overflow:hidden;padding:4px 0 3px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .ticker-text{display:flex;white-space:nowrap;animation:marquee 40s linear infinite;color:rgba(255,255,255,.82);font-size:18px;font-weight:900;letter-spacing:-.03em;text-transform:uppercase;line-height:1}
+    .ticker-text span{padding-right:14px;flex-shrink:0}
     @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* ── GLOBAL NAV ARROWS ── */
-    .g-arrow{
-      position:fixed;top:50%;transform:translateY(-50%);z-index:300;
-      width:44px;height:44px;border-radius:50%;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(20,20,20,.55);backdrop-filter:blur(10px);
-      color:#f5f5f5;font-size:22px;
-      display:flex;align-items:center;justify-content:center;
-      transition:.2s;
-    }
-    .g-arrow:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25)}
-    #gPrev{left:12px}
-    #gNext{right:12px}
-    .g-arrow[hidden]{display:none !important}
 
     /* ── SCROLL CONTAINER ── */
     .scroll-container{
@@ -101,9 +89,9 @@
     .modal-multi.mode-collage img{width:calc(33.33% - 5px);height:auto;max-height:42vh;object-fit:contain;border:1px solid rgba(255,255,255,.05)}
     .modal-multi.mode-row img{flex:1 1 0;min-width:0;height:78vh;object-fit:contain;border:1px solid rgba(255,255,255,.05)}
     .modal-multi.mode-group img{flex:1 1 0;min-width:0;height:65vh;object-fit:contain;border:1px solid rgba(255,255,255,.05)}
-    .modal-nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#f5f5f5;width:40px;height:40px;border-radius:50%;font-size:18px;transition:all .2s;z-index:10}
-    .modal-nav-btn:hover{background:rgba(255,255,255,.18)}
-    .modal-nav-btn.prev{left:15px}.modal-nav-btn.next{right:15px}
+    .modal-nav-btn{position:fixed;top:50%;transform:translateY(-50%);background:rgba(20,20,20,.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);color:#f5f5f5;width:44px;height:44px;border-radius:50%;font-size:22px;transition:.2s;z-index:510}
+    .modal-nav-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3)}
+    .modal-nav-btn.prev{left:14px}.modal-nav-btn.next{right:14px}
     .modal-nav-btn.off{display:none}
     .modal-info{width:300px;padding:32px 28px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;border-left:1px solid rgba(255,255,255,.08);flex-shrink:0;background:rgba(14,14,14,.92)}
     .modal-info::-webkit-scrollbar{width:3px}
@@ -142,11 +130,10 @@
       .modal-nav-btn{top:auto;bottom:12px;transform:none;background:rgba(140,140,140,.25);border-color:rgba(180,180,180,.3);color:rgba(255,255,255,.7);width:36px;height:36px;font-size:16px}
       .modal-nav-btn.prev{left:12px}.modal-nav-btn.next{right:12px}
       .modal-info{flex:none;width:100%;height:auto;max-height:none;border-left:none;border-top:1px solid rgba(255,255,255,.1);padding:24px 20px 48px;overflow-y:visible}
-      /* Smaller global arrows on mobile */
-      .g-arrow{width:36px;height:36px;font-size:18px}
-      #gPrev{left:4px}#gNext{right:4px}
+      .modal-nav-btn{width:38px;height:38px;font-size:18px}
+      .modal-nav-btn.prev{left:6px}.modal-nav-btn.next{right:6px}
       .nav-fixed{padding:0 14px;height:40px}
-      .page-links{gap:6px;font-size:10px}
+      .page-links{gap:14px;font-size:10px;letter-spacing:.1em}
       .ticker-bar{top:40px}
       .scroll-container{padding-top:64px}
       .ftl{left:14px;font-size:9px}
@@ -164,9 +151,7 @@
   <a href="index.html" class="back">← Back</a>
   <nav class="page-links">
     <a href="architecture.html">To Build</a>
-    <span class="sep">—</span>
     <a href="video.html">Video</a>
-    <span class="sep">—</span>
     <a href="localradio.html">Local Radio</a>
   </nav>
 </header>
@@ -178,23 +163,20 @@
   </span>
 </div>
 
-<!-- Global navigation arrows -->
-<button class="g-arrow" id="gPrev" aria-label="Previous image">‹</button>
-<button class="g-arrow" id="gNext" aria-label="Next image">›</button>
-
 <div class="scroll-container" id="scrollContainer"></div>
 
 <!-- Modal -->
 <div class="modal" id="modal" aria-hidden="true">
   <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+  <!-- Arrows outside modal-content: fixed to viewport, unaffected by image height -->
+  <button class="modal-nav-btn prev" id="modalPrev">‹</button>
+  <button class="modal-nav-btn next" id="modalNext">›</button>
   <div class="modal-content" id="modalContent">
     <div class="modal-image-section" id="modalImageSection">
       <div class="modal-single" id="modalSingleView">
         <img id="modalImg" src="" alt="">
       </div>
       <div class="modal-multi" id="modalMultiView"></div>
-      <button class="modal-nav-btn prev" id="modalPrev">‹</button>
-      <button class="modal-nav-btn next" id="modalNext">›</button>
     </div>
     <div class="modal-info" id="modalInfo">
       <div class="modal-title"    id="modalTitle"></div>
@@ -208,14 +190,14 @@
 
 <div class="ftl"><a href="about.html">About</a></div>
 <div class="ftr">
-  <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+  <a href="/cdn-cgi/l/email-protection#9df3fcebf4f1f8f3ddfff6b3efe8"><span class="__cf_email__" data-cfemail="0a646b7c63666f644a686124787f">[email&#160;protected]</span></a>
   <span class="sep">—</span>
   <a href="https://instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
   <span class="sep">—</span>
   <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── CLO GROUPS ── */
 const CLO_GROUPS = [
   { files:[0,1,2], name:'TEKKONKINKREET', desc:'Hand-painted garments inspired by the aesthetic.\nNo sketch, no transfer.\nThe painting grew from the fabric up.' },
@@ -275,11 +257,15 @@ const projects = [
   }
 ];
 
-/* ── FLAT IMAGE LIST for global arrows ──
-   CLO: one representative (first of each group) to avoid repeating same group view. */
+/* ── FLAT IMAGE LIST for unified cross-project navigation ──
+   bti / Self-Portrait always show all images at once → one entry each.
+   clo → one entry per group.
+   Everything else → one entry per image. */
 const flatImages = [];
 projects.forEach(proj => {
-  if (proj.id === 'clo') {
+  if (proj.id === 'bti' || proj.id === 'Self-Portrait') {
+    flatImages.push({ proj, fileIdx: 0 });
+  } else if (proj.id === 'clo') {
     CLO_GROUPS.forEach(g => flatImages.push({ proj, fileIdx: g.files[0] }));
   } else {
     proj.files.forEach((f, i) => flatImages.push({ proj, fileIdx: i }));
@@ -300,8 +286,6 @@ const modalDesc         = document.getElementById('modalDesc');
 const modalClose        = document.getElementById('modalClose');
 const modalPrev         = document.getElementById('modalPrev');
 const modalNext         = document.getElementById('modalNext');
-const gPrev             = document.getElementById('gPrev');
-const gNext             = document.getElementById('gNext');
 
 let currentProject  = null;
 let currentImageIdx = 0;
@@ -352,23 +336,19 @@ function buildMultiImgs(paths) {
   });
 }
 
-/* ── GLOBAL ARROWS VISIBILITY ── */
-function setGlobalArrows(on) {
-  gPrev.hidden = !on;
-  gNext.hidden = !on;
-}
-
 /* ── OPEN MODAL ── */
 function openModal(proj, fileIdx) {
-  // Sync global index
-  if (proj.id === 'clo') {
-    const g = getCloGroup(fileIdx);
-    const fi = flatImages.findIndex(e => e.proj === proj && e.fileIdx === g.files[0]);
-    if (fi !== -1) globalIdx = fi;
-  } else {
-    const fi = flatImages.findIndex(e => e.proj === proj && e.fileIdx === fileIdx);
-    if (fi !== -1) globalIdx = fi;
-  }
+  // Sync globalIdx so arrows continue from here
+  const fi = flatImages.findIndex(e => {
+    if (e.proj !== proj) return false;
+    if (proj.id === 'clo') {
+      const g = getCloGroup(fileIdx);
+      return e.fileIdx === g.files[0];
+    }
+    if (proj.id === 'bti' || proj.id === 'Self-Portrait') return true;
+    return e.fileIdx === fileIdx;
+  });
+  if (fi !== -1) globalIdx = fi;
 
   currentProject  = proj;
   currentImageIdx = fileIdx;
@@ -409,7 +389,6 @@ function openModal(proj, fileIdx) {
     setInfo(proj.name, proj.subtitle, proj.desc);
   }
 
-  setGlobalArrows(false);
   modal.classList.add('active');
   modal.setAttribute('aria-hidden', 'false');
 }
@@ -417,24 +396,10 @@ function openModal(proj, fileIdx) {
 function closeModal() {
   modal.classList.remove('active');
   modal.setAttribute('aria-hidden', 'true');
-  setGlobalArrows(true);
 }
 
-function navSingle(dir) {
-  if (!currentProject?.files.length) return;
-  currentImageIdx = (currentImageIdx + dir + currentProject.files.length) % currentProject.files.length;
-  modalImg.src = currentProject.files[currentImageIdx].path;
-}
-
-function navClo(dir) {
-  const gIdx  = CLO_GROUPS.findIndex(g => g.files.includes(currentImageIdx));
-  const nIdx  = (gIdx + dir + CLO_GROUPS.length) % CLO_GROUPS.length;
-  currentImageIdx = CLO_GROUPS[nIdx].files[0];
-  openModal(currentProject, currentImageIdx);
-}
-
-/* ── GLOBAL IMAGE STEP ── */
-function globalStep(dir) {
+/* ── UNIFIED NAVIGATION (cross-project) ── */
+function navGlobal(dir) {
   if (!flatImages.length) return;
   globalIdx = (globalIdx + dir + flatImages.length) % flatImages.length;
   openModal(flatImages[globalIdx].proj, flatImages[globalIdx].fileIdx);
@@ -443,16 +408,14 @@ function globalStep(dir) {
 /* ── EVENT LISTENERS ── */
 modalClose.onclick = closeModal;
 modal.onclick = e => { if (e.target === modal) closeModal(); };
-modalPrev.onclick  = () => currentProject?.id === 'clo' ? navClo(-1)  : navSingle(-1);
-modalNext.onclick  = () => currentProject?.id === 'clo' ? navClo(+1)  : navSingle(+1);
-gPrev.onclick      = () => globalStep(-1);
-gNext.onclick      = () => globalStep(+1);
+modalPrev.onclick  = () => navGlobal(-1);
+modalNext.onclick  = () => navGlobal(+1);
 
 document.addEventListener('keydown', e => {
-  const modalOpen = modal.classList.contains('active');
-  if (e.key === 'Escape' && modalOpen) { closeModal(); return; }
-  if (e.key === 'ArrowLeft')  { modalOpen ? (currentProject?.id==='clo'?navClo(-1):navSingle(-1)) : globalStep(-1); }
-  if (e.key === 'ArrowRight') { modalOpen ? (currentProject?.id==='clo'?navClo(+1):navSingle(+1)) : globalStep(+1); }
+  if (!modal.classList.contains('active')) return;
+  if (e.key === 'Escape')      closeModal();
+  if (e.key === 'ArrowLeft')   navGlobal(-1);
+  if (e.key === 'ArrowRight')  navGlobal(+1);
 });
 
 /* ── MIDDLE-CLICK DRAG ── */
@@ -537,15 +500,3 @@ function buildScrollContainer() {
   spacer.style.cssText = 'flex-shrink:0;width:24px;min-width:24px';
   scrollContainer.appendChild(spacer);
 }
-
-buildScrollContainer();
-
-// Debounced rebuild on resize
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(buildScrollContainer, 150);
-});
-</script>
-</body>
-</html>
