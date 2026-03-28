@@ -1,70 +1,125 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architecture - A. Vasileuskaya</title>
-    <style>
-        /* Оптимизированный CSS - удалены дубли/ненужное */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; overflow-x: hidden; }
-
-        /* Заголовок с бегущей строкой */
-        .header { position: fixed; top: 0; width: 100%; height: 60px; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; align-items: center; }
-        .marquee { white-space: nowrap; animation: scroll 20s linear infinite; color: white; font-size: 24px; font-weight: bold; }
-        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-        /* Мобильный коллапс */
-        @media (max-width: 768px) {
-            .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .typologies { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; max-height: 0; overflow: hidden; transition: max-height 0.3s; }
-            .typologies.open { max-height: 200px; }
-            .title-section { height: 50vh; }
-        }
-
-        /* Сетка проектов */
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 80px 20px 20px; }
-        .project { cursor: pointer; position: relative; overflow: hidden; }
-        .project img { width: 100%; height: 300px; object-fit: cover; transition: transform 0.3s; }
-        .project:hover img { transform: scale(1.05); }
-
-        /* Типологии (скрыты по умолчанию на мобиле) */
-        .typologies { grid-template-columns: 1fr; margin: 20px 0; }
-        .typology { padding: 10px; background: #f0f0f0; text-align: center; }
-
-        /* Модалка проекта - без скролла */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; overflow: hidden; }
-        .modal-content { position: relative; width: 100vw; height: 100vh; }
-        .modal img { width: 100%; height: 100%; object-fit: contain; }
-
-        /* Фиксированные стрелки НА ФОТО, не на модалке */
-        .arrow { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.5); color: black; font-size: 30px; padding: 10px 20px; cursor: pointer; z-index: 2001; user-select: none; transition: background 0.3s; }
-        .arrow:hover { background: white; }
-        .arrow-left { left: 20px; }
-        .arrow-right { right: 20px; }
-        @media (max-width: 768px) { .arrow { font-size: 24px; padding: 5px 15px; } }
-
-        /* Титульник */
-        .title-section { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; color: white; text-align: center; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TO BUILD — AV</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0c0c0c;--panel:#121212;--white:#efefef;--dim:#8a8a8a;--line:#242424;--blue:#4d6aff;--blue2:#2c57ff}
+    html{scroll-behavior:smooth}
+    body{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
+    a{color:inherit}
+    .wrap{min-height:100vh}
+    .topbar{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--line)}
+    .topbar-row{display:flex;justify-content:space-between;align-items:flex-start;padding:18px 40px 10px;gap:20px;flex-wrap:wrap}
+    .back{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--dim);transition:.2s}
+    .back:hover{color:var(--white)}
+    .navlinks{display:flex;gap:28px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .navlinks a{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--white);opacity:.72;transition:.2s,transform .2s}
+    .navlinks a:hover{opacity:1;transform:translateY(-1px)}
+    .brandline{padding:0 40px 8px;text-align:right;color:var(--dim);font-size:12px;letter-spacing:.28em;text-transform:uppercase;overflow:hidden}
+    .ticker{display:inline-block;white-space:nowrap;will-change:transform;animation:marquee 26s linear infinite}
+    .ticker span{padding-right:22px}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .page-title{font-size:clamp(72px,13vw,158px);font-weight:700;letter-spacing:-.04em;line-height:.85;text-align:center;padding:40px 40px 12px;color:var(--white)}
+    .page-subtitle{text-align:center;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);padding:0 40px 28px}
+    .filter-row{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .filter-btn{flex:1 1 140px;padding:16px 10px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;background:none;border:none;border-right:1px solid var(--line);color:var(--dim);cursor:pointer;transition:.15s;position:relative}
+    .filter-btn:last-child{border-right:none}
+    .filter-btn.active{color:var(--white)}
+    .filter-btn.active::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--blue)}
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .projects-grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    .projects-grid.cols-1{grid-template-columns:1fr}
+    .project-card{position:relative;background:#131313;border-right:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;cursor:pointer;transition:transform .22s ease, background .22s ease, border-color .22s ease}
+    .project-card:hover{transform:scale(1.01);background:#151515;border-color:#343434}
+    .project-card[hidden]{display:none !important}
+    .card-number{position:absolute;top:12px;left:14px;z-index:4;font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--blue);opacity:0;transition:.2s}
+    .project-card:hover .card-number{opacity:1}
+    .ext-badge{position:absolute;top:12px;right:12px;z-index:4;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(77,106,255,.92);border:1px solid rgba(255,255,255,.08);padding:4px 8px;border-radius:999px;opacity:.95}
+    .card-img{position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#181818}
+    .card-img img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .45s ease,filter .2s ease}
+    .project-card:hover .card-img img{transform:scale(1.03)}
+    .card-overlay{position:absolute;inset:0;display:flex;align-items:flex-end;padding:14px;z-index:2;pointer-events:none}
+    .overlay-txt{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);opacity:0;transition:.2s;background:rgba(12,12,12,.22);backdrop-filter:blur(4px);padding:6px 10px;border:1px solid rgba(255,255,255,.10)}
+    .project-card:hover .overlay-txt{opacity:1}
+    .card-meta{display:flex;justify-content:space-between;gap:12px;padding:12px 14px 14px;border-top:1px solid var(--line)}
+    .card-info{min-width:0;display:flex;flex-direction:column;gap:4px}
+    .card-name{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;line-height:1.35}
+    .card-year{font-size:10px;color:var(--dim);letter-spacing:.04em}
+    .card-tags{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+    .tag{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);background:none;border:none;padding:2px 0;cursor:pointer}
+    .tag:hover{opacity:.6}
+    .external{border-left:2px solid rgba(77,106,255,.28)}
+    .external .card-meta{border-top-color:#2b2b2b}
+    .external .project-card-link,
+    .external .overlay-txt{background:rgba(77,106,255,.95)}
+    .external .card-name{transition:color .2s}
+    .external:hover .card-name{color:#fff}
+    .external .card-year{color:#aaa}
+    .external .card-linkline{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#dfe7ff;margin-top:8px}
+    .external .card-linkline strong{display:inline-block;padding:5px 9px;border-radius:999px;background:rgba(77,106,255,.96);color:#fff}
+    .external .card-linkline{opacity:.92}
+    .external:hover .card-linkline{opacity:1}
+    .footer-left,.global-footer{position:fixed;bottom:22px;z-index:50;display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+    .footer-left{left:40px}
+    .global-footer{right:40px;justify-content:flex-end;max-width:min(66vw,900px)}
+    .footer-left a,.global-footer a{text-decoration:none;color:#fff;opacity:.34;transition:.2s;white-space:nowrap}
+    .footer-left a:hover,.global-footer a:hover{opacity:1}
+    .global-footer span{opacity:.18}
+    .cursor{position:fixed;left:0;top:0;width:8px;height:8px;border-radius:50%;background:var(--blue);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,border-radius .15s,background .15s,border-color .15s;mix-blend-mode:screen}
+    .cursor.big{width:44px;height:44px;background:transparent;border:1px solid rgba(255,255,255,.42)}
+    .cursor.lens{width:132px;height:132px;border-radius:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.65);backdrop-filter:none;box-shadow:0 0 0 1px rgba(0,0,0,.14) inset}
+    .modal{position:fixed;inset:0;display:flex;align-items:flex-start;justify-content:center;padding:4vh 3vw;visibility:hidden;opacity:0;transition:.25s;z-index:400;overflow:auto}
+    .modal.active{visibility:visible;opacity:1}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:-1}
+    .modal-content{position:relative;width:min(1600px,100%);min-height:92vh;background:#111;border:1px solid var(--line);display:grid;grid-template-columns:1fr 380px;overflow:hidden}
+    .modal-gallery{display:flex;flex-direction:column;min-height:92vh;background:#080808}
+    .modal-stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#080808}
+    .modal-stage img{width:100%;height:100%;object-fit:contain;display:block}
+    .modal-stage.ph{color:#444;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:20px;text-align:center}
+    .nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border:none;border-radius:999px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);color:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:12;transition:.2s;border:1px solid rgba(255,255,255,.1)}
+    .nav-arrow:hover{background:rgba(255,255,255,.12);transform:translateY(-50%) scale(1.04)}
+    .nav-arrow svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .nav-arrow.prev{left:14px}
+    .nav-arrow.next{right:14px}
+    .modal-thumbs{display:flex;gap:0;height:78px;overflow-x:auto;overflow-y:hidden;border-top:1px solid var(--line);scrollbar-width:thin;scrollbar-color:#444 #1a1a1a}
+    .modal-thumbs::-webkit-scrollbar{height:4px}
+    .modal-thumbs::-webkit-scrollbar-track{background:#1a1a1a}
+    .modal-thumbs::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
+    .thumb{width:78px;height:78px;flex:0 0 auto;object-fit:cover;opacity:.45;border-right:1px solid var(--line);cursor:pointer;transition:.2s}
+    .thumb.active{opacity:1;box-shadow:inset 0 -3px 0 var(--blue)}
+    .thumb:hover{opacity:.8}
+    .modal-info{min-height:92vh;overflow:auto;padding:32px 34px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
+    .modal-year{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+    .modal-title{font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.15;text-transform:uppercase;color:var(--white);margin-top:4px}
+    .modal-desc{font-size:13px;line-height:1.8;color:rgba(239,239,239,.72);white-space:pre-line}
+    .modal-specs{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;border-top:1px solid var(--line);padding-top:18px;margin-top:auto}
+    .spec label{display:block;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+    .spec span{font-size:12px;font-weight:700;color:var(--white);line-height:1.5}
+    .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;color:var(--dim);cursor:pointer;z-index:15;transition:.2s}
+    .modal-close:hover{color:var(--white);transform:rotate(90deg)}
+    .lens{position:absolute;display:none;pointer-events:none;z-index:11;width:150px;height:150px;border-radius:0;border:1px solid rgba(255,255,255,.75);box-shadow:0 0 0 1px rgba(0,0,0,.18) inset;background-repeat:no-repeat;background-color:rgba(255,255,255,.04)}
+    @media (hover:hover) and (pointer:fine){.card-img:hover{cursor:none}.project-card,.back,.navlinks a,.filter-btn,.tag,.modal-close,.thumb,.nav-arrow{cursor:none}}
+    @media (hover:none),(pointer:coarse){.cursor{display:none !important}.project-card:hover{transform:none}.nav-arrow,.modal-close,.thumb,.filter-btn,.tag{cursor:pointer}.lens{display:none !important}}
+    @media (max-width:1100px){.projects-grid{grid-template-columns:repeat(2,1fr)}.modal-content{grid-template-columns:1fr}.modal-info{min-height:auto;border-left:none;border-top:1px solid var(--line)}.modal-gallery{min-height:auto}.topbar-row,.brandline,.page-title,.page-subtitle{padding-left:24px;padding-right:24px}.footer-left{left:20px}.global-footer{right:20px;max-width:calc(100vw - 140px)}.navlinks{gap:20px}}
+    @media (max-width:620px){.projects-grid,.projects-grid.cols-2{grid-template-columns:1fr}.filter-btn{flex:1 1 50%;font-size:8px;padding:13px 6px}.page-title{font-size:clamp(54px,14vw,96px);padding-top:28px}.page-subtitle{padding-bottom:20px}.topbar-row{padding-top:16px}.navlinks{gap:14px;justify-content:flex-start}.brandline{text-align:left;font-size:10px;letter-spacing:.22em}.footer-left,.global-footer{bottom:14px;font-size:9px;gap:8px}.global-footer{max-width:calc(100vw - 95px)}.modal{padding:0;overflow:auto}.modal-content{border:none;min-height:100vh}.modal-stage{min-height:44vh}.modal-thumbs{height:68px}.thumb{width:68px;height:68px}.nav-arrow{width:42px;height:42px}.nav-arrow.prev{left:10px}.nav-arrow.next{right:10px}.modal-info{padding:22px 18px 78px}.modal-specs{grid-template-columns:1fr}.modal-title{font-size:18px}}
+  </style>
 </head>
 <body>
-    <!-- Бегущая строка -->
-    <div class="header">
-        <div class="marquee">a.vasileuskaya a.vasileuskaya a.vasileuskaya </div>
-    </div>
+  <div class="wrap">
+    <div id="cursor" class="cursor"></div>
 
-    <!-- Титульник (схлопывается на мобиле при скролле) -->
-    <section class="title-section">
-        <h1>Architecture Projects</h1>
-        <div class="typologies" id="typologies">
-            <div class="typology">Residential</div>
-            <div class="typology">Commercial</div>
-            <!-- Добавьте свои типологии, макс 2 ряда на мобиле -->
-        </div>
-    </section>
-
-     </div>
+    <header class="topbar">
+      <div class="topbar-row">
+        <a class="back" href="index.html">← Back</a>
+        <nav class="navlinks" aria-label="Site navigation">
+          <a href="visual.html">Visual</a>
+          <a href="video.html">Video</a>
+          <a href="localradio.html">Local radio</a>
+        </nav>
+      </div>
       <div class="brandline"><span class="ticker"><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span></span></div>
       <h1 class="page-title" id="pageTitle">TO BUILD</h1>
       <p class="page-subtitle" id="pageSubtitle">Projects led across three continents — from single residences to urban scale</p>
@@ -165,83 +220,202 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
       </article>
     </main>
 
-    <!-- Модалка -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <img id="modal-img" src="" alt="">
+    <section class="modal" id="modal" aria-hidden="true">
+      <div class="modal-overlay" id="modalOverlay"></div>
+      <div class="modal-content" role="dialog" aria-modal="true">
+        <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+        <div class="modal-gallery">
+          <div class="modal-stage ph" id="modalMain">Add images to images/assets/build/</div>
+          <button class="nav-arrow prev" id="prevImg" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="nav-arrow next" id="nextImg" type="button" aria-label="Next image"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+          <div class="modal-thumbs" id="modalThumbs"></div>
         </div>
+        <aside class="modal-info">
+          <div><div class="modal-year" id="modalYear"></div><div class="modal-title" id="modalTitle"></div></div>
+          <p class="modal-desc" id="modalDesc"></p>
+          <div class="modal-specs" id="modalSpecs"></div>
+          <div id="modalExtra"></div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="footer-left"><a href="about.html">About</a></div>
+    <div class="global-footer">
+      <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank" rel="noopener">Artlebedev</a><span>—</span>
+      <a href="mailto:navilen@bk.ru">navilen@bk.ru</a><span>—</span>
+      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a><span>—</span>
+      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
+  </div>
 
-    <!-- Стрелки (фиксированы на экране) -->
-    <div class="arrow arrow-left" id="prev">&larr;</div>
-    <div class="arrow arrow-right" id="next">&rarr;</div>
+  <script>
+    const cursor = document.getElementById('cursor');
+    const desktop = matchMedia('(hover:hover) and (pointer:fine)').matches;
+    if (desktop) {
+      let mx = 0, my = 0, cx = 0, cy = 0;
+      const tick = () => { cx += (mx - cx) * .18; cy += (my - cy) * .18; cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; requestAnimationFrame(tick); };
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+      requestAnimationFrame(tick);
+      document.querySelectorAll('a,button,.project-card,.card-img').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('big','lens'));
+      });
+    }
 
-    <script>
-        // Оптимизированный JS - минимальный
-        const modal = document.getElementById('modal');
-        const modalImg = document.getElementById('modal-img');
-        const projects = document.querySelectorAll('.project');
-        const prev = document.getElementById('prev');
-        const next = document.getElementById('next');
-        const typologies = document.getElementById('typologies');
+    const modal = document.getElementById('modal');
+    const modalMain = document.getElementById('modalMain');
+    const modalThumbs = document.getElementById('modalThumbs');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalYear = document.getElementById('modalYear');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalSpecs = document.getElementById('modalSpecs');
+    const modalExtra = document.getElementById('modalExtra');
+    const prevImg = document.getElementById('prevImg');
+    const nextImg = document.getElementById('nextImg');
+    const blurTargets = ['pageTitle','pageSubtitle','projectsGrid','globalFooter','footerLeft'];
 
-        let currentImages = [];
-        let currentIndex = 0;
+    let currentImages = [];
+    let currentIndex = 0;
+    let currentAlt = '';
+    let zoomActive = false;
+    let zoomSource = '';
 
-        // Открытие проекта без скролла
-        projects.forEach(project => {
-            project.addEventListener('click', () => {
-                currentImages = project.dataset.images.split(',');
-                currentIndex = 0;
-                modalImg.src = currentImages[0];
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden'; // Блок скролла
-            });
+    const setBlur = on => blurTargets.forEach(id => document.getElementById(id)?.classList.toggle('blur', on));
+
+    function toArray(v){ try{return JSON.parse(v||'[]')}catch{return []} }
+    function renderSpecs(d){
+      const specs = [{label:'Type',val:d.type},{label:'Studio',val:d.studio},{label:'Tools',val:d.tools}].filter(x=>x.val);
+      modalSpecs.innerHTML = specs.map(s => `<div class="spec"><label>${s.label}</label><span>${s.val}</span></div>`).join('');
+    }
+    function setThumbActive(i){ modalThumbs.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active', idx===i)); }
+    function showImage(index){
+      if (!currentImages.length) return;
+      currentIndex = (index + currentImages.length) % currentImages.length;
+      const src = currentImages[currentIndex];
+      zoomSource = src;
+      modalMain.className = 'modal-stage';
+      modalMain.innerHTML = '';
+      const img = document.createElement('img');
+      img.alt = currentAlt;
+      img.src = src;
+      img.addEventListener('load', () => { if (currentImages.length === 1) setThumbActive(0); else setThumbActive(currentIndex); });
+      modalMain.appendChild(img);
+      setThumbActive(currentIndex);
+      if (desktop) modalMain.dataset.src = src;
+    }
+    function openModal(card){
+      const d = card.dataset;
+      currentImages = toArray(d.images);
+      currentIndex = 0;
+      currentAlt = d.title || '';
+      modalTitle.textContent = d.title || '';
+      modalYear.textContent = (d.year || '') + (d.location ? ' · ' + d.location : '');
+      modalDesc.textContent = d.desc || '';
+      renderSpecs(d);
+      modalExtra.innerHTML = card.classList.contains('external') ? '<p class="card-linkline"><strong>VIEW ON ARTLEBEDEV</strong></p>' : '';
+      modalThumbs.innerHTML = '';
+      if (currentImages.length) {
+        currentImages.forEach((src, i) => {
+          const t = document.createElement('img');
+          t.className = 'thumb' + (i===0 ? ' active' : '');
+          t.src = src;
+          t.alt = d.title || '';
+          t.addEventListener('click', () => showImage(i));
+          modalThumbs.appendChild(t);
         });
+        showImage(0);
+      } else {
+        modalMain.className = 'modal-stage ph';
+        modalMain.textContent = 'Add images to images/assets/build/';
+      }
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden','false');
+      setBlur(true);
+      document.body.style.overflow = 'hidden';
+      history.replaceState(null,'','#'+(d.slug||''));
+    }
+    function closeModal(){
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden','true');
+      setBlur(false);
+      document.body.style.overflow = '';
+      history.replaceState(null,'',location.pathname);
+    }
+    function step(dir){ if (!currentImages.length) return; showImage(currentIndex + dir); }
 
-        // Навигация стрелками (на фото)
-        prev.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
-            modalImg.src = currentImages[currentIndex];
-        });
-        next.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % currentImages.length;
-            modalImg.src = currentImages[currentIndex];
-        });
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.closest('.tag')) return;
+        const ext = card.dataset.externalUrl;
+        if (ext) { window.open(ext, '_blank', 'noopener'); return; }
+        openModal(card);
+      });
+    });
 
-        // Закрытие
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.project-card').forEach(card => {
+        const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/);
+        card.toggleAttribute('hidden', filter !== 'all' && !tags.includes(filter));
+      });
+    }));
 
-        // Мобильный коллапс при скролле
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    if (window.scrollY > 100) {
-                        typologies.classList.remove('open');
-                        document.querySelector('.title-section').style.height = '50vh';
-                    } else {
-                        typologies.classList.add('open');
-                    }
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
+    document.querySelectorAll('.tag').forEach(tag => tag.addEventListener('click', e => {
+      e.stopPropagation();
+      const filter = tag.dataset.filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+      document.querySelectorAll('.project-card').forEach(card => {
+        const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/);
+        card.toggleAttribute('hidden', filter !== 'all' && !tags.includes(filter));
+      });
+      document.getElementById('filterRow').scrollIntoView({behavior:'smooth', block:'nearest'});
+    }));
 
-        // Touch для мобильных (свайп)
-        let startX = 0;
-        modal.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-        modal.addEventListener('touchend', e => {
-            let endX = e.changedTouches[0].clientX;
-            if (startX - endX > 50) next.click();
-            if (endX - startX > 50) prev.click();
-        });
-    </script>
+    document.getElementById('modalOverlay').addEventListener('click', closeModal);
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    prevImg.addEventListener('click', () => step(-1));
+    nextImg.addEventListener('click', () => step(1));
+
+    window.addEventListener('keydown', e => {
+      if (!modal.classList.contains('active')) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+
+    modalMain.addEventListener('mousemove', e => {
+      if (!desktop || !currentImages.length) return;
+      const img = modalMain.querySelector('img');
+      if (!img) return;
+      if (!zoomActive) {
+        let lens = modalMain.querySelector('.lens');
+        if (!lens) { lens = document.createElement('div'); lens.className = 'lens'; modalMain.appendChild(lens); }
+        lens.style.display = 'block';
+        cursor.classList.add('lens');
+        const r = modalMain.getBoundingClientRect();
+        const size = 150;
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const lx = Math.max(size/2, Math.min(r.width - size/2, x));
+        const ly = Math.max(size/2, Math.min(r.height - size/2, y));
+        lens.style.left = (lx - size/2) + 'px';
+        lens.style.top = (ly - size/2) + 'px';
+        lens.style.width = lens.style.height = size + 'px';
+        const scale = 2.2;
+        const imgRect = img.getBoundingClientRect();
+        const bgX = (x / r.width) * 100;
+        const bgY = (y / r.height) * 100;
+        lens.style.backgroundImage = `url('${zoomSource}')`;
+        lens.style.backgroundSize = `${r.width * scale}px ${r.height * scale}px`;
+        lens.style.backgroundPosition = `${bgX}% ${bgY}%`;
+      }
+    });
+    modalMain.addEventListener('mouseenter', () => { if (desktop && currentImages.length) { zoomActive = false; cursor.classList.add('lens'); } });
+    modalMain.addEventListener('mouseleave', () => { zoomActive = false; cursor.classList.remove('lens'); const lens = modalMain.querySelector('.lens'); if (lens) lens.style.display='none'; });
+
+    function openFromHash(){ const slug = location.hash.replace('#',''); if (!slug) return; const card = document.querySelector(`.project-card[data-slug="${slug}"]`); if (card) openModal(card); }
+    window.addEventListener('load', openFromHash);
+    window.addEventListener('hashchange', openFromHash);
+  </script>
 </body>
 </html>
