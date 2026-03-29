@@ -397,7 +397,7 @@ body::before {
   <!-- PLAYLISTS -->
   <div class="playlists">
 
-    <a class="playlist-card" id="card-0"
+    <a class="playlist-card" id="card-0" data-slug="channel-01"
        href="https://open.spotify.com/playlist/0mg0X028fIt8EwH5yi3Czf"
        target="_blank" rel="noopener">
       <span class="card-num">01</span>
@@ -412,7 +412,7 @@ body::before {
       </div>
     </a>
 
-    <a class="playlist-card" id="card-1"
+    <a class="playlist-card" id="card-1" data-slug="channel-02"
        href="https://open.spotify.com/playlist/4YMNrlPjp3nTenV6Qkn4Tc"
        target="_blank" rel="noopener">
       <span class="card-num">02</span>
@@ -427,7 +427,7 @@ body::before {
       </div>
     </a>
 
-    <a class="playlist-card" id="card-2"
+    <a class="playlist-card" id="card-2" data-slug="channel-03"
        href="https://open.spotify.com/playlist/2BAdX7KOSo3hsDMlq37IBD"
        target="_blank" rel="noopener">
       <span class="card-num">03</span>
@@ -442,7 +442,7 @@ body::before {
       </div>
     </a>
 
-    <a class="playlist-card" id="card-3"
+    <a class="playlist-card" id="card-3" data-slug="channel-04"
        href="https://open.spotify.com/playlist/77mIWmxJFdJGWar4EJdrjq"
        target="_blank" rel="noopener">
       <span class="card-num">04</span>
@@ -456,7 +456,7 @@ body::before {
         <div class="card-desc">The morning after, stretched into a full day. The coffee went cold, nobody's in a hurry. This playlist lives in the in-between: between genres, between eras, between who you were and who you're becoming. Wide-eyed, slightly squinting in the light.</div>
       </div>
     </a>
-    <a class="playlist-card" id="card-4"
+    <a class="playlist-card" id="card-4" data-slug="channel-05"
        href="https://open.spotify.com/playlist/1ajzqkENf7NBuPTVNyJPjQ"
        target="_blank" rel="noopener">
       <span class="card-num">05</span>
@@ -658,6 +658,14 @@ body::before {
 
     requestAnimationFrame(animate);
   }
+  function openFromHash() {
+  const slug = location.hash.replace('#', '');
+  if (!slug) return;
+  const card = document.querySelector(`[data-slug="${slug}"]`);
+  if (card) card.click(); // или openModal(card), в зависимости от вашей функции
+}
+openFromHash();
+window.addEventListener('hashchange', openFromHash);
 </script>
 </body>
 </html>
