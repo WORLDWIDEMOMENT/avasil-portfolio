@@ -149,24 +149,41 @@ body {
 }
 .popup-drum.hidden { opacity: 0; }
 .drum-text { font-size: 11px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: white; white-space: nowrap; overflow: hidden; max-width: 250px; text-overflow: ellipsis; }
+
+/* Hover hint on image: "open →" when project is resolved */
 .popup-image::after {
-  content: 'spin again'; position: absolute; inset: 0;
+  content: 'open →'; position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   font-size: 9px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
   color: rgba(255,255,255,0); transition: color .2s;
+  pointer-events: none;
 }
-.popup-image:hover::after { color: rgba(255,255,255,.55); }
+.popup-image.resolved:hover::after { color: rgba(255,255,255,.65); }
+
+/* External badge inside image */
+.popup-ext-badge {
+  position: absolute; bottom: 8px; left: 8px; z-index: 4;
+  font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: #fff; background: rgba(77,106,255,.92);
+  border: 1px solid rgba(255,255,255,.12); padding: 3px 7px; border-radius: 999px;
+  opacity: 0; transition: opacity .3s ease .2s;
+  pointer-events: none;
+}
+.popup-image.ext-shown .popup-ext-badge { opacity: 1; }
+
 .popup-info { padding: 16px 20px 18px; }
 .popup-category { font-size: 9px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 7px; }
 .popup-title { font-size: 17px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; line-height: 1.15; margin-bottom: 10px; min-height: 40px; }
 .popup-desc { font-size: 10px; font-weight: 400; letter-spacing: .04em; color: rgba(255,255,255,.48); line-height: 1.65; margin-bottom: 16px; min-height: 33px; opacity: 0; transition: opacity .4s ease .12s; }
 .popup-desc.show { opacity: 1; }
-.popup-actions { display: flex; align-items: center; justify-content: space-between; }
+.popup-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .popup-link { font-size: 10px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: white; text-decoration: none; opacity: 0; border-bottom: 1px solid transparent; padding-bottom: 1px; transition: opacity .4s ease .18s, border-color .18s; }
 .popup-link.show { opacity: .65; }
 .popup-link.show:hover { opacity: 1; border-bottom-color: white; }
-.popup-close { background: none; border: none; cursor: none; font-size: 9px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.25); padding: 0; transition: color .2s; }
-.popup-close:hover { color: rgba(255,255,255,.65); }
+.popup-spin-again { background: none; border: none; cursor: none; font-size: 9px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.25); padding: 0; transition: color .2s; }
+.popup-spin-again:hover { color: rgba(255,255,255,.65); }
+.popup-close { background: none; border: none; cursor: none; font-size: 9px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.20); padding: 0; transition: color .2s; }
+.popup-close:hover { color: rgba(255,255,255,.55); }
 
 /* ── ZONES ── */
 .zone {
@@ -223,34 +240,19 @@ body {
     background-image: url(images/front.jpg);
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: 100% auto; /* ширина = ширина экрана */
+    background-size: 100% auto;
     background-attachment: scroll;
   }
-  .zone {
-    bottom: 120px;
-    max-width: calc(50vw - 22px);
-  }
+  .zone { bottom: 120px; max-width: calc(50vw - 22px); }
   #build  { left: 16px; right: auto; }
   #create { right: 16px; left: auto; }
-
-  .main-title {
-    font-size: clamp(24px, 7.5vw, 36px);
-    letter-spacing: .08em;
-    white-space: nowrap;
-  }
-
-  /* Sub-items always visible & directly clickable on mobile */
+  .main-title { font-size: clamp(24px, 7.5vw, 36px); letter-spacing: .08em; white-space: nowrap; }
   .sub { margin-top: 12px; font-size: 10px; opacity: .52; pointer-events: auto; }
-  .zone.active .sub { opacity: .52; } /* prevent hover-state override on mobile */
-
-  /* TO BUILD title text only on mobile — sub-links handle navigation */
+  .zone.active .sub { opacity: .52; }
   #build .main-title a { pointer-events: none; }
-
-  /* Bottom bar: stack contact links to prevent overlap */
   .bottom-bar { padding: 0 16px; bottom: 16px; font-size: 9px; align-items: flex-end; }
   .contact { flex-direction: column; gap: 5px; align-items: flex-end; }
   .divider { display: none; }
-
   #roulette-btn { right: 16px; top: 55px; }
   #roulette-popup { right: 16px; left: 16px; width: auto; top: 68px; }
   .r-label { display: none; }
@@ -303,6 +305,8 @@ body {
       <div class="popup-drum" id="popup-drum">
         <span class="drum-text" id="drum-text">—</span>
       </div>
+      <!-- External site badge, shown only for external projects -->
+      <div class="popup-ext-badge" id="popup-ext-badge">artlebedev.com</div>
     </div>
     <div class="popup-info">
       <div class="popup-category" id="popup-category">—</div>
@@ -310,7 +314,10 @@ body {
       <div class="popup-desc"    id="popup-desc"></div>
       <div class="popup-actions">
         <a href="#" id="popup-link" class="popup-link">Open →</a>
-        <button class="popup-close" id="popup-close">✕ close</button>
+        <div style="display:flex;gap:12px;align-items:center">
+          <button class="popup-spin-again" id="popup-spin-again">↺ again</button>
+          <button class="popup-close"      id="popup-close">✕ close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -358,7 +365,7 @@ if (window.matchMedia('(hover: hover)').matches) {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
   });
-  document.querySelectorAll('a, .main-title, #roulette-btn, .popup-close').forEach(el => {
+  document.querySelectorAll('a, .main-title, #roulette-btn, .popup-close, .popup-spin-again').forEach(el => {
     el.addEventListener('mouseenter', () => cur.classList.add('big'));
     el.addEventListener('mouseleave', () => cur.classList.remove('big'));
   });
@@ -418,58 +425,270 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 }
 
+// ══════════════════════════════════════
 // ── ROULETTE ──
+// ══════════════════════════════════════
+
+// ── PROJECT REGISTRY ──────────────────────────────────────────────────────────
+//
+// Каждый проект — объект со следующими полями:
+//
+//   title       {string}  — название, отображается в попапе
+//   category    {string}  — категория (Architecture / Visual / Video / Local Radio)
+//   description {string}  — короткое описание (1–2 предложения)
+//   image       {string}  — путь к обложке (относительно index.html)
+//   url         {string}  — куда вести при клике
+//   isExternal  {boolean} — true = сторонний сайт, открывается в новой вкладке
+//   externalHost{string}  — подпись на бейдже (например "artlebedev.com")
+//
+// КАК ДОБАВИТЬ НОВЫЙ ПРОЕКТ:
+//   1. Добавьте объект в массив ниже (или в projects.json).
+//   2. Для обычного проекта с модалкой:
+//      url: "architecture.html#YOUR-SLUG"
+//      где YOUR-SLUG — значение атрибута data-slug="" на карточке в build.html.
+//   3. Для внешнего проекта (Artlebedev и т.п.):
+//      isExternal: true, url: "https://...", externalHost: "artlebedev.com"
+//      Попап покажет бейдж и откроет ссылку в новой вкладке.
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
 let projects = [];
 let rouletteOpen = false;
-let spinTimer = null;
+let spinTimer    = null;
+let currentProject = null; // проект, отображённый в попапе сейчас (null во время кручения)
 
 fetch('projects.json')
   .then(r => r.json())
   .then(d => { projects = d; })
   .catch(() => {
+    // ── Fallback: список проектов прямо в коде ──
+    // Редактируйте этот массив если не используете projects.json
     projects = [
-      { title: "Myriads.",                    category: "Architecture", description: "Design code of the residential district.",                           image: "images/assets/build/als/miriady.jpg",              url: "architecture.html#01" },
-      { title: "1295",                        category: "Architecture", description: "Residential Complex.",                                               image: "images/assets/build/1295/12951.jpg",               url: "architecture.html#02" },
-      { title: "Meaning of Fortification",    category: "Architecture", description: "The final stage of the semester project in urban design at ULisboa.", image: "images/assets/build/fortification/fortification1.jpg", url: "architecture.html#03" },
-      { title: "House for a Young Couple",    category: "Architecture", description: "A compact courtyard house designed for a young couple.",              image: "images/assets/build/interior/interior1.jpg",       url: "architecture.html#06" },
-      { title: "Brownie Coffeehouse",         category: "Architecture", description: "Interior design for local coffeehouse.",                              image: "images/assets/build/brownie/brownie1.JPG",         url: "architecture.html#11" },
-      { title: "Museum of Modern Art NOVA",   category: "Architecture", description: "The Museum of Modern Art NOVA.",                                     image: "images/assets/build/nova/nova2.jpg",               url: "architecture.html#14" },
-      { title: "PILOTS / Hand Drawings",      category: "Visual",       description: "Early touches of the materials.",                                    image: "images/assets/create/pilots/pilots1.jpg",          url: "visual.html#pilots"   },
-      { title: "None of them is me",          category: "Visual",       description: "A Self-Portrait series.",                                            image: "images/assets/create/portrait/Portrait1.jpg",      url: "visual.html#Self-Portrait" },
-      { title: "SCAN — Grains of the Cities", category: "Visual",       description: "Fragments of urban texture.",                                        image: "images/assets/create/scan/Scan1.jpg",              url: "visual.html#scan"     },
-      { title: "CLO — Custom Clothing",       category: "Visual",       description: "Hand-painted garments as wearable architecture.",                    image: "images/assets/create/clo/cloth1.jpg",              url: "visual.html#clo"      },
-      { title: "ОСТАТОК / Residue",           category: "Visual",       description: "A group exhibition on urban memory.",                               image: "",                                                 url: "visual.html#ostatok"  },
-      { title: "BIRDS",                       category: "Video",        description: "From Paris with love.",                                              image: "images/video/videobirds1.jpg",                     url: "video.html#0"         },
-      { title: "Rebirth Cycles",              category: "Video",        description: "A journey into the past.",                                           image: "images/video/videoRebirthCycles.jpg",              url: "video.html#1"         },
-      { title: "Special Diary",               category: "Video",        description: "This is how life used to feel.",                                     image: "images/video/videocrystal1.jpg",                   url: "video.html#2"         },
-      { title: "Short Walks Down Long Roads", category: "Video",        description: "Just a feeling.",                                                    image: "images/video/videoshort1.jpg",                     url: "video.html#3"         },
-      { title: "Channel 01",                  category: "Local Radio",  description: "Made for you.",                                                      image: "",                                                 url: "localradio.html#0"    },
-      { title: "Channel 02",                  category: "Local Radio",  description: "Made for you.",                                                      image: "",                                                 url: "localradio.html#1"    },
-      { title: "Channel 03",                  category: "Local Radio",  description: "Made for you.",                                                      image: "",                                                 url: "localradio.html#2"    },
-      { title: "Channel 04",                  category: "Local Radio",  description: "Made for you.",                                                      image: "",                                                 url: "localradio.html#3"    },
-      { title: "Channel 05",                  category: "Local Radio",  description: "Made for you.",                                                      image: "",                                                 url: "localradio.html#4"    }
+
+      // ── ARCHITECTURE — внутренние проекты (открывают модалку) ──
+      // url = "architecture.html#" + значение data-slug в build.html
+      {
+        title:       "1295 — Residential Complex",
+        category:    "Architecture",
+        description: "Two house types for different buyers. Lead architect role.",
+        image:       "images/assets/build/1295/12951.webp",
+        url:         "architecture.html#1295-residential-complex"
+      },
+      {
+        title:       "Meaning of Fortification",
+        category:    "Architecture",
+        description: "Urban design semester project at ULisboa. Published in UPC magazine.",
+        image:       "images/assets/build/fortification/fortification1.webp",
+        url:         "architecture.html#meaning-of-fortification"
+      },
+      {
+        title:       "House for a Young Couple",
+        category:    "Architecture",
+        description: "A compact courtyard house in Cascais exploring natural light and transitions.",
+        image:       "images/assets/build/interior/interior1.webp",
+        url:         "architecture.html#house-for-a-young-couple"
+      },
+      {
+        title:       "Masterplan — Dominican Republic",
+        category:    "Architecture",
+        description: "Coastal masterplan La Perla, 32 000 m². Beachfront and second-line villas.",
+        image:       "images/assets/build/vrd/vrd3.webp",
+        url:         "architecture.html#masterplan-in-dominican-republic"
+      },
+      {
+        title:       "Brownie Coffeehouse",
+        category:    "Architecture",
+        description: "Interior transformation of a ground-floor commercial space in Molodechno.",
+        image:       "images/assets/build/brownie/brownie1.webp",
+        url:         "architecture.html"
+        // Карточка не имеет data-slug — откроется страница без автоматической модалки.
+        // Чтобы исправить: добавьте data-slug="brownie-coffeehouse" в build.html.
+      },
+      {
+        title:       "Museum of Modern Art NOVA",
+        category:    "Architecture",
+        description: "A tectonic form rising from the Svisloch riverbank in Minsk.",
+        image:       "images/assets/build/nova/nova2.webp",
+        url:         "architecture.html"
+        // Аналогично — нет data-slug на карточке.
+      },
+
+      // ── ARCHITECTURE — внешние проекты (Artlebedev) ──
+      // isExternal: true → открывается в новой вкладке, бейдж показывает externalHost
+      {
+        title:       "Myriads. Design Code",
+        category:    "Architecture",
+        description: "Design code of a residential district in Tyumen.",
+        image:       "images/assets/build/als/miriady.jpg",
+        url:         "https://www.artlebedev.com/enko/miriady/",
+        isExternal:  true,
+        externalHost:"artlebedev.com"
+      },
+      {
+        title:       "5ka — Future Retail Store",
+        category:    "Architecture",
+        description: "The future format of 5ka retail stores.",
+        image:       "images/assets/build/als/5ka-store.jpg",
+        url:         "https://www.artlebedev.com/5ka/future-stores-interiors/",
+        isExternal:  true,
+        externalHost:"artlebedev.com"
+      },
+      {
+        title:       "TVEL — Facades & Interiors",
+        category:    "Architecture",
+        description: "Industrial facility facades and interiors for Rosatom.",
+        image:       "images/assets/build/als/tvel.jpg",
+        url:         "https://www.artlebedev.com/rosatom/tvel/",
+        isExternal:  true,
+        externalHost:"artlebedev.com"
+      },
+      {
+        title:       "5ka — Future Stores Identity",
+        category:    "Architecture",
+        description: "Identity system for the next-generation 5ka store format.",
+        image:       "images/assets/build/als/5ka-identity.jpg",
+        url:         "https://www.artlebedev.com/5ka/future-stores-identity/",
+        isExternal:  true,
+        externalHost:"artlebedev.com"
+      },
+      {
+        title:       "Magnit Classroom",
+        category:    "Architecture",
+        description: "Interior design for a Magnit educational space.",
+        image:       "images/assets/build/als/magnit-classroom.jpg",
+        url:         "https://www.artlebedev.com/magnit/classroom/",
+        isExternal:  true,
+        externalHost:"artlebedev.com"
+      },
+      {
+        title:       "Magnit Retail Interiors",
+        category:    "Architecture",
+        description: "Interior design for Magnit retail stores.",
+        image:       "images/assets/build/als/magnit-interiors.jpg",
+        url:         "https://www.artlebedev.com/magnit/interiors/",
+        isExternal:  true,
+        externalHost:"artlebedev.com"
+      },
+
+      // ── VISUAL ──
+      {
+        title:       "PILOTS / Hand Drawings",
+        category:    "Visual",
+        description: "Early touches of the materials.",
+        image:       "images/assets/create/pilots/pilots1.jpg",
+        url:         "visual.html#pilots"
+      },
+      {
+        title:       "None of them is me",
+        category:    "Visual",
+        description: "A Self-Portrait series.",
+        image:       "images/assets/create/portrait/Portrait1.jpg",
+        url:         "visual.html#Self-Portrait"
+      },
+      {
+        title:       "SCAN — Grains of the Cities",
+        category:    "Visual",
+        description: "Fragments of urban texture.",
+        image:       "images/assets/create/scan/Scan1.jpg",
+        url:         "visual.html#scan"
+      },
+      {
+        title:       "CLO — Custom Clothing",
+        category:    "Visual",
+        description: "Hand-painted garments as wearable architecture.",
+        image:       "images/assets/create/clo/cloth1.jpg",
+        url:         "visual.html#clo"
+      },
+
+      // ── VIDEO ──
+      // image: используйте обложку — статичный JPG/WebP, не кадр из видео.
+      // Файл должен лежать рядом с видео и называться как угодно, но быть статичным изображением.
+      {
+        title:       "BIRDS",
+        category:    "Video",
+        description: "From Paris with love.",
+        image:       "images/video/cover-birds.jpg",   // ← замените на реальное имя обложки
+        url:         "video.html#birds"                // ← замените на реальный slug видеостраницы
+      },
+      {
+        title:       "Rebirth Cycles",
+        category:    "Video",
+        description: "A journey into the past.",
+        image:       "images/video/cover-rebirth.jpg",
+        url:         "video.html#rebirth-cycles"
+      },
+      {
+        title:       "Special Diary",
+        category:    "Video",
+        description: "This is how life used to feel.",
+        image:       "images/video/cover-diary.jpg",
+        url:         "video.html#special-diary"
+      },
+      {
+        title:       "Short Walks Down Long Roads",
+        category:    "Video",
+        description: "Just a feeling.",
+        image:       "images/video/cover-short.jpg",
+        url:         "video.html#short-walks"
+      },
+
+      // ── LOCAL RADIO ──
+      // url: замените #channel-0 на реальный data-slug или id канала на странице localradio.html
+      {
+        title:       "Channel 01",
+        category:    "Local Radio",
+        description: "Made for you.",
+        image:       "",
+        url:         "localradio.html#channel-0"
+      },
+      {
+        title:       "Channel 02",
+        category:    "Local Radio",
+        description: "Made for you.",
+        image:       "",
+        url:         "localradio.html#channel-1"
+      }
     ];
   });
 
-const popup      = document.getElementById('roulette-popup');
-const drumEl     = document.getElementById('popup-drum');
-const drumText   = document.getElementById('drum-text');
-const popupImg   = document.getElementById('popup-img');
-const popupCat   = document.getElementById('popup-category');
-const popupTitle = document.getElementById('popup-title');
-const popupDesc  = document.getElementById('popup-desc');
-const popupLink  = document.getElementById('popup-link');
-const popupClose = document.getElementById('popup-close');
-const imgArea    = document.getElementById('popup-image-area');
+// ── DOM REFS ──
+const popup         = document.getElementById('roulette-popup');
+const drumEl        = document.getElementById('popup-drum');
+const drumText      = document.getElementById('drum-text');
+const popupImg      = document.getElementById('popup-img');
+const popupCat      = document.getElementById('popup-category');
+const popupTitle    = document.getElementById('popup-title');
+const popupDesc     = document.getElementById('popup-desc');
+const popupLink     = document.getElementById('popup-link');
+const popupClose    = document.getElementById('popup-close');
+const popupSpinAgain= document.getElementById('popup-spin-again');
+const imgArea       = document.getElementById('popup-image-area');
+const extBadge      = document.getElementById('popup-ext-badge');
 
+// ── NAVIGATE TO PROJECT ──
+// Учитывает внешние ссылки (новая вкладка) и внутренние (та же вкладка).
+function navigateTo(project) {
+  if (!project) return;
+  if (project.isExternal) {
+    window.open(project.url, '_blank', 'noopener noreferrer');
+  } else {
+    window.location.href = project.url;
+  }
+}
+
+// ── OPEN POPUP / SPIN ──
 function openPopup() {
   if (!projects.length) return;
-  rouletteOpen = true;
+  clearTimeout(spinTimer);
+  rouletteOpen    = true;
+  currentProject  = null; // сброс — кручение началось
+
   popup.classList.add('open');
   rBtn.classList.add('spinning');
   popupDesc.classList.remove('show');
   popupLink.classList.remove('show');
   drumEl.classList.remove('hidden');
+  imgArea.classList.remove('resolved', 'ext-shown');
   popupImg.classList.remove('loaded');
   popupImg.src = '';
 
@@ -483,7 +702,11 @@ function openPopup() {
   });
 
   (function runTick(i) {
-    if (i >= totalTicks) { rBtn.classList.remove('spinning'); showProject(projects[chosenIdx]); return; }
+    if (i >= totalTicks) {
+      rBtn.classList.remove('spinning');
+      showProject(projects[chosenIdx]);
+      return;
+    }
     const idx = (chosenIdx + totalTicks - i) % projects.length;
     drumText.textContent   = projects[idx].title.toUpperCase();
     popupTitle.textContent = projects[idx].title.toUpperCase();
@@ -492,33 +715,92 @@ function openPopup() {
   })(0);
 }
 
+// ── SHOW PROJECT (called when drum stops) ──
 function showProject(p) {
+  currentProject = p; // запоминаем — теперь клик по картинке = навигация
+
   popupTitle.textContent = p.title.toUpperCase();
   popupCat.textContent   = p.category.toUpperCase();
   drumText.textContent   = p.title.toUpperCase();
-  popupLink.href         = p.url;
+
+  // Ссылка: текст и поведение зависят от типа проекта
+  if (p.isExternal) {
+    popupLink.textContent = 'View ↗';
+    popupLink.setAttribute('target', '_blank');
+    popupLink.setAttribute('rel', 'noopener noreferrer');
+  } else {
+    popupLink.textContent = 'Open →';
+    popupLink.removeAttribute('target');
+    popupLink.removeAttribute('rel');
+  }
+  popupLink.href = p.url;
+
+  // Изображение
   if (p.image) {
     const img   = new Image();
-    img.onload  = () => { popupImg.src = p.image; popupImg.classList.add('loaded'); setTimeout(() => drumEl.classList.add('hidden'), 150); };
-    img.onerror = () => drumEl.classList.add('hidden');
+    img.onload  = () => {
+      popupImg.src = p.image;
+      popupImg.classList.add('loaded');
+      setTimeout(() => drumEl.classList.add('hidden'), 150);
+      // показываем бейдж для внешних
+      if (p.isExternal) {
+        extBadge.textContent = p.externalHost || 'external';
+        imgArea.classList.add('ext-shown');
+      }
+      imgArea.classList.add('resolved'); // активируем hover-подсказку "open →"
+    };
+    img.onerror = () => { drumEl.classList.add('hidden'); imgArea.classList.add('resolved'); };
     img.src = p.image;
   } else {
     drumEl.classList.add('hidden');
+    imgArea.classList.add('resolved');
   }
-  setTimeout(() => { popupDesc.textContent = p.description; popupDesc.classList.add('show'); popupLink.classList.add('show'); }, 160);
+
+  setTimeout(() => {
+    popupDesc.textContent = p.description;
+    popupDesc.classList.add('show');
+    popupLink.classList.add('show');
+  }, 160);
 }
 
+// ── CLOSE POPUP ──
 function closePopup() {
-  rouletteOpen = false;
+  rouletteOpen   = false;
+  currentProject = null;
   popup.classList.remove('open');
   rBtn.classList.remove('spinning');
   clearTimeout(spinTimer);
 }
 
-rBtn.addEventListener('click',       e => { e.stopPropagation(); rouletteOpen ? closePopup() : openPopup(); });
+// ── EVENT LISTENERS ──
+
+// Кнопка рулетки: открыть / крутить снова
+rBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  openPopup(); // всегда крутим (открывает если закрыт, крутит снова если открыт)
+});
+
+// Кнопка «↺ again» внутри попапа
+popupSpinAgain.addEventListener('click', e => { e.stopPropagation(); openPopup(); });
+
+// Кнопка «✕ close»
 popupClose.addEventListener('click', e => { e.stopPropagation(); closePopup(); });
-imgArea.addEventListener('click',    e => { e.stopPropagation(); openPopup(); });
-document.addEventListener('click',   e => { if (rouletteOpen && !popup.contains(e.target) && e.target !== rBtn) closePopup(); });
+
+// Клик по картинке: навигация если проект показан, иначе ничего
+imgArea.addEventListener('click', e => {
+  e.stopPropagation();
+  if (currentProject) navigateTo(currentProject);
+});
+
+// Клик по ссылке Open/View: обычная навигация через href (внешние — _blank уже выставлен)
+// Дополнительный обработчик не нужен — <a href> работает сам.
+
+// Клик вне попапа — закрыть
+document.addEventListener('click', e => {
+  if (rouletteOpen && !popup.contains(e.target) && e.target !== rBtn) closePopup();
+});
+
+// Escape
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && rouletteOpen) closePopup(); });
 </script>
 </body>
