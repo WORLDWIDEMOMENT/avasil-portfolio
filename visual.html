@@ -22,7 +22,36 @@
     @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     
     /* ── CURSOR ── */
-    #cur-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(210,35,35,.55);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .1s ease,top .1s ease,width .2s,height .2s,border-color .2s}
+#cur-ring{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(210,35,35,.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width .2s, height .2s, border-color .2s;
+  will-change: transform;
+}
+
+#cur-ring.hover{
+  width: 46px;
+  height: 46px;
+  border-color: rgba(210,35,35,.9);
+}
+
+#cur-cross{
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+}
     #cur-ring.hover{width:46px;height:46px;border-color:rgba(210,35,35,.9)}
     #cur-cross{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
     #cur-cross::before,#cur-cross::after{content:'';position:absolute;background:rgba(210,35,35,.8)}
@@ -297,10 +326,14 @@ let currentImageIdx = 0;
 const curRing  = document.getElementById('cur-ring');
 const curCross = document.getElementById('cur-cross');
 if (window.matchMedia('(hover:hover)').matches) {
-  document.addEventListener('mousemove', e => {
-    curRing.style.left  = curCross.style.left = e.clientX + 'px';
-    curRing.style.top   = curCross.style.top  = e.clientY + 'px';
-  });
+ let mouseX = 0, mouseY = 0;
+
+document.addEventListener('pointermove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  curRing.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+  curCross.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+}, { passive: true });
   document.addEventListener('mouseover', e => {
     if (e.target.closest('a,button,.image-item')) curRing.classList.add('hover');
   });
