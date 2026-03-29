@@ -16,7 +16,11 @@
       background-size:cover;background-position:center;background-attachment:fixed;
     }
     body::before{content:'';position:fixed;inset:0;background:rgba(10,10,10,.68);z-index:-1}
-
+.brandline{padding:0 40px 8px;color:var(--dim);font-size:12px;letter-spacing:.28em;text-transform:uppercase;overflow:hidden}
+    .ticker{display:flex;white-space:nowrap;will-change:transform;animation:marquee 80s linear infinite}
+    .ticker span{padding-right:24px;flex-shrink:0}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    
     /* ── CURSOR ── */
     #cur-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(210,35,35,.55);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .1s ease,top .1s ease,width .2s,height .2s,border-color .2s}
     #cur-ring.hover{width:46px;height:46px;border-color:rgba(210,35,35,.9)}
@@ -159,8 +163,7 @@
 <!-- Ticker -->
 <div class="ticker-bar" aria-hidden="true">
   <span class="ticker-text">
-    <span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span>
-  </span>
+    <span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span>
 </div>
 
 <div class="scroll-container" id="scrollContainer"></div>
