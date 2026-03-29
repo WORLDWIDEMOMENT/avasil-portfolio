@@ -6,11 +6,10 @@
   <title>TO BUILD — AV</title>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#0c0c0c;--panel:#121212;--white:#efefef;--dim:#8a8a8a;--line:#242424;--blue:#4d6aff;--blue2:#2c57ff}
+    :root{--bg:#0c0c0c;--panel:#121212;--white:#efefef;--dim:#8a8a8a;--line:#242424;--blue:#4d6aff}
     html{scroll-behavior:smooth}
     body{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
     a{color:inherit}
-    .wrap{min-height:100vh}
 
     /* ── TOPBAR ── */
     .topbar{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--line)}
@@ -26,16 +25,18 @@
     .col-toggle.active{color:var(--white);border-color:#444}
     .col-toggle svg{width:14px;height:14px;display:block;fill:currentColor}
 
-    /* ── HEADER BODY (collapses on mobile scroll) ── */
+    /* ── HEADER BODY ── */
     .header-body{overflow:hidden;transition:height .35s ease,opacity .3s ease}
 
-    /* ── BRANDLINE / TICKER ── */
-    .brandline{padding:0 40px 8px;text-align:right;color:var(--dim);font-size:12px;letter-spacing:.28em;text-transform:uppercase;overflow:hidden}
-    .ticker{display:flex;white-space:nowrap;will-change:transform;animation:marquee 40s linear infinite}
+    /* ── BRANDLINE / TICKER ──
+       Fix: use enough copies; JS adjusts duration for exact speed on any screen.
+       80s duration is overridden by JS once real span width is known. */
+    .brandline{padding:0 40px 8px;color:var(--dim);font-size:12px;letter-spacing:.28em;text-transform:uppercase;overflow:hidden}
+    .ticker{display:flex;white-space:nowrap;will-change:transform;animation:marquee 80s linear infinite}
     .ticker span{padding-right:24px;flex-shrink:0}
     @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* ── PAGE TITLE / SUBTITLE ── */
+    /* ── PAGE TITLE ── */
     .page-title{font-size:clamp(72px,13vw,158px);font-weight:700;letter-spacing:-.04em;line-height:.85;text-align:center;padding:40px 40px 12px;color:var(--white)}
     .page-subtitle{text-align:center;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);padding:0 40px 28px}
 
@@ -79,13 +80,12 @@
     .external:hover .card-linkline{opacity:1}
     .external .card-linkline strong{display:inline-block;padding:5px 9px;border-radius:999px;background:rgba(77,106,255,.96);color:#fff}
 
-    /* ── FOOTER ── */
-    .footer-left,.global-footer{position:fixed;bottom:22px;z-index:50;display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
-    .footer-left{left:40px}
-    .global-footer{right:40px;justify-content:flex-end;max-width:min(66vw,900px)}
-    .footer-left a,.global-footer a{text-decoration:none;color:#fff;opacity:.34;transition:.2s;white-space:nowrap}
-    .footer-left a:hover,.global-footer a:hover{opacity:1}
-    .global-footer span{opacity:.18}
+    /* ── SITE FOOTER (in document flow — no overlap with cards) ── */
+    .site-footer{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px 40px;background:var(--bg);border-top:1px solid var(--line);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+    .foot-about,.foot-right a{text-decoration:none;color:#fff;opacity:.80;transition:opacity .2s;white-space:nowrap}
+    .foot-about:hover,.foot-right a:hover{opacity:1}
+    .foot-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+    .foot-sep{color:#fff;opacity:.22}
 
     /* ── CUSTOM CURSOR ── */
     .cursor{position:fixed;left:0;top:0;width:8px;height:8px;border-radius:50%;background:var(--blue);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,border-radius .15s,background .15s;mix-blend-mode:screen}
@@ -93,25 +93,20 @@
     .cursor.lens{width:132px;height:132px;border-radius:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.65)}
 
     /* ── MODAL ── */
-    /* Fits viewport, no outer scroll */
     .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:2vh 2vw;visibility:hidden;opacity:0;transition:.25s;z-index:400;overflow:hidden}
     .modal.active{visibility:visible;opacity:1}
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:-1}
     .modal-content{position:relative;width:min(1600px,100%);height:96vh;background:#111;border:1px solid var(--line);display:grid;grid-template-columns:1fr 380px;overflow:hidden}
-    /* Gallery column */
     .modal-gallery{display:flex;flex-direction:column;height:100%;background:#080808;overflow:hidden}
-    /* Stage wrap: relative container so arrows anchor to the photo area */
     .modal-stage-wrap{position:relative;flex:1;min-height:0;overflow:hidden}
     .modal-stage{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#080808;overflow:hidden}
     .modal-stage img{max-width:100%;max-height:100%;object-fit:contain;display:block}
     .modal-stage.ph{color:#444;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:20px;text-align:center}
-    /* Arrows anchored to stage-wrap, centered on the photo */
     .nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:999px;background:rgba(255,255,255,.07);backdrop-filter:blur(10px);color:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:12;transition:.2s;border:1px solid rgba(255,255,255,.12)}
     .nav-arrow:hover{background:rgba(255,255,255,.14);transform:translateY(-50%) scale(1.05)}
     .nav-arrow svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
     .nav-arrow.prev{left:14px}
     .nav-arrow.next{right:14px}
-    /* Thumbs */
     .modal-thumbs{display:flex;height:78px;overflow-x:auto;overflow-y:hidden;border-top:1px solid var(--line);scrollbar-width:thin;scrollbar-color:#444 #1a1a1a;flex-shrink:0}
     .modal-thumbs::-webkit-scrollbar{height:4px}
     .modal-thumbs::-webkit-scrollbar-track{background:#1a1a1a}
@@ -119,7 +114,6 @@
     .thumb{width:78px;height:78px;flex:0 0 auto;object-fit:cover;opacity:.45;border-right:1px solid var(--line);cursor:pointer;transition:.2s}
     .thumb.active{opacity:1;box-shadow:inset 0 -3px 0 var(--blue)}
     .thumb:hover{opacity:.8}
-    /* Info sidebar */
     .modal-info{height:100%;overflow-y:auto;padding:32px 34px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
     .modal-year{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
     .modal-title{font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.15;text-transform:uppercase;color:var(--white);margin-top:4px}
@@ -129,14 +123,21 @@
     .spec span{font-size:12px;font-weight:700;color:var(--white);line-height:1.5}
     .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;color:var(--dim);cursor:pointer;z-index:15;transition:.2s}
     .modal-close:hover{color:var(--white);transform:rotate(90deg)}
-    /* Zoom lens */
-    .lens{position:absolute;display:none;pointer-events:none;z-index:11;width:150px;height:150px;border-radius:0;border:1px solid rgba(255,255,255,.75);background-repeat:no-repeat;background-color:rgba(255,255,255,.04)}
+    .lens{position:absolute;display:none;pointer-events:none;z-index:11;border:1px solid rgba(255,255,255,.75);background-repeat:no-repeat;background-color:rgba(255,255,255,.04)}
 
-    /* ── CURSOR / TOUCH RULES ── */
-    @media (hover:hover) and (pointer:fine){.card-img:hover{cursor:none}.project-card,.back,.navlinks a,.filter-btn,.tag,.modal-close,.thumb,.nav-arrow{cursor:none}}
-    @media (hover:none),(pointer:coarse){.cursor{display:none !important}.project-card:hover{transform:none}.nav-arrow,.modal-close,.thumb,.filter-btn,.tag{cursor:pointer}.lens{display:none !important}}
+    /* ── CURSOR / TOUCH ── */
+    @media (hover:hover) and (pointer:fine){
+      .card-img:hover{cursor:none}
+      .project-card,.back,.navlinks a,.filter-btn,.tag,.modal-close,.thumb,.nav-arrow,.foot-about,.foot-right a{cursor:none}
+    }
+    @media (hover:none),(pointer:coarse){
+      .cursor{display:none !important}
+      .project-card:hover{transform:none}
+      .nav-arrow,.modal-close,.thumb,.filter-btn,.tag,.foot-about,.foot-right a{cursor:pointer}
+      .lens{display:none !important}
+    }
 
-    /* ── BREAKPOINT 1100px ── */
+    /* ── 1100px ── */
     @media (max-width:1100px){
       .projects-grid{grid-template-columns:repeat(2,1fr)}
       .modal-content{grid-template-columns:1fr}
@@ -144,52 +145,39 @@
       .modal-gallery{height:auto}
       .modal-stage-wrap{height:56vw;min-height:280px;flex:none}
       .topbar-row,.brandline,.page-title,.page-subtitle{padding-left:24px;padding-right:24px}
-      .footer-left{left:20px}
-      .global-footer{right:20px;max-width:calc(100vw - 140px)}
+      .site-footer{padding:18px 24px}
       .navlinks{gap:20px}
     }
 
-    /* ── BREAKPOINT 620px (mobile) ── */
+    /* ── 620px (mobile) ── */
     @media (max-width:620px){
-      /* Show col toggle button */
       .col-toggle{display:inline-flex;align-items:center;justify-content:center}
-
-      /* Grid: default 1-col, toggled to 2-col */
       .projects-grid,.projects-grid.cols-2,.projects-grid.cols-1{grid-template-columns:1fr}
       .projects-grid.mobile-2col{grid-template-columns:repeat(2,1fr) !important}
-
-      /* Filter row: horizontal scroll, single row, gradient fade hint at edges */
-      .filter-row{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom:none;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}
+      .filter-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-bottom:none;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}
       .filter-row::-webkit-scrollbar{display:none}
       .filter-btn{flex:0 0 auto;font-size:9px;padding:13px 14px;white-space:nowrap;border-right:1px solid var(--line)}
       .filter-btn:last-child{border-right:none}
-
-      /* Typography */
       .page-title{font-size:clamp(54px,14vw,96px);padding-top:28px}
       .page-subtitle{padding-bottom:20px}
       .topbar-row{padding:14px 16px 8px}
       .brandline{padding:0 16px 8px;text-align:left;font-size:10px;letter-spacing:.22em}
-      .page-title{padding-left:16px;padding-right:16px}
-      .page-subtitle{padding-left:16px;padding-right:16px}
+      .page-title,.page-subtitle{padding-left:16px;padding-right:16px}
       .navlinks{gap:14px;flex-wrap:nowrap;overflow-x:auto}
-
-      /* Footer */
-      .footer-left,.global-footer{bottom:14px;font-size:9px;gap:8px}
-      .footer-left{left:14px}
-      .global-footer{right:14px;max-width:calc(100vw - 95px)}
-
-      /* Modal: full screen, no padding */
+      /* Mobile footer: About left, 2×2 grid right */
+      .site-footer{padding:14px 16px;font-size:9px;align-items:flex-end;gap:10px}
+      .foot-right{display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;text-align:right}
+      .foot-sep{display:none}
+      /* Modal */
       .modal{padding:0}
-      .modal-content{width:100%;height:100%;border:none;border-radius:0;grid-template-columns:1fr;display:flex;flex-direction:column}
+      .modal-content{width:100%;height:100%;border:none;grid-template-columns:1fr;display:flex;flex-direction:column}
       .modal-gallery{flex:1;min-height:0;display:flex;flex-direction:column}
       .modal-stage-wrap{flex:1;min-height:0;height:auto}
-      .modal-info{flex:0 0 auto;max-height:45vh;overflow-y:auto;border-left:none;border-top:1px solid var(--line);padding:20px 18px 80px}
+      .modal-info{flex:0 0 auto;max-height:45vh;overflow-y:auto;border-left:none;border-top:1px solid var(--line);padding:20px 18px 28px}
       .modal-specs{grid-template-columns:1fr}
       .modal-title{font-size:18px}
       .modal-thumbs{height:60px;flex-shrink:0}
       .thumb{width:60px;height:60px}
-
-      /* Arrows: centered on photo */
       .nav-arrow{width:40px;height:40px}
       .nav-arrow.prev{left:10px}
       .nav-arrow.next{right:10px}
@@ -204,7 +192,6 @@
       <div class="topbar-row">
         <a class="back" href="index.html">← Back</a>
         <div style="display:flex;align-items:center;gap:16px">
-          <!-- 2-column toggle, visible on mobile only -->
           <button class="col-toggle" id="colToggle" aria-label="Toggle 2 columns">
             <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="6" height="6"/><rect x="8" y="0" width="6" height="6"/><rect x="0" y="8" width="6" height="6"/><rect x="8" y="8" width="6" height="6"/></svg>
           </button>
@@ -216,16 +203,15 @@
         </div>
       </div>
 
-      <!-- header-body collapses on mobile scroll-down -->
       <div class="header-body" id="headerBody">
         <div class="brandline">
-          <!-- Infinite marquee: 8 copies, move -50% = seamless loop -->
-          <span class="ticker">
-            <span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span>
+          <!-- 24 spans: enough for screens up to ~2400px at equal speed. JS trims duration to exact speed. -->
+          <span class="ticker" id="ticker">
+            <span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span>
           </span>
         </div>
-        <h1 class="page-title" id="pageTitle">TO BUILD</h1>
-        <p class="page-subtitle" id="pageSubtitle">Projects led across three continents — from single residences to urban scale</p>
+        <h1 class="page-title">TO BUILD</h1>
+        <p class="page-subtitle">Projects led across three continents — from single residences to urban scale</p>
         <div class="filter-row" id="filterRow">
           <button class="filter-btn active" data-filter="all">All</button>
           <button class="filter-btn" data-filter="masterplan">Masterplan</button>
@@ -239,9 +225,10 @@
     </header>
 
     <main class="projects-grid" id="projectsGrid">
+
       <article class="project-card external" data-tags="masterplan residential published" data-title="Myriads. Design code of the residential district" data-external-url="https://www.artlebedev.com/enko/miriady/">
         <span class="card-number">01</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="images/assets/build/als/miriady.jpg" alt="Miriady" fetchpriority="high"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
+        <div class="card-img"><img src="images/assets/build/als/miriady.jpg" alt="Miriady" fetchpriority="high" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Myriads. Design code of the residential district</div><div class="card-year">2024–2025 · Tyumen</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
       </article>
 
@@ -249,7 +236,7 @@
 
 The result combines our vision of modern style for the area, the client's desires, a versatile layout with all necessary amenities, and perfect landscaping." data-images='["images/assets/build/1295/12951.webp","images/assets/build/1295/1295p1.webp","images/assets/build/1295/1295p2.webp","images/assets/build/1295/1295p3.webp","images/assets/build/1295/1295p4.webp","images/assets/build/1295/12952.webp","images/assets/build/1295/12953.webp","images/assets/build/1295/12954.webp","images/assets/build/1295/12955.webp","images/assets/build/1295/12956.webp","images/assets/build/1295/12957.webp","images/assets/build/1295/12958.webp","images/assets/build/1295/12959.webp","images/assets/build/1295/129510.webp","images/assets/build/1295/129511.webp","images/assets/build/1295/129512.webp","images/assets/build/1295/129513.webp","images/assets/build/1295/129514.webp","images/assets/build/1295/129515.webp","images/assets/build/1295/129516.webp","images/assets/build/1295/129517.webp"]'>
         <span class="card-number">02</span>
-        <div class="card-img"><img src="images/assets/build/1295/12951.webp" alt="1295" fetchpriority="high"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+        <div class="card-img"><img src="images/assets/build/1295/12951.webp" alt="1295" fetchpriority="high" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">1295 — Residential Complex</div><div class="card-year">2024 · Minsk / Moscow</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
       </article>
 
@@ -261,75 +248,76 @@ During the semester we visited Quarteira — analysing terrain, recreating sensa
 
 Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona)." data-images='["images/assets/build/fortification/fortification1.webp","images/assets/build/fortification/fortification2.webp","images/assets/build/fortification/fortification3.webp","images/assets/build/fortification/fortification4.webp","images/assets/build/fortification/fortification5.webp","images/assets/build/fortification/fortification6.webp","images/assets/build/fortification/fortification7.webp"]'>
         <span class="card-number">03</span>
-        <div class="card-img"><img src="images/assets/build/fortification/fortification1.webp" alt="Fortification"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+        <div class="card-img"><img src="images/assets/build/fortification/fortification1.webp" alt="Fortification" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Meaning of Fortification. Quarteira, Portugal</div><div class="card-year">2022 · Portugal</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="published">#PUBLISHED</button></div></div>
       </article>
 
       <article class="project-card external" data-tags="interior" data-title="5ka — Future Retail Store Format" data-external-url="https://www.artlebedev.com/5ka/future-stores-interiors/">
         <span class="card-number">04</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="images/assets/build/als/5ka-store.jpg" alt="5ka Store"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
+        <div class="card-img"><img src="images/assets/build/als/5ka-store.jpg" alt="5ka Store" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">5ka — Future Retail Store Format</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
       </article>
 
       <article class="project-card external" data-tags="residential" data-title="TVEL — Industrial facility facades and interiors" data-external-url="https://www.artlebedev.com/rosatom/tvel/">
         <span class="card-number">05</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="images/assets/build/als/tvel.jpg" alt="TVEL"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
+        <div class="card-img"><img src="images/assets/build/als/tvel.jpg" alt="TVEL" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">TVEL — Industrial facility facades and interiors</div><div class="card-year">2024–2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="residential">#FACADES</button></div></div>
       </article>
 
       <article class="project-card" data-slug="house-for-a-young-couple" data-tags="interior conceptual ai" data-title="House for a Young Couple" data-year="2026" data-location="Cascais, Portugal" data-type="Interior / Conceptual / AI Experiments" data-studio="Independent" data-tools="SketchUp, Lumion, AI" data-desc="A compact courtyard house designed for a young couple seeking a calm connection between interior and nature. Large sliding openings extend the living spaces into a private patio, while textured materials and soft daylight create a warm and intimate atmosphere. The project explores simplicity, natural light and subtle transitions between inside and outside." data-images='["images/assets/build/interior/interior1.webp","images/assets/build/interior/interior2.webp","images/assets/build/interior/interior3.webp","images/assets/build/interior/interior4.webp"]'>
         <span class="card-number">06</span>
-        <div class="card-img"><img src="images/assets/build/interior/interior1.webp" alt="House for a Young Couple"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+        <div class="card-img"><img src="images/assets/build/interior/interior1.webp" alt="House for a Young Couple" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">House for a Young Couple</div><div class="card-year">2026 · Cascais</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="ai">#AI</button></div></div>
       </article>
 
       <article class="project-card external" data-tags="interior conceptual" data-title="5ka — Future Stores Identity" data-external-url="https://www.artlebedev.com/5ka/future-stores-identity/">
         <span class="card-number">07</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="images/assets/build/als/5ka-identity.jpg" alt="5ka Identity"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
+        <div class="card-img"><img src="images/assets/build/als/5ka-identity.jpg" alt="5ka Identity" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">5ka — Future Stores Identity</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div>
       </article>
 
       <article class="project-card external" data-tags="interior" data-title="Magnit Classroom" data-external-url="https://www.artlebedev.com/magnit/classroom/">
         <span class="card-number">08</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="images/assets/build/als/magnit-classroom.jpg" alt="Magnit Classroom"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
+        <div class="card-img"><img src="images/assets/build/als/magnit-classroom.jpg" alt="Magnit Classroom" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Magnit Classroom</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
       </article>
 
       <article class="project-card external" data-tags="interior" data-title="Magnit Retail Interiors" data-external-url="https://www.artlebedev.com/magnit/interiors/">
         <span class="card-number">09</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="images/assets/build/als/magnit-interiors.jpg" alt="Magnit Interiors"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
+        <div class="card-img"><img src="images/assets/build/als/magnit-interiors.jpg" alt="Magnit Interiors" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Magnit Retail Interiors</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
       </article>
 
       <article class="project-card" data-slug="masterplan-in-dominican-republic" data-tags="masterplan residential" data-title="Masterplan in Dominican Republic" data-year="2023" data-location="Dominican Republic" data-type="Masterplan / Residential" data-studio="Archidom Studio" data-tools="SketchUp, Lumion, Photoshop" data-desc="Development of a masterplan and two standard villa types for a coastal site in Cabrera, Dominican Republic — La Perla, 32,000 m², created in collaboration with the lead architect of Archidom. The project includes first-line beachfront villas and second-line villas. The design focuses on ocean views, strong indoor-outdoor connections, large social spaces, and integration with surrounding vegetation." data-images='["images/assets/build/vrd/vrd1.webp","images/assets/build/vrd/vrd2.webp","images/assets/build/vrd/vrd3.webp","images/assets/build/vrd/vrd4.webp","images/assets/build/vrd/vrd5.webp","images/assets/build/vrd/vrd6.webp","images/assets/build/vrd/vrd7.webp","images/assets/build/vrd/vrd8.webp"]'>
         <span class="card-number">10</span>
-        <div class="card-img"><img src="images/assets/build/vrd/vrd3.webp" alt="Masterplan DR"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+        <div class="card-img"><img src="images/assets/build/vrd/vrd3.webp" alt="Masterplan DR" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Masterplan in Dominican Republic</div><div class="card-year">2023 · Dominican Republic</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
       </article>
 
       <article class="project-card" data-tags="interior" data-title="Brownie Coffeehouse" data-year="2022" data-location="Molodechno, Belarus" data-type="Interior / Commercial" data-studio="Independent" data-tools="AutoCAD, ArchiCAD, Lumion" data-desc="Interior transformation of a ground-floor space in a residential building. Urban mood, material research, and functional zoning from concept through my supervision to realisation." data-images='["images/assets/build/brownie/brownie1.webp","images/assets/build/brownie/brownie2.webp","images/assets/build/brownie/brownie3.webp","images/assets/build/brownie/brownie4.webp","images/assets/build/brownie/brownie5.webp"]'>
         <span class="card-number">11</span>
-        <div class="card-img"><img src="images/assets/build/brownie/brownie1.webp" alt="Brownie Coffeehouse"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+        <div class="card-img"><img src="images/assets/build/brownie/brownie1.webp" alt="Brownie Coffeehouse" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Brownie Coffeehouse</div><div class="card-year">2022 · Molodechno</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
       </article>
 
-      <article class="project-card external" data-tags="interior" data-title="ALS 30 Spatial Design for a Cultural Event" data-external-url="https://www.artlebedev.runews2025party/">
+      <article class="project-card external" data-tags="interior" data-title="ALS 30 Spatial Design for a Cultural Event" data-external-url="https://www.artlebedev.com/news2025party/">
         <span class="card-number">12</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="images/assets/build/als/als30.jpg" alt="ALS 30"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
+        <div class="card-img"><img src="images/assets/build/als/als30.jpg" alt="ALS 30" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">ALS 30 Spatial Design for a Cultural Event</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
       </article>
 
       <article class="project-card" data-tags="conceptual masterplan" data-title="Competition Alborada Benahavís" data-year="2021" data-location="Benahavís, Spain" data-type="Competition / Hospitality" data-studio="Archidom Studio" data-tools="AutoCAD, Rhino, Photoshop" data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside, architecture as landscape continuation. Concept plans, sketches, diagrams, post-production." data-images='["images/assets/build/xab/xab.webp"]'>
         <span class="card-number">13</span>
-        <div class="card-img"><img src="images/assets/build/xab/xab.webp" alt="Alborada"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+        <div class="card-img"><img src="images/assets/build/xab/xab.webp" alt="Alborada" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Competition Alborada</div><div class="card-year">2021 · Benahavís</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="masterplan">#MASTERPLAN</button></div></div>
       </article>
 
       <article class="project-card" data-tags="conceptual" data-title="Museum of Modern Art NOVA" data-year="2022" data-location="Warsaw / Minsk" data-type="Cultural / Public" data-studio="Graduation Warsaw" data-tools="AutoCAD, ArchiCAD, Lumion" data-desc="The Museum of Modern Art NOVA is conceived as a fusion of cultural ambition and natural power — a place where art and landscape speak the same language. Located on Soltistinskaya Sloboda Square in Minsk, along the Svisloch River, the museum is designed as a catalyst for the city's cultural expansion. The form is inspired by a tectonic fault: walls rise from the ground on three sides, creating a sheltering roof that emerges organically from the earth." data-images='["images/assets/build/nova/nova1.webp","images/assets/build/nova/nova2.webp","images/assets/build/nova/nova3.webp","images/assets/build/nova/nova4.webp"]'>
         <span class="card-number">14</span>
-        <div class="card-img"><img src="images/assets/build/nova/nova2.webp" alt="Museum NOVA"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
+        <div class="card-img"><img src="images/assets/build/nova/nova2.webp" alt="Museum NOVA" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
         <div class="card-meta"><div class="card-info"><div class="card-name">Museum of Modern Art NOVA</div><div class="card-year">2022 · Warsaw / Minsk</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div>
       </article>
+
     </main>
 
     <!-- ── MODAL ── -->
@@ -337,9 +325,7 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
       <div class="modal-overlay" id="modalOverlay"></div>
       <div class="modal-content" role="dialog" aria-modal="true">
         <button class="modal-close" id="modalClose" aria-label="Close">×</button>
-
         <div class="modal-gallery">
-          <!-- Stage wrap: arrows are positioned relative to THIS, so they always sit on the photo -->
           <div class="modal-stage-wrap">
             <div class="modal-stage ph" id="modalMain">Add images to images/assets/build/</div>
             <button class="nav-arrow prev" id="prevImg" type="button" aria-label="Previous image">
@@ -351,7 +337,6 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
           </div>
           <div class="modal-thumbs" id="modalThumbs"></div>
         </div>
-
         <aside class="modal-info">
           <div>
             <div class="modal-year" id="modalYear"></div>
@@ -364,18 +349,24 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
       </div>
     </section>
 
-    <div class="footer-left"><a href="about.html">About</a></div>
-    <div class="global-footer" id="globalFooter">
-      <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank" rel="noopener">Artlebedev</a><span>—</span>
-      <a href="/cdn-cgi/l/email-protection#a8c6c9dec1c4cdc6e8cac386dadd"><span class="__cf_email__" data-cfemail="d9b7b8afb0b5bcb799bbb2f7abac">[email&#160;protected]</span></a><span>—</span>
-      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a><span>—</span>
-      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
+    <!-- ── IN-FLOW FOOTER — visible only when scrolled to page bottom ── -->
+    <footer class="site-footer">
+      <a class="foot-about" href="about.html">About</a>
+      <div class="foot-right">
+        <a href="https://www.artlebedev.ru/people/JFkWZ1/" target="_blank" rel="noopener">Artlebedev</a>
+        <span class="foot-sep">—</span>
+        <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+        <span class="foot-sep">—</span>
+        <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
+        <span class="foot-sep">—</span>
+        <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  </div><!-- /.wrap -->
+
   <script>
-    /* ── CURSOR ── */
+    /* ── CUSTOM CURSOR ── */
     const cursor = document.getElementById('cursor');
     const desktop = matchMedia('(hover:hover) and (pointer:fine)').matches;
     if (desktop) {
@@ -389,9 +380,37 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
       requestAnimationFrame(tick);
       document.querySelectorAll('a,button,.project-card,.card-img').forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('big'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('big','lens'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('big', 'lens'));
       });
     }
+
+    /* ── TICKER: ensure seamless loop on any screen width ──
+       Strategy: measure one span's rendered width, then
+       add copies until total ≥ 2.5× viewport; set duration
+       so visual speed stays constant (~22 px/s). */
+    (function () {
+      const ticker = document.getElementById('ticker');
+      if (!ticker) return;
+      const origSpans = [...ticker.children];
+      const TARGET_PX_PER_S = 22;
+
+      requestAnimationFrame(() => {
+        const spanW = origSpans[0] ? origSpans[0].offsetWidth : 200;
+        const needed = Math.ceil(window.innerWidth * 2.5 / spanW);
+        const current = ticker.children.length;
+        if (needed > current) {
+          const frag = document.createDocumentFragment();
+          for (let i = 0; i < needed - current; i++) {
+            frag.appendChild(origSpans[i % origSpans.length].cloneNode(true));
+          }
+          ticker.appendChild(frag);
+        }
+        // Set duration based on desired speed: distance = totalW × 0.5
+        const totalW = ticker.children.length * spanW;
+        const duration = (totalW * 0.5) / TARGET_PX_PER_S;
+        ticker.style.animationDuration = duration.toFixed(1) + 's';
+      });
+    })();
 
     /* ── MODAL REFS ── */
     const modal       = document.getElementById('modal');
@@ -407,28 +426,24 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
 
     let currentImages = [], currentIndex = 0, currentAlt = '', zoomSource = '';
 
-    /* ── HELPERS ── */
-    function toArray(v){ try{ return JSON.parse(v||'[]') } catch{ return [] } }
+    function toArray(v) { try { return JSON.parse(v || '[]') } catch { return [] } }
 
-    function renderSpecs(d){
-      const specs = [{label:'Type',val:d.type},{label:'Studio',val:d.studio},{label:'Tools',val:d.tools}].filter(x=>x.val);
-      modalSpecs.innerHTML = specs.map(s=>`<div class="spec"><label>${s.label}</label><span>${s.val}</span></div>`).join('');
+    function renderSpecs(d) {
+      const specs = [{ label: 'Type', val: d.type }, { label: 'Studio', val: d.studio }, { label: 'Tools', val: d.tools }].filter(x => x.val);
+      modalSpecs.innerHTML = specs.map(s => `<div class="spec"><label>${s.label}</label><span>${s.val}</span></div>`).join('');
     }
 
-    function setThumbActive(i){
-      modalThumbs.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+    function setThumbActive(i) {
+      modalThumbs.querySelectorAll('.thumb').forEach((t, idx) => t.classList.toggle('active', idx === i));
     }
 
-    /* ── SHOW IMAGE ──
-       Arrows live in .modal-stage-wrap (parent of modalMain), so
-       clearing modalMain.innerHTML is always safe. */
-    function showImage(index){
+    function showImage(index) {
       if (!currentImages.length) return;
       currentIndex = (index + currentImages.length) % currentImages.length;
       const src = currentImages[currentIndex];
       zoomSource = src;
       modalMain.className = 'modal-stage';
-      modalMain.innerHTML = '';          // wipe img, lens, AND any stale text nodes
+      modalMain.innerHTML = '';
       const img = new Image();
       img.alt = currentAlt;
       img.src = src;
@@ -437,25 +452,24 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
       if (desktop) modalMain.dataset.src = src;
     }
 
-    /* ── OPEN / CLOSE MODAL ── */
-    function openModal(card){
+    function openModal(card) {
       const d = card.dataset;
       currentImages = toArray(d.images);
-      currentIndex  = 0;
-      currentAlt    = d.title || '';
+      currentIndex = 0;
+      currentAlt = d.title || '';
       modalTitle.textContent = d.title || '';
-      modalYear.textContent  = (d.year||'') + (d.location ? ' · '+d.location : '');
-      modalDesc.textContent  = d.desc || '';
+      modalYear.textContent = (d.year || '') + (d.location ? ' · ' + d.location : '');
+      modalDesc.textContent = d.desc || '';
       renderSpecs(d);
       modalExtra.innerHTML = card.classList.contains('external')
         ? '<p class="card-linkline"><strong>VIEW ON ARTLEBEDEV</strong></p>' : '';
       modalThumbs.innerHTML = '';
-      if (currentImages.length){
-        currentImages.forEach((src,i)=>{
+      if (currentImages.length) {
+        currentImages.forEach((src, i) => {
           const t = document.createElement('img');
-          t.className = 'thumb'+(i===0?' active':'');
-          t.src = src; t.alt = d.title||'';
-          t.addEventListener('click', ()=>showImage(i));
+          t.className = 'thumb' + (i === 0 ? ' active' : '');
+          t.src = src; t.alt = d.title || '';
+          t.addEventListener('click', () => showImage(i));
           modalThumbs.appendChild(t);
         });
         showImage(0);
@@ -464,113 +478,107 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
         modalMain.textContent = 'Add images to images/assets/build/';
       }
       modal.classList.add('active');
-      modal.setAttribute('aria-hidden','false');
+      modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      history.replaceState(null,'','#'+(d.slug||''));
+      history.replaceState(null, '', '#' + (d.slug || ''));
     }
 
-    function closeModal(){
+    function closeModal() {
       modal.classList.remove('active');
-      modal.setAttribute('aria-hidden','true');
+      modal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-      history.replaceState(null,'',location.pathname);
+      history.replaceState(null, '', location.pathname);
     }
 
-    function step(dir){ if (!currentImages.length) return; showImage(currentIndex+dir); }
+    function step(dir) { if (currentImages.length) showImage(currentIndex + dir); }
 
-    /* ── EVENT LISTENERS ── */
-    document.querySelectorAll('.project-card').forEach(card=>{
-      card.addEventListener('click', e=>{
+    /* ── CARD CLICKS ── */
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', e => {
         if (e.target.closest('.tag')) return;
         const ext = card.dataset.externalUrl;
-        if (ext){ window.open(ext,'_blank','noopener'); return; }
+        if (ext) { window.open(ext, '_blank', 'noopener'); return; }
         openModal(card);
       });
     });
 
-    /* ── FILTER – scroll active button to center of the row ── */
-    function scrollFilterIntoView(btn){
+    /* ── FILTER ── */
+    function scrollFilterIntoView(btn) {
+      if (window.innerWidth > 620) return;
       const row = document.getElementById('filterRow');
       if (!row) return;
-      // Only auto-scroll on mobile where the row is overflow-x:auto
-      if (window.innerWidth > 620) return;
-      const targetLeft = btn.offsetLeft - (row.clientWidth / 2) + (btn.offsetWidth / 2);
-      row.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+      const target = btn.offsetLeft - (row.clientWidth / 2) + (btn.offsetWidth / 2);
+      row.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
     }
 
-    document.querySelectorAll('.filter-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
       const filter = btn.dataset.filter;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b===btn));
-      document.querySelectorAll('.project-card').forEach(card=>{
-        const tags = (card.dataset.tags||'').toLowerCase().split(/\s+/);
-        card.toggleAttribute('hidden', filter!=='all' && !tags.includes(filter));
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.project-card').forEach(card => {
+        const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/);
+        card.toggleAttribute('hidden', filter !== 'all' && !tags.includes(filter));
       });
       scrollFilterIntoView(btn);
     }));
 
-    document.querySelectorAll('.tag').forEach(tag=>tag.addEventListener('click',e=>{
+    document.querySelectorAll('.tag').forEach(tag => tag.addEventListener('click', e => {
       e.stopPropagation();
       const filter = tag.dataset.filter;
       let activeBtn;
-      document.querySelectorAll('.filter-btn').forEach(b=>{
-        const match = b.dataset.filter===filter;
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        const match = b.dataset.filter === filter;
         b.classList.toggle('active', match);
         if (match) activeBtn = b;
       });
-      document.querySelectorAll('.project-card').forEach(card=>{
-        const tags = (card.dataset.tags||'').toLowerCase().split(/\s+/);
-        card.toggleAttribute('hidden', filter!=='all' && !tags.includes(filter));
+      document.querySelectorAll('.project-card').forEach(card => {
+        const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/);
+        card.toggleAttribute('hidden', filter !== 'all' && !tags.includes(filter));
       });
       if (activeBtn) scrollFilterIntoView(activeBtn);
-      document.getElementById('filterRow').scrollIntoView({behavior:'smooth',block:'nearest'});
+      document.getElementById('filterRow').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }));
 
+    /* ── MODAL EVENTS ── */
     document.getElementById('modalOverlay').addEventListener('click', closeModal);
     document.getElementById('modalClose').addEventListener('click', closeModal);
-    prevImg.addEventListener('click', ()=>step(-1));
-    nextImg.addEventListener('click', ()=>step(1));
+    prevImg.addEventListener('click', () => step(-1));
+    nextImg.addEventListener('click', () => step(1));
 
-    window.addEventListener('keydown', e=>{
+    window.addEventListener('keydown', e => {
       if (!modal.classList.contains('active')) return;
-      if (e.key==='Escape') closeModal();
-      if (e.key==='ArrowLeft') step(-1);
-      if (e.key==='ArrowRight') step(1);
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
     });
 
     /* ── ZOOM LENS (desktop) ── */
     if (desktop) {
-      modalMain.addEventListener('mousemove', e=>{
+      modalMain.addEventListener('mousemove', e => {
         if (!currentImages.length) return;
         const img = modalMain.querySelector('img');
         if (!img) return;
         let lens = modalMain.querySelector('.lens');
-        if (!lens){ lens = document.createElement('div'); lens.className='lens'; modalMain.appendChild(lens); }
+        if (!lens) { lens = document.createElement('div'); lens.className = 'lens'; modalMain.appendChild(lens); }
         lens.style.display = 'block';
         cursor.classList.add('lens');
         const r = modalMain.getBoundingClientRect();
         const size = 150;
         const x = e.clientX - r.left, y = e.clientY - r.top;
-        const lx = Math.max(size/2, Math.min(r.width -size/2, x));
-        const ly = Math.max(size/2, Math.min(r.height-size/2, y));
-        lens.style.left   = (lx-size/2)+'px';
-        lens.style.top    = (ly-size/2)+'px';
-        lens.style.width  = lens.style.height = size+'px';
-        const scale = 2.2;
-        lens.style.backgroundImage    = `url('${zoomSource}')`;
-        lens.style.backgroundSize     = `${r.width*scale}px ${r.height*scale}px`;
-        lens.style.backgroundPosition = `${(x/r.width)*100}% ${(y/r.height)*100}%`;
+        const lx = Math.max(size / 2, Math.min(r.width - size / 2, x));
+        const ly = Math.max(size / 2, Math.min(r.height - size / 2, y));
+        lens.style.cssText += `;left:${lx - size / 2}px;top:${ly - size / 2}px;width:${size}px;height:${size}px;background-image:url('${zoomSource}');background-size:${r.width * 2.2}px ${r.height * 2.2}px;background-position:${(x / r.width) * 100}% ${(y / r.height) * 100}%`;
       });
-      modalMain.addEventListener('mouseenter', ()=>{ if (currentImages.length) cursor.classList.add('lens'); });
-      modalMain.addEventListener('mouseleave', ()=>{
+      modalMain.addEventListener('mouseenter', () => { if (currentImages.length) cursor.classList.add('lens'); });
+      modalMain.addEventListener('mouseleave', () => {
         cursor.classList.remove('lens');
         const lens = modalMain.querySelector('.lens');
-        if (lens) lens.style.display='none';
+        if (lens) lens.style.display = 'none';
       });
     }
 
     /* ── HASH ROUTING ── */
-    function openFromHash(){
-      const slug = location.hash.replace('#','');
+    function openFromHash() {
+      const slug = location.hash.replace('#', '');
       if (!slug) return;
       const card = document.querySelector(`[data-slug="${slug}"]`);
       if (card) openModal(card);
@@ -578,53 +586,49 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
     openFromHash();
     window.addEventListener('hashchange', openFromHash);
 
-    /* ── MOBILE: COLLAPSIBLE HEADER ── */
+    /* ── MOBILE HEADER COLLAPSE ──
+       Fixes:
+       - Math.max(0, scrollY) clamps iOS rubber-band negative values
+       - ±5px delta threshold prevents micro-oscillations and snap-back shake
+       - y < 20 (not just !goingDown) avoids re-expanding on every tiny upward nudge at page bottom */
     const headerBody = document.getElementById('headerBody');
     if (headerBody) {
-      let lastY = 0, collapsed = false;
-      let fullH = 0;
+      let lastY = 0, collapsed = false, fullH = 0;
 
-      function collapseHeader(){
+      function collapseHeader() {
         if (collapsed) return;
         collapsed = true;
         fullH = headerBody.scrollHeight;
         headerBody.style.height = fullH + 'px';
-        // force reflow so transition picks up from explicit height
-        headerBody.getBoundingClientRect();
-        headerBody.style.height  = '0';
+        headerBody.getBoundingClientRect(); // force reflow
+        headerBody.style.height = '0';
         headerBody.style.opacity = '0';
       }
-      function expandHeader(){
+      function expandHeader() {
         if (!collapsed) return;
         collapsed = false;
-        headerBody.style.height  = fullH + 'px';
+        headerBody.style.height = fullH + 'px';
         headerBody.style.opacity = '1';
-        const onEnd = () => {
-          headerBody.style.height = '';
-          headerBody.removeEventListener('transitionend', onEnd);
-        };
+        const onEnd = () => { headerBody.style.height = ''; headerBody.removeEventListener('transitionend', onEnd); };
         headerBody.addEventListener('transitionend', onEnd);
       }
 
-      window.addEventListener('scroll', ()=>{
-        const y = window.scrollY;
+      window.addEventListener('scroll', () => {
+        const y = Math.max(0, window.scrollY); // clamp negative (iOS rubber-band)
         const isMob = window.innerWidth <= 620;
-        if (!isMob){
-          if (collapsed) expandHeader();
-          lastY = y; return;
-        }
-        const goingDown = y > lastY;
-        if (goingDown && y > 80)  collapseHeader();
-        else if (!goingDown)       expandHeader();
+        if (!isMob) { if (collapsed) expandHeader(); lastY = y; return; }
+        const delta = y - lastY;
+        if (delta > 5 && y > 60) collapseHeader();
+        else if (delta < -5 || y < 20) expandHeader();
         lastY = y;
-      }, { passive:true });
+      }, { passive: true });
     }
 
-    /* ── MOBILE: 2-COLUMN TOGGLE ── */
+    /* ── MOBILE 2-COLUMN TOGGLE ── */
     const colToggle = document.getElementById('colToggle');
     const grid      = document.getElementById('projectsGrid');
-    if (colToggle && grid){
-      colToggle.addEventListener('click', ()=>{
+    if (colToggle && grid) {
+      colToggle.addEventListener('click', () => {
         const is2 = grid.classList.toggle('mobile-2col');
         colToggle.classList.toggle('active', is2);
       });
