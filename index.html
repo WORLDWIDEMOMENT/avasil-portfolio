@@ -425,33 +425,7 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 }
 
-// ══════════════════════════════════════
 // ── ROULETTE ──
-// ══════════════════════════════════════
-
-// ── PROJECT REGISTRY ──────────────────────────────────────────────────────────
-//
-// Каждый проект — объект со следующими полями:
-//
-//   title       {string}  — название, отображается в попапе
-//   category    {string}  — категория (Architecture / Visual / Video / Local Radio)
-//   description {string}  — короткое описание (1–2 предложения)
-//   image       {string}  — путь к обложке (относительно index.html)
-//   url         {string}  — куда вести при клике
-//   isExternal  {boolean} — true = сторонний сайт, открывается в новой вкладке
-//   externalHost{string}  — подпись на бейдже (например "artlebedev.com")
-//
-// КАК ДОБАВИТЬ НОВЫЙ ПРОЕКТ:
-//   1. Добавьте объект в массив ниже (или в projects.json).
-//   2. Для обычного проекта с модалкой:
-//      url: "architecture.html#YOUR-SLUG"
-//      где YOUR-SLUG — значение атрибута data-slug="" на карточке в build.html.
-//   3. Для внешнего проекта (Artlebedev и т.п.):
-//      isExternal: true, url: "https://...", externalHost: "artlebedev.com"
-//      Попап покажет бейдж и откроет ссылку в новой вкладке.
-//
-// ─────────────────────────────────────────────────────────────────────────────
-
 let projects = [];
 let rouletteOpen = false;
 let spinTimer    = null;
@@ -465,8 +439,6 @@ fetch('projects.json')
     // Редактируйте этот массив если не используете projects.json
     projects = [
 
-      // ── ARCHITECTURE — внутренние проекты (открывают модалку) ──
-      // url = "architecture.html#" + значение data-slug в build.html
       {
         title:       "1295 — Residential Complex",
         category:    "Architecture",
@@ -513,8 +485,6 @@ fetch('projects.json')
         // Аналогично — нет data-slug на карточке.
       },
 
-      // ── ARCHITECTURE — внешние проекты (Artlebedev) ──
-      // isExternal: true → открывается в новой вкладке, бейдж показывает externalHost
       {
         title:       "Myriads. Design Code",
         category:    "Architecture",
@@ -575,28 +545,28 @@ fetch('projects.json')
         title:       "PILOTS / Hand Drawings",
         category:    "Visual",
         description: "Early touches of the materials.",
-        image:       "images/assets/create/pilots/pilots1.jpg",
+        image:       "images/assets/create/pilots/pilots1.webp",
         url:         "visual.html#pilots"
       },
       {
         title:       "None of them is me",
         category:    "Visual",
         description: "A Self-Portrait series.",
-        image:       "images/assets/create/portrait/Portrait1.jpg",
+        image:       "images/assets/create/portrait/Portrait4.webp",
         url:         "visual.html#Self-Portrait"
       },
       {
         title:       "SCAN — Grains of the Cities",
         category:    "Visual",
         description: "Fragments of urban texture.",
-        image:       "images/assets/create/scan/Scan1.jpg",
+        image:       "images/assets/create/scan/Scan4.webp",
         url:         "visual.html#scan"
       },
       {
         title:       "CLO — Custom Clothing",
         category:    "Visual",
         description: "Hand-painted garments as wearable architecture.",
-        image:       "images/assets/create/clo/cloth1.jpg",
+        image:       "images/assets/create/clo/cloth2.webp",
         url:         "visual.html#clo"
       },
 
