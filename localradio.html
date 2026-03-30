@@ -7,348 +7,295 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-:root {
-  --bg:    #080808;
-  --white: #e8e8e8;
-  --mid:   #aaaaaa;
-  --dim:   #666666;
-  --line:  #1a1a1a;
-  --red:   #ff2d2d;
+:root{
+  --bg:#080808;--white:#e8e8e8;--mid:#aaaaaa;--dim:#666666;--line:#1a1a1a;--red:#ff2d2d;
 }
 
-/* ── CUSTOM SCROLLBAR ── */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: var(--dim); }
-* { scrollbar-width: thin; scrollbar-color: #2a2a2a transparent; }
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2a2a2a}
+::-webkit-scrollbar-thumb:hover{background:var(--dim)}
+*{scrollbar-width:thin;scrollbar-color:#2a2a2a transparent}
+::selection{background:var(--red);color:#fff}
 
-/* ── CUSTOM TEXT SELECTION ── */
-::selection { background: var(--red); color: #fff; }
-::-moz-selection { background: var(--red); color: #fff; }
-
-html, body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: 'Space Mono', 'Courier New', monospace;
-  min-height: 100vh;
-  overflow-x: hidden;
-  cursor: none;
+html,body{
+  background:var(--bg);color:var(--white);
+  font-family:'Space Mono','Courier New',monospace;
+  min-height:100vh;overflow-x:hidden;cursor:none;
 }
 
-/* ── CURSOR ── */
-#cur {
-  position: fixed; width: 10px; height: 10px;
-  background: var(--red); border-radius: 50%;
-  pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: width .15s, height .15s;
+/* ── CURSOR — RAF loop ── */
+#cur{
+  position:fixed;width:10px;height:10px;
+  background:var(--red);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  will-change:transform;
 }
-#cur.big { width: 44px; height: 44px; background: transparent; border: 1px solid var(--red); }
-@media (hover: none) { #cur { display: none; } }
+#cur.big{
+  width:44px;height:44px;background:transparent;
+  border:1px solid var(--red);
+  transition:width .15s,height .15s,background .15s;
+}
+@media(hover:none){#cur{display:none}}
 
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.012) 2px, rgba(255,255,255,.012) 4px);
-  pointer-events: none;
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.012) 2px,rgba(255,255,255,.012) 4px);
+  pointer-events:none;
 }
-.noise {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .06;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px;
+.noise{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px;
 }
 
-.page { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; }
+.page{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column}
 
 /* ── HEADER ── */
-.header {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  padding: 32px 48px 24px; border-bottom: 1px solid var(--line); gap: 24px;
+.header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:32px 48px 24px;border-bottom:1px solid var(--line);gap:16px;
+  flex-wrap:wrap;
 }
-.back {
-  font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
-  text-decoration: none; color: var(--dim); transition: color .2s; white-space: nowrap;
+.header-left{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+
+/* Back and nav links share the same style */
+.back,.page-links a{
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;color:var(--dim);transition:color .2s;white-space:nowrap;
 }
-.back:hover { color: var(--white); }
-.broadcast-info {
-  display: flex; gap: 32px; flex-wrap: wrap;
-  font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--mid);
+.back:hover,.page-links a:hover{color:var(--white)}
+.page-links{display:flex;gap:18px;align-items:center}
+
+.broadcast-info{
+  display:flex;gap:32px;flex-wrap:wrap;align-items:center;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);
 }
-.broadcast-info .live { color: var(--red); display: flex; align-items: center; gap: 6px; }
-.live-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: blink 1.4s ease infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.broadcast-info .live{color:var(--red);display:flex;align-items:center;gap:6px}
+.live-dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 1.4s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 /* ── HERO ── */
-.hero { padding: 44px 48px 32px; border-bottom: 1px solid var(--line); }
-.station-name {
-  font-size: clamp(52px, 8vw, 110px);
-  font-weight: 700; letter-spacing: -.04em; line-height: .88;
-  text-transform: uppercase; position: relative;
+.hero{padding:44px 48px 32px;border-bottom:1px solid var(--line)}
+.station-name{
+  font-size:clamp(52px,8vw,110px);
+  font-weight:700;letter-spacing:-.04em;line-height:.88;
+  text-transform:uppercase;position:relative;
 }
-.station-name::before {
-  content: 'LOCAL RADIO';
-  position: absolute; top: 0; left: 0; color: var(--red);
-  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
-  transform: translateX(-3px); opacity: .6;
-  animation: glitch 6s steps(1) infinite;
+.station-name::before{
+  content:'LOCAL RADIO';
+  position:absolute;top:0;left:0;color:var(--red);
+  clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%);
+  transform:translateX(-3px);opacity:.6;
+  animation:glitch 6s steps(1) infinite;
 }
-@keyframes glitch {
-  0%,92%,100% { transform: translateX(-3px); clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%); }
-  93% { transform: translateX(3px);  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%); }
-  95% { transform: translateX(-2px); clip-path: polygon(0 10%, 100% 10%, 100% 22%, 0 22%); }
-  97% { transform: translateX(0);    clip-path: polygon(0 80%, 100% 80%, 100% 90%, 0 90%); }
+@keyframes glitch{
+  0%,92%,100%{transform:translateX(-3px);clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%)}
+  93%{transform:translateX(3px);clip-path:polygon(0 60%,100% 60%,100% 75%,0 75%)}
+  95%{transform:translateX(-2px);clip-path:polygon(0 10%,100% 10%,100% 22%,0 22%)}
+  97%{transform:translateX(0);clip-path:polygon(0 80%,100% 80%,100% 90%,0 90%)}
 }
-.station-desc {
-  margin-top: 20px; font-size: clamp(11px, 1vw, 13px);
-  font-weight: 400; font-style: italic; line-height: 1.7;
-  color: var(--mid); max-width: 600px;
-}
-
-/* ═══════════════════════════════════════
-   SLOT MACHINE RANDOMIZER
-═══════════════════════════════════════ */
-.randomizer-section {
-  border-bottom: 1px solid var(--line);
-  padding: 36px 48px;
-  display: flex;
-  align-items: center;
-  gap: 48px;
+.station-desc{
+  margin-top:20px;font-size:clamp(11px,1vw,13px);
+  font-weight:400;font-style:italic;line-height:1.7;
+  color:var(--mid);max-width:600px;
 }
 
-.randomizer-label {
-  font-size: 9px; font-weight: 700;
-  letter-spacing: .26em; text-transform: uppercase;
-  color: var(--dim); white-space: nowrap;
-  flex-shrink: 0;
+/* ── SLOT MACHINE ── */
+.randomizer-section{
+  border-bottom:1px solid var(--line);
+  padding:36px 48px;
+  display:flex;align-items:center;gap:48px;
+}
+.randomizer-label{
+  font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--dim);white-space:nowrap;flex-shrink:0;
 }
 
-/* the drum/slot window */
-.drum-wrap {
-  position: relative;
-  height: 52px;
-  flex: 1;
-  max-width: 520px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: #0d0d0d;
+/* FIX: position:relative is REQUIRED — without it, the absolutely-positioned
+   .drum-strip anchors to .page instead of .drum-wrap, making it invisible. */
+.drum-wrap{
+  position:relative; /* ← KEY FIX */
+  height:52px;flex:1;max-width:520px;
+  overflow:hidden;border:1px solid var(--line);background:#0d0d0d;
 }
-/* top/bottom fade masks */
-.drum-wrap::before,
-.drum-wrap::after {
-  content: ''; position: absolute; left: 0; right: 0; height: 16px; z-index: 2; pointer-events: none;
+.drum-wrap::before,.drum-wrap::after{
+  content:'';position:absolute;left:0;right:0;height:16px;z-index:2;pointer-events:none;
 }
-.drum-wrap::before { top: 0;    background: linear-gradient(to bottom, #0d0d0d, transparent); }
-.drum-wrap::after  { bottom: 0; background: linear-gradient(to top,    #0d0d0d, transparent); }
+.drum-wrap::before{top:0;background:linear-gradient(to bottom,#0d0d0d,transparent)}
+.drum-wrap::after{bottom:0;background:linear-gradient(to top,#0d0d0d,transparent)}
 
-/* the scrolling strip */
-.drum-strip {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  transition: none;
+.drum-strip{
+  position:absolute;top:0;left:0;right:0;
+  /* no transition here — JS drives animation via rAF */
 }
-.drum-item {
-  height: 52px;
-  display: flex; align-items: center;
-  padding: 0 18px;
-  font-size: 13px; font-weight: 700;
-  letter-spacing: .06em; text-transform: uppercase;
-  color: var(--dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color .2s;
+.drum-item{
+  height:52px;display:flex;align-items:center;
+  padding:0 18px;font-size:13px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.drum-item.selected { color: var(--white); }
-
-/* center line */
-.drum-center-line {
-  position: absolute;
-  top: 50%; left: 0; right: 0;
-  height: 1px; background: var(--red);
-  transform: translateY(-50%); z-index: 3;
-  pointer-events: none;
+.drum-item.selected{color:var(--white)}
+.drum-center-line{
+  position:absolute;top:50%;left:0;right:0;
+  height:1px;background:var(--red);
+  transform:translateY(-50%);z-index:3;pointer-events:none;
 }
 
-/* spin button */
-.spin-btn {
-  flex-shrink: 0;
-  font-family: inherit;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  background: none; border: 1px solid var(--line);
-  color: var(--dim); padding: 14px 28px;
-  cursor: none; transition: color .15s, border-color .15s, background .15s;
-  white-space: nowrap;
-  position: relative; overflow: hidden;
+.spin-btn{
+  flex-shrink:0;font-family:inherit;
+  font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);
+  color:var(--dim);padding:14px 28px;
+  cursor:none;transition:color .15s,border-color .15s;
+  white-space:nowrap;position:relative;overflow:hidden;
 }
-.spin-btn::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: var(--red);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform .25s ease;
-  z-index: -1;
+.spin-btn::after{
+  content:'';position:absolute;inset:0;background:var(--red);
+  transform:scaleX(0);transform-origin:left;transition:transform .25s ease;z-index:-1;
 }
-.spin-btn:hover { color: var(--white); border-color: var(--red); }
-.spin-btn:hover::after { transform: scaleX(1); }
-.spin-btn:disabled { opacity: .35; pointer-events: none; }
+.spin-btn:hover{color:var(--white);border-color:var(--red)}
+.spin-btn:hover::after{transform:scaleX(1)}
+.spin-btn:disabled{opacity:.35;pointer-events:none}
 
-/* result link that appears after spin */
-.spin-result {
-  flex-shrink: 0;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  text-decoration: none; color: var(--red);
-  border: 1px solid var(--red);
-  padding: 14px 22px;
-  opacity: 0; pointer-events: none;
-  transition: opacity .3s, color .2s, background .2s;
-  white-space: nowrap;
+.spin-result{
+  flex-shrink:0;font-size:10px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;color:var(--red);
+  border:1px solid var(--red);padding:14px 22px;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,color .2s,background .2s;white-space:nowrap;
 }
-.spin-result.show { opacity: 1; pointer-events: auto; }
-.spin-result:hover { background: var(--red); color: var(--white); }
+.spin-result.show{opacity:1;pointer-events:auto}
+.spin-result:hover{background:var(--red);color:var(--white)}
 
 /* ── PLAYLISTS GRID ── */
-.playlists {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  border-top: 1px solid var(--line);
+.playlists{
+  flex:1;display:grid;grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--line);
 }
-.playlist-card {
-  border-right: 1px solid var(--line);
-  display: flex; flex-direction: column;
-  cursor: none; text-decoration: none; color: inherit;
-  position: relative; overflow: hidden;
-  transition: background .2s;
+.playlist-card{
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;
+  cursor:none;text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;transition:background .2s;
 }
-.playlist-card:last-child { border-right: none; }
-.playlist-card:hover { background: rgba(255,255,255,.025); }
-
-/* highlight when selected by drum */
-.playlist-card.drumlit {
-  background: rgba(255,45,45,.06);
-  outline: 1px solid rgba(255,45,45,.35);
-  outline-offset: -1px;
+.playlist-card:last-child{border-right:none}
+.playlist-card:hover{background:rgba(255,255,255,.025)}
+.playlist-card.drumlit{
+  background:rgba(255,45,45,.06);
+  outline:1px solid rgba(255,45,45,.35);outline-offset:-1px;
 }
 
-.card-num {
-  position: absolute; top: 14px; left: 14px;
-  font-size: 9px; font-weight: 700; letter-spacing: .18em;
-  color: var(--red); z-index: 2;
+.card-num{
+  position:absolute;top:14px;left:14px;
+  font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--red);z-index:2;
 }
-.cover-wrap {
-  position: relative; width: 100%; aspect-ratio: 1/1;
-  overflow: hidden; background: #111; flex-shrink: 0;
+.cover-wrap{
+  position:relative;width:100%;aspect-ratio:1/1;
+  overflow:hidden;background:#111;flex-shrink:0;
 }
-.cover-wrap img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: grayscale(30%) brightness(.85);
-  transition: filter .5s, transform .6s;
+.cover-wrap img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(30%) brightness(.85);
+  transition:filter .5s,transform .6s;
 }
 .playlist-card:hover .cover-wrap img,
-.playlist-card.drumlit .cover-wrap img {
-  filter: grayscale(0%) brightness(1);
-  transform: scale(1.04);
+.playlist-card.drumlit .cover-wrap img{filter:grayscale(0%) brightness(1);transform:scale(1.04)}
+.cover-placeholder{
+  position:absolute;inset:0;background:#111;
+  display:flex;align-items:center;justify-content:center;
 }
-.cover-placeholder {
-  position: absolute; inset: 0; background: #111;
-  display: flex; align-items: center; justify-content: center;
+.vinyl{
+  width:52px;height:52px;border-radius:50%;
+  background:repeating-radial-gradient(circle at 50%,#1a1a1a 0px,#1a1a1a 4px,#222 4px,#222 8px);
+  animation:spin 3s linear infinite;position:relative;
 }
-.vinyl {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: repeating-radial-gradient(circle at 50%, #1a1a1a 0px, #1a1a1a 4px, #222 4px, #222 8px);
-  animation: spin 3s linear infinite; position: relative;
+.vinyl::after{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:10px;height:10px;background:#333;border-radius:50%;
 }
-.vinyl::after {
-  content: ''; position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  width: 10px; height: 10px; background: #333; border-radius: 50%;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.play-overlay {
-  position: absolute; inset: 0; background: rgba(255,45,45,0);
-  display: flex; align-items: center; justify-content: center;
-  transition: background .25s; z-index: 3;
+@keyframes spin{to{transform:rotate(360deg)}}
+.play-overlay{
+  position:absolute;inset:0;background:rgba(255,45,45,0);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s;z-index:3;
 }
 .playlist-card:hover .play-overlay,
-.playlist-card.drumlit .play-overlay { background: rgba(255,45,45,.12); }
-.play-icon {
-  font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
-  color: white; opacity: 0; transition: opacity .2s;
+.playlist-card.drumlit .play-overlay{background:rgba(255,45,45,.12)}
+.play-icon{
+  font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:white;opacity:0;transition:opacity .2s;
 }
 .playlist-card:hover .play-icon,
-.playlist-card.drumlit .play-icon { opacity: 1; }
+.playlist-card.drumlit .play-icon{opacity:1}
 
-.card-info {
-  padding: 14px 16px 20px;
-  border-top: 1px solid var(--line);
-  flex: 1; display: flex; flex-direction: column; gap: 4px;
+.card-info{
+  padding:14px 16px 20px;border-top:1px solid var(--line);
+  flex:1;display:flex;flex-direction:column;gap:4px;
 }
-.card-title {
-  font-size: 11px; font-weight: 700; letter-spacing: .05em;
-  text-transform: uppercase; line-height: 1.3; color: var(--white);
+.card-title{
+  font-size:11px;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;line-height:1.3;color:var(--white);
 }
-.card-title.loading {
-  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
-  background-size: 200%; animation: shimmer 1.5s infinite;
-  color: transparent; border-radius: 2px; height: 14px; width: 80%;
+.card-title.loading,.card-source.loading{
+  background:linear-gradient(90deg,#1e1e1e 25%,#2a2a2a 50%,#1e1e1e 75%);
+  background-size:200%;animation:shimmer 1.5s infinite;
+  color:transparent;border-radius:2px;
 }
-@keyframes shimmer { from{background-position:200%} to{background-position:-200%} }
-.card-source {
-  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 10px;
-}
-.card-source.loading {
-  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
-  background-size: 200%; animation: shimmer 1.5s infinite;
-  color: transparent; border-radius: 2px; height: 10px; width: 50%;
-}
-.card-desc {
-  font-size: 10px; font-style: italic; font-weight: 400;
-  line-height: 1.7; color: var(--mid);
-  border-left: 2px solid var(--red); padding-left: 10px; margin-top: 6px;
+.card-title.loading{height:14px;width:80%}
+.card-source.loading{height:10px;width:50%}
+@keyframes shimmer{from{background-position:200%}to{background-position:-200%}}
+.card-source{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.card-desc{
+  font-size:10px;font-style:italic;font-weight:400;
+  line-height:1.7;color:var(--mid);
+  border-left:2px solid var(--red);padding-left:10px;margin-top:6px;
 }
 
 /* ── FOOTER ── */
-.footer {
-  border-top: 1px solid var(--line);
-  padding: 16px 48px 28px;
-  display: flex; justify-content: space-between; align-items: center;
+.footer{
+  border-top:1px solid var(--line);
+  padding:16px 48px 28px;
+  display:flex;justify-content:space-between;align-items:center;
 }
-.footer-left a {
-  font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-  text-decoration: none; color: var(--white); opacity: .38; transition: opacity .2s;
+.footer-left a{
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  text-decoration:none;color:var(--white);opacity:.38;transition:opacity .2s;
 }
-.footer-left a:hover { opacity: 1; }
-.contact {
-  display: flex; gap: 14px; align-items: center;
-  font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+.footer-left a:hover{opacity:1}
+.contact{
+  display:flex;gap:14px;align-items:center;
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
 }
-.contact a { color: var(--white); text-decoration: none; opacity: .38; transition: opacity .2s; }
-.contact a:hover { opacity: 1; }
-.contact .sep { opacity: .18; }
+.contact a{color:var(--white);text-decoration:none;opacity:.38;transition:opacity .2s}
+.contact a:hover{opacity:1}
+.contact .sep{opacity:.18}
 
 /* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .playlists { grid-template-columns: repeat(2, 1fr); }
-  .playlist-card:nth-child(2) { border-right: none; }
-  .playlist-card:nth-child(3) { border-right: 1px solid var(--line); border-top: 1px solid var(--line); }
-  .playlist-card:last-child   { border-top: 1px solid var(--line); }
-  .header { padding: 24px 24px 20px; }
-  .hero   { padding: 28px 24px 24px; }
-  .randomizer-section { flex-direction: column; align-items: flex-start; padding: 28px 24px; gap: 20px; }
-  .drum-wrap { max-width: 100%; width: 100%; }
-  .footer { padding: 14px 24px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
+@media(max-width:900px){
+  .playlists{grid-template-columns:repeat(2,1fr)}
+  .playlist-card:nth-child(2){border-right:none}
+  .playlist-card:nth-child(3){border-right:1px solid var(--line);border-top:1px solid var(--line)}
+  .playlist-card:nth-child(4){border-top:1px solid var(--line)}
+  .playlist-card:nth-child(5){border-top:1px solid var(--line);border-right:none}
+  .header{padding:24px 24px 20px}
+  .hero{padding:28px 24px 24px}
+  .randomizer-section{flex-direction:column;align-items:flex-start;padding:28px 24px;gap:20px}
+  .drum-wrap{max-width:100%;width:100%}
+  .spin-btn,.spin-result{width:100%;text-align:center}
+  .footer{padding:14px 24px 24px;flex-direction:column;align-items:flex-start;gap:12px}
 }
-@media (max-width: 560px) {
-  .station-name { font-size: clamp(38px, 11vw, 64px); }
-  .contact { flex-wrap: wrap; gap: 8px; }
-  .contact .sep { display: none; }
-  .broadcast-info { gap: 16px; }
+@media(max-width:560px){
+  .station-name{font-size:clamp(38px,11vw,64px)}
+  .contact{flex-wrap:wrap;gap:8px}
+  .contact .sep{display:none}
+  .broadcast-info{gap:16px}
+  .header-left{gap:14px}
+  .page-links{gap:12px}
+  .page-links a,.back{font-size:9px}
 }
 </style>
 </head>
@@ -361,7 +308,14 @@ body::before {
 
   <!-- HEADER -->
   <div class="header">
-    <a href="index.html" class="back">← Back</a>
+    <div class="header-left">
+      <a href="index.html" class="back">← Back</a>
+      <nav class="page-links">
+        <a href="architecture.html">To Build</a>
+        <a href="visual.html">Visual</a>
+        <a href="video.html">Video</a>
+      </nav>
+    </div>
     <div class="broadcast-info">
       <span class="live"><span class="live-dot"></span>On air</span>
       <span id="clock">--:-- UTC</span>
@@ -380,16 +334,18 @@ body::before {
   </div>
 
   <!-- RANDOMIZER -->
+  <!--
+    DRUM SLUGS: Each card has data-slug="channel-01" through "channel-05".
+    To link here from the main randomizer (index.html), use:
+      url: "localradio.html#channel-01"
+    openFromHash() below will auto-click that card, opening Spotify in a new tab.
+  -->
   <div class="randomizer-section">
     <div class="randomizer-label">Spin the drum</div>
-
     <div class="drum-wrap" id="drumWrap">
-      <div class="drum-strip" id="drumStrip">
-        <!-- items injected by JS -->
-      </div>
+      <div class="drum-strip" id="drumStrip"></div>
       <div class="drum-center-line"></div>
     </div>
-
     <button class="spin-btn" id="spinBtn" onclick="spinDrum()">↻ Spin</button>
     <a class="spin-result" id="spinResult" href="#" target="_blank" rel="noopener">↗ Play</a>
   </div>
@@ -408,7 +364,7 @@ body::before {
       <div class="card-info">
         <div class="card-title loading" id="title-0">&nbsp;</div>
         <div class="card-source loading" id="source-0">&nbsp;</div>
-        <div class="card-desc">A warm basement that smells of old vinyl and cigarette smoke. It's the kind of night that's long past midnight, but no one's thinking about leaving. Garage bleeds into deep house, jungle seeps through trip-hop — everything is slightly blurred, physical, and just the right amount of raw. Music for people who know exactly why they came.</div>
+        <div class="card-desc">A warm basement that smells of old vinyl and cigarette smoke. It's the kind of night that's long past midnight, but no one's thinking about leaving. Garage bleeds into deep house, jungle seeps through trip-hop — everything is slightly blurred, physical, and just the right amount of raw.</div>
       </div>
     </a>
 
@@ -453,9 +409,10 @@ body::before {
       <div class="card-info">
         <div class="card-title loading" id="title-3">&nbsp;</div>
         <div class="card-source loading" id="source-3">&nbsp;</div>
-        <div class="card-desc">The morning after, stretched into a full day. The coffee went cold, nobody's in a hurry. This playlist lives in the in-between: between genres, between eras, between who you were and who you're becoming. Wide-eyed, slightly squinting in the light.</div>
+        <div class="card-desc">The morning after, stretched into a full day. The coffee went cold, nobody's in a hurry. This playlist lives in the in-between: between genres, between eras, between who you were and who you're becoming.</div>
       </div>
     </a>
+
     <a class="playlist-card" id="card-4" data-slug="channel-05"
        href="https://open.spotify.com/playlist/1ajzqkENf7NBuPTVNyJPjQ"
        target="_blank" rel="noopener">
@@ -467,7 +424,7 @@ body::before {
       <div class="card-info">
         <div class="card-title loading" id="title-4">&nbsp;</div>
         <div class="card-source loading" id="source-4">&nbsp;</div>
-        <div class="card-desc">It feels like a warm scarf thrown over your city armor. The asphalt is still wet, smoke and coffee hang in the air, but somehow everything inside is calm. Somewhere between a cigarette break and a Sunday walk, with sounds of people you’ll never meet and words half-heard through a café window. It’s grounded but gentle, urban with a quiet pulse of kindness.</div>
+        <div class="card-desc">It feels like a warm scarf thrown over your city armor. The asphalt is still wet, smoke and coffee hang in the air, but somehow everything inside is calm. Grounded but gentle, urban with a quiet pulse of kindness.</div>
       </div>
     </a>
 
@@ -479,193 +436,235 @@ body::before {
     <div class="contact">
       <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
       <span class="sep">—</span>
-      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
       <span class="sep">—</span>
-      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
 
 </div>
 
 <script>
-  // ── CURSOR ──
-  const cur = document.getElementById('cur');
-  if (window.matchMedia('(hover: hover)').matches) {
-    document.addEventListener('mousemove', e => {
-      cur.style.left = e.clientX + 'px';
-      cur.style.top  = e.clientY + 'px';
-    });
-    document.querySelectorAll('a, button, .playlist-card').forEach(el => {
-      el.addEventListener('mouseenter', () => cur.classList.add('big'));
-      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
-    });
-  }
-
-  // ── CLOCK ──
-  function updateClock() {
-    const now = new Date();
-    const h = String(now.getUTCHours()).padStart(2,'0');
-    const m = String(now.getUTCMinutes()).padStart(2,'0');
-    const s = String(now.getUTCSeconds()).padStart(2,'0');
-    document.getElementById('clock').textContent = `${h}:${m}:${s} UTC`;
-  }
-  updateClock(); setInterval(updateClock, 1000);
-
-  // ── PLAYLIST DATA ──
-  const PLAYLISTS = [
-    { id: 0, url: 'https://open.spotify.com/playlist/0mg0X028fIt8EwH5yi3Czf', title: 'Channel 01' },
-    { id: 1, url: 'https://open.spotify.com/playlist/4YMNrlPjp3nTenV6Qkn4Tc', title: 'Channel 02' },
-    { id: 2, url: 'https://open.spotify.com/playlist/2BAdX7KOSo3hsDMlq37IBD', title: 'Channel 03' },
-    { id: 3, url: 'https://open.spotify.com/playlist/77mIWmxJFdJGWar4EJdrjq', title: 'Channel 04' },
-    { id: 4, url: 'https://open.spotify.com/playlist/1ajzqkENf7NBuPTVNyJPjQ', title: 'Channel 05' },
-  ];
-
-  // ── BUILD DRUM STRIP ──
-  const drumStrip = document.getElementById('drumStrip');
-  const ITEM_H = 52; // px — must match CSS height
-
-  function buildStrip(titles) {
-    // repeat many times for smooth infinite feel
-    const reps = 12;
-    drumStrip.innerHTML = '';
-    for (let r = 0; r < reps; r++) {
-      titles.forEach((t, i) => {
-        const div = document.createElement('div');
-        div.className = 'drum-item';
-        div.dataset.idx = i;
-        div.textContent = `0${i+1} — ${t}`;
-        drumStrip.appendChild(div);
-      });
-    }
-  }
-
-  // initial build with fallback names
-  buildStrip(PLAYLISTS.map(p => p.title));
-
-  // ── OEMBED FETCH ──
-  PLAYLISTS.forEach(pl => {
-    fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(pl.url)}`)
-      .then(r => r.json())
-      .then(data => {
-        pl.title = data.title || pl.title;
-
-        // update card
-        const titleEl = document.getElementById(`title-${pl.id}`);
-        titleEl.textContent = data.title || `Channel 0${pl.id+1}`;
-        titleEl.classList.remove('loading');
-        const srcEl = document.getElementById(`source-${pl.id}`);
-        srcEl.textContent = 'Spotify playlist';
-        srcEl.classList.remove('loading');
-
-        // cover
-        if (data.thumbnail_url) {
-          const card = document.getElementById(`card-${pl.id}`);
-          const coverWrap = card.querySelector('.cover-wrap');
-          const placeholder = coverWrap.querySelector('.cover-placeholder');
-          const img = document.createElement('img');
-          img.src = data.thumbnail_url;
-          img.alt = data.title || '';
-          img.onload = () => {
-            placeholder.style.opacity = '0';
-            placeholder.style.transition = 'opacity .4s';
-            coverWrap.insertBefore(img, placeholder);
-          };
-        }
-
-        // rebuild strip with real names
-        buildStrip(PLAYLISTS.map(p => p.title));
-      })
-      .catch(() => {
-        const titleEl = document.getElementById(`title-${pl.id}`);
-        titleEl.textContent = `Channel 0${pl.id+1}`;
-        titleEl.classList.remove('loading');
-        const srcEl = document.getElementById(`source-${pl.id}`);
-        srcEl.textContent = 'Spotify playlist';
-        srcEl.classList.remove('loading');
-      });
+// ── CURSOR — RAF loop ──
+var cur = document.getElementById('cur');
+if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  var mx = 0, my = 0;
+  document.addEventListener('pointermove', function(e){ mx = e.clientX; my = e.clientY; }, { passive: true });
+  (function loop(){ cur.style.transform = 'translate3d('+mx+'px,'+my+'px,0) translate(-50%,-50%)'; requestAnimationFrame(loop); })();
+  document.querySelectorAll('a,button,.playlist-card').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ cur.classList.add('big'); });
+    el.addEventListener('mouseleave', function(){ cur.classList.remove('big'); });
   });
+}
 
-  // ── SLOT MACHINE ──
-  let spinning = false;
-  let currentOffset = 0;
+// ── CLOCK ──
+function updateClock() {
+  var now = new Date();
+  var h = String(now.getUTCHours()).padStart(2,'0');
+  var m = String(now.getUTCMinutes()).padStart(2,'0');
+  var s = String(now.getUTCSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = h+':'+m+':'+s+' UTC';
+}
+updateClock(); setInterval(updateClock, 1000);
 
-  function spinDrum() {
-    if (spinning) return;
-    spinning = true;
+// ── PLAYLIST DATA ──
+// thumbnailUrl is populated by oEmbed fetch below.
+// These URLs are also what you pass to index.html randomizer — see comments at bottom.
+var PLAYLISTS = [
+  { id:0, slug:'channel-01', url:'https://open.spotify.com/playlist/0mg0X028fIt8EwH5yi3Czf', title:'Channel 01', thumbnailUrl:'' },
+  { id:1, slug:'channel-02', url:'https://open.spotify.com/playlist/4YMNrlPjp3nTenV6Qkn4Tc', title:'Channel 02', thumbnailUrl:'' },
+  { id:2, slug:'channel-03', url:'https://open.spotify.com/playlist/2BAdX7KOSo3hsDMlq37IBD', title:'Channel 03', thumbnailUrl:'' },
+  { id:3, slug:'channel-04', url:'https://open.spotify.com/playlist/77mIWmxJFdJGWar4EJdrjq', title:'Channel 04', thumbnailUrl:'' },
+  { id:4, slug:'channel-05', url:'https://open.spotify.com/playlist/1ajzqkENf7NBuPTVNyJPjQ', title:'Channel 05', thumbnailUrl:'' }
+];
 
-    const btn = document.getElementById('spinBtn');
-    const result = document.getElementById('spinResult');
-    btn.disabled = true;
-    result.classList.remove('show');
+// ── BUILD DRUM STRIP ──
+var drumStrip = document.getElementById('drumStrip');
+var ITEM_H    = 52;
+var REPS      = 14; // enough copies for smooth spin + reset
 
-    // clear previous highlight
-    document.querySelectorAll('.playlist-card').forEach(c => c.classList.remove('drumlit'));
-
-    const chosen = Math.floor(Math.random() * 5);
-    const titles = PLAYLISTS.map(p => p.title);
-    const totalItems = drumStrip.children.length;
-
-    // We want to land on 'chosen' index in one of the middle repetitions
-    // target: somewhere in rep 5 (of 12) so there's room above and below
-    const targetRep = 5;
-    const targetIndex = targetRep * 5 + chosen;
-    const targetOffset = targetIndex * ITEM_H;
-
-    // extra spins: add several full rounds for drama
-    const extraSpins = (3 + Math.floor(Math.random() * 3)) * 5 * ITEM_H;
-    const finalOffset = targetOffset + extraSpins;
-
-    // eased animation via JS
-    const duration = 2200 + Math.random() * 600; // ms
-    const startOffset = currentOffset;
-    const startTime = performance.now();
-
-    function easeOut(t) {
-      // cubic ease-out
-      return 1 - Math.pow(1 - t, 3);
-    }
-
-    function animate(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = easeOut(progress);
-      const offset = startOffset + (finalOffset - startOffset) * eased;
-
-      drumStrip.style.transform = `translateY(-${offset}px)`;
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        currentOffset = finalOffset;
-        spinning = false;
-        btn.disabled = false;
-
-        // highlight chosen item in strip
-        Array.from(drumStrip.children).forEach((el, i) => {
-          el.classList.toggle('selected', i === targetIndex);
-        });
-
-        // highlight card
-        const card = document.getElementById(`card-${chosen}`);
-        card.classList.add('drumlit');
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-        // show play button
-        result.href = PLAYLISTS[chosen].url;
-        result.classList.add('show');
-      }
-    }
-
-    requestAnimationFrame(animate);
+function buildStrip() {
+  drumStrip.innerHTML = '';
+  for (var r = 0; r < REPS; r++) {
+    PLAYLISTS.forEach(function(p, i) {
+      var div = document.createElement('div');
+      div.className = 'drum-item';
+      div.dataset.idx = i;
+      div.textContent = '0'+(i+1)+' — '+p.title;
+      drumStrip.appendChild(div);
+    });
   }
-  function openFromHash() {
-  const slug = location.hash.replace('#', '');
+}
+buildStrip();
+
+// ── SPOTIFY oEMBED FETCH ──
+PLAYLISTS.forEach(function(pl) {
+  fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(pl.url))
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      pl.title = data.title || pl.title;
+      pl.thumbnailUrl = data.thumbnail_url || '';
+
+      var titleEl = document.getElementById('title-'+pl.id);
+      titleEl.textContent = pl.title;
+      titleEl.classList.remove('loading');
+
+      var srcEl = document.getElementById('source-'+pl.id);
+      srcEl.textContent = 'Spotify playlist';
+      srcEl.classList.remove('loading');
+
+      if (data.thumbnail_url) {
+        var card = document.getElementById('card-'+pl.id);
+        var coverWrap = card.querySelector('.cover-wrap');
+        var placeholder = coverWrap.querySelector('.cover-placeholder');
+        var img = document.createElement('img');
+        img.src = data.thumbnail_url;
+        img.alt = pl.title;
+        img.loading = 'lazy';
+        img.onload = function() {
+          placeholder.style.opacity = '0';
+          placeholder.style.transition = 'opacity .4s';
+          coverWrap.insertBefore(img, placeholder);
+        };
+      }
+
+      // Rebuild strip with real titles once any title updates
+      buildStrip();
+    })
+    .catch(function() {
+      var titleEl = document.getElementById('title-'+pl.id);
+      titleEl.textContent = 'Channel 0'+(pl.id+1);
+      titleEl.classList.remove('loading');
+      var srcEl = document.getElementById('source-'+pl.id);
+      srcEl.textContent = 'Spotify playlist';
+      srcEl.classList.remove('loading');
+    });
+});
+
+// ── SLOT MACHINE ──
+var spinning = false;
+
+function spinDrum() {
+  if (spinning) return;
+  spinning = true;
+
+  var btn    = document.getElementById('spinBtn');
+  var result = document.getElementById('spinResult');
+  btn.disabled = true;
+  result.classList.remove('show');
+  document.querySelectorAll('.playlist-card').forEach(function(c){ c.classList.remove('drumlit'); });
+  Array.from(drumStrip.children).forEach(function(el){ el.classList.remove('selected'); });
+
+  // FIX: reset strip to top instantly before each spin.
+  // Without this, currentOffset accumulates across spins and eventually
+  // exceeds the strip height, making the drum show nothing.
+  drumStrip.style.transform = 'translateY(0)';
+
+  var chosen = Math.floor(Math.random() * PLAYLISTS.length);
+
+  // Target: land on `chosen` in the middle of the strip (rep 6 of 14)
+  var targetRep   = 6;
+  var targetIndex = targetRep * PLAYLISTS.length + chosen;
+  var targetOffset = targetIndex * ITEM_H;
+
+  // Add random extra full cycles for drama (3–5 extra rounds)
+  var extraRounds = 3 + Math.floor(Math.random() * 3);
+  var finalOffset = targetOffset + extraRounds * PLAYLISTS.length * ITEM_H;
+
+  var duration  = 2200 + Math.random() * 600;
+  var startTime = null;
+
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+
+  function animate(now) {
+    if (!startTime) startTime = now;
+    var elapsed  = now - startTime;
+    var progress = Math.min(elapsed / duration, 1);
+    var offset   = finalOffset * easeOut(progress);
+
+    drumStrip.style.transform = 'translateY(-' + offset + 'px)';
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      spinning = false;
+      btn.disabled = false;
+
+      // Highlight the landed item in strip
+      var children = drumStrip.children;
+      for (var i = 0; i < children.length; i++) {
+        children[i].classList.toggle('selected', i === targetIndex);
+      }
+
+      // Highlight card
+      var card = document.getElementById('card-' + chosen);
+      card.classList.add('drumlit');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // Show "Play" button linking to Spotify directly
+      result.href = PLAYLISTS[chosen].url;
+      result.classList.add('show');
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// ── HASH ROUTING ──
+// Clicking a card navigates to Spotify (target="_blank").
+// When the main randomizer sends user to localradio.html#channel-02,
+// openFromHash finds that card and clicks it — opening Spotify directly.
+function openFromHash() {
+  var slug = location.hash.replace('#', '');
   if (!slug) return;
-  const card = document.querySelector(`[data-slug="${slug}"]`);
-  if (card) card.click(); // или openModal(card), в зависимости от вашей функции
+  var card = document.querySelector('[data-slug="' + slug + '"]');
+  if (card) card.click();
 }
 openFromHash();
 window.addEventListener('hashchange', openFromHash);
 </script>
+
+<!--
+═══════════════════════════════════════════════════════════════════════
+  КАК ПОДКЛЮЧИТЬ SPOTIFY-ОБЛОЖКИ В РАНДОМАЙЗЕР (index.html)
+═══════════════════════════════════════════════════════════════════════
+
+  В index.html в массиве projects добавьте для каждого Local Radio плейлиста:
+
+  {
+    title:       "Channel 01",
+    category:    "Local Radio",
+    description: "Garage / deep house / trip-hop. A warm basement past midnight.",
+    image:       "",               ← оставьте пустым
+    url:         "localradio.html#channel-01",
+    spotifyUrl:  "https://open.spotify.com/playlist/0mg0X028fIt8EwH5yi3Czf"
+  }
+
+  Затем в функции showProject() в index.html добавьте ПОСЛЕ строки
+  "popupTitle.textContent = p.title.toUpperCase()":
+
+  if (p.spotifyUrl) {
+    fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(p.spotifyUrl))
+      .then(r => r.json())
+      .then(data => {
+        if (data.thumbnail_url) {
+          const img = new Image();
+          img.onload = () => {
+            popupImg.src = data.thumbnail_url;
+            popupImg.classList.add('loaded');
+            setTimeout(() => drumEl.classList.add('hidden'), 150);
+            imgArea.classList.add('resolved');
+          };
+          img.src = data.thumbnail_url;
+        } else {
+          drumEl.classList.add('hidden');
+          imgArea.classList.add('resolved');
+        }
+      })
+      .catch(() => { drumEl.classList.add('hidden'); imgArea.classList.add('resolved'); });
+  }
+
+═══════════════════════════════════════════════════════════════════════
+-->
 </body>
 </html>
