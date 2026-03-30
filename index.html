@@ -18,8 +18,7 @@ body {
 
 /* ── CURSOR ── */
 #cur {
-  position: fixed;
-  width: 10px; height: 10px;
+  position: fixed; width: 10px; height: 10px;
   background: white; border-radius: 50%;
   pointer-events: none; z-index: 9999;
   transform: translate(-50%, -50%);
@@ -36,7 +35,6 @@ body {
   transition: opacity 1.0s ease;
 }
 #intro-veil.darken { opacity: .22; }
-
 #intro-line {
   position: fixed; left: 50%; bottom: 0;
   width: 1px; height: 0; background: white;
@@ -81,8 +79,7 @@ body {
   display: inline-block;
   font-size: clamp(36px, 5.6vw, 72px);
   font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-  line-height: 1;
-  color: rgba(255,255,255,.20);
+  line-height: 1; color: rgba(255,255,255,.20);
   animation: marquee-scroll 60s linear infinite;
   transition: color .4s ease;
 }
@@ -92,43 +89,88 @@ body {
 }
 .build-active .marquee-track { color: rgba(0,0,0,.15); }
 
-/* ── ROULETTE TRIGGER ── */
+/* ══════════════════════════════════════════════════════
+   ── ROULETTE TRIGGER — centered two-line label ──
+
+   POSITION GUIDE (easy to find and adjust):
+   ┌─ #roulette-btn ─────────────────────────────────┐
+   │  top:  90px  ← distance from viewport top       │
+   │               Marquee ends at ~86px on wide      │
+   │               screens. Increase to move down.    │
+   │  Centered via left:50% + translateX(-50%)        │
+   ├─ .r-line1 / .r-line2 ───────────────────────────┤
+   │  font-size: clamp(20px, 2.8vw, 36px)             │
+   │               ~half the size of TO BUILD.        │
+   │               Change both lines together.        │
+   └─────────────────────────────────────────────────┘
+   ┌─ #roulette-popup ───────────────────────────────┐
+   │  top: 176px  ← button bottom + gap              │
+   │               If you change btn top, update      │
+   │               this too: btn_top + ~76px + 10px  │
+   └─────────────────────────────────────────────────┘
+══════════════════════════════════════════════════════ */
+
 #roulette-btn {
-  position: fixed; top: 60px; right: 36px;
+  position: fixed;
+  top: 90px;        /* ← VERTICAL: move up/down by changing this */
+  left: 50%;        /* ← HORIZONTAL: always centered */
+  transform: translateX(-50%);
   z-index: 100;
-  display: flex; align-items: center; gap: 10px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 3px;
   background: none; border: none; cursor: none; padding: 0;
   opacity: 0; transition: opacity .8s ease;
-  height: clamp(36px, 5.6vw, 72px);
+  white-space: nowrap;
 }
 #roulette-btn.visible { opacity: 1; }
 
-.r-icon { width: 18px; height: 18px; flex-shrink: 0; opacity: .32; transition: opacity .22s; }
-.r-icon svg { width: 18px; height: 18px; display: block; stroke: white; fill: none; transition: stroke .4s; }
-.r-label {
-  font-size: 9px; font-weight: 700;
-  letter-spacing: .28em; text-transform: uppercase;
-  color: white; opacity: .32; white-space: nowrap;
-  transition: opacity .22s, color .4s;
+/* Line 1: icon + RANDOM (wide letter-spacing like logo) */
+.r-line1 {
+  display: flex; align-items: center; gap: 10px;
+  font-size: clamp(20px, 2.8vw, 36px); /* ← SIZE: change here and in .r-line2 */
+  font-weight: 700; letter-spacing: .38em;
+  text-transform: uppercase; line-height: 1;
+  color: rgba(255,255,255,.58);
+  transition: color .4s ease;
 }
-#roulette-btn:hover .r-icon,
-#roulette-btn:hover .r-label,
-#roulette-btn.spinning .r-icon,
-#roulette-btn.spinning .r-label { opacity: 1; }
-#roulette-btn.spinning .r-icon svg { animation: r-spin .5s linear infinite; }
+/* Line 2: EXPERIENCE — indented to align under RANDOM text start (past icon) */
+.r-line2 {
+  font-size: clamp(20px, 2.8vw, 36px); /* ← SIZE: keep in sync with .r-line1 */
+  font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; line-height: 1;
+  color: rgba(255,255,255,.58);
+  padding-left: calc(1em + 10px); /* icon width + gap */
+  transition: color .4s ease;
+}
+.r-icon-svg {
+  width: 1em; height: 1em; display: block; flex-shrink: 0;
+  stroke: currentColor; fill: none;
+}
+#roulette-btn:hover .r-line1,
+#roulette-btn:hover .r-line2 { color: rgba(255,255,255,.92); }
+#roulette-btn.spinning .r-icon-svg { animation: r-spin .5s linear infinite; }
 @keyframes r-spin { to { transform: rotate(360deg); } }
-.build-active #roulette-btn .r-icon svg { stroke: black; }
-.build-active #roulette-btn .r-label    { color: black; }
+.build-active #roulette-btn .r-line1,
+.build-active #roulette-btn .r-line2 { color: rgba(0,0,0,.58); }
+.build-active #roulette-btn:hover .r-line1,
+.build-active #roulette-btn:hover .r-line2 { color: rgba(0,0,0,.9); }
 
 /* ── ROULETTE POPUP ── */
 #roulette-popup {
   position: fixed;
-  top: calc(clamp(36px, 5.6vw, 72px) + 28px);
-  right: 36px; width: 288px; z-index: 200;
-  opacity: 0; transform: translateY(-10px) scale(.97); pointer-events: none;
+  top: 176px;   /* ← POPUP VERTICAL: btn top(90) + btn height(~76) + gap(10) */
+  left: 50%;
+  width: 288px;
+  z-index: 200;
+  opacity: 0; pointer-events: none;
+  /* translateX(-50%) centers; translateY(-10px) is the open/close animation */
+  transform: translateX(-50%) translateY(-10px) scale(.97);
   transition: opacity .32s cubic-bezier(.77,0,.18,1), transform .32s cubic-bezier(.77,0,.18,1);
 }
-#roulette-popup.open { opacity: 1; transform: none; pointer-events: auto; }
+#roulette-popup.open {
+  opacity: 1; pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
 
 .popup-inner {
   background: rgba(0,0,0,.84);
@@ -149,28 +191,21 @@ body {
 }
 .popup-drum.hidden { opacity: 0; }
 .drum-text { font-size: 11px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: white; white-space: nowrap; overflow: hidden; max-width: 250px; text-overflow: ellipsis; }
-
-/* Hover hint on image: "open →" when project is resolved */
 .popup-image::after {
   content: 'open →'; position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   font-size: 9px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
-  color: rgba(255,255,255,0); transition: color .2s;
-  pointer-events: none;
+  color: rgba(255,255,255,0); transition: color .2s; pointer-events: none;
 }
 .popup-image.resolved:hover::after { color: rgba(255,255,255,.65); }
-
-/* External badge inside image */
 .popup-ext-badge {
   position: absolute; bottom: 8px; left: 8px; z-index: 4;
   font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
   color: #fff; background: rgba(77,106,255,.92);
   border: 1px solid rgba(255,255,255,.12); padding: 3px 7px; border-radius: 999px;
-  opacity: 0; transition: opacity .3s ease .2s;
-  pointer-events: none;
+  opacity: 0; transition: opacity .3s ease .2s; pointer-events: none;
 }
 .popup-image.ext-shown .popup-ext-badge { opacity: 1; }
-
 .popup-info { padding: 16px 20px 18px; }
 .popup-category { font-size: 9px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 7px; }
 .popup-title { font-size: 17px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; line-height: 1.15; margin-bottom: 10px; min-height: 40px; }
@@ -193,7 +228,6 @@ body {
 }
 #build  { left: 80px; }
 #create { right: 80px; text-align: right; }
-
 .main-title {
   font-size: clamp(36px, 5.6vw, 72px);
   font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
@@ -201,20 +235,14 @@ body {
   transition: color .4s ease;
 }
 .main-title a { color: inherit; text-decoration: none; }
-
-/* ── SUB ITEMS ── */
 .sub {
-  margin-top: 16px;
-  font-size: 11px; font-weight: 400;
+  margin-top: 16px; font-size: 11px; font-weight: 400;
   letter-spacing: .24em; text-transform: uppercase; line-height: 1;
-  opacity: .52;
-  transition: opacity .35s ease;
-  pointer-events: none;
+  opacity: .52; transition: opacity .35s ease; pointer-events: none;
 }
 .zone.active .sub { opacity: .82; pointer-events: auto; }
 .sub a { display: block; color: inherit; text-decoration: none; padding: 7px 0; border-bottom: 1px solid transparent; transition: border-color .18s; }
 .sub a:hover { border-bottom-color: currentColor; }
-
 .build-active .zone { color: black; }
 .fade-out { opacity: 0 !important; transform: translateY(6px); pointer-events: none; }
 
@@ -231,9 +259,7 @@ body {
 .divider { opacity: .2; }
 .build-active .bottom-bar { color: black; }
 
-/* ══════════════════════════════════════
-   ── MOBILE ──
-   ══════════════════════════════════════ */
+/* ── MOBILE ── */
 @media (max-width: 900px) {
   body {
     background-color: black;
@@ -243,6 +269,13 @@ body {
     background-size: 100% auto;
     background-attachment: scroll;
   }
+  /* Popup: stretch full width on mobile, no translateX needed */
+  #roulette-popup {
+    left: 16px; right: 16px; width: auto;
+    transform: translateY(-10px) scale(.97);
+  }
+  #roulette-popup.open { transform: translateY(0) scale(1); }
+
   .zone { bottom: 120px; max-width: calc(50vw - 22px); }
   #build  { left: 16px; right: auto; }
   #create { right: 16px; left: auto; }
@@ -253,11 +286,7 @@ body {
   .bottom-bar { padding: 0 16px; bottom: 16px; font-size: 9px; align-items: flex-end; }
   .contact { flex-direction: column; gap: 5px; align-items: flex-end; }
   .divider { display: none; }
-  #roulette-btn { right: 16px; top: 55px; }
-  #roulette-popup { right: 16px; left: 16px; width: auto; top: 68px; }
-  .r-label { display: none; }
 }
-
 @media (max-width: 560px) {
   .main-title { font-size: clamp(22px, 6.5vw, 28px); letter-spacing: .05em; }
   .zone { bottom: 110px; max-width: calc(50vw - 18px); }
@@ -283,18 +312,19 @@ body {
 
 <!-- ── ROULETTE TRIGGER ── -->
 <button id="roulette-btn" aria-label="Random experience">
-  <div class="r-icon">
-    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" stroke-width="1" stroke-linecap="round">
+  <div class="r-line1">
+    <svg class="r-icon-svg" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" stroke-width="1" stroke-linecap="round">
       <circle cx="9" cy="9" r="7.5"/>
-      <circle cx="9" cy="9" r="1" fill="white" stroke="none"/>
+      <circle cx="9" cy="9" r="1" fill="currentColor" stroke="none"/>
       <line x1="9"  y1="2"  x2="9"    y2="3.6"/>
       <line x1="16" y1="9"  x2="14.4" y2="9"/>
       <line x1="9"  y1="16" x2="9"    y2="14.4"/>
       <line x1="2"  y1="9"  x2="3.6"  y2="9"/>
-      <line x1="9"  y1="9"  x2="9"    y2="3.8" stroke-width="1.2"/>
+      <line x1="9"  y1="9"  x2="9"    y2="3.8" stroke-width="1.4"/>
     </svg>
+    RANDOM
   </div>
-  <span class="r-label">Random Experience</span>
+  <div class="r-line2">EXPERIENCE</div>
 </button>
 
 <!-- ── ROULETTE POPUP ── -->
@@ -305,15 +335,15 @@ body {
       <div class="popup-drum" id="popup-drum">
         <span class="drum-text" id="drum-text">—</span>
       </div>
-      <!-- External site badge, shown only for external projects -->
-      <div class="popup-ext-badge" id="popup-ext-badge">artlebedev.com</div>
+      <div class="popup-ext-badge" id="popup-ext-badge"></div>
     </div>
     <div class="popup-info">
       <div class="popup-category" id="popup-category">—</div>
       <div class="popup-title"   id="popup-title">—</div>
       <div class="popup-desc"    id="popup-desc"></div>
       <div class="popup-actions">
-        <a href="#" id="popup-link" class="popup-link">Open →</a>
+        <!-- target="_blank" set here so it works even before showProject runs -->
+        <a href="#" id="popup-link" class="popup-link" target="_blank" rel="noopener noreferrer">Open →</a>
         <div style="display:flex;gap:12px;align-items:center">
           <button class="popup-spin-again" id="popup-spin-again">↺ again</button>
           <button class="popup-close"      id="popup-close">✕ close</button>
@@ -325,9 +355,7 @@ body {
 
 <!-- ── TO BUILD ── -->
 <div class="zone ui-group" id="build">
-  <div class="main-title">
-    <a href="architecture.html">To Build</a>
-  </div>
+  <div class="main-title"><a href="architecture.html">To Build</a></div>
   <div class="sub">
     <a href="architecture.html">Architecture</a>
     <a href="architecture.html">Urban · Research</a>
@@ -351,14 +379,14 @@ body {
   <div class="contact">
     <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
     <span class="divider">—</span>
-    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank">Instagram</a>
+    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
     <span class="divider">—</span>
-    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank">LinkedIn</a>
+    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
   </div>
 </div>
 
 <script>
-// ── CURSOR (desktop only) ──
+// ── CURSOR ──
 const cur = document.getElementById('cur');
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', e => {
@@ -371,11 +399,10 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 }
 
-// ── INTRO SEQUENCE ──
+// ── INTRO ──
 const veil = document.getElementById('intro-veil');
 const line = document.getElementById('intro-line');
 const rBtn = document.getElementById('roulette-btn');
-
 setTimeout(() => veil.classList.add('darken'), 1800);
 setTimeout(() => line.classList.add('rise'), 2200);
 setTimeout(() => {
@@ -385,255 +412,225 @@ setTimeout(() => {
   rBtn.classList.add('visible');
 }, 2900);
 
-// ── BUILD / CREATE (desktop hover only) ──
+// ── BUILD / CREATE ──
 const buildZone   = document.getElementById('build');
 const createZone  = document.getElementById('create');
 const buildLayer  = document.querySelector('.build-layer');
 const createLayer = document.querySelector('.create-layer');
 const grid        = document.querySelector('.grid');
-
 if (window.matchMedia('(hover: hover)').matches) {
   buildZone.addEventListener('mouseenter', () => {
     buildLayer.style.clipPath = 'circle(150% at 0% 100%)';
     document.body.classList.add('build-active');
     document.body.classList.remove('create-active');
-    createZone.classList.add('fade-out');
-    createZone.classList.remove('active');
-    grid.classList.add('active');
-    buildZone.classList.add('active');
+    createZone.classList.add('fade-out'); createZone.classList.remove('active');
+    grid.classList.add('active'); buildZone.classList.add('active');
   });
   buildZone.addEventListener('mouseleave', () => {
     buildLayer.style.clipPath = 'circle(0px at 0% 100%)';
     document.body.classList.remove('build-active');
     createZone.classList.remove('fade-out');
-    grid.classList.remove('active');
-    buildZone.classList.remove('active');
+    grid.classList.remove('active'); buildZone.classList.remove('active');
   });
   createZone.addEventListener('mouseenter', () => {
     createLayer.style.clipPath = 'circle(150% at 100% 100%)';
     document.body.classList.add('create-active');
     document.body.classList.remove('build-active');
-    buildZone.classList.add('fade-out');
-    buildZone.classList.remove('active');
+    buildZone.classList.add('fade-out'); buildZone.classList.remove('active');
     createZone.classList.add('active');
   });
   createZone.addEventListener('mouseleave', () => {
     createLayer.style.clipPath = 'circle(0px at 100% 100%)';
     document.body.classList.remove('create-active');
-    buildZone.classList.remove('fade-out');
-    createZone.classList.remove('active');
+    buildZone.classList.remove('fade-out'); createZone.classList.remove('active');
   });
 }
 
+// ══════════════════════════════════════
 // ── ROULETTE ──
-let projects = [];
-let rouletteOpen = false;
-let spinTimer    = null;
-let currentProject = null; // проект, отображённый в попапе сейчас (null во время кручения)
+// ══════════════════════════════════════
 
-fetch('projects.json')
-  .then(r => r.json())
-  .then(d => { projects = d; })
-  .catch(() => {
-    // ── Fallback: список проектов прямо в коде ──
-    // Редактируйте этот массив если не используете projects.json
-    projects = [
+// spinGen: generation counter incremented on every openPopup().
+// All async callbacks (image onload, fetch, setTimeout) capture their
+// generation at call time and bail out if spinGen has moved on.
+// This eliminates the race condition where spin N's image loads after
+// spin N+1 has already shown its content.
+let spinGen       = 0;
+let rouletteOpen  = false;
+let spinTimer     = null;
+let currentProject = null;
 
-      {
-        title:       "1295 — Residential Complex",
-        category:    "Architecture",
-        description: "Two house types for different buyers. Lead architect role.",
-        image:       "images/assets/build/1295/12951.webp",
-        url:         "architecture.html#1295-residential-complex"
-      },
-      {
-        title:       "Meaning of Fortification",
-        category:    "Architecture",
-        description: "Urban design semester project at ULisboa. Published in UPC magazine.",
-        image:       "images/assets/build/fortification/fortification1.webp",
-        url:         "architecture.html#meaning-of-fortification"
-      },
-      {
-        title:       "House for a Young Couple",
-        category:    "Architecture",
-        description: "A compact courtyard house in Cascais exploring natural light and transitions.",
-        image:       "images/assets/build/interior/interior1.webp",
-        url:         "architecture.html#house-for-a-young-couple"
-      },
-      {
-        title:       "Masterplan — Dominican Republic",
-        category:    "Architecture",
-        description: "Coastal masterplan La Perla, 32 000 m². Beachfront and second-line villas.",
-        image:       "images/assets/build/vrd/vrd3.webp",
-        url:         "architecture.html#masterplan-in-dominican-republic"
-      },
-      {
-        title:       "Myriads. Design Code",
-        category:    "Architecture",
-        description: "Design code of a residential district in Tyumen.",
-        image:       "images/assets/build/als/miriady.jpg",
-        url:         "https://www.artlebedev.com/enko/miriady/",
-        isExternal:  true,
-        externalHost:"artlebedev.com"
-      },
-      {
-        title:       "5ka — Future Retail Store",
-        category:    "Architecture",
-        description: "The future format of 5ka retail stores.",
-        image:       "images/assets/build/als/5ka-store.jpg",
-        url:         "https://www.artlebedev.com/5ka/future-stores-interiors/",
-        isExternal:  true,
-        externalHost:"artlebedev.com"
-      },
-      {
-        title:       "TVEL — Facades & Interiors",
-        category:    "Architecture",
-        description: "Industrial facility facades and interiors for Rosatom.",
-        image:       "images/assets/build/als/tvel.jpg",
-        url:         "https://www.artlebedev.com/rosatom/tvel/",
-        isExternal:  true,
-        externalHost:"artlebedev.com"
-      },
-      {
-        title:       "5ka — Future Stores Identity",
-        category:    "Architecture",
-        description: "Identity system for the next-generation 5ka store format.",
-        image:       "images/assets/build/als/5ka-identity.jpg",
-        url:         "https://www.artlebedev.com/5ka/future-stores-identity/",
-        isExternal:  true,
-        externalHost:"artlebedev.com"
-      },
-      {
-        title:       "Magnit Classroom",
-        category:    "Architecture",
-        description: "Interior design for a Magnit educational space.",
-        image:       "images/assets/build/als/magnit-classroom.jpg",
-        url:         "https://www.artlebedev.com/magnit/classroom/",
-        isExternal:  true,
-        externalHost:"artlebedev.com"
-      },
-      {
-        title:       "Magnit Retail Interiors",
-        category:    "Architecture",
-        description: "Interior design for Magnit retail stores.",
-        image:       "images/assets/build/als/magnit-interiors.jpg",
-        url:         "https://www.artlebedev.com/magnit/interiors/",
-        isExternal:  true,
-        externalHost:"artlebedev.com"
-      },
+// ── PROJECT LIST ─────────────────────────────────────────────────
+// Each object:
+//   title, category, description  — shown in popup
+//   image        — path or URL to cover ('' = no static image)
+//   url          — destination (ALWAYS opens in new tab)
+//   isExternal   — shows blue badge + "View ↗" text
+//   externalHost — badge label
+//   spotifyUrl   — fetches thumbnail async via Spotify oEmbed
+//
+// VIDEO: url hash = index in VIDEOS array: video.html#0, #1 …
+// VISUAL: url hash = project id in visual.html: visual.html#pilots …
+// BUILD: url hash = data-slug: architecture.html#1295-residential-complex …
+// RADIO: url hash = data-slug: localradio.html#channel-01 …
+// ─────────────────────────────────────────────────────────────────
+const projects = [
 
-      // ── VISUAL ──
-      {
-        title:       "PILOTS / Hand Drawings",
-        category:    "Visual",
-        description: "Early touches of the materials.",
-        image:       "images/assets/create/pilots/pilots1.webp",
-        url:         "visual.html#pilots"
-      },
-      {
-        title:       "None of them is me",
-        category:    "Visual",
-        description: "A Self-Portrait series.",
-        image:       "images/assets/create/portrait/Portrait2.webp",
-        url:         "visual.html#Self-Portrait"
-      },
-      {
-        title:       "SCAN — Grains of the Cities",
-        category:    "Visual",
-        description: "Fragments of urban texture.",
-        image:       "images/assets/create/scan/Scan4.webp",
-        url:         "visual.html#scan"
-      },
-      {
-        title:       "CLO — Custom Clothing",
-        category:    "Visual",
-        description: "Hand-painted garments as wearable architecture.",
-        image:       "images/assets/create/clo/cloth2.webp",
-        url:         "visual.html#clo"
-      },
+  // ── ARCHITECTURE — internal ──
+  { title:'1295 — Residential Complex', category:'Architecture',
+    description:'Two house types for different buyers. Lead architect role.',
+    image:'images/assets/build/1295/12951.webp',
+    url:'architecture.html#1295-residential-complex' },
+  { title:'Meaning of Fortification', category:'Architecture',
+    description:'Urban design project at ULisboa. Published in UPC magazine.',
+    image:'images/assets/build/fortification/fortification1.webp',
+    url:'architecture.html#meaning-of-fortification' },
+  { title:'House for a Young Couple', category:'Architecture',
+    description:'A compact courtyard house in Cascais exploring natural light.',
+    image:'images/assets/build/interior/interior1.webp',
+    url:'architecture.html#house-for-a-young-couple' },
+  { title:'Masterplan — Dominican Republic', category:'Architecture',
+    description:'Coastal masterplan La Perla, 32 000 m². Beachfront villas.',
+    image:'images/assets/build/vrd/vrd3.webp',
+    url:'architecture.html#masterplan-in-dominican-republic' },
 
-      // ── VIDEO ──
-      // image: используйте обложку — статичный JPG/WebP, не кадр из видео.
-      // Файл должен лежать рядом с видео и называться как угодно, но быть статичным изображением.
-      {
-        title:       "BIRDS",
-        category:    "Video",
-        description: "From Paris with love.",
-        image:       "images/video/cover-birds.jpg",   // ← замените на реальное имя обложки
-        url:         "video.html#birds"                // ← замените на реальный slug видеостраницы
-      },
-      {
-        title:       "Rebirth Cycles",
-        category:    "Video",
-        description: "A journey into the past.",
-        image:       "images/video/cover-rebirth.jpg",
-        url:         "video.html#rebirth-cycles"
-      },
-      {
-        title:       "Special Diary",
-        category:    "Video",
-        description: "This is how life used to feel.",
-        image:       "images/video/cover-diary.jpg",
-        url:         "video.html#special-diary"
-      },
-      {
-        title:       "Short Walks Down Long Roads",
-        category:    "Video",
-        description: "Just a feeling.",
-        image:       "images/video/cover-short.jpg",
-        url:         "video.html#short-walks"
-      },
+  // ── ARCHITECTURE — external ──
+  { title:'Myriads. Design Code', category:'Architecture',
+    description:'Design code of a residential district in Tyumen.',
+    image:'images/assets/build/als/miriady.jpg',
+    url:'https://www.artlebedev.com/enko/miriady/',
+    isExternal:true, externalHost:'artlebedev.com' },
+  { title:'5ka — Future Retail Store', category:'Architecture',
+    description:'The future format of 5ka retail stores.',
+    image:'images/assets/build/als/5ka-store.jpg',
+    url:'https://www.artlebedev.com/5ka/future-stores-interiors/',
+    isExternal:true, externalHost:'artlebedev.com' },
+  { title:'TVEL — Facades & Interiors', category:'Architecture',
+    description:'Industrial facility facades and interiors for Rosatom.',
+    image:'images/assets/build/als/tvel.jpg',
+    url:'https://www.artlebedev.com/rosatom/tvel/',
+    isExternal:true, externalHost:'artlebedev.com' },
+  { title:'5ka — Future Stores Identity', category:'Architecture',
+    description:'Identity system for the next-generation 5ka store format.',
+    image:'images/assets/build/als/5ka-identity.jpg',
+    url:'https://www.artlebedev.com/5ka/future-stores-identity/',
+    isExternal:true, externalHost:'artlebedev.com' },
+  { title:'Magnit Classroom', category:'Architecture',
+    description:'Interior design for a Magnit educational space.',
+    image:'images/assets/build/als/magnit-classroom.jpg',
+    url:'https://www.artlebedev.com/magnit/classroom/',
+    isExternal:true, externalHost:'artlebedev.com' },
+  { title:'Magnit Retail Interiors', category:'Architecture',
+    description:'Interior design for Magnit retail stores.',
+    image:'images/assets/build/als/magnit-interiors.jpg',
+    url:'https://www.artlebedev.com/magnit/interiors/',
+    isExternal:true, externalHost:'artlebedev.com' },
 
-      // ── LOCAL RADIO ──
-      // url: замените #channel-0 на реальный data-slug или id канала на странице localradio.html
-      {
-        title:       "Channel 01",
-        category:    "Local Radio",
-        description: "Made for you.",
-        image:       "",
-        url:         "localradio.html#channel-01"
-      },
-      {
-        title:       "Channel 02",
-        category:    "Local Radio",
-        description: "Made for you.",
-        image:       "",
-        url:         "localradio.html#channel-1"
-      }
-    ];
-  });
+  // ── VISUAL ──
+  { title:'PILOTS / Hand Drawings', category:'Visual',
+    description:'Early studies in line, texture and atmosphere.',
+    image:'images/assets/create/pilots/pilots1.webp',
+    url:'visual.html#pilots' },
+  { title:'None of them is me', category:'Visual',
+    description:'A Self-Portrait series exploring identity through framing.',
+    image:'images/assets/create/portrait/Portrait2.webp',
+    url:'visual.html#Self-Portrait' },
+  { title:'SCAN — Grains of the Cities', category:'Visual',
+    description:'Fragments of urban texture — scanned, layered, recomposed.',
+    image:'images/assets/create/scan/Scan4.webp',
+    url:'visual.html#scan' },
+  { title:'CLO — Custom Clothing', category:'Visual',
+    description:'Hand-painted garments as wearable architecture.',
+    image:'images/assets/create/clo/cloth2.webp',
+    url:'visual.html#clo' },
+  { title:'Before the Impact', category:'Visual',
+    description:'A four-frame sequence. A gradual shift in perception.',
+    image:'images/assets/create/bti/bti1.jpg',
+    url:'visual.html#bti' },
+  { title:'By Hand', category:'Visual',
+    description:'Objects, drawings and experiments made over time.',
+    image:'images/assets/create/art/art1.webp',
+    url:'visual.html#byhand' },
+
+  // ── VIDEO ──
+  // image: vumbnail.com is a public Vimeo thumbnail proxy (no auth needed).
+  // url: numeric hash = index in video.html VIDEOS array.
+  { title:'BIRDS', category:'Video',
+    description:'From Paris with love.',
+    image:'https://vumbnail.com/1171844542.jpg',
+    url:'video.html#0' },
+  { title:'Rebirth Cycles', category:'Video',
+    description:'A meditation on caring for abandoned homes.',
+    image:'https://vumbnail.com/1172106551.jpg',
+    url:'video.html#1' },
+  { title:'Special Diary', category:'Video',
+    description:'This is how life used to feel.',
+    image:'https://vumbnail.com/1172281707.jpg',
+    url:'video.html#2' },
+  { title:'LVL', category:'Video',
+    description:'Short experimental stuff with friends.',
+    image:'https://vumbnail.com/1172106388.jpg',
+    url:'video.html#3' },
+  { title:'Short Walks Down Long Roads', category:'Video',
+    description:'Just a feeling.',
+    image:'https://vumbnail.com/1172128536.jpg',
+    url:'video.html#4' },
+  { title:'Youth Chapter', category:'Video',
+    description:'Was filmed with an ice cream in one hand.',
+    image:'https://vumbnail.com/1172128396.jpg',
+    url:'video.html#5' },
+
+  // ── LOCAL RADIO ──
+  // spotifyUrl: thumbnail fetched live via Spotify oEmbed (CORS-safe public API).
+  // url: data-slug on card in localradio.html triggers card.click() → opens Spotify.
+  { title:'Channel 01', category:'Local Radio',
+    description:'Garage bleeds into deep house, jungle into trip-hop.',
+    image:'', spotifyUrl:'https://open.spotify.com/playlist/0mg0X028fIt8EwH5yi3Czf',
+    url:'localradio.html#channel-01' },
+  { title:'Channel 02', category:'Local Radio',
+    description:'The sound of a city you visited in a dream.',
+    image:'', spotifyUrl:'https://open.spotify.com/playlist/4YMNrlPjp3nTenV6Qkn4Tc',
+    url:'localradio.html#channel-02' },
+  { title:'Channel 03', category:'Local Radio',
+    description:'The air before a storm that never arrives.',
+    image:'', spotifyUrl:'https://open.spotify.com/playlist/2BAdX7KOSo3hsDMlq37IBD',
+    url:'localradio.html#channel-03' },
+  { title:'Channel 04', category:'Local Radio',
+    description:'The morning after, stretched into a full day.',
+    image:'', spotifyUrl:'https://open.spotify.com/playlist/77mIWmxJFdJGWar4EJdrjq',
+    url:'localradio.html#channel-04' },
+  { title:'Channel 05', category:'Local Radio',
+    description:'Warm scarf over city armor. Urban with a quiet pulse.',
+    image:'', spotifyUrl:'https://open.spotify.com/playlist/1ajzqkENf7NBuPTVNyJPjQ',
+    url:'localradio.html#channel-05' }
+];
 
 // ── DOM REFS ──
-const popup         = document.getElementById('roulette-popup');
-const drumEl        = document.getElementById('popup-drum');
-const drumText      = document.getElementById('drum-text');
-const popupImg      = document.getElementById('popup-img');
-const popupCat      = document.getElementById('popup-category');
-const popupTitle    = document.getElementById('popup-title');
-const popupDesc     = document.getElementById('popup-desc');
-const popupLink     = document.getElementById('popup-link');
-const popupClose    = document.getElementById('popup-close');
-const popupSpinAgain= document.getElementById('popup-spin-again');
-const imgArea       = document.getElementById('popup-image-area');
-const extBadge      = document.getElementById('popup-ext-badge');
+const popup          = document.getElementById('roulette-popup');
+const drumEl         = document.getElementById('popup-drum');
+const drumText       = document.getElementById('drum-text');
+const popupImg       = document.getElementById('popup-img');
+const popupCat       = document.getElementById('popup-category');
+const popupTitle     = document.getElementById('popup-title');
+const popupDesc      = document.getElementById('popup-desc');
+const popupLink      = document.getElementById('popup-link');
+const popupClose     = document.getElementById('popup-close');
+const popupSpinAgain = document.getElementById('popup-spin-again');
+const imgArea        = document.getElementById('popup-image-area');
+const extBadge       = document.getElementById('popup-ext-badge');
 
-// ── NAVIGATE TO PROJECT ──
-// Учитывает внешние ссылки (новая вкладка) и внутренние (та же вкладка).
-function navigateTo(project) {
-  if (!project) return;
-  if (project.isExternal) {
-    window.open(project.url, '_blank', 'noopener noreferrer');
-  } else {
-    window.location.href = project.url;
-  }
+// ── NAVIGATE: always new tab ──
+function navigateTo(p) {
+  if (p) window.open(p.url, '_blank', 'noopener noreferrer');
 }
 
 // ── OPEN POPUP / SPIN ──
 function openPopup() {
   if (!projects.length) return;
   clearTimeout(spinTimer);
-  rouletteOpen    = true;
-  currentProject  = null; // сброс — кручение началось
+  spinGen++;                // invalidate all pending async ops
+  rouletteOpen   = true;
+  currentProject = null;
 
   popup.classList.add('open');
   rBtn.classList.add('spinning');
@@ -667,55 +664,84 @@ function openPopup() {
   })(0);
 }
 
-// ── SHOW PROJECT (called when drum stops) ──
+// ── SHOW PROJECT ──
 function showProject(p) {
-  currentProject = p; // запоминаем — теперь клик по картинке = навигация
+  const gen = spinGen; // capture — used in all async guards below
 
+  currentProject         = p;
   popupTitle.textContent = p.title.toUpperCase();
   popupCat.textContent   = p.category.toUpperCase();
   drumText.textContent   = p.title.toUpperCase();
+  popupLink.href         = p.url;
+  popupLink.textContent  = p.isExternal ? 'View ↗' : 'Open →';
 
-  // Ссылка: текст и поведение зависят от типа проекта
-  if (p.isExternal) {
-    popupLink.textContent = 'View ↗';
-    popupLink.setAttribute('target', '_blank');
-    popupLink.setAttribute('rel', 'noopener noreferrer');
-  } else {
-    popupLink.textContent = 'Open →';
-    popupLink.removeAttribute('target');
-    popupLink.removeAttribute('rel');
-  }
-  popupLink.href = p.url;
-
-  // Изображение
   if (p.image) {
-    const img   = new Image();
-    img.onload  = () => {
+    // Static cover (local file or vumbnail.com for video)
+    const img = new Image();
+    img.onload = () => {
+      if (spinGen !== gen) return;
       popupImg.src = p.image;
       popupImg.classList.add('loaded');
       setTimeout(() => drumEl.classList.add('hidden'), 150);
-      // показываем бейдж для внешних
       if (p.isExternal) {
         extBadge.textContent = p.externalHost || 'external';
         imgArea.classList.add('ext-shown');
       }
-      imgArea.classList.add('resolved'); // активируем hover-подсказку "open →"
+      imgArea.classList.add('resolved');
     };
-    img.onerror = () => { drumEl.classList.add('hidden'); imgArea.classList.add('resolved'); };
+    img.onerror = () => {
+      if (spinGen !== gen) return;
+      drumEl.classList.add('hidden');
+      imgArea.classList.add('resolved');
+    };
     img.src = p.image;
+
+  } else if (p.spotifyUrl) {
+    // Async Spotify thumbnail via oEmbed (CORS-safe public endpoint)
+    fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(p.spotifyUrl))
+      .then(r => r.json())
+      .then(data => {
+        if (spinGen !== gen) return;
+        if (data.thumbnail_url) {
+          const si = new Image();
+          si.onload = () => {
+            if (spinGen !== gen) return;
+            popupImg.src = data.thumbnail_url;
+            popupImg.classList.add('loaded');
+            setTimeout(() => drumEl.classList.add('hidden'), 150);
+            imgArea.classList.add('resolved');
+          };
+          si.onerror = () => {
+            if (spinGen !== gen) return;
+            drumEl.classList.add('hidden');
+            imgArea.classList.add('resolved');
+          };
+          si.src = data.thumbnail_url;
+        } else {
+          drumEl.classList.add('hidden');
+          imgArea.classList.add('resolved');
+        }
+      })
+      .catch(() => {
+        if (spinGen !== gen) return;
+        drumEl.classList.add('hidden');
+        imgArea.classList.add('resolved');
+      });
+
   } else {
     drumEl.classList.add('hidden');
     imgArea.classList.add('resolved');
   }
 
   setTimeout(() => {
+    if (spinGen !== gen) return;
     popupDesc.textContent = p.description;
     popupDesc.classList.add('show');
     popupLink.classList.add('show');
   }, 160);
 }
 
-// ── CLOSE POPUP ──
+// ── CLOSE ──
 function closePopup() {
   rouletteOpen   = false;
   currentProject = null;
@@ -724,36 +750,13 @@ function closePopup() {
   clearTimeout(spinTimer);
 }
 
-// ── EVENT LISTENERS ──
-
-// Кнопка рулетки: открыть / крутить снова
-rBtn.addEventListener('click', e => {
-  e.stopPropagation();
-  openPopup(); // всегда крутим (открывает если закрыт, крутит снова если открыт)
-});
-
-// Кнопка «↺ again» внутри попапа
+// ── EVENTS ──
+rBtn.addEventListener('click',           e => { e.stopPropagation(); openPopup(); });
 popupSpinAgain.addEventListener('click', e => { e.stopPropagation(); openPopup(); });
-
-// Кнопка «✕ close»
-popupClose.addEventListener('click', e => { e.stopPropagation(); closePopup(); });
-
-// Клик по картинке: навигация если проект показан, иначе ничего
-imgArea.addEventListener('click', e => {
-  e.stopPropagation();
-  if (currentProject) navigateTo(currentProject);
-});
-
-// Клик по ссылке Open/View: обычная навигация через href (внешние — _blank уже выставлен)
-// Дополнительный обработчик не нужен — <a href> работает сам.
-
-// Клик вне попапа — закрыть
-document.addEventListener('click', e => {
-  if (rouletteOpen && !popup.contains(e.target) && e.target !== rBtn) closePopup();
-});
-
-// Escape
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && rouletteOpen) closePopup(); });
+popupClose.addEventListener('click',     e => { e.stopPropagation(); closePopup(); });
+imgArea.addEventListener('click',        e => { e.stopPropagation(); if (currentProject) navigateTo(currentProject); });
+document.addEventListener('click',       e => { if (rouletteOpen && !popup.contains(e.target) && e.target !== rBtn) closePopup(); });
+document.addEventListener('keydown',     e => { if (e.key === 'Escape' && rouletteOpen) closePopup(); });
 </script>
 </body>
 </html>
