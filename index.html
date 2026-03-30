@@ -750,7 +750,7 @@ function openPopup() {
 function showProject(p) {
   currentProject = p; // запоминаем — теперь клик по картинке = навигация
 
-  popupTitle.textContent = p.title.toUpperCase():
+  popupTitle.textContent = p.title.toUpperCase();
    if (p.spotifyUrl) {
     fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(p.spotifyUrl))
       .then(r => r.json())
