@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Migrant</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --pink: #ff3c5f;
+  --pink-light: #ff8fa3;
+  --off: #f5f4f2;
+}
+
+body {
+  background:#fff;
+  color:#111;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  cursor:none;
+  overflow-x:hidden;
+}
+
+/* ── CURSOR ── */
+#cur {
+  position:fixed; width:10px; height:10px;
+  background:#111; border-radius:50%;
+  pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .16s, height .16s;
+  mix-blend-mode:difference;
+}
+#cur.big { width:50px; height:50px; }
+@media (hover:none) { #cur { display:none; } }
+
+/* ── NAV ── */
+.nav {
+  position:fixed; top:0; left:0; right:0;
+  padding:28px 60px;
+  display:flex; justify-content:space-between; align-items:center;
+  z-index:200;
+  font-size:10px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+  mix-blend-mode:difference; color:white;
+}
+.nav a { color:inherit; text-decoration:none; opacity:.5; transition:opacity .25s; cursor:none; }
+.nav a:hover { opacity:1; }
+
+/* ── HERO ── */
+.hero {
+  padding:120px 60px 60px;
+  background:var(--off);
+}
+.hero-tag {
+  font-size:10px; font-weight:400; letter-spacing:.18em; text-transform:uppercase;
+  opacity:.5; margin-bottom:40px;
+}
+.hero-title {
+  font-size:clamp(80px, 16vw, 220px);
+  font-weight:900; letter-spacing:-.01em; text-transform:uppercase; line-height:.88;
+  overflow:hidden;
+  margin-left:-4px;
+}
+
+/* ── COVERS STRIP ── */
+.covers {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:3px; margin-top:3px;
+}
+.cover {
+  aspect-ratio:3/4; overflow:hidden;
+  background:#ddd;
+}
+.cover img {
+  width:100%; height:100%; object-fit:cover;
+  display:block; transition:transform .5s;
+}
+.cover:hover img { transform:scale(1.04); }
+
+/* ── TAGLINE ── */
+.tagline {
+  padding:40px 60px;
+  font-size:clamp(13px,1.1vw,16px); font-weight:700; letter-spacing:.22em;
+  text-transform:uppercase; text-align:center;
+  border-bottom:1px solid rgba(0,0,0,.1);
+}
+
+/* ── ABOUT ── */
+.about {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:0; border-bottom:1px solid rgba(0,0,0,.1);
+}
+.about-left {
+  padding:60px;
+  border-right:1px solid rgba(0,0,0,.1);
+}
+.about-left p {
+  font-size:clamp(14px,1.1vw,16px); line-height:1.7; max-width:420px;
+  margin-bottom:16px;
+}
+.about-left p strong { font-weight:700; }
+.about-left .sub-note {
+  font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+  opacity:.45; margin-top:24px;
+}
+
+.about-right { padding:60px; }
+.about-right-title {
+  font-size:clamp(22px,3vw,42px); font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; line-height:1.1; margin-bottom:32px;
+  color:var(--pink);
+}
+.city-grid {
+  display:grid; grid-template-columns:auto 1fr;
+  gap:3px 12px;
+}
+.city-row {
+  display:contents;
+}
+.city-num {
+  font-size:9px; font-weight:700; letter-spacing:.18em;
+  text-transform:uppercase; opacity:.35; padding:7px 0;
+  line-height:1;
+}
+.city-name {
+  font-size:10px; font-weight:700; letter-spacing:.22em;
+  text-transform:uppercase; padding:6px 10px;
+  background:transparent; transition:background .2s, color .2s;
+  border-left:2px solid transparent;
+  line-height:1.2;
+}
+/* each city gets its own accent — set via inline style */
+
+/* ── WHERE ARE YOU ── */
+.where {
+  background:#0d0d0d; color:white;
+  padding:80px 60px;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:60px;
+}
+.where-title {
+  font-size:clamp(32px,5vw,72px);
+  font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  line-height:1; grid-column:1 / -1;
+  margin-bottom:20px;
+}
+.where-left p {
+  font-size:12px; line-height:1.8; opacity:.55; max-width:380px;
+}
+.where-note {
+  font-size:9px; letter-spacing:.22em; text-transform:uppercase;
+  opacity:.3; margin-top:32px; line-height:1.6;
+}
+.city-list {
+  list-style:none;
+}
+.city-list li {
+  display:grid; grid-template-columns:28px 1fr 60px;
+  align-items:center; gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:10px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+}
+.city-list li .bar {
+  height:2px; border-radius:1px;
+}
+.city-list li:nth-child(1) .bar { background:var(--pink); width:100%; }
+.city-list li:nth-child(2) .bar { background:#4d8cff; width:86%; }
+.city-list li:nth-child(3) .bar { background:#ff9b00; width:78%; }
+.city-list li:nth-child(4) .bar { background:#00c896; width:70%; }
+.city-list li:nth-child(5) .bar { background:#c47dff; width:64%; }
+.city-list li:nth-child(6) .bar { background:#ff6b1a; width:58%; }
+.city-list li:nth-child(7) .bar { background:#00d4e8; width:52%; }
+.city-list li:nth-child(8) .bar { background:#ffe600; width:46%; }
+.city-list li:nth-child(9) .bar { background:#ff3c5f; width:40%; }
+.city-list li:nth-child(10) .bar { background:#80c97a; width:34%; }
+.city-list li:nth-child(11) .bar { background:#ff8fa3; width:28%; }
+.city-list li:nth-child(12) .bar { background:#aafb00; width:22%; }
+
+/* ── WEB MOCKUP (interactive) ── */
+.mockup-section {
+  background:var(--off);
+  padding:80px 60px;
+}
+.mockup-label {
+  font-size:10px; font-weight:700; letter-spacing:.28em;
+  text-transform:uppercase; opacity:.35; margin-bottom:40px;
+}
+.browser {
+  background:#181818; border-radius:8px;
+  overflow:hidden; max-width:960px; margin:0 auto;
+  box-shadow:0 24px 80px rgba(0,0,0,.18);
+}
+.browser-bar {
+  background:#2a2a2a; padding:10px 16px;
+  display:flex; align-items:center; gap:8px;
+}
+.b-dot { width:10px; height:10px; border-radius:50%; }
+.b-dot:nth-child(1) { background:#ff5f57; }
+.b-dot:nth-child(2) { background:#febc2e; }
+.b-dot:nth-child(3) { background:#28c840; }
+.b-url {
+  flex:1; background:#3a3a3a; border-radius:4px;
+  padding:4px 12px; font-size:10px; letter-spacing:.04em;
+  color:rgba(255,255,255,.4); margin:0 8px; text-align:center;
+}
+
+.browser-inner {
+  position:relative; overflow:hidden;
+}
+
+/* hero strip inside browser */
+.b-hero {
+  background:#0d0d0d; color:white;
+  padding:24px 28px 20px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.b-hero-title {
+  font-size:clamp(18px,3vw,36px); font-weight:700;
+  letter-spacing:.04em; text-transform:uppercase; line-height:1.1;
+  margin-bottom:4px;
+}
+.b-hero-title span { color:var(--pink); }
+
+/* city grid inside browser */
+.city-hover-grid {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:0;
+}
+.city-cell {
+  position:relative; overflow:hidden;
+  aspect-ratio:16/9;
+  cursor:none;
+  border:1px solid rgba(255,255,255,.04);
+}
+.city-cell-bg {
+  position:absolute; inset:0;
+  background-size:cover; background-position:center;
+  opacity:0;
+  transform:scale(1.04);
+  transition:opacity .45s cubic-bezier(.77,0,.18,1), transform .45s cubic-bezier(.77,0,.18,1);
+}
+.city-cell:hover .city-cell-bg { opacity:1; transform:scale(1); }
+
+.city-cell-overlay {
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.5);
+  opacity:0; transition:opacity .35s;
+}
+.city-cell:hover .city-cell-overlay { opacity:1; }
+
+.city-cell-name {
+  position:absolute; bottom:12px; left:12px;
+  font-size:10px; font-weight:700; letter-spacing:.28em;
+  text-transform:uppercase; color:rgba(255,255,255,.55);
+  transition:color .3s, transform .3s;
+  z-index:1;
+}
+.city-cell:hover .city-cell-name {
+  color:white;
+  transform:scale(1.04) translateY(-2px);
+}
+
+/* bottom row in browser (static) */
+.b-footer-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  background:#131313;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.b-footer-city {
+  padding:10px 12px;
+  font-size:9px; font-weight:700; letter-spacing:.22em;
+  text-transform:uppercase; color:rgba(255,255,255,.25);
+  border-right:1px solid rgba(255,255,255,.04);
+}
+.b-footer-city:last-child { border-right:none; }
+
+/* ── PHYSICAL PHOTOS ── */
+.photos {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:3px;
+}
+.photo { aspect-ratio:4/3; background:#ccc; overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; display:block; }
+
+.system-text {
+  padding:60px;
+  display:grid; grid-template-columns:1fr 2fr;
+  gap:60px; align-items:start;
+  border-top:1px solid rgba(0,0,0,.08);
+}
+.system-text p {
+  font-size:12px; line-height:1.8; opacity:.55; max-width:460px;
+}
+.system-text-head {
+  font-size:10px; font-weight:700; letter-spacing:.22em;
+  text-transform:uppercase; opacity:.3;
+}
+
+/* ── ZINE SECTION ── */
+.zine-section { background:#0d0d0d; color:white; overflow:hidden; }
+
+.zine-header {
+  padding:60px 60px 0;
+  display:flex; justify-content:space-between; align-items:flex-end;
+}
+.zine-title {
+  font-size:clamp(40px,8vw,100px);
+  font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  line-height:1;
+}
+.zine-meta {
+  font-size:9px; font-weight:400; letter-spacing:.18em;
+  text-transform:uppercase; opacity:.35; text-align:right;
+  line-height:1.8; max-width:240px; padding-bottom:8px;
+}
+
+/* carousel */
+.zine-track-wrap {
+  position:relative; margin-top:40px; padding-bottom:60px;
+}
+.zine-track {
+  display:flex; gap:3px;
+  overflow-x:auto; scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none; padding:0 60px;
+}
+.zine-track::-webkit-scrollbar { display:none; }
+.zine-slide {
+  flex:0 0 70vw; max-width:720px;
+  aspect-ratio:16/9; overflow:hidden;
+  scroll-snap-align:start;
+  background:rgba(255,255,255,.06);
+}
+.zine-slide img { width:100%; height:100%; object-fit:cover; display:block; }
+
+.zine-nav {
+  padding:20px 60px 0;
+  display:flex; gap:16px; align-items:center;
+}
+.zine-btn {
+  background:none; border:1px solid rgba(255,255,255,.18);
+  color:white; cursor:none;
+  font-size:9px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+  padding:8px 16px; transition:border-color .2s, opacity .2s;
+}
+.zine-btn:hover { border-color:rgba(255,255,255,.6); }
+.zine-counter {
+  font-size:9px; font-weight:700; letter-spacing:.18em;
+  opacity:.3; margin-left:auto;
+}
+
+/* ── QUOTE ── */
+.quote-section {
+  background:#0d0d0d; color:white;
+  padding:100px 60px 120px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.quote-word {
+  font-size:clamp(60px,12vw,160px);
+  font-weight:900; text-transform:uppercase; letter-spacing:-.01em;
+  line-height:.85; opacity:.08; user-select:none;
+  margin-bottom:-40px;
+}
+.quote-text {
+  font-size:clamp(16px,1.6vw,24px); font-weight:300; line-height:1.6;
+  max-width:540px; opacity:.72;
+  margin-left:min(40vw, 460px);
+}
+.quote-text em { font-style:normal; color:var(--pink); }
+
+/* ── MOBILE ── */
+@media (max-width:900px) {
+  .nav { padding:20px 24px; }
+  .hero { padding:80px 24px 40px; }
+  .covers { grid-template-columns:repeat(2,1fr); }
+  .tagline { padding:32px 24px; }
+  .about { grid-template-columns:1fr; }
+  .about-left { padding:40px 24px; border-right:none; border-bottom:1px solid rgba(0,0,0,.1); }
+  .about-right { padding:40px 24px; }
+  .where { grid-template-columns:1fr; padding:60px 24px; }
+  .where-title { font-size:clamp(28px,8vw,48px); }
+  .mockup-section { padding:60px 24px; }
+  .city-hover-grid { grid-template-columns:repeat(2,1fr); }
+  .photos { grid-template-columns:1fr 1fr; }
+  .system-text { grid-template-columns:1fr; padding:40px 24px; gap:20px; }
+  .zine-header { padding:40px 24px 0; }
+  .zine-track { padding:0 24px; }
+  .zine-slide { flex:0 0 85vw; }
+  .zine-nav { padding:20px 24px 0; }
+  .quote-section { padding:60px 24px 80px; }
+  .quote-text { margin-left:0; }
+  .quote-word { font-size:clamp(48px,16vw,80px); margin-bottom:-24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<nav class="nav">
+  <a href="todirect.html">← To Direct</a>
+  <span style="opacity:.2">Migrant</span>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-tag">Brand identity &amp; living system for a nomadic creative community</div>
+  <div class="hero-title">MIGRANT</div>
+</section>
+
+<!-- ── COVERS ── -->
+<div class="covers">
+  <div class="cover"><img src="images/assets/direct/migrant/cover-01.jpg" alt="Migrant Issue 01 Lisboa" loading="lazy"></div>
+  <div class="cover"><img src="images/assets/direct/migrant/cover-05.jpg" alt="Migrant Issue 05 Paris" loading="lazy"></div>
+  <div class="cover"><img src="images/assets/direct/migrant/cover-07.jpg" alt="Migrant Issue 07 Tbilisi" loading="lazy"></div>
+  <div class="cover"><img src="images/assets/direct/migrant/cover-12.jpg" alt="Migrant Issue 12 Barcelona" loading="lazy"></div>
+</div>
+
+<!-- ── TAGLINE ── -->
+<div class="tagline">Identity without citizenship. System only.</div>
+
+<!-- ── ABOUT ── -->
+<section class="about">
+  <div class="about-left">
+    <p><strong>MIGRANT</strong> is a platform and brand for creatives living between countries.</p>
+    <p>Not immigrants. Not tourists.</p>
+    <p>Identity is not tied to a passport — only to what you do.</p>
+    <div class="sub-note">
+      A brand identity system that adapts to location.<br>
+      Global in reach, unified by one logic.
+    </div>
+  </div>
+  <div class="about-right">
+    <div class="about-right-title">What is<br>Migrant?</div>
+    <div class="city-grid">
+      <div class="city-row"><div class="city-num">01</div><div class="city-name" style="border-color:#ff3c5f;background:rgba(255,60,95,.08)">Lisboa</div></div>
+      <div class="city-row"><div class="city-num">02</div><div class="city-name" style="border-color:#4d8cff;background:rgba(77,140,255,.08)">Tokyo</div></div>
+      <div class="city-row"><div class="city-num">03</div><div class="city-name" style="border-color:#ff9b00;background:rgba(255,155,0,.08)">Berlin</div></div>
+      <div class="city-row"><div class="city-num">04</div><div class="city-name" style="border-color:#00c896;background:rgba(0,200,150,.08)">Hanoi</div></div>
+      <div class="city-row"><div class="city-num">05</div><div class="city-name" style="border-color:#c47dff;background:rgba(196,125,255,.08)">Paris</div></div>
+      <div class="city-row"><div class="city-num">06</div><div class="city-name" style="border-color:#ff6b1a;background:rgba(255,107,26,.08)">Chicago</div></div>
+      <div class="city-row"><div class="city-num">07</div><div class="city-name" style="border-color:#00d4e8;background:rgba(0,212,232,.08)">Tbilisi</div></div>
+      <div class="city-row"><div class="city-num">08</div><div class="city-name" style="border-color:#ffe600;background:rgba(255,230,0,.08)">Laos</div></div>
+      <div class="city-row"><div class="city-num">09</div><div class="city-name" style="border-color:#ff3c5f;background:rgba(255,60,95,.06)">Chili</div></div>
+      <div class="city-row"><div class="city-num">10</div><div class="city-name" style="border-color:#80c97a;background:rgba(128,201,122,.08)">Oitapa</div></div>
+      <div class="city-row"><div class="city-num">11</div><div class="city-name" style="border-color:#ff8fa3;background:rgba(255,143,163,.08)">Almería</div></div>
+      <div class="city-row"><div class="city-num">12</div><div class="city-name" style="border-color:#aafb00;background:rgba(170,251,0,.08)">Koeln</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHERE ── -->
+<section class="where">
+  <div class="where-title">Migrant,<br>where are<br>you right<br>now?</div>
+  <div class="where-left">
+    <p>A brand identity system that adapts to location. Global in reach, unified by one logic. Each city is translated into color — not as a flag, but as an emotional reading.</p>
+    <p class="where-note">One system. Infinite variations.<br>The identity responds to location.</p>
+  </div>
+  <ul class="city-list">
+    <li><span class="city-num" style="opacity:.38">01</span><span>Lisboa</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">02</span><span>Tokyo</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">03</span><span>Berlin</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">04</span><span>Hanoi</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">05</span><span>Paris</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">06</span><span>Chicago</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">07</span><span>Tbilisi</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">08</span><span>Laos</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">09</span><span>Chili</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">10</span><span>Oitapa</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">11</span><span>Almería</span><span class="bar"></span></li>
+    <li><span class="city-num" style="opacity:.38">12</span><span>Koeln</span><span class="bar"></span></li>
+  </ul>
+</section>
+
+<!-- ── WEB MOCKUP ── -->
+<section class="mockup-section">
+  <div class="mockup-label">Web interface — hover to explore cities</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+      <div class="b-url">migrant.world</div>
+    </div>
+    <div class="browser-inner">
+      <div class="b-hero">
+        <div class="b-hero-title">MIGRANT,<br>WHERE ARE YOU <span>RIGHT NOW?</span></div>
+      </div>
+      <!-- interactive city grid — drop your JPEGs into images/assets/direct/migrant/ -->
+      <div class="city-hover-grid">
+        <div class="city-cell" data-city="lisboa">
+          <div class="city-cell-bg" style="background-image:url('images/assets/direct/migrant/lisboa.jpg')"></div>
+          <div class="city-cell-overlay"></div>
+          <div class="city-cell-name">Lisboa</div>
+        </div>
+        <div class="city-cell" data-city="tokyo">
+          <div class="city-cell-bg" style="background-image:url('images/assets/direct/migrant/tokyo.jpg')"></div>
+          <div class="city-cell-overlay"></div>
+          <div class="city-cell-name">Tokyo</div>
+        </div>
+        <div class="city-cell" data-city="berlin">
+          <div class="city-cell-bg" style="background-image:url('images/assets/direct/migrant/berlin.jpg')"></div>
+          <div class="city-cell-overlay"></div>
+          <div class="city-cell-name">Berlin</div>
+        </div>
+        <div class="city-cell" data-city="hanoi">
+          <div class="city-cell-bg" style="background-image:url('images/assets/direct/migrant/hanoi.jpg')"></div>
+          <div class="city-cell-overlay"></div>
+          <div class="city-cell-name">Hanoi</div>
+        </div>
+      </div>
+      <div class="b-footer-row">
+        <div class="b-footer-city">Paris</div>
+        <div class="b-footer-city">Chicago</div>
+        <div class="b-footer-city">Tbilisi</div>
+        <div class="b-footer-city">Laos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PHYSICAL PHOTOS ── -->
+<div class="photos">
+  <div class="photo"><img src="images/assets/direct/migrant/physical-01.jpg" alt="" loading="lazy"></div>
+  <div class="photo"><img src="images/assets/direct/migrant/physical-02.jpg" alt="" loading="lazy"></div>
+  <div class="photo"><img src="images/assets/direct/migrant/physical-03.jpg" alt="" loading="lazy"></div>
+</div>
+
+<div class="system-text">
+  <div class="system-text-head">The system</div>
+  <div>
+    <p>The system extends into digital space. The interface shifts with location, but keeps its internal logic.</p>
+    <p style="margin-top:12px">Each city version is the same identity, re-read through a different emotional filter — color, weight, texture.</p>
+  </div>
+</div>
+
+<div class="photos" style="margin-top:3px">
+  <div class="photo"><img src="images/assets/direct/migrant/system-01.jpg" alt="" loading="lazy"></div>
+  <div class="photo"><img src="images/assets/direct/migrant/system-02.jpg" alt="" loading="lazy"></div>
+  <div class="photo"><img src="images/assets/direct/migrant/system-03.jpg" alt="" loading="lazy"></div>
+</div>
+
+<!-- ── ZINE ── -->
+<section class="zine-section">
+  <div class="zine-header">
+    <div class="zine-title">Zine —<br>Zine</div>
+    <div class="zine-meta">
+      Printed as a moving archive of locations.<br>
+      Each issue captures a city through the system.
+    </div>
+  </div>
+  <div class="zine-track-wrap">
+    <div class="zine-track" id="zine-track">
+      <div class="zine-slide"><img src="images/assets/direct/migrant/zine-01.jpg" alt="Zine spread 01" loading="lazy"></div>
+      <div class="zine-slide"><img src="images/assets/direct/migrant/zine-02.jpg" alt="Zine spread 02" loading="lazy"></div>
+      <div class="zine-slide"><img src="images/assets/direct/migrant/zine-03.jpg" alt="Zine spread 03" loading="lazy"></div>
+      <div class="zine-slide"><img src="images/assets/direct/migrant/zine-04.jpg" alt="Zine spread 04" loading="lazy"></div>
+      <div class="zine-slide"><img src="images/assets/direct/migrant/zine-05.jpg" alt="Zine spread 05" loading="lazy"></div>
+    </div>
+    <div class="zine-nav">
+      <button class="zine-btn" id="zine-prev">← Prev</button>
+      <button class="zine-btn" id="zine-next">Next →</button>
+      <div class="zine-counter" id="zine-counter">01 / 05</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUOTE ── -->
+<section class="quote-section">
+  <div class="quote-word">Origin</div>
+  <div class="quote-text">
+    "I've lived in five countries in six years. I never felt like an immigrant — just someone who happens to be here. <em>That state had no identity. So I created one.</em>"
+  </div>
+</section>
+
+<script>
+/* ── CURSOR ── */
+const cur = document.getElementById('cur');
+if (window.matchMedia('(hover: hover)').matches) {
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, .city-cell, .zine-btn, .cover').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('big'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+  });
+}
+
+/* ── ZINE CAROUSEL ── */
+(function() {
+  const track   = document.getElementById('zine-track');
+  const prev    = document.getElementById('zine-prev');
+  const next    = document.getElementById('zine-next');
+  const counter = document.getElementById('zine-counter');
+  const slides  = track.querySelectorAll('.zine-slide');
+  const total   = slides.length;
+  let current   = 0;
+
+  function goTo(i) {
+    current = Math.max(0, Math.min(i, total - 1));
+    slides[current].scrollIntoView({ behavior:'smooth', block:'nearest', inline:'start' });
+    counter.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  }
+
+  prev.addEventListener('click', () => goTo(current - 1));
+  next.addEventListener('click', () => goTo(current + 1));
+
+  // sync counter on manual scroll
+  let ticking = false;
+  track.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const slideW = slides[0].offsetWidth + 3; // gap
+      const idx = Math.round(track.scrollLeft / slideW);
+      current = Math.max(0, Math.min(idx, total - 1));
+      counter.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+      ticking = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>
