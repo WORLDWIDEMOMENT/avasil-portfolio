@@ -4,131 +4,215 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>To Direct</title>
+
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+*, *::before, *::after {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body {
   background:#080808;
   color:white;
   font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
-  height:100vh; overflow:hidden;
+  height:100vh;
+  overflow:hidden;
   cursor:none;
 }
 
 /* ── CURSOR ── */
 #cur {
-  position:fixed; width:10px; height:10px;
-  background:white; border-radius:50%;
-  pointer-events:none; z-index:9999;
+  position:fixed;
+  width:10px;
+  height:10px;
+  background:white;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
   transform:translate(-50%,-50%);
   transition:width .16s, height .16s;
   mix-blend-mode:difference;
 }
 #cur.big { width:50px; height:50px; }
-@media (hover:none) { #cur { display:none; } }
+
+@media (hover:none) {
+  #cur { display:none; }
+}
 
 /* ── NAV ── */
 .nav {
-  position:fixed; top:36px; left:80px; right:80px;
-  display:flex; justify-content:space-between; align-items:center;
+  position:fixed;
+  top:36px;
+  left:80px;
+  right:80px;
+  display:flex;
+  justify-content:space-between;
   z-index:100;
-  font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.2em;
+  text-transform:uppercase;
 }
-.nav a { color:white; text-decoration:none; opacity:.38; transition:opacity .25s; cursor:none; }
+.nav a {
+  color:white;
+  text-decoration:none;
+  opacity:.38;
+  transition:opacity .25s;
+}
 .nav a:hover { opacity:1; }
 .nav-label { opacity:.18; }
 
 /* ── SPLIT ── */
-.split { display:flex; width:100vw; height:100vh; }
+.split {
+  display:flex;
+  width:100vw;
+  height:100vh;
+}
 
+/* ❗ фиксируем половины */
 .half {
-  flex:1; position:relative; overflow:hidden;
-  display:flex; align-items:flex-end;
-  padding:80px;
-  cursor:none;
-  text-decoration:none; color:white;
-  transition:flex .65s cubic-bezier(.77,0,.18,1);
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  text-decoration:none;
+  color:white;
 }
-.half:hover { flex:1.1; }
 
-/* subtle gradient bloom on hover */
-.half::after {
-  content:''; position:absolute; inset:0;
-  opacity:0; transition:opacity .5s;
-  pointer-events:none; z-index:0;
+/* ❗ контент теперь абсолютно фиксирован */
+.half-content {
+  position:absolute;
+  bottom:80px;
+  left:80px;
+  z-index:2;
+
+  transition:transform .4s cubic-bezier(.77,0,.18,1);
 }
-.half-archive::after { background:radial-gradient(ellipse at 25% 90%, rgba(170,251,0,.1) 0%, transparent 65%); }
-.half-migrant::after { background:radial-gradient(ellipse at 75% 90%, rgba(255,100,120,.1) 0%, transparent 65%); }
+
+/* hover теперь НЕ влияет на layout */
+.half:hover .half-content {
+  transform:translateY(-10px);
+}
+
+/* overlay hover эффект */
+.half::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity .5s;
+  pointer-events:none;
+}
+
+.half-archive::after {
+  background:radial-gradient(circle at 30% 90%, rgba(170,251,0,.12), transparent 60%);
+}
+.half-migrant::after {
+  background:radial-gradient(circle at 70% 90%, rgba(255,100,120,.12), transparent 60%);
+}
+
 .half:hover::after { opacity:1; }
 
 /* divider */
 .divider {
-  position:absolute; left:50%; top:10%; bottom:10%;
-  width:1px; background:rgba(255,255,255,.08);
-  z-index:5; pointer-events:none;
+  position:absolute;
+  left:50%;
+  top:10%;
+  bottom:10%;
+  width:1px;
+  background:rgba(255,255,255,.08);
+  z-index:5;
 }
 
-/* content block */
-.half-content {
-  position:relative; z-index:1;
-  transition:transform .45s cubic-bezier(.77,0,.18,1);
-}
-.half:hover .half-content { transform:translateY(-8px); }
-
+/* TEXT */
 .c-tag {
-  font-size:9px; font-weight:700; letter-spacing:.3em; text-transform:uppercase;
-  padding:3px 9px; border:1px solid transparent;
-  display:inline-block; margin-bottom:22px;
-  opacity:0; transform:translateY(3px);
-  transition:opacity .35s ease .05s, transform .35s ease .05s;
+  font-size:9px;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  margin-bottom:22px;
+  opacity:.5;
 }
-.half-archive  .c-tag { color:#aafb00; border-color:rgba(170,251,0,.3); }
-.half-migrant  .c-tag { color:#ff6b7a; border-color:rgba(255,107,122,.3); }
-.half:hover .c-tag { opacity:1; transform:translateY(0); }
 
 .c-num {
-  font-size:10px; font-weight:700; letter-spacing:.28em; text-transform:uppercase;
-  opacity:.28; margin-bottom:14px;
+  font-size:10px;
+  letter-spacing:.28em;
+  opacity:.28;
+  margin-bottom:14px;
 }
+
 .c-title {
   font-size:clamp(38px,4.8vw,68px);
-  font-weight:700; letter-spacing:.1em; text-transform:uppercase; line-height:1;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  line-height:1;
   margin-bottom:18px;
-  transition:color .35s;
+  transition:color .3s;
 }
+
 .half-archive:hover .c-title { color:#aafb00; }
 .half-migrant:hover .c-title { color:#ff6b7a; }
 
 .c-desc {
-  font-size:10px; font-weight:400; letter-spacing:.12em; text-transform:uppercase;
-  opacity:.38; line-height:1.75; max-width:280px;
-  transition:opacity .3s;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  opacity:.4;
+  line-height:1.7;
+  max-width:280px;
 }
-.half:hover .c-desc { opacity:.62; }
 
 .c-open {
-  display:inline-block; margin-top:32px;
-  font-size:10px; font-weight:700; letter-spacing:.28em; text-transform:uppercase;
-  opacity:0; transform:translateY(5px);
-  transition:opacity .4s ease .1s, transform .4s ease .1s;
-  border-bottom:1px solid transparent; padding-bottom:2px;
+  display:inline-block;
+  margin-top:32px;
+  font-size:10px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  opacity:.6;
+  border-bottom:1px solid transparent;
+  transition:.3s;
 }
-.half:hover .c-open { opacity:.65; transform:translateY(0); }
-.half:hover .c-open:hover { opacity:1; border-bottom-color:currentColor; }
+
+.c-open:hover {
+  opacity:1;
+  border-bottom-color:currentColor;
+}
 
 /* ── MOBILE ── */
 @media (max-width:900px) {
-  body { overflow:auto; height:auto; }
-  .split { flex-direction:column; min-height:100vh; }
-  .half { min-height:50vh; padding:60px 24px; align-items:flex-end; }
-  .half:hover { flex:1; }
-  .divider { display:none; }
-  .nav { left:20px; right:20px; top:20px; }
-  .c-tag  { opacity:1; transform:none; }
-  .c-open { opacity:.6; transform:none; }
+
+  body {
+    overflow:auto;
+    height:auto;
+  }
+
+  .split {
+    flex-direction:column;
+  }
+
+  .half {
+    height:50vh;
+  }
+
+  .half-content {
+    left:24px;
+    bottom:40px;
+  }
+
+  .divider {
+    display:none;
+  }
+
+  .nav {
+    left:20px;
+    right:20px;
+    top:20px;
+  }
 }
+
 </style>
 </head>
+
 <body>
 
 <div id="cur"></div>
@@ -146,7 +230,7 @@ body {
       <div class="c-num">01</div>
       <div class="c-title">Archive<br>/ Space</div>
       <div class="c-desc">
-        Architectural archive &amp; cultural institution.<br>
+        Architectural archive & cultural institution.<br>
         Identity as classification infrastructure.
       </div>
       <div class="c-open">Open →</div>
@@ -157,7 +241,7 @@ body {
 
   <a class="half half-migrant" href="migrant.html">
     <div class="half-content">
-      <div class="c-tag">Brand Identity · 2024</div>
+      <div class="c-tag">Brand Identity · 2026</div>
       <div class="c-num">02</div>
       <div class="c-title">Migrant</div>
       <div class="c-desc">
@@ -172,16 +256,19 @@ body {
 
 <script>
 const cur = document.getElementById('cur');
+
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', e => {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
   });
-  document.querySelectorAll('a, .half').forEach(el => {
+
+  document.querySelectorAll('a').forEach(el => {
     el.addEventListener('mouseenter', () => cur.classList.add('big'));
     el.addEventListener('mouseleave', () => cur.classList.remove('big'));
   });
 }
 </script>
+
 </body>
 </html>
