@@ -78,7 +78,7 @@ body {
   color:white;
 }
 
-/* 🔥 BACKGROUND IMAGES */
+/* ── BACKGROUND ── */
 .half::before {
   content:'';
   position:absolute;
@@ -90,10 +90,10 @@ body {
 }
 
 .half-archive::before {
-  background-image:url('archive.jpg'); /* ← вставь свою */
+  background-image:url('archive.jpg');
 }
 .half-migrant::before {
-  background-image:url('migrant.jpg'); /* ← вставь свою */
+  background-image:url('migrant.jpg');
 }
 
 .half:hover::before {
@@ -101,12 +101,11 @@ body {
   opacity:.55;
 }
 
-/* gradient overlay */
 .half::after {
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.2));
+  background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.2));
   z-index:1;
 }
 
@@ -121,23 +120,21 @@ body {
   z-index:5;
 }
 
-/* ── CONTENT GRID (ключевая часть) ── */
+/* ── CONTENT ── */
 .half-content {
   position:absolute;
   bottom:80px;
   left:80px;
   z-index:2;
-
   display:flex;
   flex-direction:column;
 }
 
-/* 🔥 фиксируем зоны */
+/* spacing */
 .c-tag { margin-bottom:20px; }
-
 .c-num { margin-bottom:10px; }
 
-/* ❗ ВАЖНО: одинаковая высота под заголовок */
+/* 🔥 ГЛАВНОЕ: baseline alignment */
 .c-title {
   font-size:clamp(38px,4.8vw,68px);
   font-weight:700;
@@ -145,11 +142,11 @@ body {
   text-transform:uppercase;
   line-height:1;
 
-  min-height:140px; /* ← ключ к выравниванию */
+  height:150px; /* ← фиксированная зона */
   display:flex;
-  align-items:flex-end;
+  align-items:flex-end; /* ← прижимаем вниз */
 
-  margin-bottom:16px;
+  margin-bottom:18px;
   transition:color .3s;
 }
 
@@ -210,7 +207,7 @@ body {
   }
 
   .c-title {
-    min-height:auto;
+    height:auto;
   }
 
   .divider {
