@@ -23,14 +23,13 @@ body {
 /* ── CURSOR ── */
 #cur {
   position:fixed;
-  width:10px;
-  height:10px;
+  width:8px;
+  height:8px;
   background:white;
   border-radius:50%;
   pointer-events:none;
   z-index:9999;
   transform:translate(-50%,-50%);
-  transition:width .16s, height .16s;
   mix-blend-mode:difference;
 }
 #cur.big { width:50px; height:50px; }
@@ -104,7 +103,7 @@ body {
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.2));
+  background:linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,.1));
   z-index:1;
 }
 
@@ -274,17 +273,18 @@ body {
 <script>
 const cur = document.getElementById('cur');
 
-if (window.matchMedia('(hover: hover)').matches) {
-  document.addEventListener('mousemove', e => {
-    cur.style.left = e.clientX + 'px';
-    cur.style.top  = e.clientY + 'px';
-  });
+let x = 0, y = 0;
 
-  document.querySelectorAll('a').forEach(el => {
-    el.addEventListener('mouseenter', () => cur.classList.add('big'));
-    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
-  });
+document.addEventListener('mousemove', e => {
+  x = e.clientX;
+  y = e.clientY;
+});
+
+function loop(){
+  cur.style.transform = `translate(${x}px, ${y}px)`;
+  requestAnimationFrame(loop);
 }
+loop();
 </script>
 
 </body>
