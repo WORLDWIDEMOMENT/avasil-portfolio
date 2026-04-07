@@ -3,199 +3,239 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Archive / Space — To Direct — Vasileuskaya</title>
+<title>AVASIL — Archive / Space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;700&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --lime: #aafb00;
-  --dark: #0d0d0d;
-  --mid:  #f0f0f0;
-  --gap:  3px;
-  --arch: #111111;
-  --land: #5c6038;
-  --int:  #1e4fd4;
-  --urb:  #888888;
-  --play: #ff6b8a;
-  --arc:  #aafb00;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --lime:#aafb00; --dark:#0d0d0d; --mid:#f0f0f0; --g:3px;
+  --arch:#111; --land:#5c6038; --int:#1e4fd4; --urb:#888; --play:#ff6b8a; --arc:#aafb00;
 }
-html { scroll-behavior:smooth; }
-body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; cursor:none; overflow-x:hidden; }
+html{scroll-behavior:smooth}
+body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:none;overflow-x:hidden;padding-bottom:56px}
 
-#cur { position:fixed; width:10px; height:10px; background:#111; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .16s,height .16s; mix-blend-mode:difference; }
-#cur.big { width:50px; height:50px; }
-@media (hover:none) { #cur { display:none; } }
+#cur{position:fixed;width:10px;height:10px;background:#111;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .16s,height .16s;mix-blend-mode:difference}
+#cur.big{width:50px;height:50px}
+@media(hover:none){#cur{display:none}}
 
 /* NAV */
-.page-nav { position:fixed; top:0; left:0; right:0; z-index:500; padding:24px 60px; display:flex; justify-content:space-between; align-items:center; mix-blend-mode:difference; color:white; pointer-events:none; }
-.page-nav a { pointer-events:auto; }
-.nav-back { font-size:10px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:inherit; text-decoration:none; opacity:.55; transition:opacity .2s; cursor:none; }
-.nav-back:hover { opacity:1; }
-.nav-links { display:flex; gap:20px; align-items:center; font-size:9px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; flex-wrap:wrap; justify-content:flex-end; max-width:60%; }
-.nav-links a { color:inherit; text-decoration:none; opacity:.35; transition:opacity .2s; cursor:none; }
-.nav-links a:hover { opacity:1; }
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 60px;display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference;color:white;pointer-events:none}
+.nav a{pointer-events:auto;cursor:none}
+.nav-back{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.55;transition:opacity .2s}
+.nav-back:hover{opacity:1}
+.nav-links{display:flex;gap:22px;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{color:inherit;text-decoration:none;opacity:.32;transition:opacity .2s}
+.nav-links a:hover{opacity:1}
 
-/* FOOTER */
-.page-bottom { background:var(--dark); color:white; padding:28px 60px; display:flex; justify-content:space-between; align-items:center; font-size:9px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; }
-.page-bottom a { color:inherit; text-decoration:none; opacity:.4; transition:opacity .2s; }
-.page-bottom a:hover { opacity:1; }
-.pb-right { display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+/* FIXED FOOTER */
+.page-bottom{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--dark);color:white;padding:14px 60px;display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.06)}
+.page-bottom a{color:inherit;text-decoration:none;opacity:.38;transition:opacity .2s;cursor:none}
+.page-bottom a:hover{opacity:1}
+.pb-right{display:flex;gap:22px;align-items:center}
 
-/* ════ HERO ════ */
-.hero { background:var(--dark); padding:110px 60px 80px; min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end; position:relative; overflow:hidden; }
+/* HERO */
+.hero{background:var(--dark);padding:110px 60px 80px;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
+/* lime accent line */
+.hero::after{content:'';position:absolute;left:60px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--lime) 40%,transparent)}
+.hero>*{position:relative;z-index:1}
+.hero-code{font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:44px}
+.hero-code span{color:var(--lime)}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(60px,12vw,170px);font-weight:900;letter-spacing:-.01em;text-transform:uppercase;line-height:.88;color:white;margin-bottom:36px}
+.hero-title em{display:block;font-style:normal;color:var(--lime)}
+.hero-sub{font-size:clamp(13px,1.1vw,17px);font-weight:300;line-height:1.6;color:rgba(255,255,255,.45);max-width:520px;margin-bottom:52px}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
+.htag{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:6px 14px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.42)}
 
-/* grid overlay */
-.hero::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:80px 80px; pointer-events:none; }
+/* SECTION LABEL */
+.sec-lbl{font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.22);margin-bottom:32px;display:flex;align-items:center;gap:14px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,.08)}
+.dark-sec .sec-lbl{color:rgba(255,255,255,.2)}
+.dark-sec .sec-lbl::after{background:rgba(255,255,255,.07)}
 
-.hero-id { font-size:9px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:40px; }
-.hero-id span { color:var(--lime); }
+/* MEDIA PLACEHOLDER */
+.media{background:#e8e8e8;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.media img{width:100%;height:100%;object-fit:cover;display:block}
+.media-ph{position:absolute;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.2)}
+.dark-ph{background:rgba(255,255,255,.04)}
+.dark-ph .media-ph{color:rgba(255,255,255,.15)}
 
-.hero-title { font-size:clamp(60px,12vw,170px); font-weight:900; letter-spacing:-.01em; text-transform:uppercase; line-height:.88; color:white; margin-bottom:32px; }
-.hero-title em { display:block; font-style:normal; color:var(--lime); }
+/* ══ 01 CHALLENGE ══ */
+.challenge{padding:80px 60px;border-bottom:1px solid rgba(0,0,0,.08)}
+.ch-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.ch-card{padding:30px;border:1px solid rgba(0,0,0,.1);position:relative;transition:border-color .2s}
+.ch-card:hover{border-color:rgba(0,0,0,.25)}
+.ch-card.target{background:var(--dark);border-color:var(--lime)}
+.ch-lbl{font-size:8px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.32);margin-bottom:16px}
+.ch-card.target .ch-lbl{color:var(--lime)}
+.ch-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;letter-spacing:.04em;color:#111;margin-bottom:12px}
+.ch-card.target .ch-title{color:var(--lime)}
+.ch-desc{font-size:11px;line-height:1.75;color:rgba(0,0,0,.5)}
+.ch-card.target .ch-desc{color:rgba(255,255,255,.45)}
+.ch-tick{position:absolute;top:14px;right:14px;width:22px;height:22px;background:var(--lime);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--dark)}
 
-.hero-sub { font-size:clamp(13px,1.1vw,17px); font-weight:400; line-height:1.6; color:rgba(255,255,255,.45); max-width:520px; margin-bottom:48px; }
+/* ══ 02 CONCEPT ══ */
+.concept{padding:80px 60px;background:var(--mid);border-bottom:1px solid rgba(0,0,0,.08)}
+.concept-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.concept-head{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3.5vw,48px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1;color:#111;margin-bottom:32px}
+.concept-head em{font-style:normal;display:block;color:rgba(0,0,0,.25);font-weight:400;font-size:.52em;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
+.concept-points{list-style:none}
+.concept-points li{padding:14px 0;border-bottom:1px solid rgba(0,0,0,.1);font-size:12px;line-height:1.7;color:#333;display:flex;gap:14px;align-items:baseline}
+.concept-points li::before{content:'—';color:rgba(0,0,0,.22);flex-shrink:0}
+.concept-quote{font-size:clamp(14px,1.5vw,20px);font-weight:300;line-height:1.6;color:#333;padding:32px;border:1px solid rgba(0,0,0,.1);background:#fff;position:relative}
+.concept-quote::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--lime)}
+.cq-ru{font-size:12px;line-height:1.7;color:rgba(0,0,0,.42);margin-top:14px}
 
-.hero-tags { display:flex; gap:10px; flex-wrap:wrap; }
-.htag { font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.45); }
+/* ══ 03 CLASSIFICATION — BIG & BOLD ══ */
+.classif{padding:80px 60px;border-bottom:1px solid rgba(0,0,0,.08)}
+.classif-intro{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,56px);font-weight:900;letter-spacing:.02em;text-transform:uppercase;line-height:.92;margin-bottom:60px;max-width:600px}
+.classif-intro em{font-style:normal;color:rgba(0,0,0,.2);display:block;font-size:.45em;letter-spacing:.22em;text-transform:uppercase;font-weight:400;margin-bottom:10px}
 
-/* ════ SECTION LABEL ════ */
-.sec-label { font-size:9px; font-weight:700; letter-spacing:.3em; text-transform:uppercase; color:rgba(0,0,0,.25); margin-bottom:28px; display:flex; align-items:center; gap:12px; }
-.sec-label::after { content:''; flex:1; height:1px; background:rgba(0,0,0,.1); }
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g)}
+.cat-card{padding:32px 28px;position:relative;overflow:hidden;cursor:none;transition:transform .3s}
+.cat-card:hover{transform:translateY(-3px)}
+.cat-card-num{font-size:clamp(60px,8vw,110px);font-weight:900;font-family:'Space Grotesk',sans-serif;line-height:1;margin-bottom:16px;letter-spacing:-.02em;opacity:.18}
+.cat-card-code{font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;display:inline-block;padding:5px 14px;border-radius:999px;color:white}
+.cat-card-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,2.2vw,28px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1;color:inherit}
+.cat-card-idx{position:absolute;top:20px;right:22px;font-size:9px;font-weight:700;letter-spacing:.2em;opacity:.4;font-family:'IBM Plex Sans',sans-serif}
 
-/* ════ 01 CHALLENGE ════ */
-.challenge { padding:80px 60px; border-bottom:1px solid rgba(0,0,0,.08); }
-.ch-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
-.ch-card { padding:28px; border:1px solid rgba(0,0,0,.1); position:relative; }
-.ch-card.target { background:var(--dark); border-color:var(--lime); }
-.ch-label { font-size:8px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:rgba(0,0,0,.35); margin-bottom:16px; }
-.ch-card.target .ch-label { color:var(--lime); }
-.ch-title { font-size:18px; font-weight:700; letter-spacing:.04em; color:#111; margin-bottom:10px; }
-.ch-card.target .ch-title { color:var(--lime); }
-.ch-desc { font-size:11px; line-height:1.7; color:rgba(0,0,0,.5); }
-.ch-card.target .ch-desc { color:rgba(255,255,255,.5); }
-.ch-tick { position:absolute; top:16px; right:16px; width:20px; height:20px; background:var(--lime); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--dark); }
+.cat-arch{background:#111;color:white}
+.cat-arch .cat-card-code{background:#333}
+.cat-arch .cat-card-num{color:white}
+.cat-arch .cat-card-idx{color:rgba(255,255,255,.4)}
 
-/* ════ 02 CONCEPT ════ */
-.concept { padding:80px 60px; background:var(--mid); border-bottom:1px solid rgba(0,0,0,.08); }
-.concept-inner { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
-.concept-head { font-size:clamp(24px,3.5vw,48px); font-weight:700; letter-spacing:.04em; text-transform:uppercase; line-height:1; color:#111; margin-bottom:28px; }
-.concept-head em { font-style:normal; display:block; color:rgba(0,0,0,.25); font-weight:400; font-size:.55em; letter-spacing:.22em; text-transform:uppercase; margin-bottom:6px; }
-.concept-points { list-style:none; display:flex; flex-direction:column; gap:0; }
-.concept-points li { padding:14px 0; border-bottom:1px solid rgba(0,0,0,.1); font-size:12px; line-height:1.65; color:#333; display:flex; gap:14px; align-items:baseline; }
-.concept-points li::before { content:'—'; color:rgba(0,0,0,.25); flex-shrink:0; }
-.concept-quote { font-size:clamp(14px,1.5vw,20px); font-weight:300; line-height:1.6; color:#333; padding:32px; border:1px solid rgba(0,0,0,.12); background:#fff; position:relative; }
-.concept-quote::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--lime); }
-.cq-ru { font-size:12px; line-height:1.7; color:rgba(0,0,0,.45); margin-top:14px; }
+.cat-land{background:var(--land);color:white}
+.cat-land .cat-card-code{background:rgba(0,0,0,.3)}
+.cat-land .cat-card-num{color:white}
 
-/* ════ 03 CLASSIFICATION ════ */
-.classif { padding:80px 60px; border-bottom:1px solid rgba(0,0,0,.08); }
-.classif-table { width:100%; border-collapse:collapse; }
-.classif-table th { font-size:8px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:rgba(0,0,0,.3); text-align:left; padding:10px 16px 10px 0; border-bottom:1px solid rgba(0,0,0,.1); }
-.classif-table td { padding:0; border-bottom:1px solid rgba(0,0,0,.06); }
-.ct-row { display:flex; align-items:center; padding:16px 0; gap:16px; }
-.ct-pill { display:flex; align-items:center; gap:7px; padding:5px 12px 5px 8px; border-radius:999px; background:#111; }
-.ct-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.ct-code { font-size:8px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:white; }
-.ct-name { font-size:13px; font-weight:400; letter-spacing:.04em; color:#111; width:140px; }
-.ct-color { width:24px; height:24px; border-radius:50%; flex-shrink:0; }
-.ct-idx { font-size:10px; font-weight:700; letter-spacing:.18em; color:rgba(0,0,0,.3); }
+.cat-int{background:var(--int);color:white}
+.cat-int .cat-card-code{background:rgba(0,0,0,.2)}
+.cat-int .cat-card-num{color:white}
 
-/* ════ 04 ID SYSTEM ════ */
-.id-sys { padding:80px 60px; background:var(--dark); color:white; border-bottom:1px solid rgba(255,255,255,.05); }
-.id-sys .sec-label { color:rgba(255,255,255,.2); }
-.id-sys .sec-label::after { background:rgba(255,255,255,.08); }
-.id-head { font-size:clamp(22px,3vw,42px); font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:white; margin-bottom:48px; }
-.id-head span { color:var(--lime); }
-.id-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--gap); margin-bottom:48px; }
-.id-card { background:#1a1a1a; padding:20px; border:1px solid rgba(255,255,255,.05); }
-.id-code-row { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
-.id-code { font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--lime); }
-.id-cat-pill { font-size:7px; font-weight:700; letter-spacing:.16em; padding:3px 8px; border-radius:999px; text-transform:uppercase; }
-.id-num { font-size:9px; font-weight:700; letter-spacing:.18em; color:rgba(255,255,255,.2); }
-.id-name { font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:white; }
+.cat-urb{background:#d4d4d4;color:#333}
+.cat-urb .cat-card-code{background:rgba(0,0,0,.2);color:white}
+.cat-urb .cat-card-num{color:#333}
 
-/* id formula */
-.id-formula { display:flex; gap:0; align-items:stretch; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; flex-wrap:wrap; gap:2px; }
-.id-part { padding:10px 16px; background:#1a1a1a; border:1px solid rgba(255,255,255,.07); }
-.id-part span { display:block; font-size:7px; letter-spacing:.16em; color:rgba(255,255,255,.25); margin-bottom:4px; font-weight:400; }
-.id-sep { padding:10px 8px; color:rgba(255,255,255,.2); display:flex; align-items:center; font-size:14px; }
+.cat-play{background:var(--play);color:white}
+.cat-play .cat-card-code{background:rgba(0,0,0,.18)}
+.cat-play .cat-card-num{color:white}
 
-/* ════ 05 APPLICATIONS ════ */
-.apps { padding:80px 60px; border-bottom:1px solid rgba(0,0,0,.08); }
-.apps-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); }
-.app-item { background:var(--mid); padding:40px; position:relative; overflow:hidden; min-height:260px; display:flex; flex-direction:column; justify-content:flex-end; }
-.app-item.dark { background:var(--dark); color:white; }
-.app-item.lime { background:var(--lime); color:var(--dark); }
-.app-letter { position:absolute; top:16px; left:20px; font-size:11px; font-weight:700; letter-spacing:.22em; color:rgba(0,0,0,.15); }
-.app-item.dark .app-letter { color:rgba(255,255,255,.1); }
-.app-item.lime .app-letter { color:rgba(0,0,0,.15); }
-.app-head { font-size:20px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:10px; }
-.app-desc { font-size:11px; line-height:1.7; color:rgba(0,0,0,.55); max-width:300px; }
-.app-item.dark .app-desc { color:rgba(255,255,255,.4); }
-.app-item.lime .app-desc { color:rgba(0,0,0,.6); }
-.app-badge { display:inline-block; font-size:8px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; padding:4px 10px; border:1px solid rgba(0,0,0,.15); margin-bottom:14px; align-self:flex-start; }
-.app-item.dark .app-badge { border-color:rgba(255,255,255,.15); color:rgba(255,255,255,.4); }
-.app-item.lime .app-badge { border-color:rgba(0,0,0,.2); color:rgba(0,0,0,.5); }
+.cat-arc{background:var(--lime);color:var(--dark)}
+.cat-arc .cat-card-code{background:rgba(0,0,0,.18);color:var(--dark)}
+.cat-arc .cat-card-num{color:var(--dark)}
+.cat-arc .cat-card-idx{color:rgba(0,0,0,.4)}
 
-/* ════ 06 SPACE ════ */
-.space-sec { padding:80px 60px; background:var(--dark); color:white; border-bottom:1px solid rgba(255,255,255,.05); }
-.space-sec .sec-label { color:rgba(255,255,255,.2); }
-.space-sec .sec-label::after { background:rgba(255,255,255,.08); }
-.space-intro { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; margin-bottom:48px; }
-.space-h { font-size:clamp(24px,3.5vw,48px); font-weight:700; letter-spacing:.06em; text-transform:uppercase; line-height:1.05; }
-.space-p { font-size:12px; line-height:1.8; color:rgba(255,255,255,.45); }
-.space-modes { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); }
-.mode-card { background:#1a1a1a; padding:28px; border:1px solid rgba(255,255,255,.05); }
-.mode-num { font-size:48px; font-weight:900; color:var(--lime); line-height:1; margin-bottom:20px; opacity:.6; }
-.mode-title { font-size:13px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:white; margin-bottom:12px; }
-.mode-desc { font-size:11px; line-height:1.75; color:rgba(255,255,255,.4); }
+/* ══ 04 ID SYSTEM ══ */
+.id-sys{padding:80px 60px;background:var(--dark);color:white;border-bottom:1px solid rgba(255,255,255,.05)}
+.id-head{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,3vw,44px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:white;margin-bottom:50px;line-height:1.05}
+.id-head span{color:var(--lime)}
+.id-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--g);margin-bottom:40px}
+.id-card{background:#1a1a1a;padding:22px;border:1px solid rgba(255,255,255,.05);transition:border-color .2s}
+.id-card:hover{border-color:rgba(170,251,0,.3)}
+.id-code-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.id-code{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--lime);font-family:'IBM Plex Sans',sans-serif}
+.id-pill{font-size:7px;font-weight:700;letter-spacing:.14em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+.id-num{font-size:9px;font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,.2)}
+.id-name{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white}
 
-/* ════ 07 REFLECTION ════ */
-.reflect { padding:80px 60px; border-bottom:1px solid rgba(0,0,0,.08); display:grid; grid-template-columns:200px 1fr; gap:80px; align-items:start; }
-.reflect-head { font-size:clamp(18px,2.2vw,28px); font-weight:700; letter-spacing:.04em; text-transform:uppercase; line-height:1.2; }
-.reflect-head span { display:block; color:rgba(0,0,0,.3); font-weight:400; }
-.reflect-text p { font-size:14px; line-height:1.8; color:#333; max-width:540px; }
-.reflect-text p+p { margin-top:16px; }
+.id-formula{display:flex;align-items:stretch;flex-wrap:wrap;gap:2px}
+.id-part{padding:12px 18px;background:#1a1a1a;border:1px solid rgba(255,255,255,.07)}
+.id-part span{display:block;font-size:7px;letter-spacing:.16em;color:rgba(255,255,255,.22);margin-bottom:5px;font-weight:400}
+.id-part strong{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:white}
+.id-sep{padding:12px 10px;color:rgba(255,255,255,.18);display:flex;align-items:center;font-size:18px}
+
+/* ══ 05 APPLICATIONS ══ */
+.apps{padding:80px 60px;border-bottom:1px solid rgba(0,0,0,.08)}
+.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--g)}
+.app-item{padding:40px;position:relative;overflow:hidden;min-height:280px;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .3s}
+.app-item:hover{transform:translateY(-2px)}
+.app-item.light{background:var(--mid)}
+.app-item.dark{background:var(--dark);color:white}
+.app-item.lime{background:var(--lime);color:var(--dark)}
+.app-ltr{position:absolute;top:20px;left:22px;font-size:11px;font-weight:700;letter-spacing:.22em;opacity:.12}
+.app-badge{display:inline-block;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:4px 12px;border:1px solid currentColor;margin-bottom:14px;align-self:flex-start;opacity:.45}
+.app-head{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+.app-desc{font-size:11px;line-height:1.75;opacity:.55;max-width:300px}
+.app-item.dark .app-desc{color:rgba(255,255,255,.45)}
+
+/* MEDIA BELOW APPS (exhibition, merch, web renderings) */
+.apps-media{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--g);margin-top:var(--g)}
+.apps-media .media{aspect-ratio:4/3}
+
+/* ══ 06 THE SPACE ══ */
+.space-sec{padding:80px 60px;background:var(--dark);color:white;border-bottom:1px solid rgba(255,255,255,.05)}
+.space-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-bottom:50px}
+.space-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3.5vw,52px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.05}
+.space-p{font-size:12px;line-height:1.8;color:rgba(255,255,255,.42)}
+.space-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g)}
+.mode-card{background:#1a1a1a;padding:30px;border:1px solid rgba(255,255,255,.05);transition:border-color .3s}
+.mode-card:hover{border-color:rgba(170,251,0,.25)}
+.mode-num{font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:900;color:var(--lime);line-height:1;margin-bottom:20px;opacity:.55}
+.mode-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:white;margin-bottom:12px}
+.mode-desc{font-size:11px;line-height:1.8;color:rgba(255,255,255,.38)}
+
+/* media row below modes */
+.space-media{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--g);margin-top:var(--g)}
+.space-media .media{aspect-ratio:4/3}
+
+/* ══ 07 REFLECTION ══ */
+.reflect{padding:80px 60px;border-bottom:1px solid rgba(0,0,0,.08);display:grid;grid-template-columns:220px 1fr;gap:80px;align-items:start}
+.reflect-head{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,2.2vw,30px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.2}
+.reflect-head em{display:block;font-style:normal;color:rgba(0,0,0,.28);font-size:.7em;letter-spacing:.22em;font-weight:400;text-transform:uppercase;margin-bottom:6px}
+.reflect-text p{font-size:14px;line-height:1.85;color:#333;max-width:560px}
+.reflect-text p+p{margin-top:16px}
 
 /* MOBILE */
-@media (max-width:900px) {
-  .page-nav { padding:16px 20px; }
-  .nav-links { gap:8px 12px; max-width:65%; }
-  .hero { padding:80px 20px 60px; min-height:auto; }
-  .challenge { padding:50px 20px; }
-  .ch-grid { grid-template-columns:1fr; }
-  .concept { padding:50px 20px; }
-  .concept-inner { grid-template-columns:1fr; gap:36px; }
-  .classif { padding:50px 20px; }
-  .id-sys { padding:50px 20px; }
-  .id-cards { grid-template-columns:repeat(2,1fr); }
-  .id-formula { font-size:9px; }
-  .apps { padding:50px 20px; }
-  .apps-grid { grid-template-columns:1fr; }
-  .space-sec { padding:50px 20px; }
-  .space-intro { grid-template-columns:1fr; gap:28px; }
-  .space-modes { grid-template-columns:1fr; }
-  .reflect { padding:50px 20px; grid-template-columns:1fr; gap:24px; }
-  .page-bottom { padding:24px 20px; flex-direction:column; gap:14px; align-items:flex-start; }
+@media(max-width:900px){
+  body{padding-bottom:84px}
+  .nav{padding:16px 20px}
+  .nav-links{gap:8px 14px;max-width:72%}
+  .page-bottom{padding:10px 20px;flex-direction:column;gap:6px;align-items:flex-start}
+  .pb-right{flex-wrap:wrap;gap:12px}
+  .hero{padding:80px 20px 60px;min-height:auto}
+  .hero::after{display:none}
+  .challenge{padding:50px 20px}
+  .ch-grid{grid-template-columns:1fr}
+  .concept{padding:50px 20px}
+  .concept-inner{grid-template-columns:1fr;gap:36px}
+  .classif{padding:50px 20px}
+  .cat-grid{grid-template-columns:1fr 1fr}
+  .id-sys{padding:50px 20px}
+  .id-cards{grid-template-columns:repeat(2,1fr)}
+  .apps{padding:50px 20px}
+  .apps-grid{grid-template-columns:1fr}
+  .apps-media{grid-template-columns:1fr 1fr}
+  .space-sec{padding:50px 20px}
+  .space-intro{grid-template-columns:1fr;gap:28px}
+  .space-modes{grid-template-columns:1fr}
+  .space-media{grid-template-columns:1fr 1fr}
+  .reflect{padding:50px 20px;grid-template-columns:1fr;gap:24px}
+}
+@media(max-width:560px){
+  .cat-grid{grid-template-columns:1fr}
+  .apps-media{grid-template-columns:1fr}
+  .space-media{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <div id="cur"></div>
 
-<nav class="page-nav">
-  <a class="nav-back" href="todirect.html">← To Direct</a>
+<nav class="nav">
+  <a class="nav-back" href="todirect.html">← Back</a>
   <div class="nav-links">
-    <a href="todirect.html">To Direct</a>
     <a href="architecture.html">To Build</a>
     <a href="visual.html">Visual</a>
     <a href="video.html">Video</a>
-    <a href="localradio.html">Radio</a>
+    <a href="localradio.html">Local Radio</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-id">AS-2026-IDENTITY · <span>Visual Identity</span></div>
+  <div class="hero-code">AS-2026-IDENTITY · <span>Visual Identity</span></div>
   <div class="hero-title">Archive<br><em>/ Space</em></div>
   <div class="hero-sub">Architectural archive &amp; cultural institution — identity as classification infrastructure.</div>
   <div class="hero-tags">
@@ -208,20 +248,20 @@ body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial
 
 <!-- 01 CHALLENGE -->
 <section class="challenge">
-  <div class="sec-label">01 · Challenge</div>
+  <div class="sec-lbl">01 · Challenge</div>
   <div class="ch-grid">
     <div class="ch-card">
-      <div class="ch-label">(avoid)</div>
+      <div class="ch-lbl">(avoid)</div>
       <div class="ch-title">Museum of the 2000s</div>
-      <div class="ch-desc">Decorative, nostalgic, heavy on aesthetics. Identity that substitutes substance with style.</div>
+      <div class="ch-desc">Decorative, nostalgic, heavy on aesthetics. Identity substituting substance with style.</div>
     </div>
     <div class="ch-card">
-      <div class="ch-label">(avoid)</div>
+      <div class="ch-lbl">(avoid)</div>
       <div class="ch-title">Art Festival</div>
-      <div class="ch-desc">Expressive, chaotic, event-driven identity. No persistent logic, no system.</div>
+      <div class="ch-desc">Expressive, chaotic, event-driven identity. No persistent logic, no system behind it.</div>
     </div>
     <div class="ch-card target">
-      <div class="ch-label">(✓ target)</div>
+      <div class="ch-lbl">(✓ target)</div>
       <div class="ch-title">A System</div>
       <div class="ch-desc">Functional, precise, scalable across all formats. Infrastructure, not decoration.</div>
       <div class="ch-tick">✓</div>
@@ -231,10 +271,10 @@ body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial
 
 <!-- 02 CONCEPT -->
 <section class="concept">
-  <div class="sec-label">02 · Concept</div>
+  <div class="sec-lbl">02 · Concept</div>
   <div class="concept-inner">
     <div>
-      <div class="concept-head"><em>Identity as</em>cataloging<br>system</div>
+      <div class="concept-head"><em>Identity as</em>Cataloging<br>System</div>
       <ul class="concept-points">
         <li>Every object is a storage unit — assigned a position, identifier, and category</li>
         <li>Everything has an ID — numbering is the primary communication tool</li>
@@ -251,56 +291,61 @@ body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial
   </div>
 </section>
 
-<!-- 03 CLASSIFICATION -->
+<!-- 03 CLASSIFICATION — BIG CATEGORY CARDS -->
 <section class="classif">
-  <div class="sec-label">03 · Classification System</div>
-  <table class="classif-table">
-    <thead>
-      <tr>
-        <th style="width:180px">Category</th>
-        <th style="width:140px">Code</th>
-        <th style="width:60px">Color</th>
-        <th>Index</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><div class="ct-row"><div class="ct-name">Architecture</div></div></td>
-          <td><div class="ct-row"><div class="ct-pill" style="background:#111"><div class="ct-dot" style="background:#111;border:1.5px solid rgba(255,255,255,.3)"></div><span class="ct-code">ARCH</span></div></div></td>
-          <td><div class="ct-row"><div class="ct-color" style="background:#111;border:1px solid rgba(0,0,0,.1)"></div></div></td>
-          <td><div class="ct-row"><div class="ct-idx">01</div></div></td></tr>
-      <tr><td><div class="ct-row"><div class="ct-name">Landscape</div></div></td>
-          <td><div class="ct-row"><div class="ct-pill" style="background:var(--land)"><div class="ct-dot" style="background:var(--land);border:1.5px solid rgba(255,255,255,.3)"></div><span class="ct-code">LAND</span></div></div></td>
-          <td><div class="ct-row"><div class="ct-color" style="background:var(--land)"></div></div></td>
-          <td><div class="ct-row"><div class="ct-idx">02</div></div></td></tr>
-      <tr><td><div class="ct-row"><div class="ct-name">Interior</div></div></td>
-          <td><div class="ct-row"><div class="ct-pill" style="background:var(--int)"><div class="ct-dot" style="background:var(--int);border:1.5px solid rgba(255,255,255,.3)"></div><span class="ct-code">INT</span></div></div></td>
-          <td><div class="ct-row"><div class="ct-color" style="background:var(--int)"></div></div></td>
-          <td><div class="ct-row"><div class="ct-idx">03</div></div></td></tr>
-      <tr><td><div class="ct-row"><div class="ct-name">Urbanism</div></div></td>
-          <td><div class="ct-row"><div class="ct-pill" style="background:var(--urb)"><div class="ct-dot" style="background:var(--urb);border:1.5px solid rgba(255,255,255,.3)"></div><span class="ct-code">URB</span></div></div></td>
-          <td><div class="ct-row"><div class="ct-color" style="background:var(--urb)"></div></div></td>
-          <td><div class="ct-row"><div class="ct-idx">04</div></div></td></tr>
-      <tr><td><div class="ct-row"><div class="ct-name">Playground / Masterclass</div></div></td>
-          <td><div class="ct-row"><div class="ct-pill" style="background:var(--play)"><div class="ct-dot" style="background:var(--play);border:1.5px solid rgba(255,255,255,.3)"></div><span class="ct-code">PLAY GROUND</span></div></div></td>
-          <td><div class="ct-row"><div class="ct-color" style="background:var(--play)"></div></div></td>
-          <td><div class="ct-row"><div class="ct-idx">05</div></div></td></tr>
-      <tr><td><div class="ct-row"><div class="ct-name">Archive</div></div></td>
-          <td><div class="ct-row"><div class="ct-pill" style="background:#333"><div class="ct-dot" style="background:var(--lime)"></div><span class="ct-code">ARCHIVE</span></div></div></td>
-          <td><div class="ct-row"><div class="ct-color" style="background:var(--lime)"></div></div></td>
-          <td><div class="ct-row"><div class="ct-idx">06</div></div></td></tr>
-    </tbody>
-  </table>
+  <div class="sec-lbl">03 · Classification System</div>
+  <div class="classif-intro"><em>Six categories</em>Architecture<br>& Beyond</div>
+
+  <div class="cat-grid">
+    <div class="cat-card cat-arch">
+      <div class="cat-card-num">01</div>
+      <div class="cat-card-code">ARCH</div>
+      <div class="cat-card-name">Architecture</div>
+      <div class="cat-card-idx">01</div>
+    </div>
+    <div class="cat-card cat-land">
+      <div class="cat-card-num">02</div>
+      <div class="cat-card-code">LAND</div>
+      <div class="cat-card-name">Landscape</div>
+      <div class="cat-card-idx">02</div>
+    </div>
+    <div class="cat-card cat-int">
+      <div class="cat-card-num">03</div>
+      <div class="cat-card-code">INT</div>
+      <div class="cat-card-name">Interior</div>
+      <div class="cat-card-idx">03</div>
+    </div>
+    <div class="cat-card cat-urb">
+      <div class="cat-card-num">04</div>
+      <div class="cat-card-code">URB</div>
+      <div class="cat-card-name">Urbanism</div>
+      <div class="cat-card-idx">04</div>
+    </div>
+    <div class="cat-card cat-play">
+      <div class="cat-card-num">05</div>
+      <div class="cat-card-code">PLAY GROUND</div>
+      <div class="cat-card-name">Playground /<br>Masterclass</div>
+      <div class="cat-card-idx">05</div>
+    </div>
+    <div class="cat-card cat-arc">
+      <div class="cat-card-num">06</div>
+      <div class="cat-card-code">ARCHIVE</div>
+      <div class="cat-card-name">Archive</div>
+      <div class="cat-card-idx">06</div>
+    </div>
+  </div>
 </section>
 
 <!-- 04 ID SYSTEM -->
-<section class="id-sys">
-  <div class="sec-label">04 · ID System</div>
+<section class="id-sys dark-sec">
+  <div class="sec-lbl">04 · ID System</div>
   <div class="id-head">AS-2026-<span>001</span> / ARCH / 01 / PLAN</div>
+
   <div class="id-cards">
     <div class="id-card">
       <div class="id-code-row">
         <span class="id-code">AS-2026-001</span>
-        <span class="id-cat-pill" style="background:var(--arch);color:white">ARCH</span>
+        <span class="id-pill" style="background:var(--arch);color:white">ARCH</span>
         <span class="id-num">01</span>
       </div>
       <div class="id-name">Landscape</div>
@@ -308,7 +353,7 @@ body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial
     <div class="id-card">
       <div class="id-code-row">
         <span class="id-code">AS-2026-002</span>
-        <span class="id-cat-pill" style="background:var(--land);color:white">LAND</span>
+        <span class="id-pill" style="background:var(--land);color:white">LAND</span>
         <span class="id-num">03</span>
       </div>
       <div class="id-name">Crean</div>
@@ -316,7 +361,7 @@ body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial
     <div class="id-card">
       <div class="id-code-row">
         <span class="id-code">AS-2026-003</span>
-        <span class="id-cat-pill" style="background:var(--int);color:white">INT</span>
+        <span class="id-pill" style="background:var(--int);color:white">INT</span>
         <span class="id-num">05</span>
       </div>
       <div class="id-name">Interior</div>
@@ -324,91 +369,122 @@ body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial
     <div class="id-card">
       <div class="id-code-row">
         <span class="id-code">AS-2026-004</span>
-        <span class="id-cat-pill" style="background:var(--urb);color:white">URB</span>
+        <span class="id-pill" style="background:var(--urb);color:white">URB</span>
         <span class="id-num">02</span>
       </div>
       <div class="id-name">Urbanism</div>
     </div>
   </div>
-  <!-- formula -->
+
   <div class="id-formula">
-    <div class="id-part"><span>prefix</span>AS-YYYY-XXX</div>
+    <div class="id-part"><span>prefix + year + id</span><strong>AS-YYYY-XXX</strong></div>
     <div class="id-sep">/</div>
-    <div class="id-part"><span>category</span>CAT</div>
+    <div class="id-part"><span>category abbr.</span><strong>CAT</strong></div>
     <div class="id-sep">/</div>
-    <div class="id-part"><span>index</span>IDX</div>
+    <div class="id-part"><span>index</span><strong>IDX</strong></div>
     <div class="id-sep">/</div>
-    <div class="id-part"><span>type</span>TYPE</div>
+    <div class="id-part"><span>type</span><strong>TYPE</strong></div>
   </div>
 </section>
 
 <!-- 05 APPLICATIONS -->
 <section class="apps">
-  <div class="sec-label">05 · Applications</div>
+  <div class="sec-lbl">05 · Applications</div>
   <div class="apps-grid">
-    <div class="app-item">
-      <div class="app-letter">A</div>
+    <div class="app-item light">
+      <div class="app-ltr">A</div>
       <div class="app-badge">Website Interface</div>
       <div class="app-head">Database UI</div>
-      <div class="app-desc">Database-style list of objects. Category codes + numbers as the primary navigation layer. Information structured as datasets, not editorial pages.</div>
+      <div class="app-desc">Database-style list of objects. Category codes + numbers as the primary navigation. Information structured as datasets, not editorial pages.</div>
     </div>
     <div class="app-item dark">
-      <div class="app-letter">B</div>
+      <div class="app-ltr">B</div>
       <div class="app-badge">Classification</div>
       <div class="app-head">Badges &amp; Icons</div>
       <div class="app-desc">Category pills, 3D cube icons with abbreviations, color-coded tags. Applied across print and digital touchpoints as the core visual unit.</div>
     </div>
     <div class="app-item lime">
-      <div class="app-letter">C</div>
+      <div class="app-ltr">C</div>
       <div class="app-badge">Exhibition</div>
       <div class="app-head">Signage</div>
       <div class="app-desc">Physical labeling system. Wayfinding on arches and walls. The identity guides movement and interpretation in space.</div>
     </div>
-    <div class="app-item">
-      <div class="app-letter">D</div>
+    <div class="app-item light">
+      <div class="app-ltr">D</div>
       <div class="app-badge">Merchandise</div>
       <div class="app-head">Print Objects</div>
       <div class="app-desc">Tote bags, notebooks, ID cards — each carrying category codes and numbers. The system reproduces as physical objects.</div>
     </div>
   </div>
+
+  <!-- MEDIA: web screenshot, merch renders — add Cloudinary URLs -->
+  <div class="apps-media">
+    <div class="media dark-ph" style="aspect-ratio:4/3">
+      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592919/Web_Interface_Design_fkulex.jpg" alt="Web interface" loading="lazy">
+      <span class="media-ph">Web Interface</span>
+    </div>
+    <div class="media dark-ph" style="aspect-ratio:4/3">
+      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592937/Business_Cards_Badges_Stickers_bxnjy9.jpg" alt="Classification badges" loading="lazy">
+      <span class="media-ph">Classification Badges</span>
+    </div>
+    <div class="media" style="aspect-ratio:4/3">
+      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592930/Merchandise_Tote_Notebooks_v34sbo.jpg" alt="Merchandise" loading="lazy">
+      <span class="media-ph">Merchandise</span>
+    </div>
+  </div>
 </section>
 
 <!-- 06 THE SPACE -->
-<section class="space-sec">
-  <div class="sec-label">06 · The Space — Playground &amp; Classroom</div>
+<section class="space-sec dark-sec">
+  <div class="sec-lbl">06 · The Space — Playground &amp; Classroom</div>
   <div class="space-intro">
-    <div class="space-h">Three modes<br>of space</div>
-    <div class="space-p">The three modes of space work on an escalating logic: from physical database to workshop environment to projected architecture.</div>
+    <div class="space-h">Three<br>modes<br>of space</div>
+    <div class="space-p">The three modes of space work on an escalating logic: from physical database to workshop environment to projected architecture that exists only in light.</div>
   </div>
   <div class="space-modes">
     <div class="mode-card">
       <div class="mode-num">01</div>
       <div class="mode-title">Archive Mode</div>
-      <div class="mode-desc">Shelving units with color-coded classification as a physical database. The body moves through the system in the same way that a cursor moves through a website.</div>
+      <div class="mode-desc">Shelving units with color-coded classification as a physical database. The body moves through the system the same way a cursor moves through a website.</div>
     </div>
     <div class="mode-card">
       <div class="mode-num">02</div>
       <div class="mode-title">Workshop Mode</div>
-      <div class="mode-desc">Numbered stations 001 / 002 / 003 with tablets and materials. Each workstation is an indexed unit of the catalog. A learning environment that is a catalog itself.</div>
+      <div class="mode-desc">Numbered stations 001 / 002 / 003 with tablets and materials. Each workstation is an indexed unit of the catalog. A learning environment that is itself a catalog.</div>
     </div>
     <div class="mode-card">
       <div class="mode-num">03</div>
       <div class="mode-title">Stage Mode</div>
-      <div class="mode-desc">A projector suspended above the floor projects building layouts directly onto the surface. Participants physically occupy projected contours — sitting inside buildings that do not yet exist.</div>
+      <div class="mode-desc">A projector above the floor projects building layouts onto the surface. Participants sit inside buildings that do not yet exist in matter. Classification transforms into space.</div>
+    </div>
+  </div>
+
+  <!-- MEDIA: 3 space photos (archive / workshop / stage) — add Cloudinary URLs -->
+  <div class="space-media">
+    <div class="media dark-ph" style="aspect-ratio:4/3">
+      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg" alt="Archive mode" loading="lazy">
+      <span class="media-ph">Archive Mode 01</span>
+    </div>
+    <div class="media dark-ph" style="aspect-ratio:4/3">
+      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5_%D1%84%D0%B8%D1%80%D1%81%D1%82%D0%B8%D0%BB%D1%8F_upscaled_uveqnu.jpg" alt="Workshop mode" loading="lazy">
+      <span class="media-ph">Workshop Mode 02</span>
+    </div>
+    <div class="media dark-ph" style="aspect-ratio:4/3">
+      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592590/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%B2%D0%B0_upscaled_crung9.jpg" alt="Stage mode" loading="lazy">
+      <span class="media-ph">Stage Mode 03</span>
     </div>
   </div>
 </section>
 
 <!-- 07 REFLECTION -->
 <section class="reflect">
-  <div class="reflect-head">Architect<span>→</span>Art Director</div>
+  <div class="reflect-head"><em>05 ·</em>Architect<br>→<br>Art Director</div>
   <div class="reflect-text">
     <p>This project didn't ask me to stop thinking like an architect — it asked me to apply that thinking to a different material. Classification systems, spatial grids, inventory logic, wayfinding: these are architectural problems.</p>
     <p>Translating them into a visual identity system felt like a natural extension rather than a departure. The categories, color logic, and numbering system were designed in Figma. Exhibition and web visualizations were generated with AI to communicate spatial application — the system itself came first.</p>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="page-bottom">
   <a href="about.html">About</a>
   <div class="pb-right">
@@ -422,7 +498,7 @@ body { background:#fff; color:#111; font-family:'Helvetica Neue',Helvetica,Arial
 const cur = document.getElementById('cur');
 if (window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
-  document.querySelectorAll('a,.ch-card,.app-item,.mode-card').forEach(el => {
+  document.querySelectorAll('a,.ch-card,.cat-card,.app-item,.mode-card').forEach(el => {
     el.addEventListener('mouseenter', () => cur.classList.add('big'));
     el.addEventListener('mouseleave', () => cur.classList.remove('big'));
   });
