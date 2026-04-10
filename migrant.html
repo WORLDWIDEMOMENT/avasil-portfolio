@@ -3,335 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Migrant — Vasileuskaya</title>
+<title>Migrant — AV</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,700;1,300&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET ─── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--pink:#ff3c5f;--off:#f0ede8;--dark:#0a0a0a;--g:3px}
-/* Pink text selection */
+:root{--pink:#ff3c5f;--off:#f0ede8;--dark:#0a0a0a;--g:4px}
 ::selection{background:#F84F7E;color:#fff}
 html{scroll-behavior:smooth}
-body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
+body{background:var(--off);color:#111;font-family:'IBM Plex Sans',sans-serif;
      cursor:none;overflow-x:hidden;padding-bottom:56px}
 
-/* ─── CURSOR: direct left/top positioning, no lag ─── */
-#cur{
-  position:fixed;width:8px;height:8px;border-radius:50%;
-  background:white;pointer-events:none;z-index:9999;
-  /* No transform on the element itself — JS sets left/top directly */
-  margin:-4px 0 0 -4px; /* offset so center of dot = pointer tip */
-  transition:width .14s ease,height .14s ease;
-  mix-blend-mode:difference;will-change:left,top;
-}
+/* ── CURSOR ── */
+#cur{position:fixed;width:8px;height:8px;border-radius:50%;background:white;
+  pointer-events:none;z-index:9999;margin:-4px 0 0 -4px;
+  transition:width .14s,height .14s;mix-blend-mode:difference}
 #cur.big{width:44px;height:44px;margin:-22px 0 0 -22px}
 @media(hover:none){#cur{display:none}}
 
-/* ─── NAV ─── */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  padding:22px 60px;display:flex;justify-content:space-between;align-items:center;
-  mix-blend-mode:difference;color:white;pointer-events:none;
-}
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 60px;
+  display:flex;justify-content:space-between;align-items:center;
+  mix-blend-mode:difference;color:white;pointer-events:none}
 .nav a{pointer-events:auto;cursor:none}
-.nav-back{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
-  color:inherit;text-decoration:none;opacity:.6;transition:opacity .2s}
+.nav-back{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:inherit;text-decoration:none;opacity:.65;transition:opacity .2s}
 .nav-back:hover{opacity:1}
-.nav-links{display:flex;gap:22px;font-size:9px;font-weight:700;letter-spacing:.22em;
+.nav-links{display:flex;gap:24px;font-size:10px;font-weight:700;letter-spacing:.2em;
   text-transform:uppercase;flex-wrap:wrap;justify-content:flex-end}
-.nav-links a{color:inherit;text-decoration:none;opacity:.35;transition:opacity .2s}
+.nav-links a{color:inherit;text-decoration:none;opacity:.42;transition:opacity .2s}
 .nav-links a:hover{opacity:1}
 
-/* ─── FIXED FOOTER ─── */
-.page-bottom{
-  position:fixed;bottom:0;left:0;right:0;z-index:400;
-  background:var(--dark);color:white;
-  padding:14px 60px;display:flex;justify-content:space-between;align-items:center;
-  font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
-  border-top:1px solid rgba(255,255,255,.07);
-}
-.page-bottom a{color:inherit;text-decoration:none;opacity:.42;transition:opacity .2s;cursor:none}
+/* ── FIXED FOOTER ── */
+.page-bottom{position:fixed;bottom:0;left:0;right:0;z-index:400;
+  background:var(--dark);color:white;padding:14px 60px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  border-top:1px solid rgba(255,255,255,.07)}
+.page-bottom a{color:inherit;text-decoration:none;opacity:.5;transition:opacity .2s;cursor:none}
 .page-bottom a:hover{opacity:1}
-.pb-right{display:flex;gap:22px;align-items:center}
+.pb-right{display:flex;gap:24px;align-items:center}
 
-/* ─── SCROLL REVEAL ─── */
-.rev{opacity:0;transform:translateY(24px);
+/* ── SCROLL REVEAL ── */
+.rev{opacity:0;transform:translateY(28px);
   transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 .rev.in{opacity:1;transform:none}
-.rev.d1{transition-delay:.1s}.rev.d2{transition-delay:.2s}.rev.d3{transition-delay:.32s}
+.rev.d1{transition-delay:.12s}.rev.d2{transition-delay:.24s}.rev.d3{transition-delay:.38s}
 
-/* ─── HERO: white bg, pink MIGRANT, centered bold subtitle ─── */
-.hero{
-  background:var(--off);
-  padding:116px 60px 72px;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-  overflow:hidden;
-}
-.hero-tag{
-  font-size:clamp(14px,1.6vw,20px);font-weight:700;letter-spacing:.04em;
-  text-transform:uppercase;color:#2a2a2a;
-  margin-bottom:20px;max-width:660px;line-height:1.5;
-}
-.hero-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(100px,22vw,320px);
-  font-weight:900;letter-spacing:-.02em;text-transform:uppercase;
-  line-height:.85;color:var(--pink);
-  /* Bleed slightly off edges — intentional brand oversizing */
-  margin:0 -8px;
-}
+/* ── HERO ── */
+.hero{background:var(--off);padding:116px 60px 72px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden}
+.hero-tag{font-size:clamp(15px,1.8vw,22px);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:#2a2a2a;margin-bottom:22px;max-width:720px;line-height:1.5}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(100px,22vw,320px);
+  font-weight:900;letter-spacing:-.02em;text-transform:uppercase;line-height:.85;
+  color:var(--pink);margin:0 -8px}
 
-/* ─── COVERS: 4 images, no labels, no zoom ─── */
-.covers{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:var(--g);margin-top:var(--g);background:#111;
-}
-.cover-item{aspect-ratio:3/4;overflow:hidden;background:#1a1a1a}
-.cover-item img{width:100%;height:100%;object-fit:cover;display:block}
+/* ── COVERS: no cropping, full image shown ── */
+.covers{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--g);
+  margin-top:var(--g);background:#111}
+.cover-item{overflow:hidden;background:#1a1a1a;line-height:0}
+/* No aspect-ratio — image dictates height so nothing is cut */
+.cover-item img{width:100%;height:auto;display:block}
 
-/* ─── TAGLINE ─── */
-.tagline{
-  background:var(--off);padding:18px 60px;text-align:center;
-  font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(0,0,0,.45);border-bottom:1px solid rgba(0,0,0,.08);
-}
+/* ── TAGLINE ── */
+.tagline{background:var(--off);padding:22px 60px;text-align:center;
+  font-size:clamp(11px,1.1vw,15px);font-weight:700;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(0,0,0,.5);border-bottom:1px solid rgba(0,0,0,.08)}
 
-/* ─── DESIGN PNG (Figma export: What is Migrant / Where are you) ─── */
+/* ── DESIGN PNG ── */
 .design-section{width:100%;line-height:0;overflow:hidden}
 .design-section img{width:100%;height:auto;display:block}
 
-/* ─────────────── WEB MOCKUP ─────────────── */
-.mockup-wrap{background:var(--dark);padding:80px 60px}
-.mockup-lbl{
-  font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
-  color:rgba(255,255,255,.22);margin-bottom:36px;
-}
-.browser{
-  background:#1e1e1e;border-radius:10px;overflow:hidden;
-  box-shadow:0 32px 100px rgba(0,0,0,.65);
-  max-width:1000px;margin:0 auto;
-}
+/* ────────── WEB MOCKUP ────────── */
+/* No dark bg around browser — just off-white padding with 2cm sides */
+.mockup-wrap{background:var(--off);padding:60px 20px}
+
+.browser{background:#1e1e1e;border-radius:10px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.18);max-width:100%;margin:0 auto}
 .bc{background:#2a2a2a;padding:10px 16px;display:flex;align-items:center;gap:8px}
 .bd{width:10px;height:10px;border-radius:50%}
 .bd:nth-child(1){background:#ff5f57}.bd:nth-child(2){background:#febc2e}.bd:nth-child(3){background:#28c840}
 .b-url{flex:1;background:#3a3a3a;border-radius:4px;margin:0 10px;padding:4px 14px;
   font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.04em;text-align:center}
 
-/* ── Migrant.world interior simulation ── */
+/* Migrant.world interior */
 .wi{background:#edebe4;overflow:hidden;position:relative}
-
-/* Top nav inside browser */
-.wi-nav{
-  padding:10px 18px 6px;
-  display:flex;justify-content:space-between;align-items:center;
-}
-.wi-brand{
-  font-family:'Space Grotesk',sans-serif;font-size:clamp(8px,1vw,12px);
-  font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--pink);
-}
-.wi-links{
-  display:flex;gap:14px;font-size:clamp(6px,.85vw,9px);font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:#555;line-height:1.3;text-align:center;
-}
+.wi-nav{padding:10px 18px 6px;display:flex;justify-content:space-between;align-items:center}
+.wi-brand{font-family:'Space Grotesk',sans-serif;font-size:clamp(8px,1vw,12px);
+  font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--pink)}
+.wi-links{display:flex;gap:14px;font-size:clamp(6px,.85vw,9px);font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:#555;line-height:1.3;text-align:center}
 .wi-links .act{color:var(--pink)}
 
-/* Headline area with SVG brush behind */
+/* Brush SVG behind headline */
 .wi-head{position:relative;padding:4px 18px 0;overflow:visible}
-
-/* The SVG brush — fills change per hovered city via JS */
-.brush-svg{
-  position:absolute;left:-5%;top:-25%;width:110%;height:150%;
-  pointer-events:none;z-index:0;
-  overflow:visible;
-}
-/* Main brush loop */
-.bp1{transition:fill .55s ease,opacity .55s ease}
-/* Accent stroke */
-.bp2{transition:stroke .55s ease,opacity .55s ease}
-
-.wi-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(24px,5.8vw,66px);
+.brush-svg{position:absolute;left:-5%;top:-25%;width:110%;height:150%;
+  pointer-events:none;z-index:0;overflow:visible}
+.bp1{transition:fill .55s ease}.bp2{transition:stroke .55s ease}
+.wi-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,5.8vw,66px);
   font-weight:900;text-transform:uppercase;line-height:.88;
-  color:#111;position:relative;z-index:1;
-  letter-spacing:-.01em;padding-bottom:4px;
-}
+  color:#111;position:relative;z-index:1;letter-spacing:-.01em;padding-bottom:4px}
 
-/* City grid */
+/* City grid — NO labels, NO numbers */
 .wi-grid{display:grid;grid-template-columns:repeat(4,1fr);position:relative;z-index:1}
-.wi-city{
-  position:relative;overflow:hidden;aspect-ratio:3/5;
-  cursor:none;
-  border:2px solid transparent;transition:border-color .35s;
-}
-.wi-city.hov{border-color:var(--pink)}
-/* Photo — always grayscale, no zoom */
-.wi-city img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  filter:grayscale(1) brightness(.9);
-  transition:filter .5s ease;
-}
-/* On hover: reveal city color via mix-blend-mode color overlay */
-.wi-ov{
-  position:absolute;inset:0;opacity:0;
-  transition:opacity .45s ease;
-  mix-blend-mode:color; /* tints grayscale photo with city's color */
-}
-.wi-city.hov .wi-ov{opacity:.85}
-/* City-specific tint colors (match brush colors in JS) */
+.wi-city{position:relative;overflow:hidden;aspect-ratio:3/5;cursor:none;
+  border:2px solid transparent;transition:border-color .35s}
+.wi-city.hov,.wi-city.tap{border-color:var(--pink)}
+.wi-city img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(1) brightness(.9);transition:filter .5s}
+.wi-ov{position:absolute;inset:0;opacity:0;transition:opacity .45s;mix-blend-mode:color}
+.wi-city.hov .wi-ov,.wi-city.tap .wi-ov{opacity:.85}
 .wi-city[data-c="lisboa"] .wi-ov{background:#9aaf30}
 .wi-city[data-c="tokyo"]  .wi-ov{background:#4070c8}
 .wi-city[data-c="berlin"] .wi-ov{background:#b87a10}
 .wi-city[data-c="hanoi"]  .wi-ov{background:#4a9450}
-/* City label */
-.wi-lbl{
-  position:absolute;top:8px;left:10px;z-index:2;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(9px,1.3vw,14px);font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:white;
-  text-shadow:0 1px 6px rgba(0,0,0,.6);
-}
-.wi-num{
-  position:absolute;top:8px;right:10px;z-index:2;
-  font-size:clamp(7px,.85vw,10px);font-weight:700;letter-spacing:.16em;
-  color:rgba(255,255,255,.55);
-}
-/* Second city row */
-.wi-row2{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:#e4e0d8;border-top:1px solid rgba(0,0,0,.1);
-}
-.wi-r2{
-  padding:7px 10px;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(7px,1vw,11px);font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:rgba(0,0,0,.5);
-  border-right:1px solid rgba(0,0,0,.07);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.wi-r2:last-child{border-right:none}
-.wi-r2 span{font-size:clamp(6px,.75vw,8px);opacity:.4}
 
-/* ─── PHOTO SECTION: 1/3 brand cards + 2/3 rounded photos ─── */
-.photo-section{
-  display:grid;grid-template-columns:1fr 2fr;
+/* Bottom grey city row — coloured grey squares */
+.wi-row2{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(0,0,0,.1)}
+.wi-r2{padding:32px 14px;font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(7px,1vw,12px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);border-right:1px solid rgba(0,0,0,.06)}
+.wi-r2:last-child{border-right:none}
+/* Different grey shades per city — give impression of photos */
+.wi-r2:nth-child(1){background:#6e6e6e}
+.wi-r2:nth-child(2){background:#5a5a5a}
+.wi-r2:nth-child(3){background:#787870}
+.wi-r2:nth-child(4){background:#4f5048}
+
+/* ── PHOTO SECTION: gap in same color as page bg (beige) ── */
+.photo-section{display:grid;grid-template-columns:1fr 2fr;
   gap:var(--g);margin-top:var(--g);align-items:stretch;min-height:440px;
-}
+  background:var(--off)} /* gap color = page bg = no visible white line */
 .ps-cards{overflow:hidden;background:#111}
 .ps-cards img{width:100%;height:100%;object-fit:cover;display:block}
-.ps-photos{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--g)}
-.ps-ph{overflow:hidden;border-radius:10px;background:#ccc}
+.ps-photos{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:var(--g);background:var(--off)}
+.ps-ph{overflow:hidden;border-radius:10px;background:#ccc;line-height:0}
 .ps-ph img{width:100%;height:100%;object-fit:cover;display:block;
   transition:transform .5s cubic-bezier(.77,0,.18,1)}
 .ps-ph:hover img{transform:scale(1.03)}
 
-/* ─── SYSTEM NOTE: full-bleed typographic treatment ─── */
-.sys-note{
-  background:var(--off);
-  padding:70px 60px;
-  border-top:1px solid rgba(0,0,0,.08);
-}
-.sys-lbl{
-  font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
-  color:rgba(0,0,0,.32);margin-bottom:20px;
-}
-.sys-txt{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(22px,2.8vw,42px);
-  font-weight:500;line-height:1.35;color:#1a1a1a;
-  max-width:800px;
-}
+/* ── SYSTEM NOTE: big type ── */
+.sys-note{background:var(--off);padding:70px 60px;border-top:1px solid rgba(0,0,0,.08)}
+.sys-lbl{font-size:clamp(11px,1vw,14px);font-weight:700;letter-spacing:.3em;
+  text-transform:uppercase;color:rgba(0,0,0,.38);margin-bottom:22px}
+.sys-txt{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3vw,46px);
+  font-weight:500;line-height:1.3;color:#1a1a1a;max-width:860px}
 .sys-txt em{font-style:normal;color:var(--pink)}
 
-/* ─── PHOTO STRIP 2 ─── */
-.photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:var(--g);margin-top:var(--g)}
-.ps2{aspect-ratio:4/3;overflow:hidden;border-radius:10px;background:#ccc}
-.ps2 img{width:100%;height:100%;object-fit:cover;display:block}
+/* ── PHOTO STRIP 2: no cropping — images show at their natural ratio ── */
+.photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:var(--g);
+  margin-top:var(--g);background:var(--off)}
+.ps2{overflow:hidden;border-radius:10px;background:#ccc;line-height:0}
+/* No aspect-ratio — let image natural height show */
+.ps2 img{width:100%;height:auto;display:block}
 
-/* ─────────────── ZINE SECTION ─────────────── */
+/* ────────── ZINE ────────── */
 .zine{background:var(--dark);color:white;padding-top:70px;overflow:hidden}
-
-.zine-header{
-  padding:0 60px;
-  display:grid;grid-template-columns:auto 1fr;gap:60px;align-items:flex-end;
-  margin-bottom:48px;
-}
-/* Pink outline title — Migrant brand identity */
-.zine-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(56px,11vw,140px);
+.zine-header{padding:0 60px;display:grid;grid-template-columns:auto 1fr;
+  gap:60px;align-items:flex-end;margin-bottom:48px}
+.zine-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(56px,11vw,140px);
   font-weight:900;letter-spacing:.02em;text-transform:uppercase;line-height:.88;
-  -webkit-text-stroke:3px var(--pink);color:transparent;
-}
-/* Meta text: big and clearly readable — matches the PDF */
-.zine-meta{
-  padding-bottom:6px;
-  align-self:flex-end;
-}
-.zine-meta strong{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(14px,1.6vw,20px);font-weight:700;
-  color:white;display:block;margin-bottom:8px;letter-spacing:.04em;
-}
-.zine-meta span{
-  font-size:clamp(12px,1.2vw,15px);font-weight:300;
-  color:rgba(255,255,255,.55);letter-spacing:.06em;line-height:1.7;
-}
+  -webkit-text-stroke:3px var(--pink);color:transparent}
+.zine-meta{padding-bottom:6px;align-self:flex-end}
+.zine-meta strong{font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(16px,1.8vw,24px);font-weight:700;
+  color:white;display:block;margin-bottom:10px;letter-spacing:.04em}
+.zine-meta span{font-size:clamp(13px,1.3vw,17px);font-weight:300;
+  color:rgba(255,255,255,.6);letter-spacing:.06em;line-height:1.7}
 
-/* Full-height viewer — book-feel */
-.zine-viewer{
-  position:relative;
-  height:88vh;  /* bigger than before */
-  overflow:hidden;
-  display:flex;align-items:center;
-}
-.zine-track{
-  position:absolute;left:0;top:50%;
-  display:flex;align-items:center;gap:16px;
-  /* JS sets transform: translateY(-50%) translateX(Npx) */
-  transition:transform .8s cubic-bezier(.77,0,.18,1);
-  will-change:transform;
-}
-
-/* A4 portrait: w/h = 210/297 ≈ 0.707 */
-.zine-slide.portrait{
-  flex-shrink:0;
-  height:82vh;
-  width:calc(82vh * 0.707);
-  overflow:hidden;
-  opacity:.2;
-  transition:opacity .55s,box-shadow .55s;
-  box-shadow:0 6px 24px rgba(0,0,0,.28);
-}
-/* A3 landscape: w/h = 297/210 ≈ 1.414 */
-.zine-slide.landscape{
-  flex-shrink:0;
-  height:82vh;
-  width:calc(82vh * 1.414);
-  overflow:hidden;
-  opacity:.2;
-  transition:opacity .55s,box-shadow .55s;
-  box-shadow:0 6px 24px rgba(0,0,0,.28);
-}
+/* Zine viewer: large, centered book scroll */
+.zine-viewer{position:relative;height:88vh;overflow:hidden;display:flex;align-items:center}
+.zine-track{position:absolute;left:0;top:50%;display:flex;align-items:center;gap:16px;
+  transition:transform .8s cubic-bezier(.77,0,.18,1);will-change:transform}
+.zine-slide.portrait{flex-shrink:0;height:82vh;width:calc(82vh * 0.707);
+  overflow:hidden;opacity:.2;transition:opacity .55s,box-shadow .55s;
+  box-shadow:0 6px 24px rgba(0,0,0,.28)}
+.zine-slide.landscape{flex-shrink:0;height:82vh;width:calc(82vh * 1.414);
+  overflow:hidden;opacity:.2;transition:opacity .55s,box-shadow .55s;
+  box-shadow:0 6px 24px rgba(0,0,0,.28)}
 .zine-slide.active{opacity:1;box-shadow:0 28px 80px rgba(0,0,0,.75)}
+/* No cropping in zine: images fill width but show full height */
 .zine-slide img{width:100%;height:100%;object-fit:cover;display:block}
-
-/* Arrows: centered vertically on the viewer */
-.zine-arr{
-  position:absolute;top:50%;transform:translateY(-50%);z-index:20;
-  width:48px;height:48px;
-  background:rgba(10,10,10,.78);border:1px solid rgba(255,255,255,.22);color:white;
+.zine-arr{position:absolute;top:50%;transform:translateY(-50%);z-index:20;
+  width:48px;height:48px;background:rgba(10,10,10,.78);
+  border:1px solid rgba(255,255,255,.22);color:white;
   display:flex;align-items:center;justify-content:center;
-  cursor:none;font-size:18px;letter-spacing:0;
-  transition:background .2s,border-color .2s;
-  backdrop-filter:blur(10px);
-}
+  cursor:none;font-size:18px;transition:background .2s,border-color .2s;
+  backdrop-filter:blur(10px)}
 .zine-arr:hover{background:rgba(255,60,95,.65);border-color:var(--pink)}
 .zp{left:24px}.zn{right:24px}
 
-/* ─── QUOTE: portrait photo as bg, ORIGIN ghosted, quote text ─── */
+/* ── QUOTE: portrait photo background ── */
 .quote{
   background:var(--dark)
     url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775593568/PIC_vmnivk.png')
@@ -340,81 +205,61 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   position:relative;overflow:hidden;
   min-height:75vh;display:flex;flex-direction:column;justify-content:flex-end;
 }
-/* Two-layer gradient: keeps portrait visible at top, text readable at bottom */
-.quote::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(
-    to bottom,
-    rgba(0,0,0,.22) 0%,
-    rgba(0,0,0,.5) 45%,
-    rgba(0,0,0,.88) 100%
-  );
-}
+.quote::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,rgba(0,0,0,.52) 45%,rgba(0,0,0,.9) 100%)}
 .quote>*{position:relative;z-index:1}
-/* ORIGIN: huge ghost text behind the quote */
-.quote-word{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(100px,22vw,280px);
-  font-weight:900;text-transform:uppercase;letter-spacing:-.02em;
-  -webkit-text-stroke:1px rgba(255,255,255,.12);color:transparent;
-  line-height:1;user-select:none;pointer-events:none;
-  margin-bottom:-50px; /* overlaps the quote below */
-}
-.quote-body{
-  max-width:560px;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(17px,2vw,26px);font-weight:300;line-height:1.6;
-  color:rgba(255,255,255,.85);
-}
+.quote-word{font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(100px,22vw,280px);font-weight:900;text-transform:uppercase;
+  letter-spacing:-.02em;-webkit-text-stroke:1px rgba(255,255,255,.12);color:transparent;
+  line-height:1;user-select:none;pointer-events:none;margin-bottom:-50px}
+.quote-body{max-width:560px;font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(18px,2.1vw,28px);font-weight:300;line-height:1.6;
+  color:rgba(255,255,255,.88)}
 .quote-body em{font-style:normal;color:var(--pink);font-weight:500}
-.quote-cred{
-  margin-top:36px;font-family:'IBM Plex Sans',sans-serif;
-  font-size:10px;font-weight:700;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(255,255,255,.24);
-}
+.quote-cred{margin-top:36px;font-size:clamp(10px,.9vw,13px);font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28)}
 
-/* ─── MOBILE ─── */
+/* ── MOBILE ── */
 @media(max-width:900px){
-  body{padding-bottom:70px}
+  body{padding-bottom:72px}
   .nav{padding:16px 20px}
   .nav-links{gap:8px 12px}
   .hero{padding:80px 20px 60px}
   .covers{grid-template-columns:1fr 1fr}
-  .tagline{padding:14px 20px;font-size:9px}
-  .mockup-wrap{padding:50px 20px}
+  .tagline{padding:16px 20px;font-size:12px}
+  .mockup-wrap{padding:40px 12px}
   .wi-grid{grid-template-columns:repeat(2,1fr)}
+  /* Mobile bottom row: only 2 cities */
   .wi-row2{grid-template-columns:repeat(2,1fr)}
+  .wi-r2:nth-child(3),.wi-r2:nth-child(4){display:none}
   .photo-section{grid-template-columns:1fr}
-  .ps-cards{aspect-ratio:4/3}
+  .ps-cards{aspect-ratio:4/3;line-height:0}
+  .ps-cards img{height:100%;object-fit:cover}
   .ps-photos{grid-template-rows:auto}
   .sys-note{padding:50px 20px}
-  .photo-strip{grid-template-columns:1fr 1fr}
+  .photo-strip{grid-template-columns:1fr}
   .zine-header{padding:0 20px;grid-template-columns:1fr;gap:18px}
-  .zine-viewer{height:64vh}
-  .zine-slide.portrait{height:58vh;width:calc(58vh * 0.707)}
-  .zine-slide.landscape{height:58vh;width:calc(58vh * 1.414)}
+  /* Mobile zine: smaller slides so adjacent slides show */
+  .zine-viewer{height:56vh}
+  .zine-slide.portrait{height:50vh;width:calc(50vh * 0.707)}
+  .zine-slide.landscape{height:50vh;width:calc(50vh * 1.414)}
   .zp{left:10px}.zn{right:10px}
   .quote{padding:70px 20px 90px;min-height:60vh}
   .quote-word{font-size:clamp(70px,20vw,130px);margin-bottom:-28px}
-  /* Footer: 2-row layout on mobile */
-  .page-bottom{
-    padding:12px 20px;
-    align-items:flex-start;
-  }
+  /* Footer: 2-row mobile layout */
+  .page-bottom{padding:12px 20px;align-items:flex-start}
   .pb-right{flex-direction:column;align-items:flex-end;gap:4px}
   .pb-socials{display:flex;gap:16px}
 }
 @media(max-width:560px){
   .covers{grid-template-columns:1fr 1fr}
   .ps-photos{grid-template-columns:1fr 1fr}
-  .photo-strip{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <div id="cur"></div>
 
-<!-- ── NAV ── -->
 <nav class="nav">
   <a class="nav-back" href="todirect.html">← Back</a>
   <div class="nav-links">
@@ -425,13 +270,13 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   </div>
 </nav>
 
-<!-- ── HERO: white bg, pink title, dark centered subtitle ── -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-tag rev">Brand identity &amp; living system for a nomadic creative community</div>
   <div class="hero-title">MIGRANT</div>
 </section>
 
-<!-- ── COVERS: 4 images only, no labels, no zoom ── -->
+<!-- COVERS: natural height, no crop -->
 <div class="covers">
   <div class="cover-item"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725959/LISBOA_ktui69.jpg" alt="" loading="lazy"></div>
   <div class="cover-item"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725849/PARIS_gpmw08.jpg" alt="" loading="lazy"></div>
@@ -439,25 +284,23 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   <div class="cover-item"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725612/BARCELONA_asjudz.jpg" alt="" loading="lazy"></div>
 </div>
 
+<!-- TAGLINE: bigger -->
 <div class="tagline">Identity without citizenship. System only.</div>
 
-<!-- ── DESIGN PNG: Figma export of "What is Migrant? / Where are you right now?" ── -->
+<!-- DESIGN PNG -->
 <div class="design-section rev">
   <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775726395/system_wak0vq.jpg"
        alt="What is Migrant — Where are you right now?" loading="lazy">
 </div>
 
-<!-- ── WEB MOCKUP ── -->
+<!-- WEB MOCKUP: no dark bg, 2cm margins, no city labels -->
 <section class="mockup-wrap">
-  <div class="mockup-lbl rev">Web interface — Lisboa · Tokyo · Berlin · Hanoi</div>
   <div class="browser">
     <div class="bc">
       <div class="bd"></div><div class="bd"></div><div class="bd"></div>
       <div class="b-url">migrant.world</div>
     </div>
     <div class="wi">
-
-      <!-- Simulated migrant.world nav -->
       <div class="wi-nav">
         <div class="wi-brand">Migrant</div>
         <div class="wi-links">
@@ -468,18 +311,10 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
         </div>
       </div>
 
-      <!-- Headline + brush stroke SVG -->
       <div class="wi-head">
-        <!--
-          SVG brush stroke sits BEHIND the headline.
-          Default state: pink (#ff3c5f).
-          JS changes .bp1 fill and .bp2 stroke color when a city is hovered.
-          The path traces a large loose loop — mimics the hand-drawn brush in the PDF.
-        -->
         <svg class="brush-svg" viewBox="0 0 1000 340" preserveAspectRatio="none"
              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <!-- Turbulence filter makes edges ragged like real brush strokes -->
             <filter id="turbulence">
               <feTurbulence type="fractalNoise" baseFrequency="0.025 0.065"
                             numOctaves="3" seed="12" result="noise"/>
@@ -487,62 +322,50 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
                                  xChannelSelector="R" yChannelSelector="G"/>
             </filter>
           </defs>
-          <!-- Main filled brush loop -->
           <path class="bp1"
-            d="M 80,60
-               C 250,10 600,100 860,50
-               S 1100,0  1150,90
-               S 1080,260 870,300
-               S 480,330 230,295
-               S -10,240  20,145
-               S 50,68 80,60 Z"
+            d="M 80,60 C 250,10 600,100 860,50 S 1100,0 1150,90
+               S 1080,260 870,300 S 480,330 230,295 S -10,240 20,145 S 50,68 80,60 Z"
             fill="#ff3c5f" opacity="0.48" filter="url(#turbulence)"/>
-          <!-- Accent stroke (narrower, offset) -->
           <path class="bp2"
             d="M 40,200 C 220,165 520,218 780,175 S 1080,148 1170,205"
             fill="none" stroke="#ff3c5f" stroke-width="40"
             stroke-linecap="round" opacity="0.28" filter="url(#turbulence)"/>
         </svg>
-
         <div class="wi-title">MIGRANT,<br>WHERE ARE YOU<br>RIGHT NOW?</div>
       </div>
 
-      <!-- City grid: grayscale by default, city color tint + pink border on hover -->
+      <!-- City grid: NO labels, NO numbers -->
       <div class="wi-grid" id="wi-grid">
         <div class="wi-city" data-c="lisboa">
-          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580794/Group_174_w30t3e.png" alt="Lisboa" loading="lazy">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580794/Group_174_w30t3e.png" alt="" loading="lazy">
           <div class="wi-ov"></div>
-          <div class="wi-lbl">Lisboa</div><div class="wi-num">01</div>
         </div>
         <div class="wi-city" data-c="tokyo">
-          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580796/Group_175_d51cek.png" alt="Tokyo" loading="lazy">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580796/Group_175_d51cek.png" alt="" loading="lazy">
           <div class="wi-ov"></div>
-          <div class="wi-lbl">Tokyo</div><div class="wi-num">02</div>
         </div>
         <div class="wi-city" data-c="berlin">
-          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580797/Group_176_bxhreo.png" alt="Berlin" loading="lazy">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580797/Group_176_bxhreo.png" alt="" loading="lazy">
           <div class="wi-ov"></div>
-          <div class="wi-lbl">Berlin</div><div class="wi-num">03</div>
         </div>
         <div class="wi-city" data-c="hanoi">
-          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580799/Group_177_uzge1z.png" alt="Hanoi" loading="lazy">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580799/Group_177_uzge1z.png" alt="" loading="lazy">
           <div class="wi-ov"></div>
-          <div class="wi-lbl">Hanoi</div><div class="wi-num">04</div>
         </div>
       </div>
 
+      <!-- Bottom grey cities: no photos, just shaded blocks with city names -->
       <div class="wi-row2">
-        <div class="wi-r2">Paris<span>05</span></div>
-        <div class="wi-r2">Chicago<span>06</span></div>
-        <div class="wi-r2">Tbilisi<span>07</span></div>
-        <div class="wi-r2">Laos<span>08</span></div>
+        <div class="wi-r2">Paris</div>
+        <div class="wi-r2">Chicago</div>
+        <div class="wi-r2">Tbilisi</div>
+        <div class="wi-r2">Laos</div>
       </div>
-
-    </div><!-- /.wi -->
-  </div><!-- /.browser -->
+    </div>
+  </div>
 </section>
 
-<!-- ── PHOTOS: 1/3 brand cards, 2/3 rounded 2×2 grid ── -->
+<!-- PHOTOS: beige gap (no white line) -->
 <div class="photo-section">
   <div class="ps-cards">
     <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775582655/ssss_favqte.png" alt="" loading="lazy">
@@ -555,7 +378,7 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   </div>
 </div>
 
-<!-- ── SYSTEM NOTE ── -->
+<!-- SYSTEM NOTE: big type -->
 <div class="sys-note">
   <div class="sys-lbl rev">System</div>
   <div class="sys-txt rev d1">
@@ -565,13 +388,13 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   </div>
 </div>
 
-<!-- ── PHOTO STRIP 2: add your Cloudinary URLs here ── -->
+<!-- PHOTO STRIP 2: no cropping, natural ratio -->
 <div class="photo-strip">
   <div class="ps2"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775821139/card3_nxtvzx.png" alt="" loading="lazy"></div>
   <div class="ps2"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775821138/card_pircoc.png" alt="" loading="lazy"></div>
 </div>
 
-<!-- ── ZINE ── -->
+<!-- ZINE -->
 <section class="zine">
   <div class="zine-header">
     <div class="zine-title rev">Zine —<br>Zine</div>
@@ -583,11 +406,9 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
 
   <div class="zine-viewer">
     <div class="zine-track" id="zt">
-      <!-- Slide 0: A4 portrait cover (front) — starts hidden at left -->
       <div class="zine-slide portrait" data-i="0">
-        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725849/PARIS_gpmw08.jpg" alt="Cover" loading="lazy">
+        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725849/PARIS_gpmw08.jpg" alt="" loading="lazy">
       </div>
-      <!-- Slide 1: first spread — STARTS AS ACTIVE (JS sets this) -->
       <div class="zine-slide landscape" data-i="1">
         <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725978/SPREAD_1_AND_2_zn14nl.jpg" alt="" loading="lazy">
       </div>
@@ -603,23 +424,21 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
       <div class="zine-slide landscape" data-i="5">
         <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725855/SPREAD_8_AND_9_hozqm0.jpg" alt="" loading="lazy">
       </div>
-         <div class="zine-slide landscape" data-i="6">
+      <div class="zine-slide landscape" data-i="6">
         <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725952/SPREAD_12_AND_13_l52csd.jpg" alt="" loading="lazy">
       </div>
-      <!-- Last slide: A4 portrait back cover — NOT landscape -->
+      <!-- Last: A4 portrait back cover, NOT landscape -->
       <div class="zine-slide portrait" data-i="7">
         <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775726264/PARIS_back_xcgxm4.jpg" alt="" loading="lazy">
       </div>
     </div>
-
     <button class="zine-arr zp" id="zp" aria-label="Previous">←</button>
     <button class="zine-arr zn" id="zn" aria-label="Next">→</button>
   </div>
-  <!-- No counter as requested -->
 </section>
 
-<!-- ── QUOTE: portrait photo background, ORIGIN ghost text ── -->
-<section class="https://res.cloudinary.com/disa2fbgc/image/upload/v1775593568/PIC_vmnivk.png">
+<!-- QUOTE: portrait photo bg, ORIGIN ghost text, quote — class="quote" is correct! -->
+<section class="quote">
   <div class="quote-word">ORIGIN</div>
   <div class="quote-body">
     "I've lived in five countries in six years. I never felt like an immigrant —
@@ -629,12 +448,10 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   </div>
 </section>
 
-<!-- ── FIXED FOOTER ── -->
 <footer class="page-bottom">
   <a href="about.html">About</a>
   <div class="pb-right">
     <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-    <!-- .pb-socials wraps to its own row on mobile -->
     <div class="pb-socials">
       <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
@@ -643,7 +460,7 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
 </footer>
 
 <script>
-/* ── CURSOR: direct left/top update, no transform jitter ── */
+/* ── CURSOR ── */
 const cur = document.getElementById('cur');
 if (window.matchMedia('(hover:hover)').matches) {
   document.addEventListener('mousemove', e => {
@@ -657,94 +474,92 @@ if (window.matchMedia('(hover:hover)').matches) {
 }
 
 /* ── SCROLL REVEAL ── */
-new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); } });
-}, { threshold: 0.1 })
-.observe = (() => {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.rev').forEach(el => obs.observe(el));
-  return obs.observe.bind(obs);
-})();
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); revObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rev').forEach(el => revObs.observe(el));
 
-/* ── WEB MOCKUP: brush color changes per city ──
-   Each city has a unique brush color.
-   Default (no hover) = pink.
-   The SVG .bp1 fill and .bp2 stroke are animated via CSS transitions. */
+/* ── SCROLL PARALLAX: hero title drifts up slightly as you scroll ── */
+const heroTitle = document.querySelector('.hero-title');
+const heroBg    = document.querySelector('.hero');
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  if (heroTitle) heroTitle.style.transform = `translateY(${sy * 0.18}px)`;
+}, { passive: true });
+
+/* ── WEB MOCKUP: brush color + city tint on hover (desktop) and tap (mobile) ── */
 const brushColors = {
-  lisboa: '#9aaf30',  // olive-green (matches PDF page 2)
-  tokyo:  '#4070c8',  // blue (matches PDF page 3)
-  berlin: '#b87a10',  // amber-gold (matches PDF page 4)
-  hanoi:  '#4a9450',  // sage-green (matches PDF page 5)
+  lisboa:'#9aaf30', tokyo:'#4070c8', berlin:'#b87a10', hanoi:'#4a9450',
 };
-const defaultColor = '#ff3c5f'; // pink when nothing is hovered
+const defaultColor = '#ff3c5f';
 const bp1 = document.querySelector('.bp1');
 const bp2 = document.querySelector('.bp2');
 
+function setBrush(col) {
+  if (bp1) bp1.style.fill   = col;
+  if (bp2) bp2.style.stroke = col;
+}
+
+let tappedCell = null;
+
 document.querySelectorAll('.wi-city').forEach(cell => {
   const c = cell.dataset.c;
+  const col = brushColors[c] || defaultColor;
+
+  /* Desktop hover */
   cell.addEventListener('mouseenter', () => {
     cell.classList.add('hov');
-    const col = brushColors[c] || defaultColor;
-    if (bp1) bp1.style.fill   = col;
-    if (bp2) bp2.style.stroke = col;
+    setBrush(col);
   });
   cell.addEventListener('mouseleave', () => {
     cell.classList.remove('hov');
-    if (bp1) bp1.style.fill   = defaultColor;
-    if (bp2) bp2.style.stroke = defaultColor;
+    setBrush(defaultColor);
   });
+
+  /* Mobile tap: toggle color */
+  cell.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (tappedCell && tappedCell !== cell) {
+      tappedCell.classList.remove('tap');
+    }
+    cell.classList.toggle('tap');
+    tappedCell = cell.classList.contains('tap') ? cell : null;
+    setBrush(tappedCell ? col : defaultColor);
+  }, { passive: false });
 });
 
-/* ── ZINE CAROUSEL: centers active slide, starts at slide 1 (first spread) ──
-   Each slide may be portrait (A4) or landscape (A3), so widths differ.
-   We measure actual offsetWidth after layout to calculate the centering offset. */
+/* ── ZINE CAROUSEL ── */
 (function() {
   const viewer = document.querySelector('.zine-viewer');
   const track  = document.getElementById('zt');
   const slides = [...track.querySelectorAll('.zine-slide')];
   const total  = slides.length;
-  const GAP    = 16; // matches CSS gap
-  let current  = 1;  // start at first spread, not the cover
+  const GAP    = 16;
+  let current  = 1; // start at first spread
 
-  function centerSlide() {
+  function center() {
     const vw = viewer.offsetWidth;
-    // Sum up widths of all slides before current
-    let offsetBefore = 0;
-    for (let i = 0; i < current; i++) {
-      offsetBefore += slides[i].offsetWidth + GAP;
-    }
-    // Center of the active slide
-    const activeCenterX = offsetBefore + slides[current].offsetWidth / 2;
-    // Translate track so active slide is centered in viewer
-    const tx = vw / 2 - activeCenterX;
+    let off = 0;
+    for (let i = 0; i < current; i++) off += slides[i].offsetWidth + GAP;
+    const tx = vw / 2 - off - slides[current].offsetWidth / 2;
     track.style.transform = `translateY(-50%) translateX(${tx}px)`;
-    // Update active state (opacity)
     slides.forEach((s, i) => s.classList.toggle('active', i === current));
   }
 
-  function go(dir) {
-    current = Math.max(0, Math.min(current + dir, total - 1));
-    centerSlide();
-  }
+  function go(d) { current = Math.max(0, Math.min(current + d, total - 1)); center(); }
 
-  document.getElementById('zp').addEventListener('click', () => go(-1));
-  document.getElementById('zn').addEventListener('click', () => go(1));
+  document.getElementById('zp').onclick = () => go(-1);
+  document.getElementById('zn').onclick = () => go(1);
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  go(-1);
     if (e.key === 'ArrowRight') go(1);
   });
 
-  // Wait for images to start loading so offsetWidth is correct
-  requestAnimationFrame(() => setTimeout(centerSlide, 100));
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(centerSlide, 80);
-  });
+  requestAnimationFrame(() => setTimeout(center, 100));
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(center, 80); });
 })();
 </script>
 </body>
