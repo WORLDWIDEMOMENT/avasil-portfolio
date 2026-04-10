@@ -6,198 +6,403 @@
 <title>Migrant — Vasileuskaya</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;700&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,700;1,300&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
+/* ─── RESET ─── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--pink:#ff3c5f;--off:#f2f0ec;--dark:#0a0a0a;--g:3px}
+:root{--pink:#ff3c5f;--off:#f0ede8;--dark:#0a0a0a;--g:3px}
+/* Pink text selection */
+::selection{background:#F84F7E;color:#fff}
 html{scroll-behavior:smooth}
-body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:none;overflow-x:hidden;padding-bottom:56px}
+body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
+     cursor:none;overflow-x:hidden;padding-bottom:56px}
 
-#cur{position:fixed;width:10px;height:10px;background:#111;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .16s,height .16s;mix-blend-mode:difference}
-#cur.big{width:50px;height:50px}
+/* ─── CURSOR: direct left/top positioning, no lag ─── */
+#cur{
+  position:fixed;width:8px;height:8px;border-radius:50%;
+  background:white;pointer-events:none;z-index:9999;
+  /* No transform on the element itself — JS sets left/top directly */
+  margin:-4px 0 0 -4px; /* offset so center of dot = pointer tip */
+  transition:width .14s ease,height .14s ease;
+  mix-blend-mode:difference;will-change:left,top;
+}
+#cur.big{width:44px;height:44px;margin:-22px 0 0 -22px}
 @media(hover:none){#cur{display:none}}
 
-/* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 60px;display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference;color:white;pointer-events:none}
+/* ─── NAV ─── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:22px 60px;display:flex;justify-content:space-between;align-items:center;
+  mix-blend-mode:difference;color:white;pointer-events:none;
+}
 .nav a{pointer-events:auto;cursor:none}
-.nav-back{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.55;transition:opacity .2s}
+.nav-back{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:inherit;text-decoration:none;opacity:.6;transition:opacity .2s}
 .nav-back:hover{opacity:1}
-.nav-links{display:flex;gap:22px;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;flex-wrap:wrap;justify-content:flex-end}
-.nav-links a{color:inherit;text-decoration:none;opacity:.32;transition:opacity .2s}
+.nav-links{display:flex;gap:22px;font-size:9px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{color:inherit;text-decoration:none;opacity:.35;transition:opacity .2s}
 .nav-links a:hover{opacity:1}
 
-/* FIXED FOOTER */
-.page-bottom{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--dark);color:white;padding:14px 60px;display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.06)}
-.page-bottom a{color:inherit;text-decoration:none;opacity:.38;transition:opacity .2s;cursor:none}
+/* ─── FIXED FOOTER ─── */
+.page-bottom{
+  position:fixed;bottom:0;left:0;right:0;z-index:400;
+  background:var(--dark);color:white;
+  padding:14px 60px;display:flex;justify-content:space-between;align-items:center;
+  font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.page-bottom a{color:inherit;text-decoration:none;opacity:.42;transition:opacity .2s;cursor:none}
 .page-bottom a:hover{opacity:1}
 .pb-right{display:flex;gap:22px;align-items:center}
 
-/* HERO — add bg photo in CSS below */
-/* ↓ REPLACE [HERO_URL] with your Cloudinary hero photo URL */
+/* ─── SCROLL REVEAL ─── */
+.rev{opacity:0;transform:translateY(24px);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rev.in{opacity:1;transform:none}
+.rev.d1{transition-delay:.1s}.rev.d2{transition-delay:.2s}.rev.d3{transition-delay:.32s}
+
+/* ─── HERO: white bg, pink MIGRANT, centered bold subtitle ─── */
 .hero{
-  background:var(--dark) url('[HERO_URL]') center/cover no-repeat;
-  padding:110px 60px 72px;overflow:hidden;position:relative;
-  min-height:55vh;display:flex;flex-direction:column;justify-content:flex-end;
+  background:var(--off);
+  padding:116px 60px 72px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  overflow:hidden;
 }
-.hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.42);pointer-events:none}
-.hero>*{position:relative;z-index:1}
-.hero-tag{font-size:10px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:18px}
-.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(90px,21vw,300px);font-weight:900;letter-spacing:-.01em;text-transform:uppercase;line-height:.88;color:white;margin-left:-4px;white-space:nowrap}
+.hero-tag{
+  font-size:clamp(14px,1.6vw,20px);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:#2a2a2a;
+  margin-bottom:20px;max-width:660px;line-height:1.5;
+}
+.hero-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(100px,22vw,320px);
+  font-weight:900;letter-spacing:-.02em;text-transform:uppercase;
+  line-height:.85;color:var(--pink);
+  /* Bleed slightly off edges — intentional brand oversizing */
+  margin:0 -8px;
+}
 
-/* COVERS */
-.covers{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--g);margin-top:var(--g);background:#111}
-.cover-item{position:relative;aspect-ratio:3/4;overflow:hidden;background:#1a1a1a}
-.cover-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.77,0,.18,1)}
-.cover-item:hover img{transform:scale(1.04)}
-.cover-label{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:14px 14px 18px;pointer-events:none}
-.cv-brand{font-family:'Space Grotesk',sans-serif;font-size:clamp(9px,1.1vw,13px);font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--pink);line-height:1.2}
-.cv-brand span{display:block}
-.cv-city{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,2.8vw,36px);font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:white;line-height:1;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+/* ─── COVERS: 4 images, no labels, no zoom ─── */
+.covers{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:var(--g);margin-top:var(--g);background:#111;
+}
+.cover-item{aspect-ratio:3/4;overflow:hidden;background:#1a1a1a}
+.cover-item img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* TAGLINE */
-.tagline{background:var(--off);padding:18px 60px;text-align:center;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.45);border-bottom:1px solid rgba(0,0,0,.08)}
+/* ─── TAGLINE ─── */
+.tagline{
+  background:var(--off);padding:18px 60px;text-align:center;
+  font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(0,0,0,.45);border-bottom:1px solid rgba(0,0,0,.08);
+}
 
-/* DESIGN PNG SECTIONS */
-/* Replace src attributes with your Cloudinary PNG URLs */
+/* ─── DESIGN PNG (Figma export: What is Migrant / Where are you) ─── */
 .design-section{width:100%;line-height:0;overflow:hidden}
 .design-section img{width:100%;height:auto;display:block}
 
-/* WEB MOCKUP */
+/* ─────────────── WEB MOCKUP ─────────────── */
 .mockup-wrap{background:var(--dark);padding:80px 60px}
-.mockup-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:36px}
-.browser{background:#181818;border-radius:10px;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,.6);max-width:1000px;margin:0 auto}
-.bc{background:#2b2b2b;padding:11px 16px;display:flex;align-items:center;gap:8px}
+.mockup-lbl{
+  font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(255,255,255,.22);margin-bottom:36px;
+}
+.browser{
+  background:#1e1e1e;border-radius:10px;overflow:hidden;
+  box-shadow:0 32px 100px rgba(0,0,0,.65);
+  max-width:1000px;margin:0 auto;
+}
+.bc{background:#2a2a2a;padding:10px 16px;display:flex;align-items:center;gap:8px}
 .bd{width:10px;height:10px;border-radius:50%}
 .bd:nth-child(1){background:#ff5f57}.bd:nth-child(2){background:#febc2e}.bd:nth-child(3){background:#28c840}
-.b-url{flex:1;background:#3d3d3d;border-radius:5px;margin:0 10px;padding:4px 14px;font-size:10px;color:rgba(255,255,255,.32);letter-spacing:.04em;text-align:center}
-.b-icons{display:flex;gap:8px}
-.b-icon{width:28px;height:15px;border-radius:2px;background:rgba(255,255,255,.07);font-size:6px;font-weight:700;color:rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;text-transform:uppercase;letter-spacing:.06em}
-.bb{background:#0f0f0f}
-.bh{padding:22px 28px 18px;border-bottom:1px solid rgba(255,255,255,.05)}
-.bht{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,2.8vw,36px);font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:white;line-height:1.05}
-.bht em{color:var(--pink);font-style:normal}
+.b-url{flex:1;background:#3a3a3a;border-radius:4px;margin:0 10px;padding:4px 14px;
+  font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.04em;text-align:center}
 
-.city-grid{display:grid;grid-template-columns:repeat(4,1fr)}
-.city-cell{position:relative;aspect-ratio:4/3;overflow:hidden;background:#161616;border:1px solid rgba(255,255,255,.03);cursor:none}
-.city-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s cubic-bezier(.77,0,.18,1);transform:scale(1.04)}
-.city-cell:hover .city-bg{transform:scale(1)}
-.city-ov{position:absolute;inset:0;opacity:0;transition:opacity .4s}
-.city-cell:hover .city-ov{opacity:1}
-.city-cell[data-city="lisboa"] .city-ov{background:rgba(255,60,95,.45)}
-.city-cell[data-city="tokyo"]  .city-ov{background:rgba(77,140,255,.45)}
-.city-cell[data-city="berlin"] .city-ov{background:rgba(255,155,0,.45)}
-.city-cell[data-city="hanoi"]  .city-ov{background:rgba(0,200,150,.45)}
-.city-nm{position:absolute;bottom:10px;left:12px;font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);transition:color .3s,transform .3s;z-index:1}
-.city-cell:hover .city-nm{color:white;transform:translateY(-2px)}
-.b-footer{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.04);background:#0d0d0d}
-.bfi{padding:9px 12px;font-size:8px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.18);border-right:1px solid rgba(255,255,255,.04)}
-.bfi:last-child{border-right:none}
+/* ── Migrant.world interior simulation ── */
+.wi{background:#edebe4;overflow:hidden;position:relative}
 
-/* PHOTO SECTION — left cards, right rounded photos */
-.photo-section{display:grid;grid-template-columns:1fr 2fr;gap:var(--g);margin-top:var(--g);align-items:stretch;min-height:400px}
-.ps-cards{overflow:hidden;background:#1a1a1a}
+/* Top nav inside browser */
+.wi-nav{
+  padding:10px 18px 6px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.wi-brand{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(8px,1vw,12px);
+  font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--pink);
+}
+.wi-links{
+  display:flex;gap:14px;font-size:clamp(6px,.85vw,9px);font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:#555;line-height:1.3;text-align:center;
+}
+.wi-links .act{color:var(--pink)}
+
+/* Headline area with SVG brush behind */
+.wi-head{position:relative;padding:4px 18px 0;overflow:visible}
+
+/* The SVG brush — fills change per hovered city via JS */
+.brush-svg{
+  position:absolute;left:-5%;top:-25%;width:110%;height:150%;
+  pointer-events:none;z-index:0;
+  overflow:visible;
+}
+/* Main brush loop */
+.bp1{transition:fill .55s ease,opacity .55s ease}
+/* Accent stroke */
+.bp2{transition:stroke .55s ease,opacity .55s ease}
+
+.wi-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(24px,5.8vw,66px);
+  font-weight:900;text-transform:uppercase;line-height:.88;
+  color:#111;position:relative;z-index:1;
+  letter-spacing:-.01em;padding-bottom:4px;
+}
+
+/* City grid */
+.wi-grid{display:grid;grid-template-columns:repeat(4,1fr);position:relative;z-index:1}
+.wi-city{
+  position:relative;overflow:hidden;aspect-ratio:3/5;
+  cursor:none;
+  border:2px solid transparent;transition:border-color .35s;
+}
+.wi-city.hov{border-color:var(--pink)}
+/* Photo — always grayscale, no zoom */
+.wi-city img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(1) brightness(.9);
+  transition:filter .5s ease;
+}
+/* On hover: reveal city color via mix-blend-mode color overlay */
+.wi-ov{
+  position:absolute;inset:0;opacity:0;
+  transition:opacity .45s ease;
+  mix-blend-mode:color; /* tints grayscale photo with city's color */
+}
+.wi-city.hov .wi-ov{opacity:.85}
+/* City-specific tint colors (match brush colors in JS) */
+.wi-city[data-c="lisboa"] .wi-ov{background:#9aaf30}
+.wi-city[data-c="tokyo"]  .wi-ov{background:#4070c8}
+.wi-city[data-c="berlin"] .wi-ov{background:#b87a10}
+.wi-city[data-c="hanoi"]  .wi-ov{background:#4a9450}
+/* City label */
+.wi-lbl{
+  position:absolute;top:8px;left:10px;z-index:2;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(9px,1.3vw,14px);font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:white;
+  text-shadow:0 1px 6px rgba(0,0,0,.6);
+}
+.wi-num{
+  position:absolute;top:8px;right:10px;z-index:2;
+  font-size:clamp(7px,.85vw,10px);font-weight:700;letter-spacing:.16em;
+  color:rgba(255,255,255,.55);
+}
+/* Second city row */
+.wi-row2{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:#e4e0d8;border-top:1px solid rgba(0,0,0,.1);
+}
+.wi-r2{
+  padding:7px 10px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(7px,1vw,11px);font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(0,0,0,.5);
+  border-right:1px solid rgba(0,0,0,.07);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.wi-r2:last-child{border-right:none}
+.wi-r2 span{font-size:clamp(6px,.75vw,8px);opacity:.4}
+
+/* ─── PHOTO SECTION: 1/3 brand cards + 2/3 rounded photos ─── */
+.photo-section{
+  display:grid;grid-template-columns:1fr 2fr;
+  gap:var(--g);margin-top:var(--g);align-items:stretch;min-height:440px;
+}
+.ps-cards{overflow:hidden;background:#111}
 .ps-cards img{width:100%;height:100%;object-fit:cover;display:block}
 .ps-photos{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--g)}
-.ps-ph{overflow:hidden;background:#ccc;border-radius:10px;aspect-ratio:4/3}
-.ps-ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.77,0,.18,1)}
+.ps-ph{overflow:hidden;border-radius:10px;background:#ccc}
+.ps-ph img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s cubic-bezier(.77,0,.18,1)}
 .ps-ph:hover img{transform:scale(1.03)}
 
-.sys-note{padding:50px 60px;display:grid;grid-template-columns:120px 1fr;gap:60px;align-items:start;border-top:1px solid rgba(0,0,0,.07)}
-.sys-lbl{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.3)}
-.sys-txt{font-family:'Space Grotesk',sans-serif;font-size:clamp(14px,1.4vw,20px);font-weight:400;line-height:1.6;color:#333;max-width:500px}
+/* ─── SYSTEM NOTE: full-bleed typographic treatment ─── */
+.sys-note{
+  background:var(--off);
+  padding:70px 60px;
+  border-top:1px solid rgba(0,0,0,.08);
+}
+.sys-lbl{
+  font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(0,0,0,.32);margin-bottom:20px;
+}
+.sys-txt{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(22px,2.8vw,42px);
+  font-weight:500;line-height:1.35;color:#1a1a1a;
+  max-width:800px;
+}
+.sys-txt em{font-style:normal;color:var(--pink)}
 
+/* ─── PHOTO STRIP 2 ─── */
 .photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:var(--g);margin-top:var(--g)}
-.ps2{aspect-ratio:4/3;overflow:hidden;background:#ccc;border-radius:10px}
+.ps2{aspect-ratio:4/3;overflow:hidden;border-radius:10px;background:#ccc}
 .ps2 img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* ══ ZINE ══ */
+/* ─────────────── ZINE SECTION ─────────────── */
 .zine{background:var(--dark);color:white;padding-top:70px;overflow:hidden}
-.zine-header{padding:0 60px;display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:50px}
+
+.zine-header{
+  padding:0 60px;
+  display:grid;grid-template-columns:auto 1fr;gap:60px;align-items:flex-end;
+  margin-bottom:48px;
+}
+/* Pink outline title — Migrant brand identity */
 .zine-title{
   font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(52px,10vw,130px);
-  font-weight:900;letter-spacing:.02em;text-transform:uppercase;line-height:.9;
-  -webkit-text-stroke:3px var(--pink);
-  color:transparent;
+  font-size:clamp(56px,11vw,140px);
+  font-weight:900;letter-spacing:.02em;text-transform:uppercase;line-height:.88;
+  -webkit-text-stroke:3px var(--pink);color:transparent;
 }
-.zine-meta{font-size:9px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.3);text-align:right;line-height:1.8;max-width:220px;padding-bottom:8px}
+/* Meta text: big and clearly readable — matches the PDF */
+.zine-meta{
+  padding-bottom:6px;
+  align-self:flex-end;
+}
+.zine-meta strong{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(14px,1.6vw,20px);font-weight:700;
+  color:white;display:block;margin-bottom:8px;letter-spacing:.04em;
+}
+.zine-meta span{
+  font-size:clamp(12px,1.2vw,15px);font-weight:300;
+  color:rgba(255,255,255,.55);letter-spacing:.06em;line-height:1.7;
+}
 
-.zine-viewer{position:relative;height:72vh;overflow:hidden;display:flex;align-items:center}
+/* Full-height viewer — book-feel */
+.zine-viewer{
+  position:relative;
+  height:88vh;  /* bigger than before */
+  overflow:hidden;
+  display:flex;align-items:center;
+}
 .zine-track{
   position:absolute;left:0;top:50%;
-  display:flex;align-items:center;gap:20px;
-  transition:transform .7s cubic-bezier(.77,0,.18,1);
+  display:flex;align-items:center;gap:16px;
+  /* JS sets transform: translateY(-50%) translateX(Npx) */
+  transition:transform .8s cubic-bezier(.77,0,.18,1);
   will-change:transform;
 }
-.zine-slide{flex-shrink:0;height:65vh;overflow:hidden;opacity:.32;transition:opacity .5s,box-shadow .5s;box-shadow:0 8px 30px rgba(0,0,0,.3);cursor:none}
-.zine-slide.portrait {width:calc(65vh * 0.707)} /* A4 */
-.zine-slide.landscape{width:calc(65vh * 1.415)} /* A3 */
-.zine-slide.active{opacity:1;box-shadow:0 24px 70px rgba(0,0,0,.7)}
+
+/* A4 portrait: w/h = 210/297 ≈ 0.707 */
+.zine-slide.portrait{
+  flex-shrink:0;
+  height:82vh;
+  width:calc(82vh * 0.707);
+  overflow:hidden;
+  opacity:.2;
+  transition:opacity .55s,box-shadow .55s;
+  box-shadow:0 6px 24px rgba(0,0,0,.28);
+}
+/* A3 landscape: w/h = 297/210 ≈ 1.414 */
+.zine-slide.landscape{
+  flex-shrink:0;
+  height:82vh;
+  width:calc(82vh * 1.414);
+  overflow:hidden;
+  opacity:.2;
+  transition:opacity .55s,box-shadow .55s;
+  box-shadow:0 6px 24px rgba(0,0,0,.28);
+}
+.zine-slide.active{opacity:1;box-shadow:0 28px 80px rgba(0,0,0,.75)}
 .zine-slide img{width:100%;height:100%;object-fit:cover;display:block}
 
+/* Arrows: centered vertically on the viewer */
 .zine-arr{
   position:absolute;top:50%;transform:translateY(-50%);z-index:20;
-  background:rgba(10,10,10,.7);border:1px solid rgba(255,255,255,.2);
-  color:white;width:44px;height:44px;
+  width:48px;height:48px;
+  background:rgba(10,10,10,.78);border:1px solid rgba(255,255,255,.22);color:white;
   display:flex;align-items:center;justify-content:center;
-  cursor:none;font-size:18px;
+  cursor:none;font-size:18px;letter-spacing:0;
   transition:background .2s,border-color .2s;
   backdrop-filter:blur(10px);
 }
-.zine-arr:hover{background:rgba(255,60,95,.6);border-color:var(--pink)}
+.zine-arr:hover{background:rgba(255,60,95,.65);border-color:var(--pink)}
 .zp{left:24px}.zn{right:24px}
-.zine-bottom{padding:20px 60px 50px;display:flex;justify-content:flex-end;border-top:1px solid rgba(255,255,255,.05);margin-top:22px}
-.zine-cnt{font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(255,255,255,.25)}
 
-/* QUOTE + portrait photo background */
-/* ↓ REPLACE [YOUR_PHOTO_URL] with your Cloudinary portrait photo URL */
+/* ─── QUOTE: portrait photo as bg, ORIGIN ghosted, quote text ─── */
 .quote{
-  background:var(--dark) url('[YOUR_PHOTO_URL]') center/cover no-repeat;
-  color:white;padding:100px 60px 110px;
-  position:relative;overflow:hidden;min-height:65vh;
-  display:flex;flex-direction:column;justify-content:flex-end;
+  background:var(--dark)
+    url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775593568/PIC_vmnivk.png')
+    center top / cover no-repeat;
+  color:white;padding:120px 60px 130px;
+  position:relative;overflow:hidden;
+  min-height:75vh;display:flex;flex-direction:column;justify-content:flex-end;
 }
-.quote::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 40%,rgba(0,0,0,.38) 100%)}
+/* Two-layer gradient: keeps portrait visible at top, text readable at bottom */
+.quote::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,.22) 0%,
+    rgba(0,0,0,.5) 45%,
+    rgba(0,0,0,.88) 100%
+  );
+}
 .quote>*{position:relative;z-index:1}
+/* ORIGIN: huge ghost text behind the quote */
 .quote-word{
   font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(90px,20vw,260px);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;
-  -webkit-text-stroke:1px rgba(255,255,255,.1);color:transparent;
-  line-height:1;user-select:none;pointer-events:none;margin-bottom:-40px;
+  font-size:clamp(100px,22vw,280px);
+  font-weight:900;text-transform:uppercase;letter-spacing:-.02em;
+  -webkit-text-stroke:1px rgba(255,255,255,.12);color:transparent;
+  line-height:1;user-select:none;pointer-events:none;
+  margin-bottom:-50px; /* overlaps the quote below */
 }
-.quote-body{max-width:520px;font-family:'Space Grotesk',sans-serif;font-size:clamp(16px,1.8vw,24px);font-weight:300;line-height:1.6;color:rgba(255,255,255,.8)}
+.quote-body{
+  max-width:560px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(17px,2vw,26px);font-weight:300;line-height:1.6;
+  color:rgba(255,255,255,.85);
+}
 .quote-body em{font-style:normal;color:var(--pink);font-weight:500}
-.quote-cred{margin-top:32px;font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.22)}
+.quote-cred{
+  margin-top:36px;font-family:'IBM Plex Sans',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(255,255,255,.24);
+}
 
-/* ══ MOBILE ══ */
+/* ─── MOBILE ─── */
 @media(max-width:900px){
-  body{padding-bottom:84px}
+  body{padding-bottom:70px}
   .nav{padding:16px 20px}
-  .nav-links{gap:8px 14px;max-width:72%}
-  .page-bottom{padding:10px 20px;flex-direction:column;gap:6px;align-items:flex-start}
-  .pb-right{flex-wrap:wrap;gap:12px}
-  .hero{padding:80px 20px 50px}
-  .covers{grid-template-columns:repeat(2,1fr)}
+  .nav-links{gap:8px 12px}
+  .hero{padding:80px 20px 60px}
+  .covers{grid-template-columns:1fr 1fr}
   .tagline{padding:14px 20px;font-size:9px}
-  .design-section img{min-height:200px;object-fit:cover}
   .mockup-wrap{padding:50px 20px}
-  .city-grid{grid-template-columns:repeat(2,1fr)}
-  .b-icons{display:none}
+  .wi-grid{grid-template-columns:repeat(2,1fr)}
+  .wi-row2{grid-template-columns:repeat(2,1fr)}
   .photo-section{grid-template-columns:1fr}
   .ps-cards{aspect-ratio:4/3}
   .ps-photos{grid-template-rows:auto}
-  .sys-note{grid-template-columns:1fr;padding:36px 20px;gap:16px}
+  .sys-note{padding:50px 20px}
   .photo-strip{grid-template-columns:1fr 1fr}
-  .zine-header{padding:0 20px;margin-bottom:32px;flex-direction:column;align-items:flex-start;gap:14px}
-  .zine-meta{text-align:left;max-width:100%}
-  .zine-viewer{height:52vh}
-  .zine-slide.portrait{width:calc(48vh * 0.707)}
-  .zine-slide.landscape{width:calc(48vh * 1.415)}
-  .zine-arr{width:36px;height:36px;font-size:14px}
-  .zp{left:8px}.zn{right:8px}
-  .zine-bottom{padding:14px 20px 36px}
-  .quote{padding:60px 20px 80px;min-height:50vh}
-  .quote-word{font-size:clamp(70px,18vw,120px);margin-bottom:-24px}
+  .zine-header{padding:0 20px;grid-template-columns:1fr;gap:18px}
+  .zine-viewer{height:64vh}
+  .zine-slide.portrait{height:58vh;width:calc(58vh * 0.707)}
+  .zine-slide.landscape{height:58vh;width:calc(58vh * 1.414)}
+  .zp{left:10px}.zn{right:10px}
+  .quote{padding:70px 20px 90px;min-height:60vh}
+  .quote-word{font-size:clamp(70px,20vw,130px);margin-bottom:-28px}
+  /* Footer: 2-row layout on mobile */
+  .page-bottom{
+    padding:12px 20px;
+    align-items:flex-start;
+  }
+  .pb-right{flex-direction:column;align-items:flex-end;gap:4px}
+  .pb-socials{display:flex;gap:16px}
 }
 @media(max-width:560px){
   .covers{grid-template-columns:1fr 1fr}
@@ -209,6 +414,7 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:no
 <body>
 <div id="cur"></div>
 
+<!-- ── NAV ── -->
 <nav class="nav">
   <a class="nav-back" href="todirect.html">← Back</a>
   <div class="nav-links">
@@ -219,93 +425,127 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:no
   </div>
 </nav>
 
-<!-- HERO — bg photo in .hero CSS above -->
+<!-- ── HERO: white bg, pink title, dark centered subtitle ── -->
 <section class="hero">
-  <div class="hero-tag">Brand identity &amp; living system for a nomadic creative community</div>
+  <div class="hero-tag rev">Brand identity &amp; living system for a nomadic creative community</div>
   <div class="hero-title">MIGRANT</div>
 </section>
 
-<!-- COVERS -->
+<!-- ── COVERS: 4 images only, no labels, no zoom ── -->
 <div class="covers">
-  <div class="cover-item">
-    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725959/LISBOA_ktui69.jpg" alt="Issue 01 Lisboa" loading="lazy">
-    <div class="cover-label">
-      <div class="cv-brand"><span>MIGRANT</span><span style="color:rgba(255,255,255,.4)">ISSUE 01</span></div>
-      <div class="cv-city">LISBOA</div>
-    </div>
-  </div>
-  <div class="cover-item">
-    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725849/PARIS_gpmw08.jpg" alt="Issue 05 Paris" loading="lazy">
-    <div class="cover-label">
-      <div class="cv-brand"><span>MIGRANT</span><span style="color:rgba(255,255,255,.4)">ISSUE 05</span></div>
-      <div class="cv-city">PARIS</div>
-    </div>
-  </div>
-  <div class="cover-item">
-    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725967/TBILISI_ebkarc.jpg" alt="Issue 07 Tbilisi" loading="lazy">
-    <div class="cover-label">
-      <div class="cv-brand"><span>MIGRANT</span><span style="color:rgba(255,255,255,.4)">ISSUE 07</span></div>
-      <div class="cv-city">TBILISI</div>
-    </div>
-  </div>
-  <div class="cover-item">
-    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725612/BARCELONA_asjudz.jpg" alt="Issue 12 Barcelona" loading="lazy">
-    <div class="cover-label">
-      <div class="cv-brand"><span>MIGRANT</span><span style="color:rgba(255,255,255,.4)">ISSUE 12</span></div>
-      <div class="cv-city">BARCELONA</div>
-    </div>
-  </div>
+  <div class="cover-item"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725959/LISBOA_ktui69.jpg" alt="" loading="lazy"></div>
+  <div class="cover-item"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725849/PARIS_gpmw08.jpg" alt="" loading="lazy"></div>
+  <div class="cover-item"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725967/TBILISI_ebkarc.jpg" alt="" loading="lazy"></div>
+  <div class="cover-item"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725612/BARCELONA_asjudz.jpg" alt="" loading="lazy"></div>
 </div>
 
 <div class="tagline">Identity without citizenship. System only.</div>
 
-
-<div class="design-section">
+<!-- ── DESIGN PNG: Figma export of "What is Migrant? / Where are you right now?" ── -->
+<div class="design-section rev">
   <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775726395/system_wak0vq.jpg"
-       alt="What is Migrant? — Where are you right now?" loading="lazy">
+       alt="What is Migrant — Where are you right now?" loading="lazy">
 </div>
 
-<!-- WEB MOCKUP -->
+<!-- ── WEB MOCKUP ── -->
 <section class="mockup-wrap">
-  <div class="mockup-lbl">Web interface — Lisboa · Tokyo · Berlin · Hanoi</div>
+  <div class="mockup-lbl rev">Web interface — Lisboa · Tokyo · Berlin · Hanoi</div>
   <div class="browser">
     <div class="bc">
       <div class="bd"></div><div class="bd"></div><div class="bd"></div>
       <div class="b-url">migrant.world</div>
-      <div class="b-icons"><div class="b-icon">MAG</div><div class="b-icon">EVE</div><div class="b-icon">PEC</div></div>
     </div>
-    <div class="bb">
-      <div class="bh"><div class="bht">MIGRANT,<br>WHERE ARE YOU <em>RIGHT NOW?</em></div></div>
-      <div class="city-grid">
-        <div class="city-cell" data-city="lisboa">
-          <div class="city-bg" style="background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775580794/Group_174_w30t3e.png')"></div>
-          <div class="city-ov"></div><div class="city-nm">Lisboa</div>
-        </div>
-        <div class="city-cell" data-city="tokyo">
-          <div class="city-bg" style="background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775580796/Group_175_d51cek.png')"></div>
-          <div class="city-ov"></div><div class="city-nm">Tokyo</div>
-        </div>
-        <div class="city-cell" data-city="berlin">
-          <div class="city-bg" style="background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775580797/Group_176_bxhreo.png')"></div>
-          <div class="city-ov"></div><div class="city-nm">Berlin</div>
-        </div>
-        <div class="city-cell" data-city="hanoi">
-          <div class="city-bg" style="background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775580799/Group_177_uzge1z.png')"></div>
-          <div class="city-ov"></div><div class="city-nm">Hanoi</div>
+    <div class="wi">
+
+      <!-- Simulated migrant.world nav -->
+      <div class="wi-nav">
+        <div class="wi-brand">Migrant</div>
+        <div class="wi-links">
+          <span class="act">MA<br>P</span>
+          <span>MAGA<br>ZINE</span>
+          <span>EVE<br>NTS</span>
+          <span>PEO<br>PLE</span>
         </div>
       </div>
-      <div class="b-footer">
-        <div class="bfi">Paris</div><div class="bfi">Chicago</div>
-        <div class="bfi">Tbilisi</div><div class="bfi">Laos</div>
+
+      <!-- Headline + brush stroke SVG -->
+      <div class="wi-head">
+        <!--
+          SVG brush stroke sits BEHIND the headline.
+          Default state: pink (#ff3c5f).
+          JS changes .bp1 fill and .bp2 stroke color when a city is hovered.
+          The path traces a large loose loop — mimics the hand-drawn brush in the PDF.
+        -->
+        <svg class="brush-svg" viewBox="0 0 1000 340" preserveAspectRatio="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <!-- Turbulence filter makes edges ragged like real brush strokes -->
+            <filter id="turbulence">
+              <feTurbulence type="fractalNoise" baseFrequency="0.025 0.065"
+                            numOctaves="3" seed="12" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="9"
+                                 xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+          </defs>
+          <!-- Main filled brush loop -->
+          <path class="bp1"
+            d="M 80,60
+               C 250,10 600,100 860,50
+               S 1100,0  1150,90
+               S 1080,260 870,300
+               S 480,330 230,295
+               S -10,240  20,145
+               S 50,68 80,60 Z"
+            fill="#ff3c5f" opacity="0.48" filter="url(#turbulence)"/>
+          <!-- Accent stroke (narrower, offset) -->
+          <path class="bp2"
+            d="M 40,200 C 220,165 520,218 780,175 S 1080,148 1170,205"
+            fill="none" stroke="#ff3c5f" stroke-width="20"
+            stroke-linecap="round" opacity="0.28" filter="url(#turbulence)"/>
+        </svg>
+
+        <div class="wi-title">MIGRANT,<br>WHERE ARE YOU<br>RIGHT NOW?</div>
       </div>
-    </div>
-  </div>
+
+      <!-- City grid: grayscale by default, city color tint + pink border on hover -->
+      <div class="wi-grid" id="wi-grid">
+        <div class="wi-city" data-c="lisboa">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580794/Group_174_w30t3e.png" alt="Lisboa" loading="lazy">
+          <div class="wi-ov"></div>
+          <div class="wi-lbl">Lisboa</div><div class="wi-num">01</div>
+        </div>
+        <div class="wi-city" data-c="tokyo">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580796/Group_175_d51cek.png" alt="Tokyo" loading="lazy">
+          <div class="wi-ov"></div>
+          <div class="wi-lbl">Tokyo</div><div class="wi-num">02</div>
+        </div>
+        <div class="wi-city" data-c="berlin">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580797/Group_176_bxhreo.png" alt="Berlin" loading="lazy">
+          <div class="wi-ov"></div>
+          <div class="wi-lbl">Berlin</div><div class="wi-num">03</div>
+        </div>
+        <div class="wi-city" data-c="hanoi">
+          <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775580799/Group_177_uzge1z.png" alt="Hanoi" loading="lazy">
+          <div class="wi-ov"></div>
+          <div class="wi-lbl">Hanoi</div><div class="wi-num">04</div>
+        </div>
+      </div>
+
+      <div class="wi-row2">
+        <div class="wi-r2">Paris<span>05</span></div>
+        <div class="wi-r2">Chicago<span>06</span></div>
+        <div class="wi-r2">Tbilisi<span>07</span></div>
+        <div class="wi-r2">Laos<span>08</span></div>
+      </div>
+
+    </div><!-- /.wi -->
+  </div><!-- /.browser -->
 </section>
 
-<!-- PHOTOS: left = brand cards image, right = 4 rounded photos -->
+<!-- ── PHOTOS: 1/3 brand cards, 2/3 rounded 2×2 grid ── -->
 <div class="photo-section">
   <div class="ps-cards">
-    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775582655/ssss_favqte.png" alt="Migrant brand cards" loading="lazy">
+    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775582655/ssss_favqte.png" alt="" loading="lazy">
   </div>
   <div class="ps-photos">
     <div class="ps-ph"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775582635/PHOTO_2_-_Asian_Male_Portrait_1_ykzgpy.png" alt="" loading="lazy"></div>
@@ -315,125 +555,193 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:no
   </div>
 </div>
 
+<!-- ── SYSTEM NOTE ── -->
 <div class="sys-note">
-  <span class="sys-lbl">System</span>
-  <p class="sys-txt">The system extends into digital space. The interface shifts with location, but keeps its internal logic.</p>
+  <div class="sys-lbl rev">System</div>
+  <div class="sys-txt rev d1">
+    The system extends into digital space.
+    The interface shifts with location,
+    but keeps its <em>internal logic.</em>
+  </div>
 </div>
 
-<!-- PHOTO STRIP 2 — add more Cloudinary URLs -->
+<!-- ── PHOTO STRIP 2: add your Cloudinary URLs here ── -->
 <div class="photo-strip">
   <div class="ps2"><img src="[ADD_CLOUDINARY_URL]" alt="" loading="lazy"></div>
   <div class="ps2"><img src="[ADD_CLOUDINARY_URL]" alt="" loading="lazy"></div>
 </div>
 
-<!-- ZINE -->
+<!-- ── ZINE ── -->
 <section class="zine">
   <div class="zine-header">
-    <div class="zine-title">Zine —<br>Zine</div>
-    <div class="zine-meta">Printed as a moving archive of locations.<br>Each issue captures a city through the system.</div>
+    <div class="zine-title rev">Zine —<br>Zine</div>
+    <div class="zine-meta rev d1">
+      <strong>Printed as a moving archive of locations.</strong>
+      <span>Each issue captures a city through the system.</span>
+    </div>
   </div>
 
   <div class="zine-viewer">
     <div class="zine-track" id="zt">
-      <div class="zine-slide portrait active" data-i="0">
+      <!-- Slide 0: A4 portrait cover (front) — starts hidden at left -->
+      <div class="zine-slide portrait" data-i="0">
         <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725849/PARIS_gpmw08.jpg" alt="Cover" loading="lazy">
       </div>
+      <!-- Slide 1: first spread — STARTS AS ACTIVE (JS sets this) -->
       <div class="zine-slide landscape" data-i="1">
-        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725978/SPREAD_1_AND_2_zn14nl.jpg" alt="Spread 1–2" loading="lazy">
+        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725978/SPREAD_1_AND_2_zn14nl.jpg" alt="" loading="lazy">
       </div>
       <div class="zine-slide landscape" data-i="2">
-        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725984/SPREAD_3_AND_4_vcphpq.jpg" alt="Spread 3–4" loading="lazy">
+        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725984/SPREAD_3_AND_4_vcphpq.jpg" alt="" loading="lazy">
       </div>
       <div class="zine-slide landscape" data-i="3">
-        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725829/SPREAD_5_AND_6_hcfiqt.jpg" alt="Spread 5–6" loading="lazy">
+        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725829/SPREAD_5_AND_6_hcfiqt.jpg" alt="" loading="lazy">
       </div>
       <div class="zine-slide landscape" data-i="4">
-        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725842/SPREAD_10_AND_11_f6oylk.jpg" alt="Spread 8–9" loading="lazy">
+        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725842/SPREAD_10_AND_11_f6oylk.jpg" alt="" loading="lazy">
       </div>
       <div class="zine-slide landscape" data-i="5">
-        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725952/SPREAD_12_AND_13_l52csd.jpg" alt="Spread 10–11" loading="lazy">
+        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775725952/SPREAD_12_AND_13_l52csd.jpg" alt="" loading="lazy">
       </div>
-      <div class="zine-slide landscape" data-i="6">
-        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775726264/PARIS_back_xcgxm4.jpg" alt="Spread 12–13" loading="lazy">
+      <!-- Last slide: A4 portrait back cover — NOT landscape -->
+      <div class="zine-slide portrait" data-i="6">
+        <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775726264/PARIS_back_xcgxm4.jpg" alt="" loading="lazy">
       </div>
     </div>
-    <button class="zine-arr zp" id="zp">←</button>
-    <button class="zine-arr zn" id="zn">→</button>
-  </div>
 
-  <div class="zine-bottom">
-    <div class="zine-cnt" id="zc">01 / 07</div>
+    <button class="zine-arr zp" id="zp" aria-label="Previous">←</button>
+    <button class="zine-arr zn" id="zn" aria-label="Next">→</button>
   </div>
+  <!-- No counter as requested -->
 </section>
 
-<!-- QUOTE — add portrait photo URL in .quote CSS above -->
-<section class="https://res.cloudinary.com/disa2fbgc/image/upload/v1775593568/PIC_vmnivk.png"> 
+<!-- ── QUOTE: portrait photo background, ORIGIN ghost text ── -->
+<section class="quote">
   <div class="quote-word">ORIGIN</div>
   <div class="quote-body">
-    "I've lived in five countries in six years. I never felt like an immigrant — just someone who happens to be here. <em>That state had no identity. So I created one.</em>"
+    "I've lived in five countries in six years. I never felt like an immigrant —
+    just someone who happens to be here.
+    <em>That state had no identity. So I created one.</em>"
     <div class="quote-cred">— Anastasiya Vasileuskaya</div>
   </div>
 </section>
 
+<!-- ── FIXED FOOTER ── -->
 <footer class="page-bottom">
   <a href="about.html">About</a>
   <div class="pb-right">
     <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
+    <!-- .pb-socials wraps to its own row on mobile -->
+    <div class="pb-socials">
+      <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
   </div>
 </footer>
 
 <script>
+/* ── CURSOR: direct left/top update, no transform jitter ── */
 const cur = document.getElementById('cur');
-if (window.matchMedia('(hover: hover)').matches) {
-  document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
-  document.querySelectorAll('a,.city-cell,.zine-arr,.cover-item,.ps-ph').forEach(el => {
+if (window.matchMedia('(hover:hover)').matches) {
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+  }, { passive: true });
+  document.querySelectorAll('a,.wi-city,.zine-arr,.cover-item,.ps-ph').forEach(el => {
     el.addEventListener('mouseenter', () => cur.classList.add('big'));
     el.addEventListener('mouseleave', () => cur.classList.remove('big'));
   });
 }
 
-// ZINE BOOK CAROUSEL
-(function(){
-  const viewer  = document.querySelector('.zine-viewer');
-  const track   = document.getElementById('zt');
-  const slides  = [...track.querySelectorAll('.zine-slide')];
-  const total   = slides.length;
-  const btnP    = document.getElementById('zp');
-  const btnN    = document.getElementById('zn');
-  const cnt     = document.getElementById('zc');
-  const GAP     = 20;
-  let current   = 0;
+/* ── SCROLL REVEAL ── */
+new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); } });
+}, { threshold: 0.1 })
+.observe = (() => {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+  return obs.observe.bind(obs);
+})();
 
-  const pad = n => String(n).padStart(2,'0');
+/* ── WEB MOCKUP: brush color changes per city ──
+   Each city has a unique brush color.
+   Default (no hover) = pink.
+   The SVG .bp1 fill and .bp2 stroke are animated via CSS transitions. */
+const brushColors = {
+  lisboa: '#9aaf30',  // olive-green (matches PDF page 2)
+  tokyo:  '#4070c8',  // blue (matches PDF page 3)
+  berlin: '#b87a10',  // amber-gold (matches PDF page 4)
+  hanoi:  '#4a9450',  // sage-green (matches PDF page 5)
+};
+const defaultColor = '#ff3c5f'; // pink when nothing is hovered
+const bp1 = document.querySelector('.bp1');
+const bp2 = document.querySelector('.bp2');
 
-  function center() {
+document.querySelectorAll('.wi-city').forEach(cell => {
+  const c = cell.dataset.c;
+  cell.addEventListener('mouseenter', () => {
+    cell.classList.add('hov');
+    const col = brushColors[c] || defaultColor;
+    if (bp1) bp1.style.fill   = col;
+    if (bp2) bp2.style.stroke = col;
+  });
+  cell.addEventListener('mouseleave', () => {
+    cell.classList.remove('hov');
+    if (bp1) bp1.style.fill   = defaultColor;
+    if (bp2) bp2.style.stroke = defaultColor;
+  });
+});
+
+/* ── ZINE CAROUSEL: centers active slide, starts at slide 1 (first spread) ──
+   Each slide may be portrait (A4) or landscape (A3), so widths differ.
+   We measure actual offsetWidth after layout to calculate the centering offset. */
+(function() {
+  const viewer = document.querySelector('.zine-viewer');
+  const track  = document.getElementById('zt');
+  const slides = [...track.querySelectorAll('.zine-slide')];
+  const total  = slides.length;
+  const GAP    = 16; // matches CSS gap
+  let current  = 1;  // start at first spread, not the cover
+
+  function centerSlide() {
     const vw = viewer.offsetWidth;
-    let offset = 0;
-    for (let i = 0; i < current; i++) offset += slides[i].offsetWidth + GAP;
-    const activeW = slides[current].offsetWidth;
-    const tx = vw / 2 - offset - activeW / 2;
+    // Sum up widths of all slides before current
+    let offsetBefore = 0;
+    for (let i = 0; i < current; i++) {
+      offsetBefore += slides[i].offsetWidth + GAP;
+    }
+    // Center of the active slide
+    const activeCenterX = offsetBefore + slides[current].offsetWidth / 2;
+    // Translate track so active slide is centered in viewer
+    const tx = vw / 2 - activeCenterX;
     track.style.transform = `translateY(-50%) translateX(${tx}px)`;
-    slides.forEach((s,i) => s.classList.toggle('active', i === current));
-    cnt.textContent = pad(current+1) + ' / ' + pad(total);
+    // Update active state (opacity)
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
   }
 
-  function go(d) { current = Math.max(0, Math.min(current+d, total-1)); center(); }
+  function go(dir) {
+    current = Math.max(0, Math.min(current + dir, total - 1));
+    centerSlide();
+  }
 
-  btnP.addEventListener('click', () => go(-1));
-  btnN.addEventListener('click', () => go(1));
-
-  // keyboard
+  document.getElementById('zp').addEventListener('click', () => go(-1));
+  document.getElementById('zn').addEventListener('click', () => go(1));
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft') go(-1);
+    if (e.key === 'ArrowLeft')  go(-1);
     if (e.key === 'ArrowRight') go(1);
   });
 
-  // init after images start sizing
-  requestAnimationFrame(() => setTimeout(center, 80));
-  let rt;
-  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(center, 80); });
+  // Wait for images to start loading so offsetWidth is correct
+  requestAnimationFrame(() => setTimeout(centerSlide, 100));
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(centerSlide, 80);
+  });
 })();
 </script>
 </body>
