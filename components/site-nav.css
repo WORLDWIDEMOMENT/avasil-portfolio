@@ -157,25 +157,18 @@
 .site-nav-marquee-track{
   display:flex;
   white-space:nowrap;
-  animation:site-nav-marquee 22s linear infinite;
-  font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.24em;
-  text-transform:uppercase;
-  color:rgba(238, 238, 238, .38);
-  padding:5px 0 4px;
+  animation:site-nav-marquee 45s linear infinite;
 }
 
 .site-nav-marquee-track span{
-  padding-right:48px;
+  padding-right:64px;
+  display:inline-block;
 }
 
-.site-nav-marquee-track span { padding-right: 24px; }
-
-@keyframes site-nav-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+/* Дублируем контент для seamless loop */
+.site-nav-marquee-track::after {
+  content:attr(data-text);
+  white-space:nowrap;
 }
 
 /* Pages with their own ticker/nav don't show the site-nav marquee */
@@ -187,63 +180,33 @@ body[data-page="about"] .site-nav-marquee { display: none; }
 @media (max-width:860px){
   .site-nav{
     padding:16px 20px;
+    z-index:9999;
   }
 
-  .site-nav-top{
-    flex-wrap:nowrap;
-    gap:10px;
-  }
-
-  .site-nav-links{
-    flex-wrap:nowrap;
-    gap:8px;
-    justify-content:flex-end;
-    min-width:0;
-    overflow-x:auto;
-  }
-
-  .site-nav-link,
-  .site-nav-create-btn{
-    font-size:9px;
-    letter-spacing:.1em;
-  }
-
-  .site-nav-bottom{
-    flex-wrap:nowrap;
-    justify-content:space-between;
-    gap:12px;
-  }
-
-  .site-nav-socials{
-    gap:10px;
-    justify-content:flex-end;
-  }
-
-  .site-nav-marquee{
-    top:50px;
-  }
-
-  .site-nav-marquee-track{
-    font-size:9px;
-    letter-spacing:.18em;
-  }
-
-  .site-nav-create-btn{
-    cursor:pointer;
+  .site-nav-create{
+    position:relative;
+    z-index:10000;
   }
 
   .site-nav-create-menu{
-    position:absolute;
-    top:calc(100% + 8px);
-    right:0;
+    position:absolute !important;
+    top:calc(100% + 8px) !important;
+    right:0 !important;
     min-width:146px;
-    z-index:1000;
+    background:rgba(6,6,6,.98) !important;
+    border:1px solid rgba(255,255,255,.2) !important;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-8px);
+    transition:opacity .2s ease, transform .2s ease, visibility .2s ease;
+    z-index:10001 !important;
+    pointer-events:none;
   }
 
   .site-nav-create.open .site-nav-create-menu{
-    opacity:1;
-    visibility:visible;
-    transform:translateY(0);
-    pointer-events:auto;
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:translateY(0) !important;
+    pointer-events:auto !important;
   }
 }
