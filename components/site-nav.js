@@ -30,10 +30,20 @@
     if (!create) return;
 
     const btn = create.querySelector('.site-nav-create-btn');
-    btn.addEventListener('click', () => {
+    const toggleMenu = () => {
       const isOpen = create.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      toggleMenu();
     });
+
+    btn.addEventListener('touchend', (event) => {
+      event.preventDefault();
+      toggleMenu();
+    }, { passive: false });
 
     document.addEventListener('click', (event) => {
       if (create.contains(event.target)) return;
