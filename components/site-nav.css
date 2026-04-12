@@ -154,21 +154,26 @@
   pointer-events: none;
 }
 
-.site-nav-marquee-track{
-  display:flex;
-  white-space:nowrap;
-  animation:site-nav-marquee 45s linear infinite;
+.site-nav-marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: site-nav-marquee 28s linear infinite;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: rgba(238, 238, 238, .38);
+  padding: 5px 0 4px;
 }
 
-.site-nav-marquee-track span{
-  padding-right:64px;
-  display:inline-block;
+.site-nav-marquee-track span { 
+  padding-right: 48px; 
 }
 
-/* Дублируем контент для seamless loop */
-.site-nav-marquee-track::after {
-  content:attr(data-text);
-  white-space:nowrap;
+@keyframes site-nav-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 /* Pages with their own ticker/nav don't show the site-nav marquee */
