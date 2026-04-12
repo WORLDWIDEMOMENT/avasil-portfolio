@@ -79,70 +79,8 @@ html,body{height:100%;overflow:hidden;font-family:'Helvetica Neue',Helvetica,Ari
 .availability-note{color:rgba(238,238,238,.45);font-style:italic;font-size:12px}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* ── MOBILE ── */ @media(max-width:860px){ html,body{overflow-y:auto;height:auto;cursor:auto} .overlay-left{width:100%;background:rgba(0,0,0,.62)} .overlay-right{display:none} .page{position:relative;min-height:100svh;display:flex;flex-direction:column;padding:0 24px 36px;pointer-events:auto} .block-left{position:relative;bottom:auto;left:auto;width:100%;padding:0;margin-bottom:32px;animation-delay:.1s} .block-right{position:relative;bottom:auto;right:auto;width:100%;padding:24px 0 0;border-top:1px solid rgba(238,238,238,.12);margin-bottom:36px;animation-delay:.2s} } @media(max-width:480px){ .manifesto{font-size:26px} .page{padding:0 20px 32px} }
 
-/* ── MOBILE ── */
-@media (max-width: 860px){
-
-  html, body{
-    overflow-y: auto;
-    height: auto;
-    cursor: auto;
-  }
-
-  .overlay-left{
-    width: 100%;
-    background: rgba(0,0,0,.62);
-  }
-
-  .overlay-right{
-    display: none;
-  }
-
-  .page{
-    position: relative;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    padding: 60px 24px 36px; /* ← добавили воздух сверху */
-    pointer-events: auto;
-  }
-
-  .block-left{
-    position: relative;
-    width: 100%;
-    padding: 0;
-    margin: 0 0 32px 0;
-    animation-delay: .1s;
-  }
-
-  .block-right{
-    position: relative;
-    width: 100%;
-    padding: 24px 0 0;
-    border-top: 1px solid rgba(238,238,238,.12);
-    margin-bottom: 36px;
-    animation-delay: .2s;
-  }
-
-  .manifesto{
-    margin-top: 8px; /* лёгкая коррекция заголовка */
-  }
-}
-
-
-/* ── SMALL MOBILE ── */
-@media (max-width: 480px){
-
-  .page{
-    padding: 72px 20px 32px; /* ещё больше воздуха на маленьких экранах */
-  }
-
-  .manifesto{
-    font-size: 26px;
-    margin-top: 12px;
-  }
-
-}
 @media(max-width:480px){
   .manifesto{font-size:26px}
   .page{padding:0 20px 32px}
