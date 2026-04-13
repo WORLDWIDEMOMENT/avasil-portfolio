@@ -3,275 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- ── SEO & SOCIAL META ── -->
-  <meta name="description" content="Art direction case studies — Archive / Space and Migrant. Visual identity systems built at the intersection of spatial thinking and brand strategy.">
-  <meta name="keywords" content="vasileuskaya, avasil, anastasiya vasileuskaya, architect, art director, spatial design, architecture portfolio, interior design, masterplan">
-  <meta name="author" content="Anastasiya Vasileuskaya">
-  <meta name="robots" content="todirect, follow">
-  <link rel="canonical" href="https://worldwidemoment.github.io/avasil/todirect.html">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://worldwidemoment.github.io/avasil/todirect.html">
-  <meta property="og:title" content="To Direct — Art Direction Cases · A.Vasileuskaya">
-  <meta property="og:description" content="Art direction case studies — Archive / Space and Migrant. Visual identity systems built at the intersection of spatial thinking and brand strategy.">
-  <meta property="og:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592590/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%B2%D0%B0_upscaled_crung9.jpg">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="To Direct — Art Direction Cases · A.Vasileuskaya">
-  <meta name="twitter:description" content="Art direction case studies — Archive / Space and Migrant. Visual identity systems built at the intersection of spatial thinking and brand strategy.">
-  <meta name="twitter:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592590/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%B2%D0%B0_upscaled_crung9.jpg">
-<!-- Favicon -->
+<title>To Direct — Art Direction · A.Vasileuskaya</title>
+<meta name="description" content="Art direction case studies — Archive / Space and Migrant. Self-initiated visual identity systems built at the intersection of spatial thinking and brand strategy.">
+<meta name="keywords" content="vasileuskaya, avasil, anastasiya vasileuskaya, art director, visual identity, brand identity, case study">
+<meta name="author" content="Anastasiya Vasileuskaya">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://worldwidemoment.github.io/avasil/todirect.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://worldwidemoment.github.io/avasil/todirect.html">
+<meta property="og:title" content="To Direct — Art Direction Cases · A.Vasileuskaya">
+<meta property="og:description" content="Self-initiated visual identity systems — Archive / Space and Migrant. Spatial thinking applied to brand and identity design.">
+<meta property="og:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/w_1200,h_630,c_fill,q_auto,f_auto/Physical_Wayfinding_System_ehmkt3.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="To Direct — Art Direction Cases · A.Vasileuskaya">
+<meta name="twitter:description" content="Self-initiated visual identity systems — Archive / Space and Migrant.">
+<meta name="twitter:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/w_1200,h_630,c_fill,q_auto,f_auto/Physical_Wayfinding_System_ehmkt3.jpg">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-  
+<link rel="stylesheet" href="components/site-nav.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Anastasiya Vasileuskaya","jobTitle":"Architect & Art Director","url":"https://worldwidemoment.github.io/avasil/","sameAs":["https://linkedin.com/in/worldwidemoment/","https://instagram.com/molodostibolshenebudet/"]}
+</script>
 <style>
-*, *::before, *::after {
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:#080808;color:white;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;height:100vh;overflow:hidden;cursor:none}
+#cur{position:fixed;width:8px;height:8px;background:white;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+#cur.big{width:50px;height:50px}
+@media(hover:none){#cur{display:none}}
+.split{display:flex;width:100vw;height:100vh}
+.half{flex:1;position:relative;overflow:hidden;text-decoration:none;color:white}
+.half::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;transition:transform .8s ease,opacity .6s}
+.half-archive::before{background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg')}
+.half-migrant::before{background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775582635/PHOTO_2_-_Asian_Male_Portrait_1_ykzgpy.png')}
+.half:hover::before{transform:scale(1.05);opacity:.55}
+.half::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,.05));z-index:1}
+.divider{position:absolute;left:50%;top:10%;bottom:10%;width:1px;background:rgba(255,255,255,.08);z-index:5}
+.half-content{position:absolute;bottom:80px;left:80px;z-index:2;display:flex;flex-direction:column;transition:transform .4s cubic-bezier(.77,0,.18,1);max-width:340px}
+.half:hover .half-content{transform:translateY(-10px)}
+.c-tag{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:16px}
+.c-num{font-size:11px;font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,.28);margin-bottom:10px}
+.c-title{font-size:clamp(38px,4.8vw,64px);font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1;margin-bottom:20px;transition:color .3s}
+.half-archive:hover .c-title{color:#aafb00}
+.half-migrant:hover .c-title{color:#ff6b7a}
+.c-desc{font-size:11px;letter-spacing:.04em;line-height:1.75;color:rgba(255,255,255,.48);margin-bottom:24px;font-weight:400}
+.half:hover .c-desc{color:rgba(255,255,255,.62)}
+.c-open{font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;opacity:.55;border-bottom:1px solid transparent;transition:.3s;display:inline-block}
+.half:hover .c-open{opacity:1;border-bottom-color:currentColor}
+@media(max-width:900px){
+  body{overflow:hidden;height:100dvh}
+  .split{flex-direction:column;height:100dvh}
+  .half{height:50dvh}
+  .half-content{left:20px;bottom:30px;max-width:calc(100% - 40px)}
+  .c-title{font-size:clamp(32px,8vw,48px)}
+  .divider{display:none}
+  .half-archive .c-title{color:#aafb00}
+  .half-migrant .c-title{color:#ff6b7a}
 }
-
-body {
-  background:#080808;
-  color:white;
-  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
-  height:100vh;
-  overflow:hidden;
-  cursor:none;
-}
-
-/* ── CURSOR ── */
-#cur {
-  position:fixed;
-  width:8px;
-  height:8px;
-  background:white;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:9999;
-  transform:translate(-50%,-50%);
-  mix-blend-mode:difference;
-}
-#cur.big { width:50px; height:50px; }
-
-@media (hover:none) {
-  #cur { display:none; }
-}
-
-/* ── NAV ── */
-.nav {
-  position:fixed;
-  top:36px;
-  left:80px;
-  right:80px;
-  display:flex;
-  justify-content:space-between;
-  z-index:100;
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-}
-.nav a {
-  color:white;
-  text-decoration:none;
-  opacity:.38;
-  transition:opacity .25s;
-}
-.nav a:hover { opacity:1; }
-.nav-label { opacity:.18; }
-
-/* ── SPLIT ── */
-.split {
-  display:flex;
-  width:100vw;
-  height:100vh;
-}
-
-.half {
-  flex:1;
-  position:relative;
-  overflow:hidden;
-  text-decoration:none;
-  color:white;
-}
-
-/* ── BACKGROUND ── */
-.half::before {
-  content:'';
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  opacity:.35;
-  transition:transform .8s ease, opacity .6s;
-}
-
-.half-archive::before {
-  background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg');
-}
-.half-migrant::before {
-  background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775582635/PHOTO_2_-_Asian_Male_Portrait_1_ykzgpy.png');
-}
-
-.half:hover::before {
-  transform:scale(1.05);
-  opacity:.55;
-}
-
-.half::after {
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,.1));
-  z-index:1;
-}
-
-/* divider */
-.divider {
-  position:absolute;
-  left:50%;
-  top:10%;
-  bottom:10%;
-  width:1px;
-  background:rgba(255,255,255,.08);
-  z-index:5;
-}
-
-/* ── CONTENT ── */
-.half-content {
-  position:absolute;
-  bottom:80px;
-  left:80px;
-  z-index:2;
-  display:flex;
-  flex-direction:column;
-}
-
-/* spacing */
-.c-tag { margin-bottom:20px; }
-.c-num { margin-bottom:10px; }
-
-/* 🔥 TOP ALIGN */
-.c-title {
-  font-size:clamp(38px,4.8vw,68px);
-  font-weight:700;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  line-height:1;
-
-  height:150px;
-  display:flex;
-  align-items:flex-start; /* ← ВЕРХ */
-
-  margin-bottom:18px;
-  transition:color .3s;
-}
-
-.half-archive:hover .c-title { color:#aafb00; }
-.half-migrant:hover .c-title { color:#ff6b7a; }
-
-.c-desc {
-  font-size:10px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  opacity:.45;
-  line-height:1.7;
-  max-width:280px;
-  margin-bottom:24px;
-}
-
-.c-open {
-  font-size:10px;
-  letter-spacing:.28em;
-  text-transform:uppercase;
-  opacity:.6;
-  border-bottom:1px solid transparent;
-  transition:.3s;
-}
-
-.c-open:hover {
-  opacity:1;
-  border-bottom-color:currentColor;
-}
-
-/* hover */
-.half-content {
-  transition:transform .4s cubic-bezier(.77,0,.18,1);
-}
-.half:hover .half-content {
-  transform:translateY(-10px);
-}
-
-/* ── MOBILE ── */
-@media (max-width:900px) {
-
-  body {
-    overflow:hidden; /* ← убрали скролл */
-    height:100dvh;
-  }
-
-  .split {
-    flex-direction:column;
-    height:100dvh;
-  }
-
-  .half {
-    height:50dvh; /* ← ключ */
-  }
-
-  .half-content {
-    left:20px;
-    bottom:30px;
-  }
-
-  .c-title {
-    height:auto;
-  }
-
-  .divider {
-    display:none;
-  }
-
-  .nav {
-    left:20px;
-    right:20px;
-    top:20px;
-  }
-  .half-archive .c-title {
-  color:#aafb00;
-}
-
-.half-migrant .c-title {
-  color:#ff6b7a;
-}
-}
-
 </style>
 </head>
+<body data-page="todirect">
 
-<body>
-
+<div class="site-nav-mount"></div>
 <div id="cur"></div>
-
-<nav class="nav">
-  <a href="index.html">← Back</a>
-</nav>
 
 <div class="split">
 
   <a class="half half-archive" href="archive.html">
     <div class="half-content">
-      <div class="c-tag">Visual Identity · 2026</div>
+      <div class="c-tag">Visual Identity System · Self-Initiated · 2026</div>
       <div class="c-num">01</div>
       <div class="c-title">Archive<br>/ Space</div>
-      <div class="c-desc">
-        Architectural archive & cultural institution.<br>
-        Identity as classification infrastructure.
-      </div>
+      <div class="c-desc">An architectural archive and cultural institution. Classification as the core design language — six categories, numbering logic, colour-coded wayfinding. The identity functions as infrastructure, not aesthetics. Designed for physical exhibition, digital interface, and print.</div>
       <div class="c-open">Open →</div>
     </div>
   </a>
@@ -280,13 +85,10 @@ body {
 
   <a class="half half-migrant" href="migrant.html">
     <div class="half-content">
-      <div class="c-tag">Brand Identity · 2026</div>
+      <div class="c-tag">Brand Identity · Self-Initiated · 2026</div>
       <div class="c-num">02</div>
       <div class="c-title">Migrant</div>
-      <div class="c-desc">
-        Platform for creatives living between countries.<br>
-        Identity without citizenship. System only.
-      </div>
+      <div class="c-desc">A living brand for creatives without a fixed address. Print magazine with city-adaptive covers, web interface, membership cards, and spatial system — one internal logic that shifts with location. Identity without citizenship.</div>
       <div class="c-open">Open →</div>
     </div>
   </a>
@@ -295,20 +97,16 @@ body {
 
 <script>
 const cur = document.getElementById('cur');
-
-let x = 0, y = 0;
-
-document.addEventListener('mousemove', e => {
-  x = e.clientX;
-  y = e.clientY;
-});
-
-function loop(){
-  cur.style.transform = `translate(${x}px, ${y}px)`;
-  requestAnimationFrame(loop);
+if (window.matchMedia('(hover:hover)').matches) {
+  document.addEventListener('mousemove', e => {
+    cur.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+  }, { passive:true });
+  document.querySelectorAll('a,.half').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('big'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+  });
 }
-loop();
 </script>
-
+<script src="components/site-nav.js" defer></script>
 </body>
 </html>
