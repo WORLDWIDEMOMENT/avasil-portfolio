@@ -4,41 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TO BUILD — A.VASILEUSKAYA</title>
-
-  <!-- ── SEO & SOCIAL META ── -->
-  <meta name="description" content="Architecture and spatial design portfolio of Anastasiya Vasileuskaya — projects across Belarus, Russia, Portugal, Spain and Dominican Republic. Masterplans, interiors, conceptual work.">
-  <meta name="keywords" content="vasileuskaya, avasil, anastasiya vasileuskaya, architect, art director, spatial design, architecture portfolio, interior design, masterplan">
-  <meta name="author" content="Anastasiya Vasileuskaya">
+  <meta name="description" content="Architecture and spatial design portfolio of Anastasiya Vasileuskaya.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://worldwidemoment.github.io/avasil/architecture.html">
-
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://worldwidemoment.github.io/avasil/architecture.html">
   <meta property="og:title" content="TO BUILD — A.VASILEUSKAYA">
-  <meta property="og:description" content="Architecture and spatial design by Anastasiya Vasileuskaya — masterplans, interiors, and conceptual projects across three continents.">
   <meta property="og:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_1200/miriady_atyicc.webp">
-
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="TO BUILD — A.VASILEUSKAYA">
-  <meta name="twitter:description" content="Architecture and spatial design by Anastasiya Vasileuskaya.">
-  <meta name="twitter:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_1200/miriady_atyicc.webp">
-<!-- Favicon -->
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="manifest" href="site.webmanifest">
-  <!-- Preconnect Cloudinary -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="preconnect" href="https://res.cloudinary.com">
-
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--bg:#0c0c0c;--panel:#121212;--white:#efefef;--dim:#8a8a8a;--line:#242424;--blue:#4d6aff}
     html{scroll-behavior:smooth}
     body{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
     a{color:inherit}
-
-    /* ── TOPBAR ── */
     .topbar{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--line)}
     .topbar-row{display:flex;justify-content:space-between;align-items:center;padding:18px 40px 10px;gap:20px;flex-wrap:wrap}
     .back{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--dim);transition:.2s}
@@ -46,37 +31,33 @@
     .navlinks{display:flex;gap:28px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
     .navlinks a{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--white);opacity:.72;transition:.2s,transform .2s}
     .navlinks a:hover{opacity:1;transform:translateY(-1px)}
-
-    /* ── HEADER BODY ── */
+    /* ── TO CREATE DROPDOWN ── */
+    .nav-create{position:relative;display:inline-flex;align-items:center}
+    .nav-create-btn{font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:none;border:none;color:var(--white);opacity:.72;cursor:pointer;padding:0;transition:.2s}
+    .nav-create-btn:hover{opacity:1}
+    .nav-create-menu{position:absolute;top:calc(100% + 12px);right:0;min-width:148px;display:flex;flex-direction:column;background:rgba(12,12,12,.98);border:1px solid var(--line);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s;z-index:300;pointer-events:none}
+    .nav-create-menu a{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--dim);padding:12px 16px;border-bottom:1px solid var(--line);transition:color .15s;display:block}
+    .nav-create-menu a:last-child{border-bottom:none}
+    .nav-create-menu a:hover{color:var(--white)}
+    @media(hover:hover){.nav-create:hover .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}}
+    .nav-create.open .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
     .header-body{overflow:hidden;transition:height .35s ease,opacity .3s ease;will-change:height}
-
-    /* ── TICKER ── */
     .brandline{padding:0 40px 8px;color:var(--dim);font-size:12px;letter-spacing:.28em;text-transform:uppercase;overflow:hidden}
     .ticker{display:flex;white-space:nowrap;will-change:transform;animation:marquee 80s linear infinite}
     .ticker span{padding-right:24px;flex-shrink:0}
     @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-    /* ── PAGE TITLE ── */
     .page-title{font-size:clamp(72px,13vw,158px);font-weight:700;letter-spacing:-.04em;line-height:.85;text-align:center;padding:40px 40px 12px;color:var(--white)}
     .page-subtitle{text-align:center;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);padding:0 40px 28px}
-
-    /* ── FILTER ROW ── */
     .filter-row{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);align-items:stretch}
     .filter-btn{flex:1 1 140px;padding:16px 10px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;background:none;border:none;border-right:1px solid var(--line);color:var(--dim);cursor:pointer;transition:.15s;position:relative}
     .filter-btn:last-child{border-right:none}
     .filter-btn.active{color:var(--white)}
     .filter-btn.active::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--blue)}
-
-    /* ── COL TOGGLE — moved into filter row ── */
     .col-toggle{display:none;background:none;border:none;border-right:1px solid var(--line);padding:16px 14px;cursor:pointer;align-items:center;justify-content:center;flex:0 0 auto}
     .col-toggle svg{width:14px;height:14px;display:block;fill:var(--blue);opacity:.6;transition:opacity .2s}
-    .col-toggle.active svg{opacity:1}
-    .col-toggle:hover svg{opacity:1}
-
-    /* ── PROJECT GRID ── */
+    .col-toggle.active svg,.col-toggle:hover svg{opacity:1}
     .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--line);border-bottom:1px solid var(--line)}
     .projects-grid.cols-2{grid-template-columns:repeat(2,1fr)}
-    .projects-grid.cols-1{grid-template-columns:1fr}
     .project-card{position:relative;background:#131313;border-right:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;cursor:pointer;transition:transform .22s ease,background .22s ease,border-color .22s ease}
     .project-card:hover{transform:scale(1.01);background:#151515;border-color:#343434}
     .project-card[hidden]{display:none !important}
@@ -105,19 +86,13 @@
     .external .card-linkline{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#dfe7ff;margin-top:8px;opacity:.92}
     .external:hover .card-linkline{opacity:1}
     .external .card-linkline strong{display:inline-block;padding:5px 9px;border-radius:999px;background:rgba(77,106,255,.96);color:#fff}
-
-    /* ── SITE FOOTER ── */
     .site-footer{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px 40px;background:var(--bg);border-top:1px solid var(--line);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
     .foot-about,.foot-right a{text-decoration:none;color:#fff;opacity:.80;transition:opacity .2s;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
     .foot-about:hover,.foot-right a:hover{opacity:1}
     .foot-right{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:flex-end}
     .foot-sep{color:#fff;opacity:.22}
-
-    /* ── CUSTOM CURSOR — lightweight, no RAF interpolation ── */
     .cursor{position:fixed;left:0;top:0;width:8px;height:8px;border-radius:50%;background:var(--blue);pointer-events:none;z-index:9999;will-change:transform;mix-blend-mode:screen}
     .cursor.big{width:44px;height:44px;background:transparent;border:1px solid rgba(255,255,255,.42);border-radius:50%}
-
-    /* ── MODAL ── */
     .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:2vh 2vw;visibility:hidden;opacity:0;transition:.25s;z-index:400;overflow:hidden}
     .modal.active{visibility:visible;opacity:1}
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:-1}
@@ -130,8 +105,7 @@
     .nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:999px;background:rgba(255,255,255,.07);backdrop-filter:blur(10px);color:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:12;transition:.2s;border:1px solid rgba(255,255,255,.12)}
     .nav-arrow:hover{background:rgba(255,255,255,.14);transform:translateY(-50%) scale(1.05)}
     .nav-arrow svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-    .nav-arrow.prev{left:14px}
-    .nav-arrow.next{right:14px}
+    .nav-arrow.prev{left:14px}.nav-arrow.next{right:14px}
     .modal-thumbs{display:flex;height:78px;overflow-x:auto;overflow-y:hidden;border-top:1px solid var(--line);scrollbar-width:thin;scrollbar-color:#444 #1a1a1a;flex-shrink:0}
     .modal-thumbs::-webkit-scrollbar{height:4px}
     .modal-thumbs::-webkit-scrollbar-track{background:#1a1a1a}
@@ -148,94 +122,48 @@
     .spec span{font-size:12px;font-weight:700;color:var(--white);line-height:1.5}
     .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;color:var(--dim);cursor:pointer;z-index:15;transition:.2s}
     .modal-close:hover{color:var(--white);transform:rotate(90deg)}
+    @media (hover:hover) and (pointer:fine){.project-card,.back,.navlinks a,.nav-create-btn,.filter-btn,.tag,.modal-close,.thumb,.nav-arrow,.foot-about,.foot-right a{cursor:none}}
+    @media (hover:none),(pointer:coarse){.cursor{display:none !important}.project-card:hover{transform:none}}
+    @media (max-width:1100px){.projects-grid{grid-template-columns:repeat(2,1fr)}.modal-content{grid-template-columns:1fr}.modal-info{height:auto;border-left:none;border-top:1px solid var(--line);overflow-y:visible}.modal-gallery{height:auto}.modal-stage-wrap{height:56vw;min-height:280px;flex:none}.topbar-row,.brandline,.page-title,.page-subtitle{padding-left:24px;padding-right:24px}.site-footer{padding:18px 24px}.navlinks{gap:20px}}
+    @media (max-width:620px){.col-toggle{display:inline-flex}.projects-grid,.projects-grid.cols-2{grid-template-columns:1fr}.projects-grid.mobile-2col{grid-template-columns:repeat(2,1fr) !important}.filter-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-bottom:none;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}.filter-row::-webkit-scrollbar{display:none}.filter-btn{flex:0 0 auto;font-size:9px;padding:13px 14px;white-space:nowrap;border-right:1px solid var(--line)}.filter-btn:last-child{border-right:none}.col-toggle{padding:13px 14px}.page-title{font-size:clamp(54px,14vw,96px);padding-top:28px}.page-subtitle{padding-bottom:20px}.topbar-row{padding:14px 16px 8px}.brandline{padding:0 16px 8px;text-align:left;font-size:10px;letter-spacing:.22em}.page-title,.page-subtitle{padding-left:16px;padding-right:16px}.navlinks{gap:10px;flex-wrap:nowrap;overflow-x:auto}.navlinks a,.nav-create-btn{font-size:9px;letter-spacing:.1em}.site-footer{padding:14px 16px;font-size:9px;align-items:flex-end;gap:10px}.foot-right{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;text-align:right}.foot-sep{display:none}.modal{padding:0}.modal-content{width:100%;height:100%;border:none;grid-template-columns:1fr;display:flex;flex-direction:column}.modal-gallery{flex:1;min-height:0;display:flex;flex-direction:column}.modal-stage-wrap{flex:1;min-height:0;height:auto}.modal-info{flex:0 0 auto;max-height:45vh;overflow-y:auto;border-left:none;border-top:1px solid var(--line);padding:20px 18px 28px}.modal-specs{grid-template-columns:1fr}.modal-title{font-size:18px}.modal-thumbs{height:60px;flex-shrink:0}.thumb{width:60px;height:60px}.nav-arrow{width:40px;height:40px}.nav-arrow.prev{left:10px}.nav-arrow.next{right:10px}}
 
-    /* ── TOUCH ── */
-    @media (hover:hover) and (pointer:fine){
-      .project-card,.back,.navlinks a,.filter-btn,.tag,.modal-close,.thumb,.nav-arrow,.foot-about,.foot-right a{cursor:none}
-    }
-    @media (hover:none),(pointer:coarse){
-      .cursor{display:none !important}
-      .project-card:hover{transform:none}
-      .nav-arrow,.modal-close,.thumb,.filter-btn,.tag,.foot-about,.foot-right a{cursor:pointer}
-    }
-
-    /* ── 1100px ── */
-    @media (max-width:1100px){
-      .projects-grid{grid-template-columns:repeat(2,1fr)}
-      .modal-content{grid-template-columns:1fr}
-      .modal-info{height:auto;border-left:none;border-top:1px solid var(--line);overflow-y:visible}
-      .modal-gallery{height:auto}
-      .modal-stage-wrap{height:56vw;min-height:280px;flex:none}
-      .topbar-row,.brandline,.page-title,.page-subtitle{padding-left:24px;padding-right:24px}
-      .site-footer{padding:18px 24px}
-      .navlinks{gap:20px}
-    }
-
-    /* ── 620px (mobile) ── */
-    @media (max-width:620px){
-      .col-toggle{display:inline-flex}
-      .projects-grid,.projects-grid.cols-2,.projects-grid.cols-1{grid-template-columns:1fr}
-      .projects-grid.mobile-2col{grid-template-columns:repeat(2,1fr) !important}
-      .filter-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-bottom:none;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}
-      .filter-row::-webkit-scrollbar{display:none}
-      .filter-btn{flex:0 0 auto;font-size:9px;padding:13px 14px;white-space:nowrap;border-right:1px solid var(--line)}
-      .filter-btn:last-child{border-right:none}
-      .col-toggle{padding:13px 14px}
-      .page-title{font-size:clamp(54px,14vw,96px);padding-top:28px}
-      .page-subtitle{padding-bottom:20px}
-      .topbar-row{padding:14px 16px 8px}
-      .brandline{padding:0 16px 8px;text-align:left;font-size:10px;letter-spacing:.22em}
-      .page-title,.page-subtitle{padding-left:16px;padding-right:16px}
-      .navlinks{gap:14px;flex-wrap:nowrap;overflow-x:auto}
-      /* Mobile footer */
-      .site-footer{padding:14px 16px;font-size:9px;align-items:flex-end;gap:10px}
-      .foot-right{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;text-align:right}
-      .foot-sep{display:none}
-      /* Modal */
-      .modal{padding:0}
-      .modal-content{width:100%;height:100%;border:none;grid-template-columns:1fr;display:flex;flex-direction:column}
-      .modal-gallery{flex:1;min-height:0;display:flex;flex-direction:column}
-      .modal-stage-wrap{flex:1;min-height:0;height:auto}
-      .modal-info{flex:0 0 auto;max-height:45vh;overflow-y:auto;border-left:none;border-top:1px solid var(--line);padding:20px 18px 28px}
-      .modal-specs{grid-template-columns:1fr}
-      .modal-title{font-size:18px}
-      .modal-thumbs{height:60px;flex-shrink:0}
-      .thumb{width:60px;height:60px}
-      .nav-arrow{width:40px;height:40px}
-      .nav-arrow.prev{left:10px}
-      .nav-arrow.next{right:10px}
-    }
+    /* ── TO CREATE DROPDOWN ── */
+    .nav-create{position:relative;display:inline-flex;align-items:center}
+    .nav-create-btn{font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:none;border:none;color:var(--white);opacity:.72;cursor:pointer;padding:0;transition:.2s}
+    .nav-create-btn:hover{opacity:1}
+    .nav-create-menu{position:absolute;top:calc(100% + 12px);right:0;min-width:148px;display:flex;flex-direction:column;background:rgba(12,12,12,.98);border:1px solid var(--line);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s;z-index:300;pointer-events:none}
+    .nav-create-menu a{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--dim);padding:12px 16px;border-bottom:1px solid var(--line);transition:color .15s;display:block}
+    .nav-create-menu a:last-child{border-bottom:none}
+    .nav-create-menu a:hover{color:var(--white)}
+    @media(hover:hover){.nav-create:hover .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}}
+    .nav-create.open .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+    @media(max-width:620px){.nav-create-btn{font-size:9px;letter-spacing:.1em}}
   </style>
 </head>
-<body>
+<body data-page="architecture">
   <div class="wrap">
     <div id="cursor" class="cursor"></div>
-
     <header class="topbar" id="topbar">
       <div class="topbar-row">
         <a class="back" href="index.html">← Back</a>
         <nav class="navlinks" aria-label="Site navigation">
-         <a href="todirect.html">To Direct</a>
-          <a href="visual.html">Visual</a>
-          <a href="video.html">Video</a>
-          <a href="localradio.html">Local Radio</a>
-         
+          <a href="todirect.html">To Direct</a>
+          <div class="nav-create" id="navCreate">
+            <button class="nav-create-btn" aria-haspopup="true" aria-expanded="false">To Create</button>
+            <div class="nav-create-menu">
+              <a href="visual.html">Visual</a>
+              <a href="video.html">Video</a>
+              <a href="localradio.html">Local Radio</a>
+            </div>
+          </div>
         </nav>
       </div>
-
       <div class="header-body" id="headerBody">
-        <div class="brandline">
-          <span class="ticker" id="ticker">
-            <span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span>
-          </span>
-        </div>
+        <div class="brandline"><span class="ticker" id="ticker"><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span><span>A.VASILEUSKAYA. </span></span></div>
         <h1 class="page-title">TO BUILD</h1>
         <p class="page-subtitle">Projects led across three continents — from single residences to urban scale</p>
         <div class="filter-row" id="filterRow">
-          <!-- Col-toggle lives here on mobile, before "All" -->
-          <button class="col-toggle" id="colToggle" aria-label="Toggle 2 columns">
-            <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="6" height="6"/><rect x="8" y="0" width="6" height="6"/><rect x="0" y="8" width="6" height="6"/><rect x="8" y="8" width="6" height="6"/></svg>
-          </button>
+          <button class="col-toggle" id="colToggle" aria-label="Toggle 2 columns"><svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="6" height="6"/><rect x="8" y="0" width="6" height="6"/><rect x="0" y="8" width="6" height="6"/><rect x="8" y="8" width="6" height="6"/></svg></button>
           <button class="filter-btn active" data-filter="all">All</button>
           <button class="filter-btn" data-filter="masterplan">Masterplan</button>
           <button class="filter-btn" data-filter="residential">Residential</button>
@@ -246,132 +174,35 @@
         </div>
       </div>
     </header>
-
     <main class="projects-grid" id="projectsGrid">
-
-      <article class="project-card external" data-tags="masterplan residential published" data-title="Myriads. Design code of the residential district" data-external-url="https://www.artlebedev.com/enko/miriady/">
-        <span class="card-number">01</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/miriady_atyicc.webp" alt="Miriady" fetchpriority="high" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Myriads. Design code of the residential district</div><div class="card-year">2024–2025 · Tyumen</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
-      </article>
-
+      <article class="project-card external" data-tags="masterplan residential published" data-title="Myriads. Design code of the residential district" data-external-url="https://www.artlebedev.com/enko/miriady/"><span class="card-number">01</span><span class="ext-badge">Artlebedev</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/miriady_atyicc.webp" alt="Miriady" fetchpriority="high" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Myriads. Design code of the residential district</div><div class="card-year">2024–2025 · Tyumen</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div></article>
       <article class="project-card" data-slug="1295-residential-complex" data-tags="masterplan residential" data-title="1295 — Residential Complex" data-year="2024" data-location="Minsk, Belarus" data-type="Residential" data-studio="Zrobim Architects" data-tools="ArchiCAD, Enscape" data-desc="In this project, I served as the sole and primary executor — essentially the lead architect. Two types of houses designed for different buyers. Initially the clients wanted a single house type replicated across four areas, but nuances like window views, noise, and architectural balance led us to develop the design further for optimal usability.
 
-The result combines our vision of modern style for the area, the client's desires, a versatile layout with all necessary amenities, and perfect landscaping." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12951_lvxm9b.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p1_yolwxd.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p2_wufuyf.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p3_xnwyhz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p4_piexgs.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12952_dlwkvb.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12953_fdvnkl.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12954_qmgnfg.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12955_v6jutz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12956_cp1eau.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12957_dceeyn.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12958_trmeyi.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12959_n7pfjz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129510_jb7raz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129511_mnhfub.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129512_eoztak.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129513_ll9ha1.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129514_ysw56i.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129515_iwo7ek.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129516_k7s4vg.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129517_ehjibi.webp"]'>
-        <span class="card-number">02</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/12951_lvxm9b.webp" alt="1295" fetchpriority="high" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">1295 — Residential Complex</div><div class="card-year">2024 · Minsk / Moscow</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
-      </article>
-
-      <article class="project-card" data-slug="meaning-of-fortification" data-tags="conceptual published" data-title="Meaning of Fortification" data-year="2022" data-location="Quarteira, Portugal" data-type="Urban / Public" data-studio="ULisboa · Erasmus" data-tools="AutoCAD, ArchiCAD, Photoshop" data-desc="Three boards represent the final stage of the semester project in urban design at ULisboa. The main theme: defense fortification. Analyzing Portugal's history, a tower was designed with levels for various needs — as a symbol of protection.
-
-Board 01: axonometry of the tower with all details. Board 02: floor plans, main sections. Board 03: topography, materials, sections and layers.
-
-During the semester we visited Quarteira — analysing terrain, recreating sensations of the projected place. The collages show how the wall communicates with the city, creating connection with the local landscape and pedestrian/bicycle circulation.
-
-Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona)." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification1_hkwx3a.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification2_zbwnl9.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification3_gqbeqb.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification4_ribiks.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification5_jez5mm.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification6_kvkklr.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification7_nzeida.webp"]'>
-        <span class="card-number">03</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/fortification1_hkwx3a.webp" alt="Fortification" decoding="async" loading="lazy"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Meaning of Fortification. Quarteira, Portugal</div><div class="card-year">2022 · Portugal</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="published">#PUBLISHED</button></div></div>
-      </article>
-
-      <article class="project-card external" data-tags="interior" data-title="5ka — Future Retail Store Format" data-external-url="https://www.artlebedev.com/5ka/future-stores-interiors/">
-        <span class="card-number">04</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/5ka-store_pchr0e.webp" alt="5ka Store" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">5ka — Future Retail Store Format</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
-      </article>
-
-      <article class="project-card external" data-tags="residential" data-title="TVEL — Industrial facility facades and interiors" data-external-url="https://www.artlebedev.com/rosatom/tvel/">
-        <span class="card-number">05</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/tvel_ef5btj.webp" alt="TVEL" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">TVEL — Industrial facility facades and interiors</div><div class="card-year">2024–2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="residential">#FACADES</button></div></div>
-      </article>
-
-      <article class="project-card" data-slug="house-for-a-young-couple" data-tags="interior conceptual ai" data-title="House for a Young Couple" data-year="2026" data-location="Cascais, Portugal" data-type="Interior / Conceptual / AI Experiments" data-studio="Independent" data-tools="SketchUp, Lumion, AI" data-desc="A compact courtyard house designed for a young couple seeking a calm connection between interior and nature. Large sliding openings extend the living spaces into a private patio, while textured materials and soft daylight create a warm and intimate atmosphere. The project explores simplicity, natural light and subtle transitions between inside and outside." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior1_pfqunx.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior2_vy7o6r.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior3_vuftw1.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior4_nc1vsf.webp"]'>
-        <span class="card-number">06</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/interior1_pfqunx.webp" alt="House for a Young Couple" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">House for a Young Couple</div><div class="card-year">2026 · Cascais</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="ai">#AI</button></div></div>
-      </article>
-
-      <article class="project-card external" data-tags="interior conceptual" data-title="5ka — Future Stores Identity" data-external-url="https://www.artlebedev.com/5ka/future-stores-identity/">
-        <span class="card-number">07</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/5ka-identity_hqca9r.webp" alt="5ka Identity" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">5ka — Future Stores Identity</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div>
-      </article>
-
-      <article class="project-card external" data-tags="interior" data-title="Magnit Classroom" data-external-url="https://www.artlebedev.com/magnit/classroom/">
-        <span class="card-number">08</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/magnit-classroom_zxufnp.webp" alt="Magnit Classroom" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Magnit Classroom</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
-      </article>
-
-      <article class="project-card external" data-tags="interior" data-title="Magnit Retail Interiors" data-external-url="https://www.artlebedev.com/magnit/interiors/">
-        <span class="card-number">09</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/magnit-interiors_v6i4yl.webp" alt="Magnit Interiors" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Magnit Retail Interiors</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
-      </article>
-
-      <article class="project-card" data-slug="masterplan-in-dominican-republic" data-tags="masterplan residential" data-title="Masterplan in Dominican Republic" data-year="2023" data-location="Dominican Republic" data-type="Masterplan / Residential" data-studio="Archidom Studio" data-tools="SketchUp, Lumion, Photoshop" data-desc="Development of a masterplan and two standard villa types for a coastal site in Cabrera, Dominican Republic — La Perla, 32,000 m², created in collaboration with the lead architect of Archidom. The project includes first-line beachfront villas and second-line villas. The design focuses on ocean views, strong indoor-outdoor connections, large social spaces, and integration with surrounding vegetation." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd1_vpt2ll.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd2_idcj5q.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd3_zrbnfz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd4_tdehhk.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd5_awfu5j.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd6_tbcfhq.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd7_wixxla.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd8_we6pqj.webp"]'>
-        <span class="card-number">10</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/vrd3_zrbnfz.webp" alt="Masterplan DR" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Masterplan in Dominican Republic</div><div class="card-year">2023 · Dominican Republic</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div>
-      </article>
-
-      <article class="project-card" data-slug="brownie-coffeehouse" data-title="Brownie Coffeehouse" data-tags="interior" data-year="2022" data-location="Molodechno, Belarus" data-type="Interior / Commercial" data-studio="Independent" data-tools="AutoCAD, ArchiCAD, Lumion" data-desc="Interior transformation of a ground-floor space in a residential building. Urban mood, material research, and functional zoning from concept through my supervision to realisation." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie1_gg4ddh.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie2_amffnc.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie3_kmtil6.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie4_m9xjts.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie5_w9dnar.webp"]'>
-        <span class="card-number">11</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/brownie1_gg4ddh.webp" alt="Brownie Coffeehouse" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Brownie Coffeehouse</div><div class="card-year">2022 · Molodechno</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
-      </article>
-
-      <article class="project-card external" data-tags="interior" data-title="ALS 30 Spatial Design for a Cultural Event" data-external-url="https://www.artlebedev.com/news2025party/">
-        <span class="card-number">12</span><span class="ext-badge">Artlebedev</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/als30_oyk09l.webp" alt="ALS 30" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">ALS 30 Spatial Design for a Cultural Event</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div>
-      </article>
-
-      <article class="project-card" data-slug="competition-alborada" data-tags="conceptual masterplan" data-title="Competition Alborada Benahavís" data-year="2021" data-location="Benahavís, Spain" data-type="Competition / Hospitality" data-studio="Archidom Studio" data-tools="AutoCAD, Rhino, Photoshop" data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside, architecture as landscape continuation. Concept plans, sketches, diagrams, post-production." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/xab_ay2l4e.webp"]'>
-        <span class="card-number">13</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/xab_ay2l4e.webp" alt="Alborada" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Competition Alborada</div><div class="card-year">2021 · Benahavís</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="masterplan">#MASTERPLAN</button></div></div>
-      </article>
-
-      <article class="project-card" data-slug="museum-nova" data-title="Museum of Modern Art NOVA" data-tags="conceptual" data-year="2022" data-location="Warsaw / Minsk" data-type="Cultural / Public" data-studio="Graduation" data-tools="AutoCAD, ArchiCAD, Lumion" data-desc="The Museum of Modern Art NOVA is conceived as a fusion of cultural ambition and natural power — a place where art and landscape speak the same language. Located on Soltistinskaya Sloboda Square in Minsk, along the Svisloch River, the museum is designed as a catalyst for the city's cultural expansion. The form is inspired by a tectonic fault: walls rise from the ground on three sides, creating a sheltering roof that emerges organically from the earth." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova1_muxmku.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova2_sszht7.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova3_f5wauw.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova4_rsx1tf.webp"]'>
-        <span class="card-number">14</span>
-        <div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/nova2_sszht7.webp" alt="Museum NOVA" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div>
-        <div class="card-meta"><div class="card-info"><div class="card-name">Museum of Modern Art NOVA</div><div class="card-year">2022 · Warsaw / Minsk</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div>
-      </article>
-
+The result combines our vision of modern style for the area, the client's desires, a versatile layout with all necessary amenities, and perfect landscaping." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12951_lvxm9b.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p1_yolwxd.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p2_wufuyf.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p3_xnwyhz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/1295p4_piexgs.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12952_dlwkvb.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12953_fdvnkl.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12954_qmgnfg.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12955_v6jutz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12956_cp1eau.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12957_dceeyn.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12958_trmeyi.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/12959_n7pfjz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129510_jb7raz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129511_mnhfub.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129512_eoztak.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129513_ll9ha1.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129514_ysw56i.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129515_iwo7ek.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129516_k7s4vg.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/129517_ehjibi.webp"]'><span class="card-number">02</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/12951_lvxm9b.webp" alt="1295" fetchpriority="high" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">1295 — Residential Complex</div><div class="card-year">2024 · Minsk / Moscow</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div></article>
+      <article class="project-card" data-slug="meaning-of-fortification" data-tags="conceptual published" data-title="Meaning of Fortification" data-year="2022" data-location="Quarteira, Portugal" data-type="Urban / Public" data-studio="ULisboa · Erasmus" data-tools="AutoCAD, ArchiCAD, Photoshop" data-desc="Three boards represent the final stage of the semester project in urban design at ULisboa. Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona)." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification1_hkwx3a.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification2_zbwnl9.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification3_gqbeqb.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification4_ribiks.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification5_jez5mm.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification6_kvkklr.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/fortification7_nzeida.webp"]'><span class="card-number">03</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/fortification1_hkwx3a.webp" alt="Fortification" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Meaning of Fortification. Quarteira, Portugal</div><div class="card-year">2022 · Portugal</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="published">#PUBLISHED</button></div></div></article>
+      <article class="project-card external" data-tags="interior" data-title="5ka — Future Retail Store Format" data-external-url="https://www.artlebedev.com/5ka/future-stores-interiors/"><span class="card-number">04</span><span class="ext-badge">Artlebedev</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/5ka-store_pchr0e.webp" alt="5ka Store" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">5ka — Future Retail Store Format</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div></article>
+      <article class="project-card external" data-tags="residential" data-title="TVEL — Industrial facility facades and interiors" data-external-url="https://www.artlebedev.com/rosatom/tvel/"><span class="card-number">05</span><span class="ext-badge">Artlebedev</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/tvel_ef5btj.webp" alt="TVEL" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">TVEL — Industrial facility facades and interiors</div><div class="card-year">2024–2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="residential">#FACADES</button></div></div></article>
+      <article class="project-card" data-slug="house-for-a-young-couple" data-tags="interior conceptual ai" data-title="House for a Young Couple" data-year="2026" data-location="Cascais, Portugal" data-type="Interior / Conceptual / AI Experiments" data-studio="Independent" data-tools="SketchUp, Lumion, AI" data-desc="A compact courtyard house designed for a young couple seeking a calm connection between interior and nature." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior1_pfqunx.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior2_vy7o6r.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior3_vuftw1.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/interior4_nc1vsf.webp"]'><span class="card-number">06</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/interior1_pfqunx.webp" alt="House for a Young Couple" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">House for a Young Couple</div><div class="card-year">2026 · Cascais</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="ai">#AI</button></div></div></article>
+      <article class="project-card external" data-tags="interior conceptual" data-title="5ka — Future Stores Identity" data-external-url="https://www.artlebedev.com/5ka/future-stores-identity/"><span class="card-number">07</span><span class="ext-badge">Artlebedev</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/5ka-identity_hqca9r.webp" alt="5ka Identity" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">5ka — Future Stores Identity</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div></article>
+      <article class="project-card external" data-tags="interior" data-title="Magnit Classroom" data-external-url="https://www.artlebedev.com/magnit/classroom/"><span class="card-number">08</span><span class="ext-badge">Artlebedev</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/magnit-classroom_zxufnp.webp" alt="Magnit Classroom" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Magnit Classroom</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div></article>
+      <article class="project-card external" data-tags="interior" data-title="Magnit Retail Interiors" data-external-url="https://www.artlebedev.com/magnit/interiors/"><span class="card-number">09</span><span class="ext-badge">Artlebedev</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/magnit-interiors_v6i4yl.webp" alt="Magnit Interiors" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Magnit Retail Interiors</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div></article>
+      <article class="project-card" data-slug="masterplan-in-dominican-republic" data-tags="masterplan residential" data-title="Masterplan in Dominican Republic" data-year="2023" data-location="Dominican Republic" data-type="Masterplan / Residential" data-studio="Archidom Studio" data-tools="SketchUp, Lumion, Photoshop" data-desc="Development of a masterplan and two standard villa types for a coastal site in Cabrera, Dominican Republic — La Perla, 32,000 m²." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd1_vpt2ll.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd2_idcj5q.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd3_zrbnfz.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd4_tdehhk.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd5_awfu5j.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd6_tbcfhq.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd7_wixxla.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/vrd8_we6pqj.webp"]'><span class="card-number">10</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/vrd3_zrbnfz.webp" alt="Masterplan DR" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Masterplan in Dominican Republic</div><div class="card-year">2023 · Dominican Republic</div></div><div class="card-tags"><button class="tag" data-filter="masterplan">#MASTERPLAN</button><button class="tag" data-filter="residential">#RESIDENTIAL</button></div></div></article>
+      <article class="project-card" data-slug="brownie-coffeehouse" data-title="Brownie Coffeehouse" data-tags="interior" data-year="2022" data-location="Molodechno, Belarus" data-type="Interior / Commercial" data-studio="Independent" data-tools="AutoCAD, ArchiCAD, Lumion" data-desc="Interior transformation of a ground-floor space in a residential building. Urban mood, material research, and functional zoning from concept through supervision to realisation." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie1_gg4ddh.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie2_amffnc.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie3_kmtil6.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie4_m9xjts.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/brownie5_w9dnar.webp"]'><span class="card-number">11</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/brownie1_gg4ddh.webp" alt="Brownie Coffeehouse" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Brownie Coffeehouse</div><div class="card-year">2022 · Molodechno</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div></article>
+      <article class="project-card external" data-tags="interior" data-title="ALS 30 Spatial Design for a Cultural Event" data-external-url="https://www.artlebedev.com/news2025party/"><span class="card-number">12</span><span class="ext-badge">Artlebedev</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/als30_oyk09l.webp" alt="ALS 30" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">View on artlebedev.com</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">ALS 30 Spatial Design for a Cultural Event</div><div class="card-year">2025 · Russia</div></div><div class="card-tags"><button class="tag" data-filter="interior">#INTERIOR</button></div></div></article>
+      <article class="project-card" data-slug="competition-alborada" data-tags="conceptual masterplan" data-title="Competition Alborada Benahavís" data-year="2021" data-location="Benahavís, Spain" data-type="Competition / Hospitality" data-studio="Archidom Studio" data-tools="AutoCAD, Rhino, Photoshop" data-desc="Wellness retreat and aparthotel complex in Andalusian landscape. Terraced forms carved into the hillside." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/xab_ay2l4e.webp"]'><span class="card-number">13</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/xab_ay2l4e.webp" alt="Alborada" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Competition Alborada</div><div class="card-year">2021 · Benahavís</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button><button class="tag" data-filter="masterplan">#MASTERPLAN</button></div></div></article>
+      <article class="project-card" data-slug="museum-nova" data-title="Museum of Modern Art NOVA" data-tags="conceptual" data-year="2022" data-location="Warsaw / Minsk" data-type="Cultural / Public" data-studio="Graduation" data-tools="AutoCAD, ArchiCAD, Lumion" data-desc="The Museum of Modern Art NOVA is conceived as a fusion of cultural ambition and natural power. Located on Soltistinskaya Sloboda Square in Minsk, along the Svisloch River, the museum is designed as a catalyst for the city's cultural expansion. The form is inspired by a tectonic fault: walls rise from the ground on three sides, creating a sheltering roof that emerges organically from the earth." data-images='["https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova1_muxmku.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova2_sszht7.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova3_f5wauw.webp","https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto/nova4_rsx1tf.webp"]'><span class="card-number">14</span><div class="card-img"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/q_auto,f_auto,w_800/nova2_sszht7.webp" alt="Museum NOVA" loading="lazy" decoding="async"><div class="card-overlay"><span class="overlay-txt">Open project</span></div></div><div class="card-meta"><div class="card-info"><div class="card-name">Museum of Modern Art NOVA</div><div class="card-year">2022 · Warsaw / Minsk</div></div><div class="card-tags"><button class="tag" data-filter="conceptual">#CONCEPTUAL</button></div></div></article>
     </main>
-
-    <!-- ── MODAL ── -->
     <section class="modal" id="modal" aria-hidden="true">
       <div class="modal-overlay" id="modalOverlay"></div>
       <div class="modal-content" role="dialog" aria-modal="true">
         <button class="modal-close" id="modalClose" aria-label="Close">×</button>
         <div class="modal-gallery">
-          <div class="modal-stage-wrap">
-            <div class="modal-stage ph" id="modalMain"></div>
-            <button class="nav-arrow prev" id="prevImg" type="button" aria-label="Previous image">
-              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button class="nav-arrow next" id="nextImg" type="button" aria-label="Next image">
-              <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-            </button>
-          </div>
+          <div class="modal-stage-wrap"><div class="modal-stage ph" id="modalMain"></div><button class="nav-arrow prev" id="prevImg" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><button class="nav-arrow next" id="nextImg" type="button" aria-label="Next image"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div>
           <div class="modal-thumbs" id="modalThumbs"></div>
         </div>
-        <aside class="modal-info">
-          <div>
-            <div class="modal-year" id="modalYear"></div>
-            <div class="modal-title" id="modalTitle"></div>
-          </div>
-          <p class="modal-desc" id="modalDesc"></p>
-          <div class="modal-specs" id="modalSpecs"></div>
-          <div id="modalExtra"></div>
-        </aside>
+        <aside class="modal-info"><div><div class="modal-year" id="modalYear"></div><div class="modal-title" id="modalTitle"></div></div><p class="modal-desc" id="modalDesc"></p><div class="modal-specs" id="modalSpecs"></div><div id="modalExtra"></div></aside>
       </div>
     </section>
-
     <footer class="site-footer">
       <a class="foot-about" href="about.html">About</a>
       <div class="foot-right">
@@ -384,240 +215,42 @@ Published in the magazine of the Universitat Politecnica de Catalunya (Barcelona
         <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </footer>
-
   </div>
-
   <script>
-    /* ── CUSTOM CURSOR — lightweight direct handler ── */
     const cursor = document.getElementById('cursor');
-    const desktop = matchMedia('(hover:hover) and (pointer:fine)').matches;
-    if (desktop) {
-      document.addEventListener('mousemove', e => {
-        cursor.style.transform = `translate(${e.clientX - 4}px,${e.clientY - 4}px)`;
-      }, { passive: true });
-      document.querySelectorAll('a,button,.project-card').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('big'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
-      });
+    if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+      document.addEventListener('mousemove', e => { cursor.style.transform = 'translate('+(e.clientX-4)+'px,'+(e.clientY-4)+'px)'; }, {passive:true});
+      document.querySelectorAll('a,button,.project-card').forEach(el => { el.addEventListener('mouseenter',()=>cursor.classList.add('big')); el.addEventListener('mouseleave',()=>cursor.classList.remove('big')); });
     }
+    /* ── TO CREATE DROPDOWN ── */
+    (function(){var nc=document.getElementById('navCreate');if(!nc)return;var btn=nc.querySelector('.nav-create-btn');var toggle=function(){var o=nc.classList.toggle('open');btn.setAttribute('aria-expanded',String(o));};btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();toggle();});btn.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();toggle();},{passive:false});document.addEventListener('click',function(e){if(!nc.contains(e.target)){nc.classList.remove('open');btn.setAttribute('aria-expanded','false');}});})();
+    (function(){var ticker=document.getElementById('ticker');if(!ticker)return;var origSpans=[...ticker.children];requestAnimationFrame(function(){var spanW=origSpans[0]?origSpans[0].offsetWidth:200;var needed=Math.ceil(window.innerWidth*2.5/spanW);var current=ticker.children.length;if(needed>current){var frag=document.createDocumentFragment();for(var i=0;i<needed-current;i++)frag.appendChild(origSpans[i%origSpans.length].cloneNode(true));ticker.appendChild(frag);}var totalW=ticker.children.length*spanW;ticker.style.animationDuration=((totalW*0.5)/22).toFixed(1)+'s';});})();
+    var modal=document.getElementById('modal'),modalMain=document.getElementById('modalMain'),modalThumbs=document.getElementById('modalThumbs'),modalTitle=document.getElementById('modalTitle'),modalYear=document.getElementById('modalYear'),modalDesc=document.getElementById('modalDesc'),modalSpecs=document.getElementById('modalSpecs'),modalExtra=document.getElementById('modalExtra'),prevImg=document.getElementById('prevImg'),nextImg=document.getElementById('nextImg');
+    var currentImages=[],currentIndex=0,currentAlt='';
+    function toArray(v){try{return JSON.parse(v||'[]')}catch{return[]}}
+    function renderSpecs(d){var specs=[{label:'Type',val:d.type},{label:'Studio',val:d.studio},{label:'Tools',val:d.tools}].filter(x=>x.val);modalSpecs.innerHTML=specs.map(s=>'<div class="spec"><label>'+s.label+'</label><span>'+s.val+'</span></div>').join('');}
+    function setThumbActive(i){modalThumbs.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===i));}
+    function showImage(index){if(!currentImages.length)return;currentIndex=(index+currentImages.length)%currentImages.length;modalMain.className='modal-stage';modalMain.innerHTML='';var img=new Image();img.alt=currentAlt;img.src=currentImages[currentIndex];modalMain.appendChild(img);setThumbActive(currentIndex);}
+    function openModal(card){var d=card.dataset;currentImages=toArray(d.images);currentIndex=0;currentAlt=d.title||'';modalTitle.textContent=d.title||'';modalYear.textContent=(d.year||'')+(d.location?' · '+d.location:'');modalDesc.textContent=d.desc||'';renderSpecs(d);modalExtra.innerHTML=card.classList.contains('external')?'<p class="card-linkline"><strong>VIEW ON ARTLEBEDEV</strong></p>':'';modalThumbs.innerHTML='';if(currentImages.length){currentImages.forEach(function(src,i){var th=document.createElement('img');th.className='thumb'+(i===0?' active':'');th.src=src;th.alt=d.title||'';th.loading='lazy';th.addEventListener('click',function(){showImage(i);});modalThumbs.appendChild(th);});showImage(0);}else{modalMain.className='modal-stage ph';modalMain.textContent='No images available';}modal.classList.add('active');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';history.replaceState(null,'','#'+(d.slug||''));}
+    function closeModal(){modal.classList.remove('active');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';history.replaceState(null,'',location.pathname);}
+    function step(dir){if(currentImages.length)showImage(currentIndex+dir);}
+    document.querySelectorAll('.project-card').forEach(function(card){card.addEventListener('click',function(e){if(e.target.closest('.tag'))return;var ext=card.dataset.externalUrl;if(ext){window.open(ext,'_blank','noopener');return;}openModal(card);});});
+    function scrollFilterIntoView(btn){if(window.innerWidth>620)return;var row=document.getElementById('filterRow');if(!row)return;row.scrollTo({left:Math.max(0,btn.offsetLeft-(row.clientWidth/2)+(btn.offsetWidth/2)),behavior:'smooth'});}
+    document.querySelectorAll('.filter-btn').forEach(function(btn){btn.addEventListener('click',function(){var filter=btn.dataset.filter;document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.toggle('active',b===btn);});document.querySelectorAll('.project-card').forEach(function(card){var tags=(card.dataset.tags||'').toLowerCase().split(/\s+/);card.toggleAttribute('hidden',filter!=='all'&&!tags.includes(filter));});scrollFilterIntoView(btn);});});
+    document.querySelectorAll('.tag').forEach(function(tag){tag.addEventListener('click',function(e){e.stopPropagation();var filter=tag.dataset.filter;var activeBtn;document.querySelectorAll('.filter-btn').forEach(function(b){var match=b.dataset.filter===filter;b.classList.toggle('active',match);if(match)activeBtn=b;});document.querySelectorAll('.project-card').forEach(function(card){var tags=(card.dataset.tags||'').toLowerCase().split(/\s+/);card.toggleAttribute('hidden',filter!=='all'&&!tags.includes(filter));});if(activeBtn)scrollFilterIntoView(activeBtn);document.getElementById('filterRow').scrollIntoView({behavior:'smooth',block:'nearest'});});});
+    document.getElementById('modalOverlay').addEventListener('click',closeModal);
+    document.getElementById('modalClose').addEventListener('click',closeModal);
+    prevImg.addEventListener('click',function(){step(-1);});nextImg.addEventListener('click',function(){step(1);});
+    window.addEventListener('keydown',function(e){if(!modal.classList.contains('active'))return;if(e.key==='Escape')closeModal();if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1);});
+    function openFromHash(){var slug=location.hash.replace('#','');if(!slug)return;var card=document.querySelector('[data-slug="'+slug+'"]');if(card)openModal(card);}
+    openFromHash();window.addEventListener('hashchange',openFromHash);
+    var headerBody=document.getElementById('headerBody');
+    if(headerBody){var lastY=0,collapsed=false,fullH=0;function collapseHeader(){if(collapsed)return;collapsed=true;fullH=headerBody.scrollHeight;headerBody.style.height=fullH+'px';headerBody.getBoundingClientRect();headerBody.style.height='0';headerBody.style.opacity='0';}function expandHeader(){if(!collapsed)return;collapsed=false;headerBody.style.height=fullH+'px';headerBody.style.opacity='1';var onEnd=function(){headerBody.style.height='';headerBody.removeEventListener('transitionend',onEnd);};headerBody.addEventListener('transitionend',onEnd);}window.addEventListener('scroll',function(){var y=Math.max(0,window.scrollY);var isMob=window.innerWidth<=620;if(!isMob){if(collapsed)expandHeader();lastY=y;return;}var pageH=document.documentElement.scrollHeight;var atBottom=pageH-window.innerHeight-y<80;if(atBottom){lastY=y;return;}var delta=y-lastY;if(delta>5&&y>60)collapseHeader();else if(delta<-5||y<20)expandHeader();lastY=y;},{passive:true});}
+    var colToggle=document.getElementById('colToggle'),grid=document.getElementById('projectsGrid');
+    if(colToggle&&grid){colToggle.addEventListener('click',function(){var is2=grid.classList.toggle('mobile-2col');colToggle.classList.toggle('active',is2);});}
 
-    /* ── TICKER ── */
-    (function () {
-      const ticker = document.getElementById('ticker');
-      if (!ticker) return;
-      const origSpans = [...ticker.children];
-      const TARGET_PX_PER_S = 22;
-      requestAnimationFrame(() => {
-        const spanW = origSpans[0] ? origSpans[0].offsetWidth : 200;
-        const needed = Math.ceil(window.innerWidth * 2.5 / spanW);
-        const current = ticker.children.length;
-        if (needed > current) {
-          const frag = document.createDocumentFragment();
-          for (let i = 0; i < needed - current; i++) frag.appendChild(origSpans[i % origSpans.length].cloneNode(true));
-          ticker.appendChild(frag);
-        }
-        const totalW = ticker.children.length * spanW;
-        ticker.style.animationDuration = ((totalW * 0.5) / TARGET_PX_PER_S).toFixed(1) + 's';
-      });
-    })();
-
-    /* ── MODAL ── */
-    const modal       = document.getElementById('modal');
-    const modalMain   = document.getElementById('modalMain');
-    const modalThumbs = document.getElementById('modalThumbs');
-    const modalTitle  = document.getElementById('modalTitle');
-    const modalYear   = document.getElementById('modalYear');
-    const modalDesc   = document.getElementById('modalDesc');
-    const modalSpecs  = document.getElementById('modalSpecs');
-    const modalExtra  = document.getElementById('modalExtra');
-    const prevImg     = document.getElementById('prevImg');
-    const nextImg     = document.getElementById('nextImg');
-
-    let currentImages = [], currentIndex = 0, currentAlt = '';
-
-    function toArray(v) { try { return JSON.parse(v || '[]') } catch { return [] } }
-
-    function renderSpecs(d) {
-      const specs = [{ label:'Type', val:d.type },{ label:'Studio', val:d.studio },{ label:'Tools', val:d.tools }].filter(x => x.val);
-      modalSpecs.innerHTML = specs.map(s => `<div class="spec"><label>${s.label}</label><span>${s.val}</span></div>`).join('');
-    }
-
-    function setThumbActive(i) {
-      modalThumbs.querySelectorAll('.thumb').forEach((t, idx) => t.classList.toggle('active', idx === i));
-    }
-
-    function showImage(index) {
-      if (!currentImages.length) return;
-      currentIndex = (index + currentImages.length) % currentImages.length;
-      const src = currentImages[currentIndex];
-      modalMain.className = 'modal-stage';
-      modalMain.innerHTML = '';
-      const img = new Image();
-      img.alt = currentAlt;
-      img.src = src;
-      modalMain.appendChild(img);
-      setThumbActive(currentIndex);
-    }
-
-    function openModal(card) {
-      const d = card.dataset;
-      currentImages = toArray(d.images);
-      currentIndex = 0;
-      currentAlt = d.title || '';
-      modalTitle.textContent = d.title || '';
-      modalYear.textContent = (d.year || '') + (d.location ? ' · ' + d.location : '');
-      modalDesc.textContent = d.desc || '';
-      renderSpecs(d);
-      modalExtra.innerHTML = card.classList.contains('external')
-        ? '<p class="card-linkline"><strong>VIEW ON ARTLEBEDEV</strong></p>' : '';
-      modalThumbs.innerHTML = '';
-      if (currentImages.length) {
-        currentImages.forEach((src, i) => {
-          const th = document.createElement('img');
-          th.className = 'thumb' + (i === 0 ? ' active' : '');
-          th.src = src; th.alt = d.title || '';
-          th.loading = 'lazy';
-          th.addEventListener('click', () => showImage(i));
-          modalThumbs.appendChild(th);
-        });
-        showImage(0);
-      } else {
-        modalMain.className = 'modal-stage ph';
-        modalMain.textContent = 'No images available';
-      }
-      modal.classList.add('active');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      history.replaceState(null, '', '#' + (d.slug || ''));
-    }
-
-    function closeModal() {
-      modal.classList.remove('active');
-      modal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      history.replaceState(null, '', location.pathname);
-    }
-
-    function step(dir) { if (currentImages.length) showImage(currentIndex + dir); }
-
-    /* ── CARD CLICKS ── */
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('click', e => {
-        if (e.target.closest('.tag')) return;
-        const ext = card.dataset.externalUrl;
-        if (ext) { window.open(ext, '_blank', 'noopener'); return; }
-        openModal(card);
-      });
-    });
-
-    /* ── FILTER ── */
-    function scrollFilterIntoView(btn) {
-      if (window.innerWidth > 620) return;
-      const row = document.getElementById('filterRow');
-      if (!row) return;
-      const target = btn.offsetLeft - (row.clientWidth / 2) + (btn.offsetWidth / 2);
-      row.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
-    }
-
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
-      document.querySelectorAll('.project-card').forEach(card => {
-        const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/);
-        card.toggleAttribute('hidden', filter !== 'all' && !tags.includes(filter));
-      });
-      scrollFilterIntoView(btn);
-    }));
-
-    document.querySelectorAll('.tag').forEach(tag => tag.addEventListener('click', e => {
-      e.stopPropagation();
-      const filter = tag.dataset.filter;
-      let activeBtn;
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        const match = b.dataset.filter === filter;
-        b.classList.toggle('active', match);
-        if (match) activeBtn = b;
-      });
-      document.querySelectorAll('.project-card').forEach(card => {
-        const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/);
-        card.toggleAttribute('hidden', filter !== 'all' && !tags.includes(filter));
-      });
-      if (activeBtn) scrollFilterIntoView(activeBtn);
-      document.getElementById('filterRow').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }));
-
-    /* ── MODAL EVENTS ── */
-    document.getElementById('modalOverlay').addEventListener('click', closeModal);
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    prevImg.addEventListener('click', () => step(-1));
-    nextImg.addEventListener('click', () => step(1));
-
-    window.addEventListener('keydown', e => {
-      if (!modal.classList.contains('active')) return;
-      if (e.key === 'Escape') closeModal();
-      if (e.key === 'ArrowLeft') step(-1);
-      if (e.key === 'ArrowRight') step(1);
-    });
-
-    /* ── HASH ROUTING ── */
-    function openFromHash() {
-      const slug = location.hash.replace('#', '');
-      if (!slug) return;
-      const card = document.querySelector(`[data-slug="${slug}"]`);
-      if (card) openModal(card);
-    }
-    openFromHash();
-    window.addEventListener('hashchange', openFromHash);
-
-    /* ── MOBILE HEADER COLLAPSE — fixed jitter at page bottom ── */
-    const headerBody = document.getElementById('headerBody');
-    if (headerBody) {
-      let lastY = 0, collapsed = false, fullH = 0;
-
-      function collapseHeader() {
-        if (collapsed) return;
-        collapsed = true;
-        fullH = headerBody.scrollHeight;
-        headerBody.style.height = fullH + 'px';
-        headerBody.getBoundingClientRect();
-        headerBody.style.height = '0';
-        headerBody.style.opacity = '0';
-      }
-      function expandHeader() {
-        if (!collapsed) return;
-        collapsed = false;
-        headerBody.style.height = fullH + 'px';
-        headerBody.style.opacity = '1';
-        const onEnd = () => { headerBody.style.height = ''; headerBody.removeEventListener('transitionend', onEnd); };
-        headerBody.addEventListener('transitionend', onEnd);
-      }
-
-      window.addEventListener('scroll', () => {
-        const y = Math.max(0, window.scrollY);
-        const isMob = window.innerWidth <= 620;
-        if (!isMob) { if (collapsed) expandHeader(); lastY = y; return; }
-
-        /* ── Key fix: stop collapse/expand cycle at page bottom ── */
-        const pageH = document.documentElement.scrollHeight;
-        const atBottom = pageH - window.innerHeight - y < 80;
-        if (atBottom) { lastY = y; return; }
-
-        const delta = y - lastY;
-        if (delta > 5 && y > 60) collapseHeader();
-        else if (delta < -5 || y < 20) expandHeader();
-        lastY = y;
-      }, { passive: true });
-    }
-
-    /* ── MOBILE 2-COLUMN TOGGLE ── */
-    const colToggle = document.getElementById('colToggle');
-    const grid      = document.getElementById('projectsGrid');
-    if (colToggle && grid) {
-      colToggle.addEventListener('click', () => {
-        const is2 = grid.classList.toggle('mobile-2col');
-        colToggle.classList.toggle('active', is2);
-      });
-    }
+    /* ── TO CREATE DROPDOWN ── */
+    (function(){var nc=document.getElementById('navCreate');if(!nc)return;var btn=nc.querySelector('.nav-create-btn');var toggle=function(){var o=nc.classList.toggle('open');btn.setAttribute('aria-expanded',String(o));};btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();toggle();});btn.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();toggle();},{passive:false});document.addEventListener('click',function(e){if(!nc.contains(e.target)){nc.classList.remove('open');btn.setAttribute('aria-expanded','false');}});})();
   </script>
 </body>
 </html>
