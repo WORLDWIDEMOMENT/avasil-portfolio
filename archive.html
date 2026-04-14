@@ -4,306 +4,131 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Archive / Space — Vasileuskaya</title>
-  <!-- ── SEO & SOCIAL META ── -->
-  <meta name="description" content="Spec case study: visual identity for an architectural archive and cultural institution. Identity as classification infrastructure — numbering system, category logic, spatial application.">
-  <meta name="keywords" content="vasileuskaya, avasil, anastasiya vasileuskaya, architect, art director, spatial design, architecture portfolio, interior design, masterplan">
-  <meta name="author" content="Anastasiya Vasileuskaya">
-  <meta name="robots" content="archive, follow">
-  <link rel="canonical" href="https://worldwidemoment.github.io/avasil/archive.html">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://worldwidemoment.github.io/avasil/archive.html">
-  <meta property="og:title" content="Archive / Space — Visual Identity Case Study · A.Vasileuskaya">
-  <meta property="og:description" content="Spec case study: visual identity for an architectural archive and cultural institution. Identity as classification infrastructure — numbering system, category logic, spatial application.">
-  <meta property="og:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Archive / Space — Visual Identity Case Study · A.Vasileuskaya">
-  <meta name="twitter:description" content="Spec case study: visual identity for an architectural archive and cultural institution. Identity as classification infrastructure — numbering system, category logic, spatial application.">
-  <meta name="twitter:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg">
-<!-- Favicon -->
+<meta name="description" content="Spec case study: visual identity for an architectural archive and cultural institution. Identity as classification infrastructure — numbering system, category logic, spatial application.">
+<meta name="keywords" content="vasileuskaya, avasil, anastasiya vasileuskaya, architect, art director, spatial design">
+<meta name="author" content="Anastasiya Vasileuskaya">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://worldwidemoment.github.io/avasil/archive.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://worldwidemoment.github.io/avasil/archive.html">
+<meta property="og:title" content="Archive / Space — Visual Identity Case Study · A.Vasileuskaya">
+<meta property="og:description" content="Spec case study: visual identity for an architectural archive and cultural institution.">
+<meta property="og:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Archive / Space — Visual Identity Case Study · A.Vasileuskaya">
+<meta name="twitter:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-  
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,700;1,300&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET ─── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --lime:#aafb00;--dark:#0d0d0d;--mid:#f0f0f0;--g:3px;
-  --arch:#111;--land:#5c6038;--int:#1e4fd4;--urb:#888;--play:#ff6b8a;
-}
+:root{--lime:#aafb00;--dark:#0d0d0d;--mid:#f0f0f0;--g:3px;--arch:#111;--land:#5c6038;--int:#1e4fd4;--urb:#888;--play:#ff6b8a}
 ::selection{background:var(--lime);color:#000}
 html{scroll-behavior:smooth}
-body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
-     cursor:none;overflow-x:hidden;padding-bottom:56px}
-
-/* ─── CURSOR ─── */
-#cur{
-  position:fixed;width:8px;height:8px;border-radius:50%;
-  background:white;pointer-events:none;z-index:9999;
-  margin:-4px 0 0 -4px;
-  transition:width .14s ease,height .14s ease;
-  mix-blend-mode:difference;will-change:left,top;
-}
+body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:none;overflow-x:hidden;padding-bottom:56px}
+#cur{position:fixed;width:8px;height:8px;border-radius:50%;background:white;pointer-events:none;z-index:9999;margin:-4px 0 0 -4px;transition:width .14s ease,height .14s ease;mix-blend-mode:difference;will-change:left,top}
 #cur.big{width:44px;height:44px;margin:-22px 0 0 -22px}
 @media(hover:none){#cur{display:none}}
-
-/* ─── SCROLL REVEAL ─── */
-.rev{opacity:0;transform:translateY(28px);
-  transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rev{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 .rev.in{opacity:1;transform:none}
 .rev.d1{transition-delay:.12s}.rev.d2{transition-delay:.24s}.rev.d3{transition-delay:.38s}
-.rev-l{opacity:0;transform:translateX(-32px);
-  transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rev-l{opacity:0;transform:translateX(-32px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 .rev-l.in{opacity:1;transform:none}
-
-/* ─── NAV: dark glass, LIME links ─── */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  padding:20px 60px;display:flex;justify-content:space-between;align-items:center;
-  background:rgba(10,10,10,.72);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-  color:white;
-}
-.nav a{cursor:none}
-.nav-back{
-  font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--lime);text-decoration:none;opacity:.7;transition:opacity .2s;
-}
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,10,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06);color:white}
+.nav a,.nav button{cursor:none}
+.nav-back{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);text-decoration:none;opacity:.7;transition:opacity .2s}
 .nav-back:hover{opacity:1}
-.nav-links{display:flex;gap:22px;font-size:10px;font-weight:700;letter-spacing:.18em;
-  text-transform:uppercase;flex-wrap:wrap;justify-content:flex-end}
-.nav-links a{
-  color:var(--lime);text-decoration:none;opacity:.55;transition:opacity .2s;
-}
+.nav-links{display:flex;gap:22px;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.nav-links a{color:var(--lime);text-decoration:none;opacity:.55;transition:opacity .2s}
 .nav-links a:hover{opacity:1}
 
-/* ─── FIXED FOOTER: lime links, bigger text ─── */
-.page-bottom{
-  position:fixed;bottom:0;left:0;right:0;z-index:400;
-  background:var(--dark);color:white;
-  padding:14px 60px;display:flex;justify-content:space-between;align-items:center;
-  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  border-top:1px solid rgba(255,255,255,.07);
-}
-.page-bottom a{
-  color:var(--lime);text-decoration:none;opacity:.7;transition:opacity .2s;cursor:none;
-}
+/* ── TO CREATE DROPDOWN ── */
+.nav-create{position:relative;display:inline-flex;align-items:center}
+.nav-create-btn{font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:none;border:none;color:var(--lime);opacity:.55;cursor:none;padding:0;transition:opacity .2s}
+.nav-create-btn:hover{opacity:1}
+.nav-create-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:140px;display:flex;flex-direction:column;background:rgba(6,6,6,.98);border:1px solid rgba(255,255,255,.1);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s;z-index:600;pointer-events:none}
+.nav-create-menu a{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--lime);opacity:.55;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.07);transition:opacity .15s;display:block}
+.nav-create-menu a:last-child{border-bottom:none}
+.nav-create-menu a:hover{opacity:1}
+@media(hover:hover){.nav-create:hover .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}}
+.nav-create.open .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+
+.page-bottom{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--dark);color:white;padding:14px 60px;display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.07)}
+.page-bottom a{color:var(--lime);text-decoration:none;opacity:.7;transition:opacity .2s;cursor:none}
 .page-bottom a:hover{opacity:1}
 .pb-right{display:flex;gap:24px;align-items:center}
-
-/* ─────────────── HERO ─────────────── */
-/* Photo background with strong darkening overlay + grid texture */
-.hero{
-  background:var(--dark)
-    url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775592590/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%B2%D0%B0_upscaled_crung9.jpg')
-    center / cover no-repeat;
-  padding:110px 60px 90px;min-height:100vh;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  position:relative;overflow:hidden;
-}
-/* Dark overlay so text is legible */
+.hero{background:var(--dark) url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775592590/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%B2%D0%B0_upscaled_crung9.jpg') center / cover no-repeat;padding:110px 60px 90px;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.68);z-index:0}
-/* Subtle dot-grid pattern */
-.hero::after{
-  content:'';position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
-  background-size:80px 80px;z-index:1;pointer-events:none;
-}
-/* Lime accent bar */
-.hero-line{
-  position:absolute;left:60px;top:0;bottom:0;width:2px;
-  background:linear-gradient(to bottom,transparent 8%,var(--lime) 38%,transparent 92%);
-  z-index:2;
-}
+.hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:80px 80px;z-index:1;pointer-events:none}
+.hero-line{position:absolute;left:60px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent 8%,var(--lime) 38%,transparent 92%);z-index:2}
 .hero>*:not(.hero-line){position:relative;z-index:3}
-
-.hero-code{
-  font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(255,255,255,.38);margin-bottom:48px;
-}
+.hero-code{font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:48px}
 .hero-code span{color:var(--lime)}
-.hero-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(60px,12vw,170px);font-weight:900;
-  letter-spacing:-.01em;text-transform:uppercase;line-height:.88;
-  color:white;margin-bottom:36px;
-}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(60px,12vw,170px);font-weight:900;letter-spacing:.01em;text-transform:uppercase;line-height:.88;color:white;margin-bottom:36px}
 .hero-title em{display:block;font-style:normal;color:var(--lime)}
-.hero-sub{
-  font-size:clamp(15px,1.4vw,20px);font-weight:300;line-height:1.65;
-  color:rgba(255,255,255,.62);max-width:540px;margin-bottom:56px;
-}
+.hero-sub{font-size:clamp(15px,1.4vw,20px);font-weight:300;line-height:1.65;color:rgba(255,255,255,.62);max-width:540px;margin-bottom:56px}
 .hero-tags{display:flex;gap:10px;flex-wrap:wrap}
-.htag{
-  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  padding:7px 16px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.58);
-  transition:border-color .22s,color .22s;cursor:none;
-}
+.htag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:7px 16px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.58);transition:border-color .22s,color .22s;cursor:none}
 .htag:hover{border-color:var(--lime);color:var(--lime)}
-
-/* ─── SECTION LABEL ─── */
-.sec-lbl{
-  font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(0,0,0,.28);margin-bottom:36px;display:flex;align-items:center;gap:14px;
-}
+.sec-lbl{font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(0,0,0,.28);margin-bottom:36px;display:flex;align-items:center;gap:14px}
 .sec-lbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,.1)}
 .ds .sec-lbl{color:rgba(255,255,255,.28)}
 .ds .sec-lbl::after{background:rgba(255,255,255,.1)}
-
-/* ─────────────── 01 CHALLENGE ─────────────── */
 .challenge{padding:90px 60px;border-bottom:1px solid rgba(0,0,0,.08)}
 .ch-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
-.ch-card{
-  padding:32px;border:1px solid rgba(0,0,0,.1);
-  position:relative;transition:transform .3s,border-color .2s;cursor:none;
-}
+.ch-card{padding:32px;border:1px solid rgba(0,0,0,.1);position:relative;transition:transform .3s,border-color .2s;cursor:none}
 .ch-card:hover{transform:translateY(-4px);border-color:rgba(0,0,0,.28)}
 .ch-card.target{background:var(--dark);border-color:var(--lime)}
-.ch-lbl{font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(0,0,0,.32);margin-bottom:18px}
+.ch-lbl{font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.32);margin-bottom:18px}
 .ch-card.target .ch-lbl{color:var(--lime)}
-.ch-title{
-  font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;
-  letter-spacing:.04em;color:#111;margin-bottom:14px;
-}
+.ch-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:.04em;color:#111;margin-bottom:14px}
 .ch-card.target .ch-title{color:var(--lime)}
 .ch-desc{font-size:13px;line-height:1.78;color:rgba(0,0,0,.55)}
 .ch-card.target .ch-desc{color:rgba(255,255,255,.5)}
-.ch-tick{
-  position:absolute;top:14px;right:14px;width:24px;height:24px;
-  background:var(--lime);display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;color:var(--dark);
-}
-
-/* ─────────────── 02 CONCEPT: text left, brochure right ─────────────── */
-/* Split layout: left gets all text, right is nearly full-height brochure image */
-.concept{
-  display:grid;grid-template-columns:1fr 1fr;
-  border-bottom:1px solid rgba(0,0,0,.08);
-  overflow:hidden;
-  background:var(--mid);
-}
+.ch-tick{position:absolute;top:14px;right:14px;width:24px;height:24px;background:var(--lime);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--dark)}
+.concept{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(0,0,0,.08);overflow:hidden;background:var(--mid)}
 .concept-left{padding:90px 60px;display:flex;flex-direction:column;justify-content:center}
-.concept-head{
-  font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.8vw,52px);
-  font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1;
-  color:#111;margin-bottom:36px;
-}
-.concept-head em{
-  font-style:normal;display:block;color:rgba(0,0,0,.28);font-weight:400;
-  font-size:.5em;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px;
-}
+.concept-head{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.8vw,52px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1;color:#111;margin-bottom:36px}
+.concept-head em{font-style:normal;display:block;color:rgba(0,0,0,.28);font-weight:400;font-size:.5em;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
 .concept-points{list-style:none}
-.concept-points li{
-  padding:16px 0;border-bottom:1px solid rgba(0,0,0,.1);
-  font-size:14px;line-height:1.72;color:#2a2a2a;
-  display:flex;gap:16px;align-items:baseline;
-}
+.concept-points li{padding:16px 0;border-bottom:1px solid rgba(0,0,0,.1);font-size:14px;line-height:1.72;color:#2a2a2a;display:flex;gap:16px;align-items:baseline}
 .concept-points li::before{content:'—';color:rgba(0,0,0,.25);flex-shrink:0}
-.concept-quote{
-  font-size:clamp(15px,1.6vw,21px);font-weight:300;line-height:1.6;color:#2a2a2a;
-  padding:32px;border:1px solid rgba(0,0,0,.12);background:#fff;
-  position:relative;margin-top:36px;
-}
-.concept-quote::before{
-  content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--lime);
-}
+.concept-quote{font-size:clamp(15px,1.6vw,21px);font-weight:300;line-height:1.6;color:#2a2a2a;padding:32px;border:1px solid rgba(0,0,0,.12);background:#fff;position:relative;margin-top:36px}
+.concept-quote::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--lime)}
 .cq-ru{font-size:13px;line-height:1.7;color:rgba(0,0,0,.45);margin-top:14px}
-/* Brochure image — fills the right column, nearly full height */
-.concept-img{
-  overflow:hidden;background:#d8d5d0;min-height:640px;
-  position:relative;
-}
-.concept-img img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .6s cubic-bezier(.77,0,.18,1);
-}
+.concept-img{overflow:hidden;background:#d8d5d0;min-height:640px;position:relative}
+.concept-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.77,0,.18,1)}
 .concept-img:hover img{transform:scale(1.02)}
-
-/* ─────────────── 03 CLASSIFICATION ─────────────── */
-/* Big colourful category cards — the classification IS the design */
 .classif{padding:90px 60px;border-bottom:1px solid rgba(0,0,0,.08)}
-.classif-heading{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(32px,4.5vw,62px);font-weight:900;
-  letter-spacing:.01em;text-transform:uppercase;line-height:.92;
-  margin-bottom:64px;max-width:660px;
-}
-.classif-heading em{
-  font-style:normal;color:rgba(0,0,0,.2);display:block;
-  font-size:.43em;letter-spacing:.22em;text-transform:uppercase;
-  font-weight:400;margin-bottom:10px;
-}
+.classif-heading{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.5vw,62px);font-weight:900;letter-spacing:.01em;text-transform:uppercase;line-height:.92;margin-bottom:64px;max-width:660px}
+.classif-heading em{font-style:normal;color:rgba(0,0,0,.2);display:block;font-size:.43em;letter-spacing:.22em;text-transform:uppercase;font-weight:400;margin-bottom:10px}
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g)}
-.cat-card{
-  padding:38px 32px;position:relative;overflow:hidden;cursor:none;
-  transition:transform .35s cubic-bezier(.16,1,.3,1);
-}
+.cat-card{padding:38px 32px;position:relative;overflow:hidden;cursor:none;transition:transform .35s cubic-bezier(.16,1,.3,1)}
 .cat-card:hover{transform:translateY(-6px) scale(1.01)}
-.cat-num{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(72px,9vw,124px);font-weight:900;line-height:1;
-  letter-spacing:-.02em;opacity:.15;margin-bottom:18px;
-}
-.cat-code{
-  font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-  margin-bottom:12px;display:inline-block;padding:6px 16px;border-radius:999px;color:white;
-}
-.cat-name{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(20px,2.4vw,32px);font-weight:700;
-  letter-spacing:.04em;text-transform:uppercase;line-height:1;
-}
+.cat-num{font-family:'Space Grotesk',sans-serif;font-size:clamp(72px,9vw,124px);font-weight:900;line-height:1;letter-spacing:-.02em;opacity:.15;margin-bottom:18px}
+.cat-code{font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px;display:inline-block;padding:6px 16px;border-radius:999px;color:white}
+.cat-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2.4vw,32px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1}
 .cat-idx{position:absolute;top:22px;right:24px;font-size:10px;font-weight:700;letter-spacing:.2em;opacity:.35}
-/* Per-category colours */
 .c-arch{background:#111;color:white}.c-arch .cat-code{background:#2a2a2a}.c-arch .cat-num{color:white}.c-arch .cat-idx{color:rgba(255,255,255,.38)}
 .c-land{background:var(--land);color:white}.c-land .cat-code{background:rgba(0,0,0,.3)}.c-land .cat-num{color:white}
 .c-int{background:var(--int);color:white}.c-int .cat-code{background:rgba(0,0,0,.22)}.c-int .cat-num{color:white}
 .c-urb{background:#cecece;color:#222}.c-urb .cat-code{background:rgba(0,0,0,.18);color:white}.c-urb .cat-num{color:#222}
 .c-play{background:var(--play);color:white}.c-play .cat-code{background:rgba(0,0,0,.18)}.c-play .cat-num{color:white}
 .c-arc{background:var(--lime);color:var(--dark)}.c-arc .cat-code{background:rgba(0,0,0,.15);color:var(--dark)}.c-arc .cat-num{color:var(--dark)}.c-arc .cat-idx{color:rgba(0,0,0,.4)}
-
-/* ─── ПЛАШКИ STRIP ─── */
-/* The плашки PNG has a black background.
-   mix-blend-mode:screen removes the black, showing only the bright 3D icons.
-   This turns the black bg transparent against the dark section below. */
-.plashki{
-  background:#0d0d0d;line-height:0;overflow:hidden;
-  border-top:1px solid rgba(255,255,255,.04);
-}
-.plashki img{
-  width:100%;max-height:300px;
-  object-fit:contain;object-position:center;
-  display:block;mix-blend-mode:screen;
-  /* Slight scale animation on hover for fun */
-  transition:transform .4s cubic-bezier(.16,1,.3,1);
-}
+/* plashki: replace src="paste" with your actual Cloudinary URL */
+.plashki{background:#0d0d0d;line-height:0;overflow:hidden;border-top:1px solid rgba(255,255,255,.04)}
+.plashki img{width:100%;max-height:300px;object-fit:contain;object-position:center;display:block;mix-blend-mode:screen;transition:transform .4s cubic-bezier(.16,1,.3,1)}
 .plashki:hover img{transform:scale(1.02)}
-
-/* ─────────────── 04 ID SYSTEM ─────────────── */
-.id-sys{padding:90px 60px;background:var(--dark);color:white;
-  border-bottom:1px solid rgba(255,255,255,.05)}
-.id-head{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(34px,3.2vw,48px);font-weight:900;
-  letter-spacing:.04em;text-transform:uppercase;color:white;
-  margin-bottom:54px;line-height:1.05;
-}
+.id-sys{padding:90px 60px;background:var(--dark);color:white;border-bottom:1px solid rgba(255,255,255,.05)}
+.id-head{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,3.2vw,48px);font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:white;margin-bottom:54px;line-height:1.05}
 .id-head span{color:var(--lime)}
 .id-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--g);margin-bottom:44px}
-.id-card{
-  background:#444444;padding:24px;border:1px solid rgba(255,255,255,.06);
-  transition:border-color .25s,transform .25s;cursor:none;
-}
+.id-card{background:#444444;padding:24px;border:1px solid rgba(255,255,255,.06);transition:border-color .25s,transform .25s;cursor:none}
 .id-card:hover{border-color:rgba(170,251,0,.38);transform:translateY(-2px)}
 .id-code-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .id-code{font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--lime)}
@@ -315,24 +140,13 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
 .id-part span{display:block;font-size:8px;letter-spacing:.16em;color:rgba(255,255,255,.3);margin-bottom:6px;font-weight:400;text-transform:uppercase}
 .id-part strong{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:white}
 .id-sep{padding:14px 12px;color:rgba(255,255,255,.22);display:flex;align-items:center;font-size:20px}
-
-/* ─────────────── 05 APPLICATIONS ─────────────── */
 .apps{padding:90px 60px;border-bottom:1px solid rgba(0,0,0,.08)}
 .apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--g)}
-.app-item{
-  padding:44px;position:relative;overflow:hidden;min-height:300px;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  transition:transform .35s cubic-bezier(.16,1,.3,1);cursor:none;
-}
+.app-item{padding:44px;position:relative;overflow:hidden;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .35s cubic-bezier(.16,1,.3,1);cursor:none}
 .app-item:hover{transform:translateY(-4px)}
-.app-item.lt{background:var(--mid)}
-.app-item.dk{background:var(--dark);color:white}
-.app-item.lm{background:var(--lime);color:var(--dark)}
+.app-item.lt{background:var(--mid)}.app-item.dk{background:var(--dark);color:white}.app-item.lm{background:var(--lime);color:var(--dark)}
 .app-ltr{position:absolute;top:22px;left:24px;font-size:12px;font-weight:700;letter-spacing:.22em;opacity:.12}
-.app-badge{
-  display:inline-block;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  padding:5px 14px;border:1px solid currentColor;margin-bottom:16px;align-self:flex-start;opacity:.5;
-}
+.app-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:5px 14px;border:1px solid currentColor;margin-bottom:16px;align-self:flex-start;opacity:.5}
 .app-head{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px}
 .app-desc{font-size:13px;line-height:1.78;opacity:.62;max-width:300px}
 .app-item.dk .app-desc{color:rgba(255,255,255,.5)}
@@ -341,88 +155,45 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
 .am img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.77,0,.18,1)}
 .am:hover img{transform:scale(1.04)}
 .am-lbl{position:absolute;bottom:12px;left:14px;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.25)}
-
-/* ─────────────── 06 THE SPACE ─────────────── */
+/* ── SECTION 06: THE SPACE ── */
+/* Replace the 3 grey card images with real AI renders when ready */
+/* Prompt: "Architectural exhibition space, dark concrete, lime green classification labels, projector casting floor plans, brutalist minimal, editorial photography" */
 .space-sec{padding:90px 60px;background:var(--dark);color:white;border-bottom:1px solid rgba(255,255,255,.05)}
 .space-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-bottom:54px}
 .space-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,56px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.05}
 .space-p{font-size:14px;line-height:1.85;color:rgba(255,255,255,.52)}
 .space-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g)}
-.mode-card{
-  background:#1a1a1a;padding:32px;border:1px solid rgba(255,255,255,.06);
-  transition:border-color .3s,transform .3s;cursor:none;
-}
+.mode-card{background:#1a1a1a;padding:32px;border:1px solid rgba(255,255,255,.06);transition:border-color .3s,transform .3s;cursor:none}
 .mode-card:hover{border-color:rgba(170,251,0,.3);transform:translateY(-3px)}
 .mode-num{font-family:'Space Grotesk',sans-serif;font-size:56px;font-weight:900;color:var(--lime);line-height:1;margin-bottom:22px;opacity:.55}
 .mode-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:white;margin-bottom:14px}
 .mode-desc{font-size:13px;line-height:1.82;color:rgba(255,255,255,.45)}
+/* Space media: 3 images side by side — replace with AI renders of 3 modes */
 .space-media{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--g);margin-top:var(--g)}
 .sm{overflow:hidden;aspect-ratio:4/3;position:relative;background:rgba(255,255,255,.05)}
 .sm img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.77,0,.18,1)}
 .sm:hover img{transform:scale(1.04)}
 .sm-lbl{position:absolute;bottom:12px;left:14px;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.22)}
-
-/* ─────────────── 07 REFLECTION ─────────────── */
-/* Redesigned as editorial split — big typographic title left, body right */
-.reflect{
-  background:var(--dark);color:white;
-  position:relative;overflow:hidden;
-  border-top:1px solid rgba(255,255,255,.05);
-}
-/* Background number "07" as huge ghost text */
-.reflect-ghost{
-  position:absolute;right:-20px;top:50%;transform:translateY(-50%);
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(200px,32vw,420px);font-weight:900;
-  color:rgba(255,255,255,.03);line-height:1;
-  user-select:none;pointer-events:none;z-index:0;
-  letter-spacing:-.04em;
-}
-.reflect-inner{
-  position:relative;z-index:1;
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:55vh;
-}
-.reflect-left{
-  padding:90px 60px;
-  display:flex;flex-direction:column;justify-content:center;
-  background:rgba(170,251,0,.04);
-  border-right:1px solid rgba(255,255,255,.06);
-}
-.reflect-label{
-  font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(255,255,255,.28);margin-bottom:30px;
-}
-.reflect-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(34px,5vw,64px);font-weight:900;text-transform:uppercase;line-height:1;
-}
+/* ── SECTION 07: REFLECTION ── */
+.reflect{background:var(--dark);color:white;position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.05)}
+.reflect-ghost{position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:'Space Grotesk',sans-serif;font-size:clamp(200px,32vw,420px);font-weight:900;color:rgba(255,255,255,.03);line-height:1;user-select:none;pointer-events:none;z-index:0;letter-spacing:-.04em}
+.reflect-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;min-height:55vh}
+.reflect-left{padding:90px 60px;display:flex;flex-direction:column;justify-content:center;background:rgba(170,251,0,.04);border-right:1px solid rgba(255,255,255,.06)}
+.reflect-label{font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:30px}
+.reflect-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,5vw,64px);font-weight:900;text-transform:uppercase;line-height:1}
 .reflect-title .from{color:rgba(255,255,255,.55)}
-.reflect-title .arrow{
-  color:var(--lime);display:block;font-size:.65em;margin:12px 0;
-  animation:arrow-pulse 2.4s ease-in-out infinite;
-}
-@keyframes arrow-pulse{
-  0%,100%{transform:translateX(0);opacity:.7}
-  50%{transform:translateX(8px);opacity:1}
-}
+.reflect-title .arrow{color:var(--lime);display:block;font-size:.65em;margin:12px 0;animation:arrow-pulse 2.4s ease-in-out infinite}
+@keyframes arrow-pulse{0%,100%{transform:translateX(0);opacity:.7}50%{transform:translateX(8px);opacity:1}}
 .reflect-title .to{color:white}
-.reflect-right{
-  padding:90px 60px;
-  display:flex;flex-direction:column;justify-content:center;
-}
+.reflect-right{padding:90px 60px;display:flex;flex-direction:column;justify-content:center}
 .reflect-right p{font-size:15px;line-height:1.87;color:rgba(255,255,255,.62);max-width:520px}
 .reflect-right p+p{margin-top:18px}
 .reflect-right p strong{color:white;font-weight:700}
-/* Lime highlight quote */
-.reflect-quote{
-  margin-top:36px;padding:24px 28px;
-  background:rgba(170,251,0,.07);border-left:3px solid var(--lime);
-  font-size:14px;line-height:1.7;color:rgba(255,255,255,.8);
-  font-style:italic;max-width:480px;
-}
-
-/* ─── MOBILE ─── */
+/* Closing image in Section 07 — add a full-width image below the reflection text */
+/* Replace with your actual closing image (exhibition space, scale model, etc) */
+.reflect-closing-image{width:100%;line-height:0;overflow:hidden;position:relative;z-index:1}
+.reflect-closing-image img{width:100%;height:auto;display:block;max-height:60vh;object-fit:cover}
+.reflect-quote{margin-top:36px;padding:24px 28px;background:rgba(170,251,0,.07);border-left:3px solid var(--lime);font-size:14px;line-height:1.7;color:rgba(255,255,255,.8);font-style:italic;max-width:480px}
 @media(max-width:900px){
   body{padding-bottom:72px}
   .nav{padding:14px 20px}
@@ -460,21 +231,25 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
 }
 </style>
 </head>
-<body>
+<body data-page="archive">
 <div id="cur"></div>
 
-<!-- ── NAV ── -->
 <nav class="nav">
   <a class="nav-back" href="todirect.html">← Back</a>
   <div class="nav-links">
     <a href="architecture.html">To Build</a>
-    <a href="visual.html">Visual</a>
-    <a href="video.html">Video</a>
-    <a href="localradio.html">Local Radio</a>
+    <a href="todirect.html">To Direct</a>
+    <div class="nav-create" id="navCreate">
+      <button class="nav-create-btn" aria-haspopup="true" aria-expanded="false">To Create</button>
+      <div class="nav-create-menu">
+        <a href="visual.html">Visual</a>
+        <a href="video.html">Video</a>
+        <a href="localradio.html">Local Radio</a>
+      </div>
+    </div>
   </div>
 </nav>
 
-<!-- ── HERO: photo bg, dark overlay, grid, lime bar ── -->
 <section class="hero">
   <div class="hero-line"></div>
   <div class="hero-code rev">AS-2026-IDENTITY · <span>Visual Identity</span></div>
@@ -488,30 +263,15 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   </div>
 </section>
 
-<!-- ── 01 CHALLENGE ── -->
 <section class="challenge">
   <div class="sec-lbl rev">01 · Challenge</div>
   <div class="ch-grid">
-    <div class="ch-card rev">
-      <div class="ch-lbl">(avoid)</div>
-      <div class="ch-title">Museum of the 2000s</div>
-      <div class="ch-desc">Decorative, nostalgic, heavy on aesthetics. Identity substituting substance with style.</div>
-    </div>
-    <div class="ch-card rev d1">
-      <div class="ch-lbl">(avoid)</div>
-      <div class="ch-title">Art Festival</div>
-      <div class="ch-desc">Expressive, chaotic, event-driven identity. No persistent logic, no system behind it.</div>
-    </div>
-    <div class="ch-card target rev d2">
-      <div class="ch-lbl">(✓ target)</div>
-      <div class="ch-title">A System</div>
-      <div class="ch-desc">Functional, precise, scalable across all formats. Infrastructure, not decoration.</div>
-      <div class="ch-tick">✓</div>
-    </div>
+    <div class="ch-card rev"><div class="ch-lbl">(avoid)</div><div class="ch-title">Museum of the 2000s</div><div class="ch-desc">Decorative, nostalgic, heavy on aesthetics. Identity substituting substance with style.</div></div>
+    <div class="ch-card rev d1"><div class="ch-lbl">(avoid)</div><div class="ch-title">Art Festival</div><div class="ch-desc">Expressive, chaotic, event-driven identity. No persistent logic, no system behind it.</div></div>
+    <div class="ch-card target rev d2"><div class="ch-lbl">(✓ target)</div><div class="ch-title">A System</div><div class="ch-desc">Functional, precise, scalable across all formats. Infrastructure, not decoration.</div><div class="ch-tick">✓</div></div>
   </div>
 </section>
 
-<!-- ── 02 CONCEPT: text left, brochure image right ── -->
 <section class="concept">
   <div class="concept-left rev-l">
     <div class="sec-lbl">02 · Concept</div>
@@ -527,88 +287,38 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
       <div class="cq-ru">Каждый объект = единица хранения. Айдентика как инфраструктура, а не декор.</div>
     </div>
   </div>
-  <!-- Brochure / booklet image, nearly full height on right.
-       Replace with your actual Cloudinary brochure scan URL: -->
   <div class="concept-img rev">
-    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592955/1774454191896_a4b5fr.jpg"
-         alt="Archive / Space printed materials" loading="lazy">
+    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592955/1774454191896_a4b5fr.jpg" alt="Archive / Space printed materials" loading="lazy">
   </div>
 </section>
 
-<!-- ── 03 CLASSIFICATION: big colourful cards ── -->
 <section class="classif">
   <div class="sec-lbl rev">03 · Classification System</div>
   <div class="classif-heading rev d1"><em>Six categories</em>Architecture<br>&amp; Beyond</div>
-
   <div class="cat-grid">
-    <div class="cat-card c-arch rev">
-      <div class="cat-num">01</div>
-      <div class="cat-code">ARCH</div>
-      <div class="cat-name">Architecture</div>
-      <div class="cat-idx">01</div>
-    </div>
-    <div class="cat-card c-land rev d1">
-      <div class="cat-num">02</div>
-      <div class="cat-code">LAND</div>
-      <div class="cat-name">Landscape</div>
-      <div class="cat-idx">02</div>
-    </div>
-    <div class="cat-card c-int rev d2">
-      <div class="cat-num">03</div>
-      <div class="cat-code">INT</div>
-      <div class="cat-name">Interior</div>
-      <div class="cat-idx">03</div>
-    </div>
-    <div class="cat-card c-urb rev">
-      <div class="cat-num">04</div>
-      <div class="cat-code">URB</div>
-      <div class="cat-name">Urbanism</div>
-      <div class="cat-idx">04</div>
-    </div>
-    <div class="cat-card c-play rev d1">
-      <div class="cat-num">05</div>
-      <div class="cat-code">PLAY GROUND</div>
-      <div class="cat-name">Playground /<br>Masterclass</div>
-      <div class="cat-idx">05</div>
-    </div>
-    <div class="cat-card c-arc rev d2">
-      <div class="cat-num">06</div>
-      <div class="cat-code">ARCHIVE</div>
-      <div class="cat-name">Archive</div>
-      <div class="cat-idx">06</div>
-    </div>
+    <div class="cat-card c-arch rev"><div class="cat-num">01</div><div class="cat-code">ARCH</div><div class="cat-name">Architecture</div><div class="cat-idx">01</div></div>
+    <div class="cat-card c-land rev d1"><div class="cat-num">02</div><div class="cat-code">LAND</div><div class="cat-name">Landscape</div><div class="cat-idx">02</div></div>
+    <div class="cat-card c-int rev d2"><div class="cat-num">03</div><div class="cat-code">INT</div><div class="cat-name">Interior</div><div class="cat-idx">03</div></div>
+    <div class="cat-card c-urb rev"><div class="cat-num">04</div><div class="cat-code">URB</div><div class="cat-name">Urbanism</div><div class="cat-idx">04</div></div>
+    <div class="cat-card c-play rev d1"><div class="cat-num">05</div><div class="cat-code">PLAY GROUND</div><div class="cat-name">Playground /<br>Masterclass</div><div class="cat-idx">05</div></div>
+    <div class="cat-card c-arc rev d2"><div class="cat-num">06</div><div class="cat-code">ARCHIVE</div><div class="cat-name">Archive</div><div class="cat-idx">06</div></div>
   </div>
 </section>
 
-<!-- ── ПЛАШКИ STRIP: 3D cube icons, mix-blend-mode removes black bg ──
-     Upload плашки.png to Cloudinary, paste URL below. -->
+<!-- ── ПЛАШКИ: Upload плашки.png to Cloudinary and replace YOUR_PLASHKI_ID_HERE ── -->
 <div class="plashki">
-  <img src="paste"
+  <img src="https://res.cloudinary.com/disa2fbgc/image/upload/YOUR_PLASHKI_ID_HERE.png"
        alt="Archive classification cube icons" loading="lazy">
 </div>
 
-<!-- ── 04 ID SYSTEM ── -->
 <section class="id-sys ds">
   <div class="sec-lbl rev">04 · ID System</div>
   <div class="id-head rev d1">AS-2026-<span>001</span> / ARCH / 01 / PLAN</div>
-
   <div class="id-cards">
-    <div class="id-card rev">
-      <div class="id-code-row"><span class="id-code">AS-2026-001</span><span class="id-pill" style="background:var(--arch);color:white">ARCH</span><span class="id-num">01</span></div>
-      <div class="id-name">Landscape</div>
-    </div>
-    <div class="id-card rev d1">
-      <div class="id-code-row"><span class="id-code">AS-2026-002</span><span class="id-pill" style="background:var(--land);color:white">LAND</span><span class="id-num">03</span></div>
-      <div class="id-name">Crean</div>
-    </div>
-    <div class="id-card rev d2">
-      <div class="id-code-row"><span class="id-code">AS-2026-003</span><span class="id-pill" style="background:var(--int);color:white">INT</span><span class="id-num">05</span></div>
-      <div class="id-name">Interior</div>
-    </div>
-    <div class="id-card rev d3">
-      <div class="id-code-row"><span class="id-code">AS-2026-004</span><span class="id-pill" style="background:var(--urb);color:white">URB</span><span class="id-num">02</span></div>
-      <div class="id-name">Urbanism</div>
-    </div>
+    <div class="id-card rev"><div class="id-code-row"><span class="id-code">AS-2026-001</span><span class="id-pill" style="background:var(--arch);color:white">ARCH</span><span class="id-num">01</span></div><div class="id-name">Landscape</div></div>
+    <div class="id-card rev d1"><div class="id-code-row"><span class="id-code">AS-2026-002</span><span class="id-pill" style="background:var(--land);color:white">LAND</span><span class="id-num">03</span></div><div class="id-name">Crean</div></div>
+    <div class="id-card rev d2"><div class="id-code-row"><span class="id-code">AS-2026-003</span><span class="id-pill" style="background:var(--int);color:white">INT</span><span class="id-num">05</span></div><div class="id-name">Interior</div></div>
+    <div class="id-card rev d3"><div class="id-code-row"><span class="id-code">AS-2026-004</span><span class="id-pill" style="background:var(--urb);color:white">URB</span><span class="id-num">02</span></div><div class="id-name">Urbanism</div></div>
   </div>
   <div class="id-formula rev">
     <div class="id-part"><span>prefix + year + id</span><strong>AS-YYYY-XXX</strong></div>
@@ -621,52 +331,30 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
   </div>
 </section>
 
-<!-- ── 05 APPLICATIONS ── -->
 <section class="apps">
   <div class="sec-lbl rev">05 · Applications</div>
   <div class="apps-grid">
-    <div class="app-item lt rev">
-      <div class="app-ltr">A</div>
-      <div class="app-badge">Website Interface</div>
-      <div class="app-head">Database UI</div>
-      <div class="app-desc">Database-style list of objects. Category codes + numbers as the primary navigation. Information structured as datasets, not editorial pages.</div>
-    </div>
-    <div class="app-item dk rev d1">
-      <div class="app-ltr">B</div>
-      <div class="app-badge">Classification</div>
-      <div class="app-head">Badges &amp; Icons</div>
-      <div class="app-desc">Category pills, 3D cube icons with abbreviations, color-coded tags across print and digital as the core visual unit.</div>
-    </div>
-    <div class="app-item lm rev">
-      <div class="app-ltr">C</div>
-      <div class="app-badge">Exhibition</div>
-      <div class="app-head">Signage</div>
-      <div class="app-desc">Physical labeling system. Wayfinding on arches and walls. The identity guides movement and interpretation in space.</div>
-    </div>
-    <div class="app-item lt rev d1">
-      <div class="app-ltr">D</div>
-      <div class="app-badge">Merchandise</div>
-      <div class="app-head">Print Objects</div>
-      <div class="app-desc">Tote bags, notebooks, ID cards — each carrying category codes and numbers. The system reproduces as physical objects.</div>
-    </div>
+    <div class="app-item lt rev"><div class="app-ltr">A</div><div class="app-badge">Website Interface</div><div class="app-head">Database UI</div><div class="app-desc">Database-style list of objects. Category codes + numbers as the primary navigation.</div></div>
+    <div class="app-item dk rev d1"><div class="app-ltr">B</div><div class="app-badge">Classification</div><div class="app-head">Badges &amp; Icons</div><div class="app-desc">Category pills, 3D cube icons with abbreviations, color-coded tags across print and digital.</div></div>
+    <div class="app-item lm rev"><div class="app-ltr">C</div><div class="app-badge">Exhibition</div><div class="app-head">Signage</div><div class="app-desc">Physical labeling system. Wayfinding on arches and walls. The identity guides movement in space.</div></div>
+    <div class="app-item lt rev d1"><div class="app-ltr">D</div><div class="app-badge">Merchandise</div><div class="app-head">Print Objects</div><div class="app-desc">Tote bags, notebooks, ID cards — each carrying category codes and numbers.</div></div>
   </div>
   <div class="apps-media">
-    <div class="am rev">
-      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592919/Web_Interface_Design_fkulex.jpg" alt="" loading="lazy">
-      <div class="am-lbl">Web Interface</div>
-    </div>
-    <div class="am rev d1">
-      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592937/Business_Cards_Badges_Stickers_bxnjy9.jpg" alt="" loading="lazy">
-      <div class="am-lbl">Classification Badges</div>
-    </div>
-    <div class="am rev d2">
-      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592930/Merchandise_Tote_Notebooks_v34sbo.jpg" alt="" loading="lazy">
-      <div class="am-lbl">Merchandise</div>
-    </div>
+    <div class="am rev"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592919/Web_Interface_Design_fkulex.jpg" alt="" loading="lazy"><div class="am-lbl">Web Interface</div></div>
+    <div class="am rev d1"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592937/Business_Cards_Badges_Stickers_bxnjy9.jpg" alt="" loading="lazy"><div class="am-lbl">Classification Badges</div></div>
+    <div class="am rev d2"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592930/Merchandise_Tote_Notebooks_v34sbo.jpg" alt="" loading="lazy"><div class="am-lbl">Merchandise</div></div>
   </div>
 </section>
 
-<!-- ── 06 THE SPACE ── -->
+<!-- ── 06 THE SPACE ──
+     TODO: Replace the 3 .sm images below with AI-generated space renders.
+     MIDJOURNEY PROMPT FOR ARCHIVE MODE IMAGE:
+     "Architectural exhibition space interior, dark concrete walls, modular shelving with colored classification labels in lime green, teal, terracotta. Projector casting building floor plans onto floor surface, people inside projected outlines. Editorial photography, dramatic lighting, no faces visible, 4:3 --ar 4:3 --style raw"
+     PROMPT FOR WORKSHOP MODE:
+     "Brutalist workshop space, numbered workstations 001/002/003, white tablets with lime green UI, minimal black and lime color palette, overhead shot, architectural photography --ar 4:3"
+     PROMPT FOR STAGE MODE:
+     "Dark gallery space, architectural drawings projected as light on dark concrete floor, single overhead projector, abstract spatial installation, minimal brutalist, cinematic --ar 4:3"
+  ── -->
 <section class="space-sec ds">
   <div class="sec-lbl rev">06 · The Space — Playground &amp; Classroom</div>
   <div class="space-intro">
@@ -674,39 +362,18 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
     <div class="space-p rev d1">The three modes work on an escalating logic: from physical database to workshop environment to projected architecture that exists only in light.</div>
   </div>
   <div class="space-modes">
-    <div class="mode-card rev">
-      <div class="mode-num">01</div>
-      <div class="mode-title">Archive Mode</div>
-      <div class="mode-desc">Shelving units with color-coded classification as a physical database. The body moves through the system the same way a cursor moves through a website.</div>
-    </div>
-    <div class="mode-card rev d1">
-      <div class="mode-num">02</div>
-      <div class="mode-title">Workshop Mode</div>
-      <div class="mode-desc">Numbered stations 001 / 002 / 003 with tablets and materials. Each workstation is an indexed unit of the catalog. A learning environment that is itself a catalog.</div>
-    </div>
-    <div class="mode-card rev d2">
-      <div class="mode-num">03</div>
-      <div class="mode-title">Stage Mode</div>
-      <div class="mode-desc">A projector above the floor projects building layouts onto the surface. Participants sit inside buildings that do not yet exist in matter. The classification transforms into space itself.</div>
-    </div>
+    <div class="mode-card rev"><div class="mode-num">01</div><div class="mode-title">Archive Mode</div><div class="mode-desc">Shelving units with color-coded classification as a physical database. The body moves through the system the same way a cursor moves through a website.</div></div>
+    <div class="mode-card rev d1"><div class="mode-num">02</div><div class="mode-title">Workshop Mode</div><div class="mode-desc">Numbered stations 001 / 002 / 003 with tablets and materials. Each workstation is an indexed unit. A learning environment that is itself a catalog.</div></div>
+    <div class="mode-card rev d2"><div class="mode-num">03</div><div class="mode-title">Stage Mode</div><div class="mode-desc">A projector above the floor projects building layouts onto the surface. Participants sit inside buildings that do not yet exist. The classification transforms into space itself.</div></div>
   </div>
   <div class="space-media">
-    <div class="sm rev">
-      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg" alt="" loading="lazy">
-      <div class="sm-lbl">Archive Mode 01</div>
-    </div>
-    <div class="sm rev d1">
-      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5_%D1%84%D0%B8%D1%80%D1%81%D1%82%D0%B8%D0%BB%D1%8F_upscaled_uveqnu.jpg" alt="" loading="lazy">
-      <div class="sm-lbl">Workshop Mode 02</div>
-    </div>
-    <div class="sm rev d2">
-      <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592590/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%B2%D0%B0_upscaled_crung9.jpg" alt="" loading="lazy">
-      <div class="sm-lbl">Stage Mode 03</div>
-    </div>
+    <!-- Replace these 3 images with AI renders using the prompts above -->
+    <div class="sm rev"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg" alt="" loading="lazy"><div class="sm-lbl">Archive Mode 01</div></div>
+    <div class="sm rev d1"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5_%D1%84%D0%B8%D1%80%D1%81%D1%82%D0%B8%D0%BB%D1%8F_upscaled_uveqnu.jpg" alt="" loading="lazy"><div class="sm-lbl">Workshop Mode 02</div></div>
+    <div class="sm rev d2"><img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592590/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%B2%D0%B0_upscaled_crung9.jpg" alt="" loading="lazy"><div class="sm-lbl">Stage Mode 03</div></div>
   </div>
 </section>
 
-<!-- ── 07 REFLECTION: editorial split, animated arrow, ghost number ── -->
 <section class="reflect ds">
   <div class="reflect-ghost">07</div>
   <div class="reflect-inner">
@@ -727,9 +394,15 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
       </div>
     </div>
   </div>
+  <!-- ── CLOSING IMAGE: Add a large image here for visual anchor in Section 07 ──
+       Options: exhibition photo, model photo, wayfinding system closeup
+       Replace YOUR_CLOSING_IMAGE_ID below with Cloudinary public ID -->
+  <div class="reflect-closing-image">
+    <img src="https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg"
+         alt="Archive / Space — wayfinding system" loading="lazy">
+  </div>
 </section>
 
-<!-- ── FOOTER ── -->
 <footer class="page-bottom">
   <a href="about.html">About</a>
   <div class="pb-right">
@@ -740,25 +413,16 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;
 </footer>
 
 <script>
-/* ── CURSOR ── */
 const cur = document.getElementById('cur');
 if (window.matchMedia('(hover:hover)').matches) {
-  document.addEventListener('mousemove', e => {
-    cur.style.left = e.clientX + 'px';
-    cur.style.top  = e.clientY + 'px';
-  }, { passive: true });
-  document.querySelectorAll('a,.ch-card,.cat-card,.app-item,.mode-card,.htag,.am,.sm').forEach(el => {
-    el.addEventListener('mouseenter', () => cur.classList.add('big'));
-    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
-  });
+  document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; }, {passive:true});
+  document.querySelectorAll('a,.ch-card,.cat-card,.app-item,.mode-card,.htag,.am,.sm').forEach(el => { el.addEventListener('mouseenter',()=>cur.classList.add('big')); el.addEventListener('mouseleave',()=>cur.classList.remove('big')); });
 }
 
-/* ── SCROLL REVEAL ── */
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
-  });
-}, { threshold: 0.1 });
+  /* ── TO CREATE DROPDOWN ── */
+  (function(){var nc=document.getElementById('navCreate');if(!nc)return;var btn=nc.querySelector('.nav-create-btn');var toggle=function(){var o=nc.classList.toggle('open');btn.setAttribute('aria-expanded',String(o));};btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();toggle();});btn.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();toggle();},{passive:false});document.addEventListener('click',function(e){if(!nc.contains(e.target)){nc.classList.remove('open');btn.setAttribute('aria-expanded','false');}});})();
+
+const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } }); }, {threshold:0.1});
 document.querySelectorAll('.rev,.rev-l').forEach(el => obs.observe(el));
 </script>
 </body>
