@@ -4,30 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visual — AV</title>
-  <!-- ── SEO & SOCIAL META ── -->
-  <meta name="description" content="Visual practice running parallel to spatial work — hand drawings from 2018, urban scan series, custom painted clothing, self-portrait photography, and found-object art.">
-  <meta name="keywords" content="vasileuskaya, avasil, anastasiya vasileuskaya, architect, art director, spatial design, architecture portfolio, interior design, masterplan">
-  <meta name="author" content="Anastasiya Vasileuskaya">
-  <meta name="robots" content="visual, follow">
-  <link rel="canonical" href="https://worldwidemoment.github.io/avasil/visual.html">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://worldwidemoment.github.io/avasil/visual.html">
-  <meta property="og:title" content="Visual — Drawing, Photography & Clothing · A.Vasileuskaya">
-  <meta property="og:description" content="Visual practice running parallel to spatial work — hand drawings from 2018, urban scan series, custom painted clothing, self-portrait photography, and found-object art.">
-  <meta property="og:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775827689/cloth2_ynjl6i.webp">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AVASIL — A.VASILEUSKAYA">
-  <meta name="twitter:description" content="Visual — Drawing, Photography & Clothing · A.Vasileuskaya">
-  <meta name="twitter:image" content="https://res.cloudinary.com/disa2fbgc/image/upload/v1775827689/cloth2_ynjl6i.webp">
-<!-- Favicon -->
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="manifest" href="site.webmanifest">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
@@ -65,6 +41,18 @@
     .page-links{display:flex;align-items:center;gap:22px;flex-shrink:0}
     .page-links a{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:#555;transition:color .2s;white-space:nowrap}
     .page-links a:hover{color:#f5f5f5}
+
+    /* ── TO CREATE DROPDOWN ── */
+    .nav-create{position:relative;display:inline-flex;align-items:center}
+    .nav-create-btn{font-family:inherit;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:none;border:none;color:#555;cursor:pointer;padding:0;transition:color .2s;white-space:nowrap}
+    .nav-create-btn:hover{color:#f5f5f5}
+    .nav-create-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:140px;display:flex;flex-direction:column;background:rgba(12,12,12,.98);border:1px solid rgba(255,255,255,.12);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s;z-index:300;pointer-events:none}
+    .nav-create-menu a,.nav-create-current{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.4);padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:block}
+    .nav-create-current{color:rgba(255,255,255,.9);cursor:default;pointer-events:none}
+    .nav-create-menu a:last-child{border-bottom:none}
+    .nav-create-menu a:hover{color:#f5f5f5}
+    @media(hover:hover){.nav-create:hover .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}}
+    .nav-create.open .nav-create-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
 
     /* ── TICKER ── */
     .ticker-bar{position:fixed;top:42px;left:0;right:0;z-index:210;overflow:hidden;padding:5px 0 4px;background:#f0f0f0;border-bottom:1px solid rgba(0,0,0,.1)}
@@ -184,7 +172,7 @@
     }
   </style>
 </head>
-<body>
+<body data-page="visual">
 
 <div id="cur"></div>
 
@@ -194,8 +182,14 @@
   <nav class="page-links">
     <a href="architecture.html">To Build</a>
     <a href="todirect.html">To Direct</a>
-    <a href="video.html">Video</a>
-    <a href="localradio.html">Local Radio</a>
+    <div class="nav-create" id="navCreate">
+      <button class="nav-create-btn" aria-haspopup="true" aria-expanded="false">To Create</button>
+      <div class="nav-create-menu">
+        <span class="nav-create-current">Visual</span>
+        <a href="video.html">Video</a>
+        <a href="localradio.html">Local Radio</a>
+      </div>
+    </div>
   </nav>
 </header>
 
@@ -232,14 +226,14 @@
 
 <div class="ftl"><a href="about.html">About</a></div>
 <div class="ftr">
-  <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
+  <a href="/cdn-cgi/l/email-protection#dfb1bea9b6b3bab19fbdb4f1adaa"><span class="__cf_email__" data-cfemail="4826293e21242d26082a23663a3d">[email&#160;protected]</span></a>
   <span class="sep">—</span>
   <a href="https://instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
   <span class="sep">—</span>
   <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── CLOUDINARY HELPERS ── */
 const CLD = 'https://res.cloudinary.com/disa2fbgc/image/upload';
 /* thumb: compressed + resized for scroll grid */
@@ -604,11 +598,5 @@ function buildScrollContainer() {
 }
 buildScrollContainer();
 
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(buildScrollContainer, 150);
-});
-</script>
-</body>
-</html>
+    /* ── TO CREATE DROPDOWN ── */
+    (function(){var nc=document.getElementById('navCreate');if(!nc)return;var btn=nc.querySelector('.nav-create-btn');var toggle=function(){var o=nc.classList.toggle('open');btn.setAttribute('aria-expanded',String(o));};btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();toggle();});btn.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();toggle();},{passive:false});document.addEventListener('click',function(e){if(!nc.contains(e.target)){nc.classList.remove('ope
