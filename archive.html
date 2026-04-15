@@ -230,25 +230,12 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:no
   .id-cards{grid-template-columns:1fr}
 }
 </style>
+  <link rel="stylesheet" href="components/site-nav.css">
+  <script src="components/site-nav.js" defer></script>
 </head>
 <body data-page="archive">
+<div class="site-nav-mount"></div>
 <div id="cur"></div>
-
-<nav class="nav">
-  <a class="nav-back" href="todirect.html">← Back</a>
-  <div class="nav-links">
-    <a href="architecture.html">To Build</a>
-    <a href="todirect.html">To Direct</a>
-    <div class="nav-create" id="navCreate">
-      <button class="nav-create-btn" aria-haspopup="true" aria-expanded="false">To Create</button>
-      <div class="nav-create-menu">
-        <a href="visual.html">Visual</a>
-        <a href="video.html">Video</a>
-        <a href="localradio.html">Local Radio</a>
-      </div>
-    </div>
-  </div>
-</nav>
 
 <section class="hero">
   <div class="hero-line"></div>
@@ -401,15 +388,6 @@ body{background:#fff;color:#111;font-family:'IBM Plex Sans',sans-serif;cursor:no
          alt="Archive / Space — wayfinding system" loading="lazy">
   </div>
 </section>
-
-<footer class="page-bottom">
-  <a href="about.html">About</a>
-  <div class="pb-right">
-    <a href="mailto:navilen@bk.ru">navilen@bk.ru</a>
-    <a href="https://www.instagram.com/molodostibolshenebudet/" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://linkedin.com/in/worldwidemoment/" target="_blank" rel="noopener">LinkedIn</a>
-  </div>
-</footer>
 
 <script>
 const cur = document.getElementById('cur');
