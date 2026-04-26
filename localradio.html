@@ -164,7 +164,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background:repeating-li
 }
 </style>
   <link rel="stylesheet" href="components/site-nav.css">
-  <script src="components/site-nav.js" defer></script>
+
 </head>
 <body data-page="localradio">
 <div class="site-nav-mount"></div> 
@@ -173,20 +173,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background:repeating-li
 <div class="noise"></div>
 
 <div class="page">
-<div class="broadcast-info">
-    <span class="live"><span class="live-dot"></span>On air</span>
-    <span id="clock">--:-- UTC</span>
-    <span>Curated by AV</span>
-  </div>
-  
   <div class="hero">
     <div class="hero-left">
       <div class="station-name">LOCAL RADIO</div>
       <p class="station-desc">Random channels, no schedule. Music that lives in the space between thinking and forgetting — collected across cities, time zones and states of mind. Not a genre. A frequency. Play loud or not at all.</p>
     </div>
-    <div class="broadcast-info">
-      <span class="live"><span class="live-dot"></span>On air</span>
-      <span id="clock">--:-- UTC</span>
+    <div clock="broadcast-info">
+      <span clock="live"><span clock="live-dot"></span>On air</span>
+      <span clock="clock">--:-- UTC</span>
       <span>Curated by AV</span>
     </div>
   </div>
@@ -253,10 +247,17 @@ if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
 /* ── CLOCK ── */
 function updateClock() {
   var now = new Date();
-  document.getElementById('clock').textContent =
-    String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+':'+String(now.getUTCSeconds()).padStart(2,'0')+' UTC';
+  var timeText =
+    String(now.getUTCHours()).padStart(2,'0') + ':' +
+    String(now.getUTCMinutes()).padStart(2,'0') + ':' +
+    String(now.getUTCSeconds()).padStart(2,'0') + ' UTC';
+
+  document.querySelectorAll('.clock').forEach(function(el) {
+    el.textContent = timeText;
+  });
 }
-updateClock(); setInterval(updateClock, 1000);
+updateClock();
+setInterval(updateClock, 1000);
 
 /* ── PLAYLISTS ── */
 var PLAYLISTS = [
