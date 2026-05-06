@@ -34,29 +34,101 @@ body{background:#080808;color:white;font-family:'Helvetica Neue',Helvetica,Arial
 #cur.big{width:50px;height:50px}
 @media(hover:none){#cur{display:none}}
 .split{display:flex;width:100vw;height:100vh}
-.half{flex:1;position:relative;overflow:hidden;text-decoration:none;color:white}
-.half::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;transition:transform .8s ease,opacity .6s}
+.half{
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  text-decoration:none;
+  color:white;
+}
+.half::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:.35;
+  transition:transform .8s ease,opacity .6s;
+}
 .half-archive::before{background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1775592594/Physical_Wayfinding_System_ehmkt3.jpg')}
 .half-migrant::before{background-image:url('https://res.cloudinary.com/disa2fbgc/image/upload/v1776125087/PHOTO_5_-_Magazine_in_Motion_1_v4nmc2.jpg')}
 .half:hover::before{transform:scale(1.05);opacity:.55}
 .half::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,.05));z-index:1}
 .divider{position:absolute;left:50%;top:10%;bottom:10%;width:1px;background:rgba(255,255,255,.08);z-index:5}
-.half-content{position:absolute;bottom:80px;left:80px;z-index:2;display:flex;flex-direction:column;transition:transform .4s cubic-bezier(.77,0,.18,1);max-width:340px}
-.half:hover .half-content{transform:translateY(-10px)}
-.c-tag{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:16px}
-.c-num{font-size:11px;font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,.28);margin-bottom:10px}
-.c-title{font-size:clamp(38px,4.8vw,64px);font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1;margin-bottom:20px;transition:color .3s}
+
+.half-content{
+  position:absolute;
+  left:80px;
+  right:80px;
+  bottom:80px;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr;
+  grid-template-rows:auto auto auto auto auto;
+  row-gap:10px;
+  max-width:340px;
+  align-content:end;
+}
+.half:hover .half-content{transform:translateY(-10px); transition:transform .4s cubic-bezier(.77,0,.18,1)}
+
+.c-tag{
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.38);
+  line-height:1.4;
+}
+.c-num{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.18em;
+  color:rgba(255,255,255,.28);
+  line-height:1;
+}
+.c-title{
+  font-size:clamp(38px,4.8vw,64px);
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  line-height:.92;
+  margin-top:2px;
+  transition:color .3s;
+}
 .half-archive:hover .c-title{color:#aafb00}
 .half-migrant:hover .c-title{color:#ff6b7a}
-.c-desc{font-size:11px;letter-spacing:.04em;line-height:1.75;color:rgba(255,255,255,.48);margin-bottom:24px;font-weight:400}
+.c-desc{
+  font-size:11px;
+  letter-spacing:.04em;
+  line-height:1.75;
+  color:rgba(255,255,255,.48);
+  font-weight:400;
+  max-width:320px;
+}
 .half:hover .c-desc{color:rgba(255,255,255,.62)}
-.c-open{font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;opacity:.55;border-bottom:1px solid transparent;transition:.3s;display:inline-block}
+.c-open{
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  opacity:.55;
+  border-bottom:1px solid transparent;
+  transition:.3s;
+  display:inline-block;
+  width:max-content;
+}
 .half:hover .c-open{opacity:1;border-bottom-color:currentColor}
+
 @media(max-width:900px){
   body{overflow:hidden;height:100dvh}
   .split{flex-direction:column;height:100dvh}
   .half{height:50dvh}
-  .half-content{left:20px;bottom:30px;max-width:calc(100% - 40px)}
+  .half-content{
+    left:20px;
+    right:20px;
+    bottom:30px;
+    max-width:calc(100% - 40px);
+  }
   .c-title{font-size:clamp(32px,8vw,48px)}
   .divider{display:none}
   .half-archive .c-title{color:#aafb00}
@@ -108,7 +180,8 @@ if (window.matchMedia('(hover:hover)').matches) {
 }
 </script>
 <script src="components/site-nav.js" defer></script>
- <section id="seo-links-block" style="position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;" aria-label="Portfolio navigation and context">
+
+<section id="seo-links-block" style="position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;" aria-label="Portfolio navigation and context">
   <h1>AVASIL Portfolio: Architecture, Art Direction, and Visual Design</h1>
   <h2>Case studies, process documentation, and multidisciplinary creative practice</h2>
   <h3>Internal links across architecture, visual, video, archive, and about pages</h3>
