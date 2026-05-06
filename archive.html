@@ -401,7 +401,7 @@ if (window.matchMedia('(hover:hover)').matches) {
 const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } }); }, {threshold:0.1});
 document.querySelectorAll('.rev,.rev-l').forEach(el => obs.observe(el));
 </script>
- <section id="seo-links-block" aria-label="Portfolio navigation and context" style="max-width:980px;margin:40px auto;padding:0 20px;line-height:1.6;">
+ <section id="seo-links-block" style="position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;" aria-label="Portfolio navigation and context">
   <h1>AVASIL Portfolio: Architecture, Art Direction, and Visual Design</h1>
   <h2>Case studies, process documentation, and multidisciplinary creative practice</h2>
   <h3>Internal links across architecture, visual, video, archive, and about pages</h3>
@@ -410,6 +410,6 @@ document.querySelectorAll('.rev,.rev-l').forEach(el => obs.observe(el));
   <nav>
     <a href="/avasil/index.html">Home</a> · <a href="/avasil/about.html">About</a> · <a href="/avasil/architecture.html">Architecture</a> · <a href="/avasil/projects.html">Projects</a> · <a href="/avasil/visual.html">Visual</a> · <a href="/avasil/video.html">Video</a> · <a href="/avasil/archive.html">Archive</a> · <a href="/avasil/localradio.html">Local Radio</a> · <a href="/avasil/migrant.html">Migrant</a> · <a href="/avasil/todirect.html">To Direct</a>
   </nav>
-</section> 
+</section>
 </body>
 </html>
